@@ -50,38 +50,51 @@
 
 YFileRecord::YFileRecord(const string& json)
 {
-    yJsonStateMachine j;
-    
-    // Parse JSON data 
-    j.src = json.c_str();
-    j.end = j.src + strlen(j.src);
-    j.st = YJSON_START;
-    if(yJsonParse(&j) != YJSON_PARSE_AVAIL || j.st != YJSON_PARSE_STRUCT) {
-        return ;
-    }
-    while(yJsonParse(&j) == YJSON_PARSE_AVAIL && j.st == YJSON_PARSE_MEMBNAME) {
-        if (!strcmp(j.token, "name")) {
-            if (yJsonParse(&j) != YJSON_PARSE_AVAIL) {
-                return ;
-            }
-            _name = (string)j.token;
-            while(j.next == YJSON_PARSE_STRINGCONT && yJsonParse(&j) == YJSON_PARSE_AVAIL) {
-                _name =(string)j.token;
-            }
-        } else if(!strcmp(j.token, "crc")) {
-            if (yJsonParse(&j) != YJSON_PARSE_AVAIL) {
-                return;
-            }
-            _crc = atoi(j.token);;
-        } else if(!strcmp(j.token, "size")) {
-            if (yJsonParse(&j) != YJSON_PARSE_AVAIL) {
-                return;
-            }
-            _size = atoi(j.token);;
-        } else {
-            yJsonSkip(&j, 1);
-        }
-    }
+	yJsonStateMachine j;
+
+	// Parse JSON data 
+	j.src = json.c_str();
+	j.end = j.src + strlen(j.src);
+	j.st = YJSON_START;
+	if (yJsonParse(&j) != YJSON_PARSE_AVAIL || j.st != YJSON_PARSE_STRUCT)
+	{
+		return;
+	}
+	while (yJsonParse(&j) == YJSON_PARSE_AVAIL && j.st == YJSON_PARSE_MEMBNAME)
+	{
+		if (!strcmp(j.token, "name"))
+		{
+			if (yJsonParse(&j) != YJSON_PARSE_AVAIL)
+			{
+				return;
+			}
+			_name = (string)j.token;
+			while (j.next == YJSON_PARSE_STRINGCONT && yJsonParse(&j) == YJSON_PARSE_AVAIL)
+			{
+				_name = (string)j.token;
+			}
+		}
+		else if (!strcmp(j.token, "crc"))
+		{
+			if (yJsonParse(&j) != YJSON_PARSE_AVAIL)
+			{
+				return;
+			}
+			_crc = atoi(j.token);;
+		}
+		else if (!strcmp(j.token, "size"))
+		{
+			if (yJsonParse(&j) != YJSON_PARSE_AVAIL)
+			{
+				return;
+			}
+			_size = atoi(j.token);;
+		}
+		else
+		{
+			yJsonSkip(&j, 1);
+		}
+	}
 }
 
 //--- (generated code: YFileRecord implementation)
@@ -90,38 +103,36 @@ YFileRecord::YFileRecord(const string& json)
 
 string YFileRecord::get_name(void)
 {
-    return _name;
+	return _name;
 }
 
 int YFileRecord::get_size(void)
 {
-    return _size;
+	return _size;
 }
 
 int YFileRecord::get_crc(void)
 {
-    return _crc;
+	return _crc;
 }
+
 //--- (end of generated code: YFileRecord implementation)
 
 
-
-
-
 YFiles::YFiles(const string& func): YFunction(func)
-    //--- (generated code: Files initialization)
-    ,_filesCount(FILESCOUNT_INVALID)
-    ,_freeSpace(FREESPACE_INVALID)
-    ,_valueCallbackFiles(NULL)
+                                    //--- (generated code: Files initialization)
+                                    , _filesCount(FILESCOUNT_INVALID)
+                                    , _freeSpace(FREESPACE_INVALID)
+                                    , _valueCallbackFiles(NULL)
 //--- (end of generated code: Files initialization)
 {
-    _className = "Files";
+	_className = "Files";
 }
 
 YFiles::~YFiles()
 {
-    //--- (generated code: YFiles cleanup)
-//--- (end of generated code: YFiles cleanup)
+	//--- (generated code: YFiles cleanup)
+	//--- (end of generated code: YFiles cleanup)
 }
 
 //--- (generated code: YFiles implementation)
@@ -129,13 +140,15 @@ YFiles::~YFiles()
 
 int YFiles::_parseAttr(YJSONObject* json_val)
 {
-    if(json_val->has("filesCount")) {
-        _filesCount =  json_val->getInt("filesCount");
-    }
-    if(json_val->has("freeSpace")) {
-        _freeSpace =  json_val->getInt("freeSpace");
-    }
-    return YFunction::_parseAttr(json_val);
+	if (json_val->has("filesCount"))
+	{
+		_filesCount = json_val->getInt("filesCount");
+	}
+	if (json_val->has("freeSpace"))
+	{
+		_freeSpace = json_val->getInt("freeSpace");
+	}
+	return YFunction::_parseAttr(json_val);
 }
 
 
@@ -148,24 +161,29 @@ int YFiles::_parseAttr(YJSONObject* json_val)
  */
 int YFiles::get_filesCount(void)
 {
-    int res = 0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YFiles::FILESCOUNT_INVALID;
-                }
-            }
-        }
-        res = _filesCount;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	int res = 0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YFiles::FILESCOUNT_INVALID;
+				}
+			}
+		}
+		res = _filesCount;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -177,24 +195,29 @@ int YFiles::get_filesCount(void)
  */
 int YFiles::get_freeSpace(void)
 {
-    int res = 0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YFiles::FREESPACE_INVALID;
-                }
-            }
-        }
-        res = _freeSpace;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	int res = 0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YFiles::FREESPACE_INVALID;
+				}
+			}
+		}
+		res = _freeSpace;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -222,23 +245,29 @@ int YFiles::get_freeSpace(void)
  */
 YFiles* YFiles::FindFiles(string func)
 {
-    YFiles* obj = NULL;
-    int taken = 0;
-    if (YAPI::_apiInitialized) {
-        yEnterCriticalSection(&YAPI::_global_cs);
-        taken = 1;
-    }try {
-        obj = (YFiles*) YFunction::_FindFromCache("Files", func);
-        if (obj == NULL) {
-            obj = new YFiles(func);
-            YFunction::_AddToCache("Files", func, obj);
-        }
-    } catch (std::exception) {
-        if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
-        throw;
-    }
-    if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
-    return obj;
+	YFiles* obj = NULL;
+	int taken = 0;
+	if (YAPI::_apiInitialized)
+	{
+		yEnterCriticalSection(&YAPI::_global_cs);
+		taken = 1;
+	}
+	try
+	{
+		obj = (YFiles*)YFunction::_FindFromCache("Files", func);
+		if (obj == NULL)
+		{
+			obj = new YFiles(func);
+			YFunction::_AddToCache("Files", func, obj);
+		}
+	}
+	catch (std::exception)
+	{
+		if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
+		throw;
+	}
+	if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
+	return obj;
 }
 
 /**
@@ -254,39 +283,47 @@ YFiles* YFiles::FindFiles(string func)
  */
 int YFiles::registerValueCallback(YFilesValueCallback callback)
 {
-    string val;
-    if (callback != NULL) {
-        YFunction::_UpdateValueCallbackList(this, true);
-    } else {
-        YFunction::_UpdateValueCallbackList(this, false);
-    }
-    _valueCallbackFiles = callback;
-    // Immediately invoke value callback with current value
-    if (callback != NULL && this->isOnline()) {
-        val = _advertisedValue;
-        if (!(val == "")) {
-            this->_invokeValueCallback(val);
-        }
-    }
-    return 0;
+	string val;
+	if (callback != NULL)
+	{
+		YFunction::_UpdateValueCallbackList(this, true);
+	}
+	else
+	{
+		YFunction::_UpdateValueCallbackList(this, false);
+	}
+	_valueCallbackFiles = callback;
+	// Immediately invoke value callback with current value
+	if (callback != NULL && this->isOnline())
+	{
+		val = _advertisedValue;
+		if (!(val == ""))
+		{
+			this->_invokeValueCallback(val);
+		}
+	}
+	return 0;
 }
 
 int YFiles::_invokeValueCallback(string value)
 {
-    if (_valueCallbackFiles != NULL) {
-        _valueCallbackFiles(this, value);
-    } else {
-        YFunction::_invokeValueCallback(value);
-    }
-    return 0;
+	if (_valueCallbackFiles != NULL)
+	{
+		_valueCallbackFiles(this, value);
+	}
+	else
+	{
+		YFunction::_invokeValueCallback(value);
+	}
+	return 0;
 }
 
 string YFiles::sendCommand(string command)
 {
-    string url;
-    url = YapiWrapper::ysprintf("files.json?a=%s",command.c_str());
+	string url;
+	url = YapiWrapper::ysprintf("files.json?a=%s", command.c_str());
 
-    return this->_download(url);
+	return this->_download(url);
 }
 
 /**
@@ -299,15 +336,16 @@ string YFiles::sendCommand(string command)
  */
 int YFiles::format_fs(void)
 {
-    string json;
-    string res;
-    json = this->sendCommand("format");
-    res = this->_json_get_key(json, "res");
-    if (!(res == "ok")) {
-        _throw(YAPI_IO_ERROR,"format failed");
-        return YAPI_IO_ERROR;
-    }
-    return YAPI_SUCCESS;
+	string json;
+	string res;
+	json = this->sendCommand("format");
+	res = this->_json_get_key(json, "res");
+	if (!(res == "ok"))
+	{
+		_throw(YAPI_IO_ERROR, "format failed");
+		return YAPI_IO_ERROR;
+	}
+	return YAPI_SUCCESS;
 }
 
 /**
@@ -325,16 +363,17 @@ int YFiles::format_fs(void)
  */
 vector<YFileRecord> YFiles::get_list(string pattern)
 {
-    string json;
-    vector<string> filelist;
-    vector<YFileRecord> res;
-    json = this->sendCommand(YapiWrapper::ysprintf("dir&f=%s",pattern.c_str()));
-    filelist = this->_json_get_array(json);
-    res.clear();
-    for (unsigned ii = 0; ii < filelist.size(); ii++) {
-        res.push_back(YFileRecord(filelist[ii]));
-    }
-    return res;
+	string json;
+	vector<string> filelist;
+	vector<YFileRecord> res;
+	json = this->sendCommand(YapiWrapper::ysprintf("dir&f=%s", pattern.c_str()));
+	filelist = this->_json_get_array(json);
+	res.clear();
+	for (unsigned ii = 0; ii < filelist.size(); ii++)
+	{
+		res.push_back(YFileRecord(filelist[ii]));
+	}
+	return res;
 }
 
 /**
@@ -348,17 +387,19 @@ vector<YFileRecord> YFiles::get_list(string pattern)
  */
 bool YFiles::fileExist(string filename)
 {
-    string json;
-    vector<string> filelist;
-    if ((int)(filename).length() == 0) {
-        return false;
-    }
-    json = this->sendCommand(YapiWrapper::ysprintf("dir&f=%s",filename.c_str()));
-    filelist = this->_json_get_array(json);
-    if ((int)filelist.size() > 0) {
-        return true;
-    }
-    return false;
+	string json;
+	vector<string> filelist;
+	if ((int)(filename).length() == 0)
+	{
+		return false;
+	}
+	json = this->sendCommand(YapiWrapper::ysprintf("dir&f=%s", filename.c_str()));
+	filelist = this->_json_get_array(json);
+	if ((int)filelist.size() > 0)
+	{
+		return true;
+	}
+	return false;
 }
 
 /**
@@ -372,7 +413,7 @@ bool YFiles::fileExist(string filename)
  */
 string YFiles::download(string pathname)
 {
-    return this->_download(pathname);
+	return this->_download(pathname);
 }
 
 /**
@@ -386,9 +427,9 @@ string YFiles::download(string pathname)
  *
  * On failure, throws an exception or returns a negative error code.
  */
-int YFiles::upload(string pathname,string content)
+int YFiles::upload(string pathname, string content)
 {
-    return this->_upload(pathname, content);
+	return this->_upload(pathname, content);
 }
 
 /**
@@ -407,39 +448,42 @@ int YFiles::upload(string pathname,string content)
  */
 int YFiles::remove(string pathname)
 {
-    string json;
-    string res;
-    json = this->sendCommand(YapiWrapper::ysprintf("del&f=%s",pathname.c_str()));
-    res  = this->_json_get_key(json, "res");
-    if (!(res == "ok")) {
-        _throw(YAPI_IO_ERROR,"unable to remove file");
-        return YAPI_IO_ERROR;
-    }
-    return YAPI_SUCCESS;
+	string json;
+	string res;
+	json = this->sendCommand(YapiWrapper::ysprintf("del&f=%s", pathname.c_str()));
+	res = this->_json_get_key(json, "res");
+	if (!(res == "ok"))
+	{
+		_throw(YAPI_IO_ERROR, "unable to remove file");
+		return YAPI_IO_ERROR;
+	}
+	return YAPI_SUCCESS;
 }
 
-YFiles *YFiles::nextFiles(void)
+YFiles* YFiles::nextFiles(void)
 {
-    string  hwid;
+	string hwid;
 
-    if(YISERR(_nextFunction(hwid)) || hwid=="") {
-        return NULL;
-    }
-    return YFiles::FindFiles(hwid);
+	if (YISERR(_nextFunction(hwid)) || hwid == "")
+	{
+		return NULL;
+	}
+	return YFiles::FindFiles(hwid);
 }
 
 YFiles* YFiles::FirstFiles(void)
 {
-    vector<YFUN_DESCR>   v_fundescr;
-    YDEV_DESCR             ydevice;
-    string              serial, funcId, funcName, funcVal, errmsg;
+	vector<YFUN_DESCR> v_fundescr;
+	YDEV_DESCR ydevice;
+	string serial, funcId, funcName, funcVal, errmsg;
 
-    if(YISERR(YapiWrapper::getFunctionsByClass("Files", 0, v_fundescr, sizeof(YFUN_DESCR), errmsg)) ||
-       v_fundescr.size() == 0 ||
-       YISERR(YapiWrapper::getFunctionInfo(v_fundescr[0], ydevice, serial, funcId, funcName, funcVal, errmsg))) {
-        return NULL;
-    }
-    return YFiles::FindFiles(serial+"."+funcId);
+	if (YISERR(YapiWrapper::getFunctionsByClass("Files", 0, v_fundescr, sizeof(YFUN_DESCR), errmsg)) ||
+		v_fundescr.size() == 0 ||
+		YISERR(YapiWrapper::getFunctionInfo(v_fundescr[0], ydevice, serial, funcId, funcName, funcVal, errmsg)))
+	{
+		return NULL;
+	}
+	return YFiles::FindFiles(serial + "." + funcId);
 }
 
 //--- (end of generated code: YFiles implementation)

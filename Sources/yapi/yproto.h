@@ -82,73 +82,76 @@
 * WINDOWS HID ACCES FOR WINODWS
 ***************************************************************/
 
-typedef struct _HIDD_ATTRIBUTES {
-    ULONG Size;
-    USHORT VendorID;
-    USHORT ProductID;
-    USHORT VersionNumber;
+typedef struct _HIDD_ATTRIBUTES
+{
+	ULONG Size;
+	USHORT VendorID;
+	USHORT ProductID;
+	USHORT VersionNumber;
 } HIDD_ATTRIBUTES, *PHIDD_ATTRIBUTES;
 
 //Pointers to a HID function  used
-typedef VOID    (__stdcall *PHidD_GetHidGuid)(LPGUID);
+typedef VOID (__stdcall *PHidD_GetHidGuid)(LPGUID);
 typedef BOOLEAN (__stdcall *PHidD_GetAttributes)(HANDLE, PHIDD_ATTRIBUTES);
-typedef BOOLEAN (__stdcall *PHidD_GetManufacturerString) (HANDLE,PVOID,ULONG);
-typedef BOOLEAN (__stdcall *PHidD_GetProductString) (HANDLE,PVOID,ULONG);
-typedef BOOLEAN (__stdcall *PHidD_GetSerialNumberString) (HANDLE,PVOID,ULONG);
-typedef BOOLEAN (__stdcall *PHidD_SetNumInputBuffers) (HANDLE, ULONG);
+typedef BOOLEAN (__stdcall *PHidD_GetManufacturerString)(HANDLE, PVOID, ULONG);
+typedef BOOLEAN (__stdcall *PHidD_GetProductString)(HANDLE, PVOID, ULONG);
+typedef BOOLEAN (__stdcall *PHidD_GetSerialNumberString)(HANDLE, PVOID, ULONG);
+typedef BOOLEAN (__stdcall *PHidD_SetNumInputBuffers)(HANDLE, ULONG);
 
-typedef struct{
-    HINSTANCE                   hHID;
-    PHidD_GetHidGuid            GetHidGuid;
-    PHidD_GetAttributes         GetAttributes;
-    PHidD_GetManufacturerString GetManufacturerString;
-    PHidD_GetProductString      GetProductString;
-    PHidD_GetSerialNumberString GetSerialNumberString;
-    PHidD_SetNumInputBuffers    SetNumInputBuffers;
-}win_hid_api;
+typedef struct
+{
+	HINSTANCE hHID;
+	PHidD_GetHidGuid GetHidGuid;
+	PHidD_GetAttributes GetAttributes;
+	PHidD_GetManufacturerString GetManufacturerString;
+	PHidD_GetProductString GetProductString;
+	PHidD_GetSerialNumberString GetSerialNumberString;
+	PHidD_SetNumInputBuffers SetNumInputBuffers;
+} win_hid_api;
 #endif
 
 #ifdef  WINDOWS_WIN32_API
 
 //Pointers to a registry function  used
 
-typedef LONG (__stdcall *PYRegCreateKeyEx)( HKEY hKey,
-                                            const char *                lpSubKey,
-                                            DWORD                 Reserved,
-                                            LPTSTR                lpClass,
-                                            DWORD                 dwOptions,
-                                            REGSAM                samDesired,
-                                            LPSECURITY_ATTRIBUTES lpSecurityAttributes,
-                                            PHKEY                 phkResult,
-                                            LPDWORD               lpdwDisposition);
-typedef LONG (_stdcall *PYRegOpenKeyEx) (HKEY hKey, const char * lpSubKey, DWORD ulOptions, REGSAM samDesired, PHKEY phkResult);
-typedef LONG (__stdcall *PYRegSetValueEx)(  HKEY    hKey,
-                                            char *  lpValueName,
-                                            DWORD   Reserved,
-                                            DWORD   dwType,
-                                            const BYTE    *lpData,
-                                            DWORD   cbData);
+typedef LONG (__stdcall *PYRegCreateKeyEx)(HKEY hKey,
+                                           const char* lpSubKey,
+                                           DWORD Reserved,
+                                           LPTSTR lpClass,
+                                           DWORD dwOptions,
+                                           REGSAM samDesired,
+                                           LPSECURITY_ATTRIBUTES lpSecurityAttributes,
+                                           PHKEY phkResult,
+                                           LPDWORD lpdwDisposition);
+typedef LONG (_stdcall *PYRegOpenKeyEx)(HKEY hKey, const char* lpSubKey, DWORD ulOptions, REGSAM samDesired, PHKEY phkResult);
+typedef LONG (__stdcall *PYRegSetValueEx)(HKEY hKey,
+                                          char* lpValueName,
+                                          DWORD Reserved,
+                                          DWORD dwType,
+                                          const BYTE* lpData,
+                                          DWORD cbData);
 
-typedef LONG (__stdcall *PYRegQueryValueEx)(    HKEY    hKey,
-                                                char *  lpValueName,
-                                                LPDWORD lpReserved,
-                                                LPDWORD lpType,
-                                                LPBYTE  lpData,
-                                                LPDWORD lpcbData);
-typedef LONG(__stdcall *PYRegDeleteValue)(HKEY hKey, char * lpValueName);
+typedef LONG (__stdcall *PYRegQueryValueEx)(HKEY hKey,
+                                            char* lpValueName,
+                                            LPDWORD lpReserved,
+                                            LPDWORD lpType,
+                                            LPBYTE lpData,
+                                            LPDWORD lpcbData);
+typedef LONG (__stdcall *PYRegDeleteValue)(HKEY hKey, char* lpValueName);
 typedef LONG (__stdcall *PYRegCloseKey)(HKEY hKey);
-typedef LONG (__stdcall *PYRegDeleteKeyEx)(HKEY hKey, char * lpSubKey, REGSAM samDesired, DWORD Reserved);
+typedef LONG (__stdcall *PYRegDeleteKeyEx)(HKEY hKey, char* lpSubKey, REGSAM samDesired, DWORD Reserved);
 
-typedef struct{
-    HINSTANCE                  hREG;
-    PYRegCreateKeyEx           yRegCreateKeyEx;
-    PYRegOpenKeyEx             yRegOpenKeyEx;
-    PYRegSetValueEx            yRegSetValueEx;
-    PYRegQueryValueEx          yRegQueryValueEx;
-    PYRegDeleteValue           yRegDeleteValue;
-    PYRegCloseKey              yRegCloseKey;
-    PYRegDeleteKeyEx           yRegDeleteKeyEx;
-}win_reg_api;
+typedef struct
+{
+	HINSTANCE hREG;
+	PYRegCreateKeyEx yRegCreateKeyEx;
+	PYRegOpenKeyEx yRegOpenKeyEx;
+	PYRegSetValueEx yRegSetValueEx;
+	PYRegQueryValueEx yRegQueryValueEx;
+	PYRegDeleteValue yRegDeleteValue;
+	PYRegCloseKey yRegCloseKey;
+	PYRegDeleteKeyEx yRegDeleteKeyEx;
+} win_reg_api;
 
 #endif
 
@@ -205,11 +208,11 @@ typedef struct{
 #define yMemmove(dst,src,size)          memmove(dst,src,size)
 
 #if defined(WINDOWS_API) && defined(_MSC_VER) && !defined(WINCE)
-    #define YSTRCMP(A,B)                        strcmp(A,B)
-    #define YSTRNCMP(A,B,len)                   strncmp(A,B,len)
-    #define YSTRICMP(A,B)                       _stricmp(A,B)
-    #define YSTRNICMP(A,B,len)                  _strnicmp(A,B,len)
-    #define YSTRLEN(str)                        ((int)strlen(str))
+#define YSTRCMP(A,B)                        strcmp(A,B)
+#define YSTRNCMP(A,B,len)                   strncmp(A,B,len)
+#define YSTRICMP(A,B)                       _stricmp(A,B)
+#define YSTRNICMP(A,B,len)                  _strnicmp(A,B,len)
+#define YSTRLEN(str)                        ((int)strlen(str))
 #elif defined(WINDOWS_API) && defined(__BORLANDC__)
     #define YSTRCMP(A,B)                        strcmp(A,B)
     #define YSTRNCMP(A,B,len)                   strncmp(A,B,len)
@@ -237,14 +240,14 @@ typedef struct{
 #define YSTRNCPY(dst,dstsize,src,len)       ystrncpy_s(dst,dstsize,src,len)
 #define YSPRINTF                            ysprintf_s
 #define YVSPRINTF                           yvsprintf_s
-char *ystrdup_s(const char *src);
-YRETCODE ystrcpy_s(char *dst, unsigned dstsize, const char *src);
-YRETCODE ystrncpy_s(char *dst,unsigned dstsize,const char *src,unsigned len);
-YRETCODE ystrcat_s(char *dst, unsigned dstsize,const char *src);
-YRETCODE ystrncat_s(char *dst, unsigned dstsize,const char *src,unsigned len);
-int ysprintf_s(char *dst, unsigned dstsize,const char *fmt ,...);
-int yvsprintf_s (char *dst, unsigned dstsize, const char * fmt, va_list arg );
-int ymemfind(const u8 *haystack, u32 haystack_len, const u8 *needle, u32 needle_len);
+char* ystrdup_s(const char* src);
+YRETCODE ystrcpy_s(char* dst, unsigned dstsize, const char* src);
+YRETCODE ystrncpy_s(char* dst, unsigned dstsize, const char* src, unsigned len);
+YRETCODE ystrcat_s(char* dst, unsigned dstsize, const char* src);
+YRETCODE ystrncat_s(char* dst, unsigned dstsize, const char* src, unsigned len);
+int ysprintf_s(char* dst, unsigned dstsize, const char* fmt,...);
+int yvsprintf_s(char* dst, unsigned dstsize, const char* fmt, va_list arg);
+int ymemfind(const u8* haystack, u32 haystack_len, const u8* needle, u32 needle_len);
 
 
 //#define DEBUG_YAPI_REQ
@@ -373,7 +376,6 @@ __forceinline void __NETENUMLOG(fmt,...){}
 #endif
 
 
-
 #ifdef DEBUG_WEBSOCKET
 #define WSLOG  dbglog
 #else
@@ -390,10 +392,8 @@ __forceinline void __WSLOG(fmt, ...) {}
 #endif
 
 
-
-
-int vdbglogf(const char *fileid,int line,const char *fmt,va_list args);
-int dbglogf(const char *fileid,int line,const char *fmt,...);
+int vdbglogf(const char* fileid, int line, const char* fmt, va_list args);
+int dbglogf(const char* fileid, int line, const char* fmt,...);
 #if defined(_MSC_VER)
 #if (_MSC_VER > MSC_VS2003)
 #define dbglog(...)      dbglogf(__FILE_ID__,__LINE__, __VA_ARGS__)
@@ -458,8 +458,8 @@ int YFOPEN(FILE** f, const char *filename, const char *mode);
 #define YERRMSG(code,message)   ySetErr(code,errmsg,message,__FILE_ID__,__LINE__)
 #define YERRMSGSILENT(code,message)   ySetErr(code, errmsg, message, NULL, 0)
 #define YERRMSGTO(code,message,buffer)   ySetErr(code,buffer,message,__FILE_ID__,__LINE__)
-int ySetErr(int code, char *outmsg, const char *erreur, const char *file, u32 line);
-int FusionErrmsg(int code,char *errmsg, const char *generr, const char *detailerr);
+int ySetErr(int code, char* outmsg, const char* erreur, const char* file, u32 line);
+int FusionErrmsg(int code, char* errmsg, const char* generr, const char* detailerr);
 
 
 /*****************************************************************************
@@ -473,13 +473,13 @@ int FusionErrmsg(int code,char *errmsg, const char *generr, const char *detailer
 ****************************************************************************/
 typedef struct
 {
-    u64 totaltime;
-    u64 count;
-    u64 leave;
-    u64 tmp;
+	u64 totaltime;
+	u64 count;
+	u64 leave;
+	u64 tmp;
 } yPerfMon;
 
-void  dumpYPerfEntry(yPerfMon *entry,const char *name);
+void dumpYPerfEntry(yPerfMon* entry, const char* name);
 
 
 /*****************************************************************************
@@ -488,9 +488,10 @@ void  dumpYPerfEntry(yPerfMon *entry,const char *name);
 
 // MISC packet definitions
 #pragma pack(push,1)
-typedef struct{
-    u8         dummy;
-    USB_Packet pkt;
+typedef struct
+{
+	u8 dummy;
+	USB_Packet pkt;
 } OS_USB_Packet;
 #pragma pack(pop)
 
@@ -504,33 +505,35 @@ typedef struct {
 #endif
 
 // packet queue stuff
-typedef struct _pktItem{
-    USB_Packet          pkt;
+typedef struct _pktItem
+{
+	USB_Packet pkt;
 #ifdef DEBUG_PKT_TIMING
     u64                 time;
     u64                 ospktno;
 #endif
-    struct _pktItem     *next;
+	struct _pktItem* next;
 } pktItem;
 
 
-typedef struct {
-    pktItem             *first;
-    pktItem             *last;
-    int                 count;
-    u64                 totalPush;
-    u64                 totalPop;
-    YRETCODE            status;
-    char                errmsg[YOCTO_ERRMSG_LEN];
-    yCRITICAL_SECTION   cs;
-    yEvent              notEmptyEvent;
-    yEvent              emptyEvent;
+typedef struct
+{
+	pktItem* first;
+	pktItem* last;
+	int count;
+	u64 totalPush;
+	u64 totalPop;
+	YRETCODE status;
+	char errmsg[YOCTO_ERRMSG_LEN];
+	yCRITICAL_SECTION cs;
+	yEvent notEmptyEvent;
+	yEvent emptyEvent;
 } pktQueue;
 
 //pktQueue Helpers
-void yPktQueueInit(pktQueue  *q);
-void yPktQueueFree(pktQueue  *q);
-void yPktQueueSetError(pktQueue  *q,YRETCODE code, const char * msg);
+void yPktQueueInit(pktQueue* q);
+void yPktQueueFree(pktQueue* q);
+void yPktQueueSetError(pktQueue* q, YRETCODE code, const char* msg);
 
 #ifdef OSX_API
 
@@ -545,8 +548,8 @@ typedef struct {
 typedef struct _uwp_enum_item {
     u16 vendorid;
     u16 devicid;
-    //String ^serial;
-    //String ^id;
+//String ^serial;
+//String ^id;
 } uwp_enum_item;
 #endif
 
@@ -559,27 +562,31 @@ typedef struct _uwp_enum_item {
 #define YWIN_EVENT_READ     0
 #define YWIN_EVENT_INTERRUPT 1
 
-typedef struct _yInterfaceSt {
-    u16             vendorid;
-    u16             deviceid;
-    u16             ifaceno;
-    u16             pkt_version;
-    char            serial[YOCTO_SERIAL_LEN*2];
-    struct {
-        u32         yyySetupDone:1;
-    } flags;
-    pktQueue        rxQueue;
-    pktQueue        txQueue;
+typedef struct _yInterfaceSt
+{
+	u16 vendorid;
+	u16 deviceid;
+	u16 ifaceno;
+	u16 pkt_version;
+	char serial[YOCTO_SERIAL_LEN * 2];
+
+	struct
+	{
+		u32 yyySetupDone:1;
+	} flags;
+
+	pktQueue rxQueue;
+	pktQueue txQueue;
 #if defined(WINDOWS_API)
-    char            devicePath[WIN_DEVICE_PATH_LEN];
-    yThread         io_thread;
-    HANDLE          wrHDL;
-    OVERLAPPED      rdOL;
-    HANDLE          rdHDL;
-    HANDLE          EV[2];
-    u32             rdpending;
-    OS_USB_Packet   tmpd2hpkt;
-    OS_USB_Packet   tmph2dpkt;
+	char devicePath[WIN_DEVICE_PATH_LEN];
+	yThread io_thread;
+	HANDLE wrHDL;
+	OVERLAPPED rdOL;
+	HANDLE rdHDL;
+	HANDLE EV[2];
+	u32 rdpending;
+	OS_USB_Packet tmpd2hpkt;
+	OS_USB_Packet tmph2dpkt;
 #elif defined(OSX_API)
     OSX_HID_REF         hid;
     CFStringRef         run_loop_mode;
@@ -596,49 +603,50 @@ typedef struct _yInterfaceSt {
 #endif
 } yInterfaceSt;
 
-YRETCODE    yPktQueuePushD2H(yInterfaceSt *iface,const USB_Packet *pkt, char * errmsg);
-YRETCODE    yPktQueueWaitAndPopD2H(yInterfaceSt *iface,pktItem **pkt,int ms,char * errmsg);
-YRETCODE    yPktQueuePushH2D(yInterfaceSt *iface,const USB_Packet *pkt, char * errmsg);
-YRETCODE    yPktQueuePeekH2D(yInterfaceSt *iface,pktItem **pkt);
-YRETCODE    yPktQueuePopH2D(yInterfaceSt *iface,pktItem **pkt);
+YRETCODE yPktQueuePushD2H(yInterfaceSt* iface, const USB_Packet* pkt, char* errmsg);
+YRETCODE yPktQueueWaitAndPopD2H(yInterfaceSt* iface, pktItem** pkt, int ms, char* errmsg);
+YRETCODE yPktQueuePushH2D(yInterfaceSt* iface, const USB_Packet* pkt, char* errmsg);
+YRETCODE yPktQueuePeekH2D(yInterfaceSt* iface, pktItem** pkt);
+YRETCODE yPktQueuePopH2D(yInterfaceSt* iface, pktItem** pkt);
 
 #define NBMAX_INTERFACE_PER_DEV     1
+
 typedef enum
 {
-    YDEV_UNPLUGGED=0,           // device has been plugged by the past but is no more
-                                // -> YDEV_WORKING  or YDEV_NOTRESPONDING
-    YDEV_WORKING,               // device is plugged and running
-                                // -> YDEV_UNPLUGGED
-    YDEV_NOTRESPONDING          // device has not repsond to StartDevice and we will never try to speak with it
-                                // -> none
+	YDEV_UNPLUGGED=0, // device has been plugged by the past but is no more
+	// -> YDEV_WORKING  or YDEV_NOTRESPONDING
+	YDEV_WORKING, // device is plugged and running
+	// -> YDEV_UNPLUGGED
+	YDEV_NOTRESPONDING // device has not repsond to StartDevice and we will never try to speak with it
+	// -> none
 } YDEV_STATUS;
 
 
 typedef enum
 {
-    YENU_NONE,
-    YENU_START,
-    YENU_STOP,
-    YENU_RESTART
+	YENU_NONE,
+	YENU_START,
+	YENU_STOP,
+	YENU_RESTART
 } YENU_ACTION;
 
 typedef enum
 {
-    YRUN_STOPED,
-    YRUN_AVAIL,                 // device is available for a request
-    YRUN_REQUEST,               // device has be reserved for a request
-    YRUN_BUSY,                  // device is doing IO for the request
-    YRUN_IDLE,                  // device is doing IO for the idle thread
-    YRUN_ERROR,                 // device has been stopped because an IO error
+	YRUN_STOPED,
+	YRUN_AVAIL, // device is available for a request
+	YRUN_REQUEST, // device has be reserved for a request
+	YRUN_BUSY, // device is doing IO for the request
+	YRUN_IDLE, // device is doing IO for the idle thread
+	YRUN_ERROR, // device has been stopped because an IO error
 } YRUN_STATUS;
 
 typedef enum
 {
-    YHTTP_CLOSED,
-    YHTTP_OPENED,
-    YHTTP_INREQUEST,
-    YHTTP_CLOSE_BY_DEV,
-    YHTTP_CLOSE_BY_API
+	YHTTP_CLOSED,
+	YHTTP_OPENED,
+	YHTTP_INREQUEST,
+	YHTTP_CLOSE_BY_DEV,
+	YHTTP_CLOSE_BY_API
 } YHTTP_STATUS;
 
 
@@ -646,13 +654,15 @@ typedef enum
 #define DEVGEN_LOG_ACTIVATED     1u
 #define DEVGEN_LOG_PENDING       2u
 #define DEVGEN_LOG_PULLING       4u
-typedef struct  _yGenericDeviceSt {
-    yStrRef             serial; // set only once at init -> no need to use the mutex
-    u32                 flags;
-    u32                 deviceLogPos;
-    yFifoBuf            logFifo;
-    u8*                 logBuffer;
-    double              deviceTime;
+
+typedef struct _yGenericDeviceSt
+{
+	yStrRef serial; // set only once at init -> no need to use the mutex
+	u32 flags;
+	u32 deviceLogPos;
+	yFifoBuf logFifo;
+	u8* logBuffer;
+	double deviceTime;
 } yGenericDeviceSt;
 
 void initDevYdxInfos(int devYdxy, yStrRef serial);
@@ -661,12 +671,13 @@ void freeDevYdxInfos(int devYdx);
 
 #define YIO_REMOTE_CLOSE 1u
 
-typedef struct{
-    u8      flags;
-    u64     timeout;
-    YUSBIO  hdl;
-    yapiRequestAsyncCallback callback;
-    void *context;
+typedef struct
+{
+	u8 flags;
+	u64 timeout;
+	YUSBIO hdl;
+	yapiRequestAsyncCallback callback;
+	void* context;
 } USB_HDL;
 
 #define NB_MAX_STARTUP_RETRY   5u
@@ -675,52 +686,55 @@ typedef struct{
 #define NEXT_IFACE_NO(current,total) (current+1<total?current+1:0)
 
 // structure that contain all information about a device
-typedef struct  _yPrivDeviceSt{
-    yCRITICAL_SECTION   acces_state;
-    YUSBDEV             yhdl;       // unique YHANDLE to identify device during execution
-    YDEV_STATUS         dStatus;    // detection status
-    YENU_ACTION         enumAction; // action to triger at end of enumeration
-    YRUN_STATUS         rstatus;    // running status of the device (valid only on working dev)
-    char                errmsg[YOCTO_ERRMSG_LEN];
-    unsigned int        nb_startup_retry;
-    u64                 next_startup_attempt;
-    USB_HDL             pendingIO;
-    YHTTP_STATUS        httpstate;
-    yDeviceSt           infos;      // device infos
-    u32                 lastUtcUpdate;
-    pktItem             *currxpkt;
-    u8                  curxofs;
-    pktItem             *curtxpkt;
-    u8                  curtxofs;
-    pktItem             tmptxpkt;
-    u8                  lastpktno;
-    int                 pktAckDelay;
-    yInterfaceSt        iface;
-    char                *replybuf;      // Used to buffer request result
-    int                 replybufsize;   // allocated size of replybuf
-    yFifoBuf            http_fifo;
-    u8                  *http_raw_buf;
-    u8                  *devYdxMap;
-    struct              _yPrivDeviceSt   *next;
+typedef struct _yPrivDeviceSt
+{
+	yCRITICAL_SECTION acces_state;
+	YUSBDEV yhdl; // unique YHANDLE to identify device during execution
+	YDEV_STATUS dStatus; // detection status
+	YENU_ACTION enumAction; // action to triger at end of enumeration
+	YRUN_STATUS rstatus; // running status of the device (valid only on working dev)
+	char errmsg[YOCTO_ERRMSG_LEN];
+	unsigned int nb_startup_retry;
+	u64 next_startup_attempt;
+	USB_HDL pendingIO;
+	YHTTP_STATUS httpstate;
+	yDeviceSt infos; // device infos
+	u32 lastUtcUpdate;
+	pktItem* currxpkt;
+	u8 curxofs;
+	pktItem* curtxpkt;
+	u8 curtxofs;
+	pktItem tmptxpkt;
+	u8 lastpktno;
+	int pktAckDelay;
+	yInterfaceSt iface;
+	char* replybuf; // Used to buffer request result
+	int replybufsize; // allocated size of replybuf
+	yFifoBuf http_fifo;
+	u8* http_raw_buf;
+	u8* devYdxMap;
+	struct _yPrivDeviceSt* next;
 } yPrivDeviceSt;
 
 
-typedef void (*yDevInfoCallback)(const yDeviceSt *infos);
-typedef void (*yNotificCallback)(const char *serial, const char *funcid, const char *funcname, const char *funcval);
+typedef void (*yDevInfoCallback)(const yDeviceSt* infos);
+typedef void (*yNotificCallback)(const char* serial, const char* funcid, const char* funcname, const char* funcval);
 
-typedef enum {
-    USB_THREAD_NOT_STARTED,
-    USB_THREAD_RUNNING,
-    USB_THREAD_MUST_STOP,
-    USB_THREAD_STOPED
+typedef enum
+{
+	USB_THREAD_NOT_STARTED,
+	USB_THREAD_RUNNING,
+	USB_THREAD_MUST_STOP,
+	USB_THREAD_STOPED
 } USB_THREAD_STATE;
 
-typedef enum {
-    NET_HUB_DISCONNECTED=0,
-    NET_HUB_TRYING,
-    NET_HUB_ESTABLISHED,
-    NET_HUB_TOCLOSE,
-    NET_HUB_CLOSED
+typedef enum
+{
+	NET_HUB_DISCONNECTED=0,
+	NET_HUB_TRYING,
+	NET_HUB_ESTABLISHED,
+	NET_HUB_TOCLOSE,
+	NET_HUB_CLOSED
 } NET_HUB_STATE;
 
 // If made bigger than 255, change plenty of u8 into u16 and pray
@@ -732,96 +746,99 @@ typedef enum {
 
 #define NET_HUB_NOT_CONNECTION_TIMEOUT   (6*1024)
 
-typedef struct _HTTPNetHubSt {
-    // the following fields are for the notification helper thread only
-    struct _RequestSt    *notReq;
-                                        // the following fields are used by hub net enum and notification helper thread
-    u64                 lastTraffic;    // time of the last data received on the notification socket (in ms)
-                                        // the following fields are used for authentication to the hub, and require mutex access
-    char                *s_user;
-    char                *s_realm;
-    char                *s_pwd;
-    char                *s_nonce;
-    char                *s_opaque;
-    u8                  s_ha1[16];        // computed when realm is received if pwd is not NULL
-    u32                 nc;             // reset each time a new nonce is received
+typedef struct _HTTPNetHubSt
+{
+	// the following fields are for the notification helper thread only
+	struct _RequestSt* notReq;
+	// the following fields are used by hub net enum and notification helper thread
+	u64 lastTraffic; // time of the last data received on the notification socket (in ms)
+	// the following fields are used for authentication to the hub, and require mutex access
+	char* s_user;
+	char* s_realm;
+	char* s_pwd;
+	char* s_nonce;
+	char* s_opaque;
+	u8 s_ha1[16]; // computed when realm is received if pwd is not NULL
+	u32 nc; // reset each time a new nonce is received
 } HTTPNetHub;
-
 
 
 enum WS_BASE_STATE
 {
-    WS_BASE_OFFLINE = 0,
-    WS_BASE_HEADER_SENT,
-    WS_BASE_SOCKET_UPGRADED,
-    WS_BASE_AUTHENTICATING,
-    WS_BASE_CONNECTED,
+	WS_BASE_OFFLINE = 0,
+	WS_BASE_HEADER_SENT,
+	WS_BASE_SOCKET_UPGRADED,
+	WS_BASE_AUTHENTICATING,
+	WS_BASE_CONNECTED,
 };
 
-typedef struct _WSChanSt {
-    u32 lastUploadAckBytes;
-    u64 lastUploadAckTime;
-    u32 lastUploadRateBytes;
-    u64 lastUploadRateTime;
-    yCRITICAL_SECTION access;
-    struct _RequestSt* requests;
-}WSChanSt;
+typedef struct _WSChanSt
+{
+	u32 lastUploadAckBytes;
+	u64 lastUploadAckTime;
+	u32 lastUploadRateBytes;
+	u64 lastUploadRateTime;
+	yCRITICAL_SECTION access;
+	struct _RequestSt* requests;
+} WSChanSt;
 
-typedef struct _WSNetHubSt {
-    enum WS_BASE_STATE base_state;
-    enum WS_BASE_STATE strym_state;
-    char serial[YOCTO_SERIAL_LEN];
-    char websocket_key[32];
-    int websocket_key_len;
-    int remoteVersion;
-    u32 remoteNounce;
-    u32 nounce;
-    yStrRef user;
-    yStrRef pass;
-    int s_next_async_id;
-    YSOCKET skt;
-    yFifoBuf mainfifo;
-    u64 bws_open_tm;
-    u64 bws_timeout_tm;
-    u64 bws_read_tm;
-    u64 next_transmit_tm;
-    u64 connectionTime;
-    u32 tcpRoundTripTime;
-    u32 tcpMaxWindowSize;
-    u32 uploadRate;
-    WSChanSt chan[MAX_ASYNC_TCPCHAN];
-    u8* fifo_buffer;
-    struct _RequestSt *openRequests;
+typedef struct _WSNetHubSt
+{
+	enum WS_BASE_STATE base_state;
+	enum WS_BASE_STATE strym_state;
+	char serial[YOCTO_SERIAL_LEN];
+	char websocket_key[32];
+	int websocket_key_len;
+	int remoteVersion;
+	u32 remoteNounce;
+	u32 nounce;
+	yStrRef user;
+	yStrRef pass;
+	int s_next_async_id;
+	YSOCKET skt;
+	yFifoBuf mainfifo;
+	u64 bws_open_tm;
+	u64 bws_timeout_tm;
+	u64 bws_read_tm;
+	u64 next_transmit_tm;
+	u64 connectionTime;
+	u32 tcpRoundTripTime;
+	u32 tcpMaxWindowSize;
+	u32 uploadRate;
+	WSChanSt chan[MAX_ASYNC_TCPCHAN];
+	u8* fifo_buffer;
+	struct _RequestSt* openRequests;
 } WSNetHub;
 
 
-typedef struct _HubSt {
-    yUrlRef url;            // hub base URL, or INVALID_HASH_IDX if unused
-    // misc flag that are maped to int for efficency and thread safety
-    int rw_access;
-    int send_ping;
-    int mandatory;
-    int writeProtected; // admin password detected
-    yStrRef serial;
-    WakeUpSocket wuce;
-    yThread net_thread;
-    char *name;
-    yAsbUrlProto proto;
-    NET_HUB_STATE state;
-    yFifoBuf not_fifo; // notification fifo
-    u8 not_buffer[1024]; // buffer for the fifo
-    int retryCount;
-    u32 notifAbsPos;
-    u64 lastAttempt;    // time of the last connection attempt (in ms)
-    u64 attemptDelay;   // delay until next attemps (in ms)
-    u64 devListExpires;
-    u8 devYdxMap[ALLOC_YDX_PER_HUB];   // maps hub's internal devYdx to our WP devYdx //fixme:
-    int errcode;  // in case an error occured
-    char errmsg[YOCTO_ERRMSG_LEN];
-    yCRITICAL_SECTION access; // CS for field that need to be protected agains concurency (these filed start with cs_
-    // implementations specific struct
-    HTTPNetHub http;
-    WSNetHub ws;
+typedef struct _HubSt
+{
+	yUrlRef url; // hub base URL, or INVALID_HASH_IDX if unused
+	// misc flag that are maped to int for efficency and thread safety
+	int rw_access;
+	int send_ping;
+	int mandatory;
+	int writeProtected; // admin password detected
+	yStrRef serial;
+	WakeUpSocket wuce;
+	yThread net_thread;
+	char* name;
+	yAsbUrlProto proto;
+	NET_HUB_STATE state;
+	yFifoBuf not_fifo; // notification fifo
+	u8 not_buffer[1024]; // buffer for the fifo
+	int retryCount;
+	u32 notifAbsPos;
+	u64 lastAttempt; // time of the last connection attempt (in ms)
+	u64 attemptDelay; // delay until next attemps (in ms)
+	u64 devListExpires;
+	u8 devYdxMap[ALLOC_YDX_PER_HUB]; // maps hub's internal devYdx to our WP devYdx //fixme:
+	int errcode; // in case an error occured
+	char errmsg[YOCTO_ERRMSG_LEN];
+	yCRITICAL_SECTION access; // CS for field that need to be protected agains concurency (these filed start with cs_
+	// implementations specific struct
+	HTTPNetHub http;
+	WSNetHub ws;
 } HubSt;
 
 
@@ -829,146 +846,158 @@ typedef struct _HubSt {
 #define TCPREQ_IN_USE          2
 
 
-typedef struct _HTTPReqSt {
-    YSOCKET             skt;            // socket used to talk to the device
-    YSOCKET             reuseskt;       // socket to reuse for next query, when keepalive is true
+typedef struct _HTTPReqSt
+{
+	YSOCKET skt; // socket used to talk to the device
+	YSOCKET reuseskt; // socket to reuse for next query, when keepalive is true
 } HTTPReqSt;
 
 typedef struct _WSReqSt
 {
-    int channel;
-    int asyncId;
-    u32 iohdl;
-    struct _RequestSt *next;
-    u8* requestbuf; // Used to store the request to send
-    int requestsize; // the size of the request
-    int requestpos; // the pos of the request that need to be sent
-    u64 first_write_tm;
-    u64 last_write_tm;
+	int channel;
+	int asyncId;
+	u32 iohdl;
+	struct _RequestSt* next;
+	u8* requestbuf; // Used to store the request to send
+	int requestsize; // the size of the request
+	int requestpos; // the pos of the request that need to be sent
+	u64 first_write_tm;
+	u64 last_write_tm;
 } WSReqSt;
 
 typedef enum
 {
-    REQ_CLOSED = 0, REQ_OPEN, REQ_CLOSED_BY_HUB, REQ_CLOSED_BY_API, REQ_ERROR
+	REQ_CLOSED = 0,
+	REQ_OPEN,
+	REQ_CLOSED_BY_HUB,
+	REQ_CLOSED_BY_API,
+	REQ_ERROR
 } RequestState;
 
-typedef void(*RequestProgress)(void *context, u32 acked, u32 totalbytes);
+typedef void (*RequestProgress)(void* context, u32 acked, u32 totalbytes);
 
 
-typedef struct _RequestSt {
-    HubSt               *hub;           // pointer to the NetHubSt handling the device
-    yCRITICAL_SECTION   access;
-    yEvent              finished;       // event seted when this request can be reused
-    RequestState        state;          // state of the request (fixme: currenty only use by WS)
-    char                *headerbuf;     // Used to store all lines of the HTTP header (with the double \r\n)
-    int                 headerbufsize;  // allocated size of requestbuf
-    char                *bodybuf;       // Used to store the body of the POST request
-    int                 bodybufsize;    // allocated size of the body of the POST request
-    int                 bodysize;       // effective size of the body of the POST request
-    u8                  *replybuf;      // Used to buffer request result
-    int                 replybufsize;   // allocated size of replybuf
-    int                 replysize;      // write pointer within replybuf
-    int                 replypos;       // read pointer within replybuf; -1 when not ready to start reading
-    int                 retryCount;     // number of authorization attempts
-    int                 errcode;        // in case an error occured
-    char                errmsg[YOCTO_ERRMSG_LEN];
-    u64                 open_tm;        // timestamp of the start of a connection used to detect timout of the device
-                                        // (must be reset if we reuse the socket)
-    u64                 write_tm;       // timestamp of the last successfully write of the request
-    u64                 read_tm;        // timestamp of the last received packet (must be reset if we reuse the socket)
-    u64                 timeout_tm;     // the maximum time to live of this connection
-    u32                 flags;          // flags for keepalive and no expiration
-    yAsbUrlProto        proto;          // the type of protocol used for this request (same information as the one contained in the hub url)
-    yapiRequestAsyncCallback callback;
-    void                *context;
-    RequestProgress     progressCb;
-    void                *progressCtx;
-    HTTPReqSt           http;
-    WSReqSt             ws;
+typedef struct _RequestSt
+{
+	HubSt* hub; // pointer to the NetHubSt handling the device
+	yCRITICAL_SECTION access;
+	yEvent finished; // event seted when this request can be reused
+	RequestState state; // state of the request (fixme: currenty only use by WS)
+	char* headerbuf; // Used to store all lines of the HTTP header (with the double \r\n)
+	int headerbufsize; // allocated size of requestbuf
+	char* bodybuf; // Used to store the body of the POST request
+	int bodybufsize; // allocated size of the body of the POST request
+	int bodysize; // effective size of the body of the POST request
+	u8* replybuf; // Used to buffer request result
+	int replybufsize; // allocated size of replybuf
+	int replysize; // write pointer within replybuf
+	int replypos; // read pointer within replybuf; -1 when not ready to start reading
+	int retryCount; // number of authorization attempts
+	int errcode; // in case an error occured
+	char errmsg[YOCTO_ERRMSG_LEN];
+	u64 open_tm; // timestamp of the start of a connection used to detect timout of the device
+	// (must be reset if we reuse the socket)
+	u64 write_tm; // timestamp of the last successfully write of the request
+	u64 read_tm; // timestamp of the last received packet (must be reset if we reuse the socket)
+	u64 timeout_tm; // the maximum time to live of this connection
+	u32 flags; // flags for keepalive and no expiration
+	yAsbUrlProto proto; // the type of protocol used for this request (same information as the one contained in the hub url)
+	yapiRequestAsyncCallback callback;
+	void* context;
+	RequestProgress progressCb;
+	void* progressCtx;
+	HTTPReqSt http;
+	WSReqSt ws;
 } RequestSt;
 
 #define SETUPED_IFACE_CACHE_SIZE 128
 
 
-typedef struct {
-    char        *serial;
-    char        *firmwarePath;
-    u8          *settings;
-    int         settings_len;
-    yThread     thread;
-    int         global_progress; //-1:error 0-99:working 100:success
-    char        global_message[YOCTO_ERRMSG_LEN]; // the last message or the error
-    const char* fileid;
-    int         line;
+typedef struct
+{
+	char* serial;
+	char* firmwarePath;
+	u8* settings;
+	int settings_len;
+	yThread thread;
+	int global_progress; //-1:error 0-99:working 100:success
+	char global_message[YOCTO_ERRMSG_LEN]; // the last message or the error
+	const char* fileid;
+	int line;
 } FUpdateContext;
 
 
-typedef struct _YIOHDL_internal {
-    struct _YIOHDL_internal *next;
-    u64     ioid;
-    u8      type;
-    u8      pad8;
-    u16     pad16;
-    union {
-        u32     tcpreqidx;
-        YUSBIO  hdl;
-        RequestSt *ws;
-    };
+typedef struct _YIOHDL_internal
+{
+	struct _YIOHDL_internal* next;
+	u64 ioid;
+	u8 type;
+	u8 pad8;
+	u16 pad16;
+
+	union
+	{
+		u32 tcpreqidx;
+		YUSBIO hdl;
+		RequestSt* ws;
+	};
 } YIOHDL_internal;
 
 
 #define YCTX_OSX_MULTIPLES_HID 1
+
 // structure that contain information about the API
-typedef struct{
-    //yapi CS
-    yCRITICAL_SECTION   updateDev_cs;
-    yCRITICAL_SECTION   handleEv_cs;
-    yEvent              exitSleepEvent;
-    // global inforation on all devices
-    yCRITICAL_SECTION   generic_cs;
-    yGenericDeviceSt    generic_infos[ALLOC_YDX_PER_HUB];
-    // usb stuff
-    yCRITICAL_SECTION   enum_cs;
-    int                 detecttype;
-    YUSBDEV             devhdlcount;
-    yPrivDeviceSt       *devs;
-    int                 nbdevs;
-    int                 devs_capacity;
-    yCRITICAL_SECTION   io_cs;
-    YIOHDL_internal     *yiohdl_first;
-    u32                 io_counter;
-    // network discovery info
-    HubSt*              nethub[NBMAX_NET_HUB];
-    RequestSt*          tcpreq[ALLOC_YDX_PER_HUB];  // indexed by our own DevYdx
-    yRawNotificationCb  rawNotificationCb;
-    yRawReportCb        rawReportCb;
-    yRawReportV2Cb      rawReportV2Cb;
-    yCRITICAL_SECTION   deviceCallbackCS;
-    yCRITICAL_SECTION   functionCallbackCS;
-    // SSDP stuff
-    SSDPInfos           SSDP;            // socket used to talk to the device
-    // Public callbacks
-    yapiLogFunction             log;
-    yapiDeviceLogCallback       logDeviceCallback;
-    yapiDeviceUpdateCallback    arrivalCallback;
-    yapiDeviceUpdateCallback    changeCallback;
-    yapiDeviceUpdateCallback    removalCallback;
-    yapiFunctionUpdateCallback  functionCallback;
-    yapiTimedReportCallback     timedReportCallback;
-    yapiHubDiscoveryCallback    hubDiscoveryCallback;
-    // Programing api
-    FUpdateContext      fuCtx;
-    // OS specifics variables
-    yInterfaceSt*       setupedIfaceCache[SETUPED_IFACE_CACHE_SIZE];
+typedef struct
+{
+	//yapi CS
+	yCRITICAL_SECTION updateDev_cs;
+	yCRITICAL_SECTION handleEv_cs;
+	yEvent exitSleepEvent;
+	// global inforation on all devices
+	yCRITICAL_SECTION generic_cs;
+	yGenericDeviceSt generic_infos[ALLOC_YDX_PER_HUB];
+	// usb stuff
+	yCRITICAL_SECTION enum_cs;
+	int detecttype;
+	YUSBDEV devhdlcount;
+	yPrivDeviceSt* devs;
+	int nbdevs;
+	int devs_capacity;
+	yCRITICAL_SECTION io_cs;
+	YIOHDL_internal* yiohdl_first;
+	u32 io_counter;
+	// network discovery info
+	HubSt* nethub[NBMAX_NET_HUB];
+	RequestSt* tcpreq[ALLOC_YDX_PER_HUB]; // indexed by our own DevYdx
+	yRawNotificationCb rawNotificationCb;
+	yRawReportCb rawReportCb;
+	yRawReportV2Cb rawReportV2Cb;
+	yCRITICAL_SECTION deviceCallbackCS;
+	yCRITICAL_SECTION functionCallbackCS;
+	// SSDP stuff
+	SSDPInfos SSDP; // socket used to talk to the device
+	// Public callbacks
+	yapiLogFunction log;
+	yapiDeviceLogCallback logDeviceCallback;
+	yapiDeviceUpdateCallback arrivalCallback;
+	yapiDeviceUpdateCallback changeCallback;
+	yapiDeviceUpdateCallback removalCallback;
+	yapiFunctionUpdateCallback functionCallback;
+	yapiTimedReportCallback timedReportCallback;
+	yapiHubDiscoveryCallback hubDiscoveryCallback;
+	// Programing api
+	FUpdateContext fuCtx;
+	// OS specifics variables
+	yInterfaceSt* setupedIfaceCache[SETUPED_IFACE_CACHE_SIZE];
 #if defined(WINDOWS_API)
-    HANDLE              apiLock;
-    HANDLE              nameLock;
-    yCRITICAL_SECTION   prevEnum_cs;
-    int                 prevEnumCnt;
-    yInterfaceSt        *prevEnum;
+	HANDLE apiLock;
+	HANDLE nameLock;
+	yCRITICAL_SECTION prevEnum_cs;
+	int prevEnumCnt;
+	yInterfaceSt* prevEnum;
 #ifdef WINDOWS_WIN32_API
-    win_hid_api         hid;
-    win_reg_api         registry;
+	win_hid_api hid;
+	win_reg_api registry;
 #endif
 #elif defined(OSX_API)
     u32                 osx_flags;
@@ -982,16 +1011,16 @@ typedef struct{
     pthread_t           usb_thread;
     USB_THREAD_STATE    usb_thread_state;
 #endif
- } yContextSt;
+} yContextSt;
 
 #define TRACEFILE_NAMELEN  512
 
-extern char  ytracefile[];
-extern yContextSt  *yContext;
+extern char ytracefile[];
+extern yContextSt* yContext;
 
 YRETCODE yapiPullDeviceLogEx(int devydx);
-YRETCODE yapiPullDeviceLog(const char *serial);
-YRETCODE yapiRequestOpen(YIOHDL_internal *iohdl, int tpchan, const char *device, const char *request, int reqlen, yapiRequestAsyncCallback callback, void *context, yapiRequestProgressCallback progress_cb, void *progress_ctx, char *errmsg);
+YRETCODE yapiPullDeviceLog(const char* serial);
+YRETCODE yapiRequestOpen(YIOHDL_internal* iohdl, int tpchan, const char* device, const char* request, int reqlen, yapiRequestAsyncCallback callback, void* context, yapiRequestProgressCallback progress_cb, void* progress_ctx, char* errmsg);
 
 /*****************************************************************
  * PLATFORM SPECIFIC USB code
@@ -999,15 +1028,15 @@ YRETCODE yapiRequestOpen(YIOHDL_internal *iohdl, int tpchan, const char *device,
 
 
 // for devices detection
-int  yyyUSB_init(yContextSt *ctx, char *errmsg);
-int  yyyUSB_stop(yContextSt *ctx, char *errmsg);
-int  yyyUSBGetInterfaces(yInterfaceSt **ifaces,int *nbifaceDetect,char *errmsg);
-int  yyyOShdlCompare(yPrivDeviceSt *dev, yInterfaceSt *newiface);
-int  yyySetup(yInterfaceSt *iface,char *errmsg);
-YRETCODE  yyySendPacket( yInterfaceSt *iface,const USB_Packet *pkt,char *errmsg);
-int  yyySignalOutPkt(yInterfaceSt *iface, char *errmsg);
+int yyyUSB_init(yContextSt* ctx, char* errmsg);
+int yyyUSB_stop(yContextSt* ctx, char* errmsg);
+int yyyUSBGetInterfaces(yInterfaceSt** ifaces, int* nbifaceDetect, char* errmsg);
+int yyyOShdlCompare(yPrivDeviceSt* dev, yInterfaceSt* newiface);
+int yyySetup(yInterfaceSt* iface, char* errmsg);
+YRETCODE yyySendPacket(yInterfaceSt* iface, const USB_Packet* pkt, char* errmsg);
+int yyySignalOutPkt(yInterfaceSt* iface, char* errmsg);
 // close all stuff of setup
-void yyyPacketShutdown(yInterfaceSt *iface);
+void yyyPacketShutdown(yInterfaceSt* iface);
 
 
 /*****************************************************************************
@@ -1015,13 +1044,13 @@ void yyyPacketShutdown(yInterfaceSt *iface);
 ******************************************************************************/
 
 //some early declarations
-void wpSafeRegister(HubSt *hub, u8 devYdx, yStrRef serialref,yStrRef lnameref, yStrRef productref, u16 deviceid, yUrlRef devUrl,s8 beacon);
-void wpSafeUpdate(HubSt *hub, u8 devYdx, yStrRef serialref,yStrRef lnameref, yUrlRef devUrl, s8 beacon);
+void wpSafeRegister(HubSt* hub, u8 devYdx, yStrRef serialref, yStrRef lnameref, yStrRef productref, u16 deviceid, yUrlRef devUrl, s8 beacon);
+void wpSafeUpdate(HubSt* hub, u8 devYdx, yStrRef serialref, yStrRef lnameref, yUrlRef devUrl, s8 beacon);
 void wpSafeUnregister(yStrRef serialref);
 
-void ypUpdateUSB(const char *serial, const char *funcid, const char *funcname, int funclass, int funydx, const char *funcval);
-void ypUpdateYdx(int devydx, Notification_funydx funInfo, const char *funcval);
-void ypUpdateHybrid(const char *serial, Notification_funydx funInfo, const char *funcval);
+void ypUpdateUSB(const char* serial, const char* funcid, const char* funcname, int funclass, int funydx, const char* funcval);
+void ypUpdateYdx(int devydx, Notification_funydx funInfo, const char* funcval);
+void ypUpdateHybrid(const char* serial, Notification_funydx funInfo, const char* funcval);
 
 /*****************************************************************
  * yStream API with cycling logic and yyPacket API
@@ -1035,44 +1064,44 @@ void ypUpdateHybrid(const char *serial, Notification_funydx funInfo, const char 
 #define FIND_FROM_SERIAL 1
 #define FIND_FROM_NAME   2
 #define FIND_FROM_ANY    (FIND_FROM_SERIAL|FIND_FROM_NAME)
-yPrivDeviceSt *findDev(const char *str,u32 flags);
+yPrivDeviceSt* findDev(const char* str, u32 flags);
 
 
 // return the YHANDLE from a matching string (serial or name)
-YUSBDEV findDevHdlFromStr(const char *str);
-yPrivDeviceSt *findDevFromIOHdl(YIOHDL_internal *hdl);
-void devHdlInfo(YUSBDEV hdl,yDeviceSt *infos);
+YUSBDEV findDevHdlFromStr(const char* str);
+yPrivDeviceSt* findDevFromIOHdl(YIOHDL_internal* hdl);
+void devHdlInfo(YUSBDEV hdl, yDeviceSt* infos);
 
-YRETCODE yUSBUpdateDeviceList(char *errmsg);
-void     yUSBReleaseAllDevices(void);
+YRETCODE yUSBUpdateDeviceList(char* errmsg);
+void yUSBReleaseAllDevices(void);
 
 /*****************************************************************************
   USB REQUEST FUNCTIONS
   ***************************************************************************/
 
-int  yUsbInit(yContextSt *ctx,char *errmsg);
-int  yUsbFree(yContextSt *ctx,char *errmsg);
-int  yUsbIdle(void);
-int  yUsbTrafficPending(void);
+int yUsbInit(yContextSt* ctx, char* errmsg);
+int yUsbFree(yContextSt* ctx, char* errmsg);
+int yUsbIdle(void);
+int yUsbTrafficPending(void);
 yGenericDeviceSt* yUSBGetGenericInfo(yStrRef devdescr);
 
-int  yUsbOpenDevDescr(YIOHDL_internal *ioghdl, yStrRef devdescr, char *errmsg);
-int  yUsbOpen(YIOHDL_internal *ioghdl, const char *device, char *errmsg);
-int  yUsbSetIOAsync(YIOHDL_internal *ioghdl, yapiRequestAsyncCallback callback, void *context, char *errmsg);
-int  yUsbWrite(YIOHDL_internal *ioghdl, const char *buffer, int writelen,char *errmsg);
-int  yUsbReadNonBlock(YIOHDL_internal *ioghdl, char *buffer, int len,char *errmsg);
-int  yUsbReadBlock(YIOHDL_internal *ioghdl, char *buffer, int len,u64 blockUntil,char *errmsg);
-int  yUsbEOF(YIOHDL_internal *ioghdl,char *errmsg);
-int  yUsbClose(YIOHDL_internal *ioghdl,char *errmsg);
+int yUsbOpenDevDescr(YIOHDL_internal* ioghdl, yStrRef devdescr, char* errmsg);
+int yUsbOpen(YIOHDL_internal* ioghdl, const char* device, char* errmsg);
+int yUsbSetIOAsync(YIOHDL_internal* ioghdl, yapiRequestAsyncCallback callback, void* context, char* errmsg);
+int yUsbWrite(YIOHDL_internal* ioghdl, const char* buffer, int writelen, char* errmsg);
+int yUsbReadNonBlock(YIOHDL_internal* ioghdl, char* buffer, int len, char* errmsg);
+int yUsbReadBlock(YIOHDL_internal* ioghdl, char* buffer, int len, u64 blockUntil, char* errmsg);
+int yUsbEOF(YIOHDL_internal* ioghdl, char* errmsg);
+int yUsbClose(YIOHDL_internal* ioghdl, char* errmsg);
 
-int  yUSBGetBooloader(const char *serial, const char * name,  yInterfaceSt *iface,char *errmsg);
+int yUSBGetBooloader(const char* serial, const char* name, yInterfaceSt* iface, char* errmsg);
 
 // Misc helper
-int handleNetNotification(HubSt *hub);
+int handleNetNotification(HubSt* hub);
 u32 yapiGetCNonce(u32 nc);
-YRETCODE  yapiHTTPRequestSyncStartEx_internal(YIOHDL *iohdl, int tcpchan, const char *device, const char *request, int requestsize, char **reply, int *replysize, yapiRequestProgressCallback progress_cb, void *progress_ctx, char *errmsg);
-YRETCODE  yapiHTTPRequestSyncDone_internal(YIOHDL *iohdl, char *errmsg);
-void yFunctionUpdate(YAPI_FUNCTION fundescr, const char *value);
-void yFunctionTimedUpdate(YAPI_FUNCTION fundescr, double deviceTime, const u8 *report, u32 len);
-int yapiJsonGetPath_internal(const char *path, const char *json_data, int json_size, const char **output, char *errmsg);
+YRETCODE yapiHTTPRequestSyncStartEx_internal(YIOHDL* iohdl, int tcpchan, const char* device, const char* request, int requestsize, char** reply, int* replysize, yapiRequestProgressCallback progress_cb, void* progress_ctx, char* errmsg);
+YRETCODE yapiHTTPRequestSyncDone_internal(YIOHDL* iohdl, char* errmsg);
+void yFunctionUpdate(YAPI_FUNCTION fundescr, const char* value);
+void yFunctionTimedUpdate(YAPI_FUNCTION fundescr, double deviceTime, const u8* report, u32 len);
+int yapiJsonGetPath_internal(const char* path, const char* json_data, int json_size, const char** output, char* errmsg);
 #endif

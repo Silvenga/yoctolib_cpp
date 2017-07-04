@@ -49,23 +49,24 @@
 #define  __FILE_ID__  "magnetometer"
 
 YMagnetometer::YMagnetometer(const string& func): YSensor(func)
-//--- (Magnetometer initialization)
-    ,_bandwidth(BANDWIDTH_INVALID)
-    ,_xValue(XVALUE_INVALID)
-    ,_yValue(YVALUE_INVALID)
-    ,_zValue(ZVALUE_INVALID)
-    ,_valueCallbackMagnetometer(NULL)
-    ,_timedReportCallbackMagnetometer(NULL)
+                                                  //--- (Magnetometer initialization)
+                                                  , _bandwidth(BANDWIDTH_INVALID)
+                                                  , _xValue(XVALUE_INVALID)
+                                                  , _yValue(YVALUE_INVALID)
+                                                  , _zValue(ZVALUE_INVALID)
+                                                  , _valueCallbackMagnetometer(NULL)
+                                                  , _timedReportCallbackMagnetometer(NULL)
 //--- (end of Magnetometer initialization)
 {
-    _className="Magnetometer";
+	_className = "Magnetometer";
 }
 
 YMagnetometer::~YMagnetometer()
 {
-//--- (YMagnetometer cleanup)
-//--- (end of YMagnetometer cleanup)
+	//--- (YMagnetometer cleanup)
+	//--- (end of YMagnetometer cleanup)
 }
+
 //--- (YMagnetometer implementation)
 // static attributes
 const double YMagnetometer::XVALUE_INVALID = YAPI_INVALID_DOUBLE;
@@ -74,19 +75,23 @@ const double YMagnetometer::ZVALUE_INVALID = YAPI_INVALID_DOUBLE;
 
 int YMagnetometer::_parseAttr(YJSONObject* json_val)
 {
-    if(json_val->has("bandwidth")) {
-        _bandwidth =  json_val->getInt("bandwidth");
-    }
-    if(json_val->has("xValue")) {
-        _xValue =  floor(json_val->getDouble("xValue") * 1000.0 / 65536.0 + 0.5) / 1000.0;
-    }
-    if(json_val->has("yValue")) {
-        _yValue =  floor(json_val->getDouble("yValue") * 1000.0 / 65536.0 + 0.5) / 1000.0;
-    }
-    if(json_val->has("zValue")) {
-        _zValue =  floor(json_val->getDouble("zValue") * 1000.0 / 65536.0 + 0.5) / 1000.0;
-    }
-    return YSensor::_parseAttr(json_val);
+	if (json_val->has("bandwidth"))
+	{
+		_bandwidth = json_val->getInt("bandwidth");
+	}
+	if (json_val->has("xValue"))
+	{
+		_xValue = floor(json_val->getDouble("xValue") * 1000.0 / 65536.0 + 0.5) / 1000.0;
+	}
+	if (json_val->has("yValue"))
+	{
+		_yValue = floor(json_val->getDouble("yValue") * 1000.0 / 65536.0 + 0.5) / 1000.0;
+	}
+	if (json_val->has("zValue"))
+	{
+		_zValue = floor(json_val->getDouble("zValue") * 1000.0 / 65536.0 + 0.5) / 1000.0;
+	}
+	return YSensor::_parseAttr(json_val);
 }
 
 
@@ -99,24 +104,29 @@ int YMagnetometer::_parseAttr(YJSONObject* json_val)
  */
 int YMagnetometer::get_bandwidth(void)
 {
-    int res = 0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YMagnetometer::BANDWIDTH_INVALID;
-                }
-            }
-        }
-        res = _bandwidth;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	int res = 0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YMagnetometer::BANDWIDTH_INVALID;
+				}
+			}
+		}
+		res = _bandwidth;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -131,18 +141,23 @@ int YMagnetometer::get_bandwidth(void)
  */
 int YMagnetometer::set_bandwidth(int newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        char buf[32]; sprintf(buf, "%d", newval); rest_val = string(buf);
-        res = _setAttr("bandwidth", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		char buf[32];
+		sprintf(buf, "%d", newval);
+		rest_val = string(buf);
+		res = _setAttr("bandwidth", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -155,24 +170,29 @@ int YMagnetometer::set_bandwidth(int newval)
  */
 double YMagnetometer::get_xValue(void)
 {
-    double res = 0.0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YMagnetometer::XVALUE_INVALID;
-                }
-            }
-        }
-        res = _xValue;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	double res = 0.0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YMagnetometer::XVALUE_INVALID;
+				}
+			}
+		}
+		res = _xValue;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -185,24 +205,29 @@ double YMagnetometer::get_xValue(void)
  */
 double YMagnetometer::get_yValue(void)
 {
-    double res = 0.0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YMagnetometer::YVALUE_INVALID;
-                }
-            }
-        }
-        res = _yValue;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	double res = 0.0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YMagnetometer::YVALUE_INVALID;
+				}
+			}
+		}
+		res = _yValue;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -215,24 +240,29 @@ double YMagnetometer::get_yValue(void)
  */
 double YMagnetometer::get_zValue(void)
 {
-    double res = 0.0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YMagnetometer::ZVALUE_INVALID;
-                }
-            }
-        }
-        res = _zValue;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	double res = 0.0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YMagnetometer::ZVALUE_INVALID;
+				}
+			}
+		}
+		res = _zValue;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -260,23 +290,29 @@ double YMagnetometer::get_zValue(void)
  */
 YMagnetometer* YMagnetometer::FindMagnetometer(string func)
 {
-    YMagnetometer* obj = NULL;
-    int taken = 0;
-    if (YAPI::_apiInitialized) {
-        yEnterCriticalSection(&YAPI::_global_cs);
-        taken = 1;
-    }try {
-        obj = (YMagnetometer*) YFunction::_FindFromCache("Magnetometer", func);
-        if (obj == NULL) {
-            obj = new YMagnetometer(func);
-            YFunction::_AddToCache("Magnetometer", func, obj);
-        }
-    } catch (std::exception) {
-        if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
-        throw;
-    }
-    if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
-    return obj;
+	YMagnetometer* obj = NULL;
+	int taken = 0;
+	if (YAPI::_apiInitialized)
+	{
+		yEnterCriticalSection(&YAPI::_global_cs);
+		taken = 1;
+	}
+	try
+	{
+		obj = (YMagnetometer*)YFunction::_FindFromCache("Magnetometer", func);
+		if (obj == NULL)
+		{
+			obj = new YMagnetometer(func);
+			YFunction::_AddToCache("Magnetometer", func, obj);
+		}
+	}
+	catch (std::exception)
+	{
+		if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
+		throw;
+	}
+	if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
+	return obj;
 }
 
 /**
@@ -292,31 +328,39 @@ YMagnetometer* YMagnetometer::FindMagnetometer(string func)
  */
 int YMagnetometer::registerValueCallback(YMagnetometerValueCallback callback)
 {
-    string val;
-    if (callback != NULL) {
-        YFunction::_UpdateValueCallbackList(this, true);
-    } else {
-        YFunction::_UpdateValueCallbackList(this, false);
-    }
-    _valueCallbackMagnetometer = callback;
-    // Immediately invoke value callback with current value
-    if (callback != NULL && this->isOnline()) {
-        val = _advertisedValue;
-        if (!(val == "")) {
-            this->_invokeValueCallback(val);
-        }
-    }
-    return 0;
+	string val;
+	if (callback != NULL)
+	{
+		YFunction::_UpdateValueCallbackList(this, true);
+	}
+	else
+	{
+		YFunction::_UpdateValueCallbackList(this, false);
+	}
+	_valueCallbackMagnetometer = callback;
+	// Immediately invoke value callback with current value
+	if (callback != NULL && this->isOnline())
+	{
+		val = _advertisedValue;
+		if (!(val == ""))
+		{
+			this->_invokeValueCallback(val);
+		}
+	}
+	return 0;
 }
 
 int YMagnetometer::_invokeValueCallback(string value)
 {
-    if (_valueCallbackMagnetometer != NULL) {
-        _valueCallbackMagnetometer(this, value);
-    } else {
-        YSensor::_invokeValueCallback(value);
-    }
-    return 0;
+	if (_valueCallbackMagnetometer != NULL)
+	{
+		_valueCallbackMagnetometer(this, value);
+	}
+	else
+	{
+		YSensor::_invokeValueCallback(value);
+	}
+	return 0;
 }
 
 /**
@@ -332,49 +376,57 @@ int YMagnetometer::_invokeValueCallback(string value)
  */
 int YMagnetometer::registerTimedReportCallback(YMagnetometerTimedReportCallback callback)
 {
-    YSensor* sensor = NULL;
-    sensor = this;
-    if (callback != NULL) {
-        YFunction::_UpdateTimedReportCallbackList(sensor, true);
-    } else {
-        YFunction::_UpdateTimedReportCallbackList(sensor, false);
-    }
-    _timedReportCallbackMagnetometer = callback;
-    return 0;
+	YSensor* sensor = NULL;
+	sensor = this;
+	if (callback != NULL)
+	{
+		YFunction::_UpdateTimedReportCallbackList(sensor, true);
+	}
+	else
+	{
+		YFunction::_UpdateTimedReportCallbackList(sensor, false);
+	}
+	_timedReportCallbackMagnetometer = callback;
+	return 0;
 }
 
 int YMagnetometer::_invokeTimedReportCallback(YMeasure value)
 {
-    if (_timedReportCallbackMagnetometer != NULL) {
-        _timedReportCallbackMagnetometer(this, value);
-    } else {
-        YSensor::_invokeTimedReportCallback(value);
-    }
-    return 0;
+	if (_timedReportCallbackMagnetometer != NULL)
+	{
+		_timedReportCallbackMagnetometer(this, value);
+	}
+	else
+	{
+		YSensor::_invokeTimedReportCallback(value);
+	}
+	return 0;
 }
 
-YMagnetometer *YMagnetometer::nextMagnetometer(void)
+YMagnetometer* YMagnetometer::nextMagnetometer(void)
 {
-    string  hwid;
+	string hwid;
 
-    if(YISERR(_nextFunction(hwid)) || hwid=="") {
-        return NULL;
-    }
-    return YMagnetometer::FindMagnetometer(hwid);
+	if (YISERR(_nextFunction(hwid)) || hwid == "")
+	{
+		return NULL;
+	}
+	return YMagnetometer::FindMagnetometer(hwid);
 }
 
 YMagnetometer* YMagnetometer::FirstMagnetometer(void)
 {
-    vector<YFUN_DESCR>   v_fundescr;
-    YDEV_DESCR             ydevice;
-    string              serial, funcId, funcName, funcVal, errmsg;
+	vector<YFUN_DESCR> v_fundescr;
+	YDEV_DESCR ydevice;
+	string serial, funcId, funcName, funcVal, errmsg;
 
-    if(YISERR(YapiWrapper::getFunctionsByClass("Magnetometer", 0, v_fundescr, sizeof(YFUN_DESCR), errmsg)) ||
-       v_fundescr.size() == 0 ||
-       YISERR(YapiWrapper::getFunctionInfo(v_fundescr[0], ydevice, serial, funcId, funcName, funcVal, errmsg))) {
-        return NULL;
-    }
-    return YMagnetometer::FindMagnetometer(serial+"."+funcId);
+	if (YISERR(YapiWrapper::getFunctionsByClass("Magnetometer", 0, v_fundescr, sizeof(YFUN_DESCR), errmsg)) ||
+		v_fundescr.size() == 0 ||
+		YISERR(YapiWrapper::getFunctionInfo(v_fundescr[0], ydevice, serial, funcId, funcName, funcVal, errmsg)))
+	{
+		return NULL;
+	}
+	return YMagnetometer::FindMagnetometer(serial + "." + funcId);
 }
 
 //--- (end of YMagnetometer implementation)

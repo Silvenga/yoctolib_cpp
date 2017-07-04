@@ -49,36 +49,40 @@
 #define  __FILE_ID__  "hubport"
 
 YHubPort::YHubPort(const string& func): YFunction(func)
-//--- (HubPort initialization)
-    ,_enabled(ENABLED_INVALID)
-    ,_portState(PORTSTATE_INVALID)
-    ,_baudRate(BAUDRATE_INVALID)
-    ,_valueCallbackHubPort(NULL)
+                                        //--- (HubPort initialization)
+                                        , _enabled(ENABLED_INVALID)
+                                        , _portState(PORTSTATE_INVALID)
+                                        , _baudRate(BAUDRATE_INVALID)
+                                        , _valueCallbackHubPort(NULL)
 //--- (end of HubPort initialization)
 {
-    _className="HubPort";
+	_className = "HubPort";
 }
 
 YHubPort::~YHubPort()
 {
-//--- (YHubPort cleanup)
-//--- (end of YHubPort cleanup)
+	//--- (YHubPort cleanup)
+	//--- (end of YHubPort cleanup)
 }
+
 //--- (YHubPort implementation)
 // static attributes
 
 int YHubPort::_parseAttr(YJSONObject* json_val)
 {
-    if(json_val->has("enabled")) {
-        _enabled =  (Y_ENABLED_enum)json_val->getInt("enabled");
-    }
-    if(json_val->has("portState")) {
-        _portState =  (Y_PORTSTATE_enum)json_val->getInt("portState");
-    }
-    if(json_val->has("baudRate")) {
-        _baudRate =  json_val->getInt("baudRate");
-    }
-    return YFunction::_parseAttr(json_val);
+	if (json_val->has("enabled"))
+	{
+		_enabled = (Y_ENABLED_enum)json_val->getInt("enabled");
+	}
+	if (json_val->has("portState"))
+	{
+		_portState = (Y_PORTSTATE_enum)json_val->getInt("portState");
+	}
+	if (json_val->has("baudRate"))
+	{
+		_baudRate = json_val->getInt("baudRate");
+	}
+	return YFunction::_parseAttr(json_val);
 }
 
 
@@ -92,24 +96,29 @@ int YHubPort::_parseAttr(YJSONObject* json_val)
  */
 Y_ENABLED_enum YHubPort::get_enabled(void)
 {
-    Y_ENABLED_enum res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YHubPort::ENABLED_INVALID;
-                }
-            }
-        }
-        res = _enabled;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	Y_ENABLED_enum res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YHubPort::ENABLED_INVALID;
+				}
+			}
+		}
+		res = _enabled;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -124,18 +133,21 @@ Y_ENABLED_enum YHubPort::get_enabled(void)
  */
 int YHubPort::set_enabled(Y_ENABLED_enum newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        rest_val = (newval>0 ? "1" : "0");
-        res = _setAttr("enabled", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		rest_val = (newval > 0 ? "1" : "0");
+		res = _setAttr("enabled", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -148,24 +160,29 @@ int YHubPort::set_enabled(Y_ENABLED_enum newval)
  */
 Y_PORTSTATE_enum YHubPort::get_portState(void)
 {
-    Y_PORTSTATE_enum res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YHubPort::PORTSTATE_INVALID;
-                }
-            }
-        }
-        res = _portState;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	Y_PORTSTATE_enum res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YHubPort::PORTSTATE_INVALID;
+				}
+			}
+		}
+		res = _portState;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -179,24 +196,29 @@ Y_PORTSTATE_enum YHubPort::get_portState(void)
  */
 int YHubPort::get_baudRate(void)
 {
-    int res = 0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YHubPort::BAUDRATE_INVALID;
-                }
-            }
-        }
-        res = _baudRate;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	int res = 0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YHubPort::BAUDRATE_INVALID;
+				}
+			}
+		}
+		res = _baudRate;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -224,23 +246,29 @@ int YHubPort::get_baudRate(void)
  */
 YHubPort* YHubPort::FindHubPort(string func)
 {
-    YHubPort* obj = NULL;
-    int taken = 0;
-    if (YAPI::_apiInitialized) {
-        yEnterCriticalSection(&YAPI::_global_cs);
-        taken = 1;
-    }try {
-        obj = (YHubPort*) YFunction::_FindFromCache("HubPort", func);
-        if (obj == NULL) {
-            obj = new YHubPort(func);
-            YFunction::_AddToCache("HubPort", func, obj);
-        }
-    } catch (std::exception) {
-        if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
-        throw;
-    }
-    if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
-    return obj;
+	YHubPort* obj = NULL;
+	int taken = 0;
+	if (YAPI::_apiInitialized)
+	{
+		yEnterCriticalSection(&YAPI::_global_cs);
+		taken = 1;
+	}
+	try
+	{
+		obj = (YHubPort*)YFunction::_FindFromCache("HubPort", func);
+		if (obj == NULL)
+		{
+			obj = new YHubPort(func);
+			YFunction::_AddToCache("HubPort", func, obj);
+		}
+	}
+	catch (std::exception)
+	{
+		if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
+		throw;
+	}
+	if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
+	return obj;
 }
 
 /**
@@ -256,55 +284,65 @@ YHubPort* YHubPort::FindHubPort(string func)
  */
 int YHubPort::registerValueCallback(YHubPortValueCallback callback)
 {
-    string val;
-    if (callback != NULL) {
-        YFunction::_UpdateValueCallbackList(this, true);
-    } else {
-        YFunction::_UpdateValueCallbackList(this, false);
-    }
-    _valueCallbackHubPort = callback;
-    // Immediately invoke value callback with current value
-    if (callback != NULL && this->isOnline()) {
-        val = _advertisedValue;
-        if (!(val == "")) {
-            this->_invokeValueCallback(val);
-        }
-    }
-    return 0;
+	string val;
+	if (callback != NULL)
+	{
+		YFunction::_UpdateValueCallbackList(this, true);
+	}
+	else
+	{
+		YFunction::_UpdateValueCallbackList(this, false);
+	}
+	_valueCallbackHubPort = callback;
+	// Immediately invoke value callback with current value
+	if (callback != NULL && this->isOnline())
+	{
+		val = _advertisedValue;
+		if (!(val == ""))
+		{
+			this->_invokeValueCallback(val);
+		}
+	}
+	return 0;
 }
 
 int YHubPort::_invokeValueCallback(string value)
 {
-    if (_valueCallbackHubPort != NULL) {
-        _valueCallbackHubPort(this, value);
-    } else {
-        YFunction::_invokeValueCallback(value);
-    }
-    return 0;
+	if (_valueCallbackHubPort != NULL)
+	{
+		_valueCallbackHubPort(this, value);
+	}
+	else
+	{
+		YFunction::_invokeValueCallback(value);
+	}
+	return 0;
 }
 
-YHubPort *YHubPort::nextHubPort(void)
+YHubPort* YHubPort::nextHubPort(void)
 {
-    string  hwid;
+	string hwid;
 
-    if(YISERR(_nextFunction(hwid)) || hwid=="") {
-        return NULL;
-    }
-    return YHubPort::FindHubPort(hwid);
+	if (YISERR(_nextFunction(hwid)) || hwid == "")
+	{
+		return NULL;
+	}
+	return YHubPort::FindHubPort(hwid);
 }
 
 YHubPort* YHubPort::FirstHubPort(void)
 {
-    vector<YFUN_DESCR>   v_fundescr;
-    YDEV_DESCR             ydevice;
-    string              serial, funcId, funcName, funcVal, errmsg;
+	vector<YFUN_DESCR> v_fundescr;
+	YDEV_DESCR ydevice;
+	string serial, funcId, funcName, funcVal, errmsg;
 
-    if(YISERR(YapiWrapper::getFunctionsByClass("HubPort", 0, v_fundescr, sizeof(YFUN_DESCR), errmsg)) ||
-       v_fundescr.size() == 0 ||
-       YISERR(YapiWrapper::getFunctionInfo(v_fundescr[0], ydevice, serial, funcId, funcName, funcVal, errmsg))) {
-        return NULL;
-    }
-    return YHubPort::FindHubPort(serial+"."+funcId);
+	if (YISERR(YapiWrapper::getFunctionsByClass("HubPort", 0, v_fundescr, sizeof(YFUN_DESCR), errmsg)) ||
+		v_fundescr.size() == 0 ||
+		YISERR(YapiWrapper::getFunctionInfo(v_fundescr[0], ydevice, serial, funcId, funcName, funcVal, errmsg)))
+	{
+		return NULL;
+	}
+	return YHubPort::FindHubPort(serial + "." + funcId);
 }
 
 //--- (end of YHubPort implementation)

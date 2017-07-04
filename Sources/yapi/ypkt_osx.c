@@ -65,25 +65,25 @@ static int yReserveGlobalAccess(yContextSt *ctx, char *errmsg)
     mkfifo(YOCTO_LOCK_PIPE, 0600);
     fd = open(YOCTO_LOCK_PIPE, O_RDWR|O_NONBLOCK);
     if (fd < 0) {
-        // we cannot open lock file so we cannot realy
-        // check double instance so we asume that we are
-        // alone
+// we cannot open lock file so we cannot realy
+// check double instance so we asume that we are
+// alone
         return YAPI_SUCCESS;
     }
     chk_val = 0;
     mypid = (int) getpid();
     res = read(fd, &chk_val, sizeof(chk_val));
     if (res == sizeof(chk_val)) {
-        //there is allready someone
+//there is allready someone
         usedpid = chk_val;
     } else{
-        // nobody there -> store my PID
+// nobody there -> store my PID
         chk_val = mypid;
     }
     write(fd, &chk_val, sizeof(chk_val));
     if (usedpid != 0) {
         if (usedpid == 1) {
-            // locked by api that not store the pid
+// locked by api that not store the pid
             return YERRMSG(YAPI_DOUBLE_ACCES, "Another process is already using yAPI");
         } else {
             char msg[YOCTO_ERRMSG_LEN];
@@ -111,7 +111,7 @@ static void *event_thread(void *param)
 
     ctx->usb_run_loop     = CFRunLoopGetCurrent();
     ctx->usb_thread_state = USB_THREAD_RUNNING;
-    /* Non-blocking. See if the OS has any reports to give. */
+/* Non-blocking. See if the OS has any reports to give. */
     HALLOG("Start event_thread run loop\n");
     while (ctx->usb_thread_state != USB_THREAD_MUST_STOP) {
         CFRunLoopRunInMode( kCFRunLoopDefaultMode, 10, FALSE);
@@ -131,21 +131,21 @@ static int setupHIDManager(yContextSt *ctx, OSX_HID_REF *hid, char *errmsg)
     IOReturn        tIOReturn;
 
     yInitializeCriticalSection(&hid->hidMCS);
-    // Initialize HID Manager
+// Initialize HID Manager
     hid->manager = IOHIDManagerCreate(kCFAllocatorDefault, kIOHIDOptionsTypeNone);
-    // create dictionary to match Yocto devices
+// create dictionary to match Yocto devices
     dictionary = CFDictionaryCreateMutable(kCFAllocatorDefault,1,&kCFTypeDictionaryKeyCallBacks,&kCFTypeDictionaryValueCallBacks);
     Vendorid = CFNumberCreate( kCFAllocatorDefault, kCFNumberIntType, &c_vendorid );
     CFDictionarySetValue( dictionary, CFSTR( kIOHIDVendorIDKey ), Vendorid );
     CFRelease(Vendorid);
-    // register the dictionary
+// register the dictionary
     IOHIDManagerSetDeviceMatching(hid->manager, dictionary );
-    // now we can release the dictionary
+// now we can release the dictionary
     CFRelease(dictionary);
-    // sechedulle the HID Manager with our global run loop
+// sechedulle the HID Manager with our global run loop
     IOHIDManagerScheduleWithRunLoop(hid->manager, ctx->usb_run_loop, kCFRunLoopDefaultMode);
 
-    // Now open the IO HID Manager reference
+// Now open the IO HID Manager reference
     tIOReturn = IOHIDManagerOpen(hid->manager, kIOHIDOptionsTypeNone );
     if(kIOReturnSuccess != tIOReturn ||CFGetTypeID(hid->manager) != IOHIDManagerGetTypeID()){
         HALLOG("Unable to Open HID Manager");
@@ -176,12 +176,12 @@ int yyyUSB_init(yContextSt *ctx,char *errmsg)
 
     if (sysctlbyname("kern.osrelease", str, &size, NULL, 0) ==0){
         int numver;
-        //15.x.x  OS X 10.11.x El Capitan
-        //14.x.x  OS X 10.10.x Yosemite
-        //13.x.x  OS X 10.9.x Mavericks
-        //12.x.x  OS X 10.8.x Mountain Lion
-        //11.x.x  OS X 10.7.x Lion
-        //10.x.x  OS X 10.6.x Snow Leopard
+//15.x.x  OS X 10.11.x El Capitan
+//14.x.x  OS X 10.10.x Yosemite
+//13.x.x  OS X 10.9.x Mavericks
+//12.x.x  OS X 10.8.x Mountain Lion
+//11.x.x  OS X 10.7.x Lion
+//10.x.x  OS X 10.6.x Snow Leopard
         str[2]=0;
         numver = atoi(str);
         if (numver >= 13 && numver < 15){
@@ -247,16 +247,16 @@ static void get_txt_property(IOHIDDeviceRef device,char *buffer,u32 maxlen, CFSt
             const char *str;
             CFStringEncoding encodingMethod;
             encodingMethod = CFStringGetSystemEncoding();
-            // 1st try for English system
+// 1st try for English system
             str = CFStringGetCStringPtr(ref, encodingMethod);
-            //str = NULL;
+//str = NULL;
             if ( str == NULL ) {
-                // 2nd try
+// 2nd try
                 encodingMethod = kCFStringEncodingUTF8;
                 str = CFStringGetCStringPtr(ref, encodingMethod);
             }
             if( str == NULL ) {
-                //3rd try
+//3rd try
                 CFIndex cflength = CFStringGetLength(ref)*2+2;
                 char *tmp_str = yMalloc( (u32)cflength);
                 if (!CFStringGetCString(ref, tmp_str, cflength, kCFStringEncodingUTF8 )) {
@@ -300,10 +300,10 @@ static IOHIDDeviceRef* getDevRef(OSX_HID_REF *hid, CFIndex *deviceCount)
     deviceCFSetRef = IOHIDManagerCopyDevices(hid->manager);
     yLeaveCriticalSection(&hid->hidMCS);
     if (deviceCFSetRef!= NULL) {
-        // how many devices in the set?
+// how many devices in the set?
         *deviceCount = CFSetGetCount( deviceCFSetRef );
         dev_refs = yMalloc( sizeof(IOHIDDeviceRef) * (u32)*deviceCount );
-        // now extract the device ref's from the set
+// now extract the device ref's from the set
         CFSetGetValues( deviceCFSetRef, (const void **) dev_refs );
     }
     return dev_refs;
@@ -317,13 +317,13 @@ int yyyUSBGetInterfaces(yInterfaceSt **ifaces,int *nbifaceDetect,char *errmsg)
     CFIndex         deviceCount;
     IOHIDDeviceRef  *dev_refs;
 
-    // get all device detected by the OSX
+// get all device detected by the OSX
     dev_refs = getDevRef(&yContext->hid, &deviceCount);
     if(dev_refs == NULL) {
         return 0;
     }
 
-    // allocate buffer for detected interfaces
+// allocate buffer for detected interfaces
     *nbifaceDetect = 0;
     nbifaceAlloc  = 8;
     *ifaces =yMalloc(nbifaceAlloc * sizeof(yInterfaceSt));
@@ -335,7 +335,7 @@ int yyyUSBGetInterfaces(yInterfaceSt **ifaces,int *nbifaceDetect,char *errmsg)
         yInterfaceSt    *iface;
         vendorid = get_int_property(dev,CFSTR(kIOHIDVendorIDKey));
         deviceid = get_int_property(dev,CFSTR(kIOHIDProductIDKey));
-        //ensure the buffer of detected interface is big enought
+//ensure the buffer of detected interface is big enought
         if(*nbifaceDetect == nbifaceAlloc){
             yInterfaceSt    *tmp;
             tmp = (yInterfaceSt*) yMalloc(nbifaceAlloc*2 * sizeof(yInterfaceSt));
@@ -346,7 +346,7 @@ int yyyUSBGetInterfaces(yInterfaceSt **ifaces,int *nbifaceDetect,char *errmsg)
             nbifaceAlloc    *=2;
         }
         iface = *ifaces + *nbifaceDetect;
-        //iface->devref   = dev;
+//iface->devref   = dev;
         iface->vendorid = vendorid;
         iface->deviceid = deviceid;
         get_txt_property(dev,iface->serial,YOCTO_SERIAL_LEN*2, CFSTR(kIOHIDSerialNumberKey));
@@ -361,8 +361,6 @@ int yyyUSBGetInterfaces(yInterfaceSt **ifaces,int *nbifaceDetect,char *errmsg)
 /*****************************************************************
  * OSX implementation of yyypacket functions
  *****************************************************************/
-
-
 
 
 // return 1 if OS hdl are identicals
@@ -406,7 +404,7 @@ int yyySetup(yInterfaceSt *iface,char *errmsg)
         if (YISERR(setupHIDManager(yContext, &iface->hid,errmsg))) {
             return YAPI_IO_ERROR;
         }
-        // get all device detected by the OSX
+// get all device detected by the OSX
         dev_refs = getDevRef(&iface->hid, &deviceCount);
     } else {
         dev_refs = getDevRef(&yContext->hid, &deviceCount);
@@ -448,10 +446,10 @@ int yyySetup(yInterfaceSt *iface,char *errmsg)
 	yPktQueueInit(&iface->txQueue);
 
 
-    /* Create the Run Loop Mode for this device. printing the reference seems to work. */
+/* Create the Run Loop Mode for this device. printing the reference seems to work. */
     sprintf(str, "yocto_%p", iface->devref);
     iface->run_loop_mode = CFStringCreateWithCString(NULL, str, kCFStringEncodingASCII);
-    /* Attach the device to a Run Loop */
+/* Attach the device to a Run Loop */
     IOHIDDeviceScheduleWithRunLoop(iface->devref, yContext->usb_run_loop, iface->run_loop_mode);
     IOHIDDeviceRegisterInputReportCallback( iface->devref,              // IOHIDDeviceRef for the HID device
                                            (u8*) &iface->tmprxpkt,     // pointer to the report data
@@ -459,8 +457,8 @@ int yyySetup(yInterfaceSt *iface,char *errmsg)
                                            &Handle_IOHIDDeviceIOHIDReportCallback,   // the callback routine
                                            iface);                     // context passed to callback
 
-    // save setuped iface pointer in context in order
-    // to retreive it durring unplugcallback
+// save setuped iface pointer in context in order
+// to retreive it durring unplugcallback
     for (i=0; i< SETUPED_IFACE_CACHE_SIZE ; i++) {
         if(yContext->setupedIfaceCache[i]==NULL){
             yContext->setupedIfaceCache[i] = iface;
@@ -507,7 +505,7 @@ void yyyPacketShutdown(yInterfaceSt  *iface)
 {
     int i;
 
-    // remove iface from setuped ifaces
+// remove iface from setuped ifaces
     for (i=0; i< SETUPED_IFACE_CACHE_SIZE ; i++) {
         if(yContext->setupedIfaceCache[i]==iface){
             yContext->setupedIfaceCache[i] = NULL;

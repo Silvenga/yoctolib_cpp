@@ -49,82 +49,98 @@
 #define  __FILE_ID__  "watchdog"
 
 YWatchdog::YWatchdog(const string& func): YFunction(func)
-//--- (Watchdog initialization)
-    ,_state(STATE_INVALID)
-    ,_stateAtPowerOn(STATEATPOWERON_INVALID)
-    ,_maxTimeOnStateA(MAXTIMEONSTATEA_INVALID)
-    ,_maxTimeOnStateB(MAXTIMEONSTATEB_INVALID)
-    ,_output(OUTPUT_INVALID)
-    ,_pulseTimer(PULSETIMER_INVALID)
-    ,_delayedPulseTimer(DELAYEDPULSETIMER_INVALID)
-    ,_countdown(COUNTDOWN_INVALID)
-    ,_autoStart(AUTOSTART_INVALID)
-    ,_running(RUNNING_INVALID)
-    ,_triggerDelay(TRIGGERDELAY_INVALID)
-    ,_triggerDuration(TRIGGERDURATION_INVALID)
-    ,_valueCallbackWatchdog(NULL)
+                                          //--- (Watchdog initialization)
+                                          , _state(STATE_INVALID)
+                                          , _stateAtPowerOn(STATEATPOWERON_INVALID)
+                                          , _maxTimeOnStateA(MAXTIMEONSTATEA_INVALID)
+                                          , _maxTimeOnStateB(MAXTIMEONSTATEB_INVALID)
+                                          , _output(OUTPUT_INVALID)
+                                          , _pulseTimer(PULSETIMER_INVALID)
+                                          , _delayedPulseTimer(DELAYEDPULSETIMER_INVALID)
+                                          , _countdown(COUNTDOWN_INVALID)
+                                          , _autoStart(AUTOSTART_INVALID)
+                                          , _running(RUNNING_INVALID)
+                                          , _triggerDelay(TRIGGERDELAY_INVALID)
+                                          , _triggerDuration(TRIGGERDURATION_INVALID)
+                                          , _valueCallbackWatchdog(NULL)
 //--- (end of Watchdog initialization)
 {
-    _className="Watchdog";
+	_className = "Watchdog";
 }
 
 YWatchdog::~YWatchdog()
 {
-//--- (YWatchdog cleanup)
-//--- (end of YWatchdog cleanup)
+	//--- (YWatchdog cleanup)
+	//--- (end of YWatchdog cleanup)
 }
+
 //--- (YWatchdog implementation)
 // static attributes
 const YDelayedPulse YWatchdog::DELAYEDPULSETIMER_INVALID = YDelayedPulse();
 
 int YWatchdog::_parseAttr(YJSONObject* json_val)
 {
-    if(json_val->has("state")) {
-        _state =  (Y_STATE_enum)json_val->getInt("state");
-    }
-    if(json_val->has("stateAtPowerOn")) {
-        _stateAtPowerOn =  (Y_STATEATPOWERON_enum)json_val->getInt("stateAtPowerOn");
-    }
-    if(json_val->has("maxTimeOnStateA")) {
-        _maxTimeOnStateA =  json_val->getLong("maxTimeOnStateA");
-    }
-    if(json_val->has("maxTimeOnStateB")) {
-        _maxTimeOnStateB =  json_val->getLong("maxTimeOnStateB");
-    }
-    if(json_val->has("output")) {
-        _output =  (Y_OUTPUT_enum)json_val->getInt("output");
-    }
-    if(json_val->has("pulseTimer")) {
-        _pulseTimer =  json_val->getLong("pulseTimer");
-    }
-    if(json_val->has("delayedPulseTimer")) {
-        YJSONObject* subjson = json_val->getYJSONObject("delayedPulseTimer");
-        if (subjson->has("moving")) {
-            _delayedPulseTimer.moving = subjson->getInt("moving");
-        }
-        if (subjson->has("target")) {
-            _delayedPulseTimer.target = subjson->getInt("target");
-        }
-        if (subjson->has("ms")) {
-            _delayedPulseTimer.ms = subjson->getInt("ms");
-        }
-    }
-    if(json_val->has("countdown")) {
-        _countdown =  json_val->getLong("countdown");
-    }
-    if(json_val->has("autoStart")) {
-        _autoStart =  (Y_AUTOSTART_enum)json_val->getInt("autoStart");
-    }
-    if(json_val->has("running")) {
-        _running =  (Y_RUNNING_enum)json_val->getInt("running");
-    }
-    if(json_val->has("triggerDelay")) {
-        _triggerDelay =  json_val->getLong("triggerDelay");
-    }
-    if(json_val->has("triggerDuration")) {
-        _triggerDuration =  json_val->getLong("triggerDuration");
-    }
-    return YFunction::_parseAttr(json_val);
+	if (json_val->has("state"))
+	{
+		_state = (Y_STATE_enum)json_val->getInt("state");
+	}
+	if (json_val->has("stateAtPowerOn"))
+	{
+		_stateAtPowerOn = (Y_STATEATPOWERON_enum)json_val->getInt("stateAtPowerOn");
+	}
+	if (json_val->has("maxTimeOnStateA"))
+	{
+		_maxTimeOnStateA = json_val->getLong("maxTimeOnStateA");
+	}
+	if (json_val->has("maxTimeOnStateB"))
+	{
+		_maxTimeOnStateB = json_val->getLong("maxTimeOnStateB");
+	}
+	if (json_val->has("output"))
+	{
+		_output = (Y_OUTPUT_enum)json_val->getInt("output");
+	}
+	if (json_val->has("pulseTimer"))
+	{
+		_pulseTimer = json_val->getLong("pulseTimer");
+	}
+	if (json_val->has("delayedPulseTimer"))
+	{
+		YJSONObject* subjson = json_val->getYJSONObject("delayedPulseTimer");
+		if (subjson->has("moving"))
+		{
+			_delayedPulseTimer.moving = subjson->getInt("moving");
+		}
+		if (subjson->has("target"))
+		{
+			_delayedPulseTimer.target = subjson->getInt("target");
+		}
+		if (subjson->has("ms"))
+		{
+			_delayedPulseTimer.ms = subjson->getInt("ms");
+		}
+	}
+	if (json_val->has("countdown"))
+	{
+		_countdown = json_val->getLong("countdown");
+	}
+	if (json_val->has("autoStart"))
+	{
+		_autoStart = (Y_AUTOSTART_enum)json_val->getInt("autoStart");
+	}
+	if (json_val->has("running"))
+	{
+		_running = (Y_RUNNING_enum)json_val->getInt("running");
+	}
+	if (json_val->has("triggerDelay"))
+	{
+		_triggerDelay = json_val->getLong("triggerDelay");
+	}
+	if (json_val->has("triggerDuration"))
+	{
+		_triggerDuration = json_val->getLong("triggerDuration");
+	}
+	return YFunction::_parseAttr(json_val);
 }
 
 
@@ -138,24 +154,29 @@ int YWatchdog::_parseAttr(YJSONObject* json_val)
  */
 Y_STATE_enum YWatchdog::get_state(void)
 {
-    Y_STATE_enum res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YWatchdog::STATE_INVALID;
-                }
-            }
-        }
-        res = _state;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	Y_STATE_enum res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YWatchdog::STATE_INVALID;
+				}
+			}
+		}
+		res = _state;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -170,18 +191,21 @@ Y_STATE_enum YWatchdog::get_state(void)
  */
 int YWatchdog::set_state(Y_STATE_enum newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        rest_val = (newval>0 ? "1" : "0");
-        res = _setAttr("state", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		rest_val = (newval > 0 ? "1" : "0");
+		res = _setAttr("state", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -196,24 +220,29 @@ int YWatchdog::set_state(Y_STATE_enum newval)
  */
 Y_STATEATPOWERON_enum YWatchdog::get_stateAtPowerOn(void)
 {
-    Y_STATEATPOWERON_enum res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YWatchdog::STATEATPOWERON_INVALID;
-                }
-            }
-        }
-        res = _stateAtPowerOn;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	Y_STATEATPOWERON_enum res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YWatchdog::STATEATPOWERON_INVALID;
+				}
+			}
+		}
+		res = _stateAtPowerOn;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -229,18 +258,23 @@ Y_STATEATPOWERON_enum YWatchdog::get_stateAtPowerOn(void)
  */
 int YWatchdog::set_stateAtPowerOn(Y_STATEATPOWERON_enum newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        char buf[32]; sprintf(buf, "%d", newval); rest_val = string(buf);
-        res = _setAttr("stateAtPowerOn", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		char buf[32];
+		sprintf(buf, "%d", newval);
+		rest_val = string(buf);
+		res = _setAttr("stateAtPowerOn", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -253,24 +287,29 @@ int YWatchdog::set_stateAtPowerOn(Y_STATEATPOWERON_enum newval)
  */
 s64 YWatchdog::get_maxTimeOnStateA(void)
 {
-    s64 res = 0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YWatchdog::MAXTIMEONSTATEA_INVALID;
-                }
-            }
-        }
-        res = _maxTimeOnStateA;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	s64 res = 0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YWatchdog::MAXTIMEONSTATEA_INVALID;
+				}
+			}
+		}
+		res = _maxTimeOnStateA;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -285,18 +324,23 @@ s64 YWatchdog::get_maxTimeOnStateA(void)
  */
 int YWatchdog::set_maxTimeOnStateA(s64 newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        char buf[32]; sprintf(buf, "%u", (u32)newval); rest_val = string(buf);
-        res = _setAttr("maxTimeOnStateA", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		char buf[32];
+		sprintf(buf, "%u", (u32)newval);
+		rest_val = string(buf);
+		res = _setAttr("maxTimeOnStateA", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -309,24 +353,29 @@ int YWatchdog::set_maxTimeOnStateA(s64 newval)
  */
 s64 YWatchdog::get_maxTimeOnStateB(void)
 {
-    s64 res = 0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YWatchdog::MAXTIMEONSTATEB_INVALID;
-                }
-            }
-        }
-        res = _maxTimeOnStateB;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	s64 res = 0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YWatchdog::MAXTIMEONSTATEB_INVALID;
+				}
+			}
+		}
+		res = _maxTimeOnStateB;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -341,18 +390,23 @@ s64 YWatchdog::get_maxTimeOnStateB(void)
  */
 int YWatchdog::set_maxTimeOnStateB(s64 newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        char buf[32]; sprintf(buf, "%u", (u32)newval); rest_val = string(buf);
-        res = _setAttr("maxTimeOnStateB", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		char buf[32];
+		sprintf(buf, "%u", (u32)newval);
+		rest_val = string(buf);
+		res = _setAttr("maxTimeOnStateB", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -365,24 +419,29 @@ int YWatchdog::set_maxTimeOnStateB(s64 newval)
  */
 Y_OUTPUT_enum YWatchdog::get_output(void)
 {
-    Y_OUTPUT_enum res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YWatchdog::OUTPUT_INVALID;
-                }
-            }
-        }
-        res = _output;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	Y_OUTPUT_enum res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YWatchdog::OUTPUT_INVALID;
+				}
+			}
+		}
+		res = _output;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -397,18 +456,21 @@ Y_OUTPUT_enum YWatchdog::get_output(void)
  */
 int YWatchdog::set_output(Y_OUTPUT_enum newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        rest_val = (newval>0 ? "1" : "0");
-        res = _setAttr("output", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		rest_val = (newval > 0 ? "1" : "0");
+		res = _setAttr("output", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -423,40 +485,50 @@ int YWatchdog::set_output(Y_OUTPUT_enum newval)
  */
 s64 YWatchdog::get_pulseTimer(void)
 {
-    s64 res = 0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YWatchdog::PULSETIMER_INVALID;
-                }
-            }
-        }
-        res = _pulseTimer;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	s64 res = 0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YWatchdog::PULSETIMER_INVALID;
+				}
+			}
+		}
+		res = _pulseTimer;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 int YWatchdog::set_pulseTimer(s64 newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        char buf[32]; sprintf(buf, "%u", (u32)newval); rest_val = string(buf);
-        res = _setAttr("pulseTimer", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		char buf[32];
+		sprintf(buf, "%u", (u32)newval);
+		rest_val = string(buf);
+		res = _setAttr("pulseTimer", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -471,47 +543,59 @@ int YWatchdog::set_pulseTimer(s64 newval)
  */
 int YWatchdog::pulse(int ms_duration)
 {
-    string rest_val;
-    char buf[32]; sprintf(buf, "%u", (u32)ms_duration); rest_val = string(buf);
-    return _setAttr("pulseTimer", rest_val);
+	string rest_val;
+	char buf[32];
+	sprintf(buf, "%u", (u32)ms_duration);
+	rest_val = string(buf);
+	return _setAttr("pulseTimer", rest_val);
 }
 
 YDelayedPulse YWatchdog::get_delayedPulseTimer(void)
 {
-    YDelayedPulse res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YWatchdog::DELAYEDPULSETIMER_INVALID;
-                }
-            }
-        }
-        res = _delayedPulseTimer;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	YDelayedPulse res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YWatchdog::DELAYEDPULSETIMER_INVALID;
+				}
+			}
+		}
+		res = _delayedPulseTimer;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 int YWatchdog::set_delayedPulseTimer(YDelayedPulse newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        char buff[64]; sprintf(buff,"%d:%d",newval.target,newval.ms); rest_val = string(buff);
-        res = _setAttr("delayedPulseTimer", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		char buff[64];
+		sprintf(buff, "%d:%d", newval.target, newval.ms);
+		rest_val = string(buff);
+		res = _setAttr("delayedPulseTimer", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -524,11 +608,13 @@ int YWatchdog::set_delayedPulseTimer(YDelayedPulse newval)
  *
  * On failure, throws an exception or returns a negative error code.
  */
-int YWatchdog::delayedPulse(int ms_delay,int ms_duration)
+int YWatchdog::delayedPulse(int ms_delay, int ms_duration)
 {
-    string rest_val;
-    char buff[64]; sprintf(buff,"%d:%d",ms_delay,ms_duration); rest_val = string(buff);
-    return _setAttr("delayedPulseTimer", rest_val);
+	string rest_val;
+	char buff[64];
+	sprintf(buff, "%d:%d", ms_delay, ms_duration);
+	rest_val = string(buff);
+	return _setAttr("delayedPulseTimer", rest_val);
 }
 
 /**
@@ -542,24 +628,29 @@ int YWatchdog::delayedPulse(int ms_delay,int ms_duration)
  */
 s64 YWatchdog::get_countdown(void)
 {
-    s64 res = 0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YWatchdog::COUNTDOWN_INVALID;
-                }
-            }
-        }
-        res = _countdown;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	s64 res = 0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YWatchdog::COUNTDOWN_INVALID;
+				}
+			}
+		}
+		res = _countdown;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -571,24 +662,29 @@ s64 YWatchdog::get_countdown(void)
  */
 Y_AUTOSTART_enum YWatchdog::get_autoStart(void)
 {
-    Y_AUTOSTART_enum res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YWatchdog::AUTOSTART_INVALID;
-                }
-            }
-        }
-        res = _autoStart;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	Y_AUTOSTART_enum res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YWatchdog::AUTOSTART_INVALID;
+				}
+			}
+		}
+		res = _autoStart;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -604,18 +700,21 @@ Y_AUTOSTART_enum YWatchdog::get_autoStart(void)
  */
 int YWatchdog::set_autoStart(Y_AUTOSTART_enum newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        rest_val = (newval>0 ? "1" : "0");
-        res = _setAttr("autoStart", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		rest_val = (newval > 0 ? "1" : "0");
+		res = _setAttr("autoStart", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -627,24 +726,29 @@ int YWatchdog::set_autoStart(Y_AUTOSTART_enum newval)
  */
 Y_RUNNING_enum YWatchdog::get_running(void)
 {
-    Y_RUNNING_enum res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YWatchdog::RUNNING_INVALID;
-                }
-            }
-        }
-        res = _running;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	Y_RUNNING_enum res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YWatchdog::RUNNING_INVALID;
+				}
+			}
+		}
+		res = _running;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -658,18 +762,21 @@ Y_RUNNING_enum YWatchdog::get_running(void)
  */
 int YWatchdog::set_running(Y_RUNNING_enum newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        rest_val = (newval>0 ? "1" : "0");
-        res = _setAttr("running", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		rest_val = (newval > 0 ? "1" : "0");
+		res = _setAttr("running", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -683,9 +790,9 @@ int YWatchdog::set_running(Y_RUNNING_enum newval)
  */
 int YWatchdog::resetWatchdog(void)
 {
-    string rest_val;
-    rest_val = "1";
-    return _setAttr("running", rest_val);
+	string rest_val;
+	rest_val = "1";
+	return _setAttr("running", rest_val);
 }
 
 /**
@@ -698,24 +805,29 @@ int YWatchdog::resetWatchdog(void)
  */
 s64 YWatchdog::get_triggerDelay(void)
 {
-    s64 res = 0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YWatchdog::TRIGGERDELAY_INVALID;
-                }
-            }
-        }
-        res = _triggerDelay;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	s64 res = 0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YWatchdog::TRIGGERDELAY_INVALID;
+				}
+			}
+		}
+		res = _triggerDelay;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -730,18 +842,23 @@ s64 YWatchdog::get_triggerDelay(void)
  */
 int YWatchdog::set_triggerDelay(s64 newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        char buf[32]; sprintf(buf, "%u", (u32)newval); rest_val = string(buf);
-        res = _setAttr("triggerDelay", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		char buf[32];
+		sprintf(buf, "%u", (u32)newval);
+		rest_val = string(buf);
+		res = _setAttr("triggerDelay", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -753,24 +870,29 @@ int YWatchdog::set_triggerDelay(s64 newval)
  */
 s64 YWatchdog::get_triggerDuration(void)
 {
-    s64 res = 0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YWatchdog::TRIGGERDURATION_INVALID;
-                }
-            }
-        }
-        res = _triggerDuration;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	s64 res = 0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YWatchdog::TRIGGERDURATION_INVALID;
+				}
+			}
+		}
+		res = _triggerDuration;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -784,18 +906,23 @@ s64 YWatchdog::get_triggerDuration(void)
  */
 int YWatchdog::set_triggerDuration(s64 newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        char buf[32]; sprintf(buf, "%u", (u32)newval); rest_val = string(buf);
-        res = _setAttr("triggerDuration", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		char buf[32];
+		sprintf(buf, "%u", (u32)newval);
+		rest_val = string(buf);
+		res = _setAttr("triggerDuration", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -823,23 +950,29 @@ int YWatchdog::set_triggerDuration(s64 newval)
  */
 YWatchdog* YWatchdog::FindWatchdog(string func)
 {
-    YWatchdog* obj = NULL;
-    int taken = 0;
-    if (YAPI::_apiInitialized) {
-        yEnterCriticalSection(&YAPI::_global_cs);
-        taken = 1;
-    }try {
-        obj = (YWatchdog*) YFunction::_FindFromCache("Watchdog", func);
-        if (obj == NULL) {
-            obj = new YWatchdog(func);
-            YFunction::_AddToCache("Watchdog", func, obj);
-        }
-    } catch (std::exception) {
-        if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
-        throw;
-    }
-    if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
-    return obj;
+	YWatchdog* obj = NULL;
+	int taken = 0;
+	if (YAPI::_apiInitialized)
+	{
+		yEnterCriticalSection(&YAPI::_global_cs);
+		taken = 1;
+	}
+	try
+	{
+		obj = (YWatchdog*)YFunction::_FindFromCache("Watchdog", func);
+		if (obj == NULL)
+		{
+			obj = new YWatchdog(func);
+			YFunction::_AddToCache("Watchdog", func, obj);
+		}
+	}
+	catch (std::exception)
+	{
+		if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
+		throw;
+	}
+	if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
+	return obj;
 }
 
 /**
@@ -855,55 +988,65 @@ YWatchdog* YWatchdog::FindWatchdog(string func)
  */
 int YWatchdog::registerValueCallback(YWatchdogValueCallback callback)
 {
-    string val;
-    if (callback != NULL) {
-        YFunction::_UpdateValueCallbackList(this, true);
-    } else {
-        YFunction::_UpdateValueCallbackList(this, false);
-    }
-    _valueCallbackWatchdog = callback;
-    // Immediately invoke value callback with current value
-    if (callback != NULL && this->isOnline()) {
-        val = _advertisedValue;
-        if (!(val == "")) {
-            this->_invokeValueCallback(val);
-        }
-    }
-    return 0;
+	string val;
+	if (callback != NULL)
+	{
+		YFunction::_UpdateValueCallbackList(this, true);
+	}
+	else
+	{
+		YFunction::_UpdateValueCallbackList(this, false);
+	}
+	_valueCallbackWatchdog = callback;
+	// Immediately invoke value callback with current value
+	if (callback != NULL && this->isOnline())
+	{
+		val = _advertisedValue;
+		if (!(val == ""))
+		{
+			this->_invokeValueCallback(val);
+		}
+	}
+	return 0;
 }
 
 int YWatchdog::_invokeValueCallback(string value)
 {
-    if (_valueCallbackWatchdog != NULL) {
-        _valueCallbackWatchdog(this, value);
-    } else {
-        YFunction::_invokeValueCallback(value);
-    }
-    return 0;
+	if (_valueCallbackWatchdog != NULL)
+	{
+		_valueCallbackWatchdog(this, value);
+	}
+	else
+	{
+		YFunction::_invokeValueCallback(value);
+	}
+	return 0;
 }
 
-YWatchdog *YWatchdog::nextWatchdog(void)
+YWatchdog* YWatchdog::nextWatchdog(void)
 {
-    string  hwid;
+	string hwid;
 
-    if(YISERR(_nextFunction(hwid)) || hwid=="") {
-        return NULL;
-    }
-    return YWatchdog::FindWatchdog(hwid);
+	if (YISERR(_nextFunction(hwid)) || hwid == "")
+	{
+		return NULL;
+	}
+	return YWatchdog::FindWatchdog(hwid);
 }
 
 YWatchdog* YWatchdog::FirstWatchdog(void)
 {
-    vector<YFUN_DESCR>   v_fundescr;
-    YDEV_DESCR             ydevice;
-    string              serial, funcId, funcName, funcVal, errmsg;
+	vector<YFUN_DESCR> v_fundescr;
+	YDEV_DESCR ydevice;
+	string serial, funcId, funcName, funcVal, errmsg;
 
-    if(YISERR(YapiWrapper::getFunctionsByClass("Watchdog", 0, v_fundescr, sizeof(YFUN_DESCR), errmsg)) ||
-       v_fundescr.size() == 0 ||
-       YISERR(YapiWrapper::getFunctionInfo(v_fundescr[0], ydevice, serial, funcId, funcName, funcVal, errmsg))) {
-        return NULL;
-    }
-    return YWatchdog::FindWatchdog(serial+"."+funcId);
+	if (YISERR(YapiWrapper::getFunctionsByClass("Watchdog", 0, v_fundescr, sizeof(YFUN_DESCR), errmsg)) ||
+		v_fundescr.size() == 0 ||
+		YISERR(YapiWrapper::getFunctionInfo(v_fundescr[0], ydevice, serial, funcId, funcName, funcVal, errmsg)))
+	{
+		return NULL;
+	}
+	return YWatchdog::FindWatchdog(serial + "." + funcId);
 }
 
 //--- (end of YWatchdog implementation)

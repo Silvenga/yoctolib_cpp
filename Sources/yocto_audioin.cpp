@@ -49,45 +49,51 @@
 #define  __FILE_ID__  "audioin"
 
 YAudioIn::YAudioIn(const string& func): YFunction(func)
-//--- (AudioIn initialization)
-    ,_volume(VOLUME_INVALID)
-    ,_mute(MUTE_INVALID)
-    ,_volumeRange(VOLUMERANGE_INVALID)
-    ,_signal(SIGNAL_INVALID)
-    ,_noSignalFor(NOSIGNALFOR_INVALID)
-    ,_valueCallbackAudioIn(NULL)
+                                        //--- (AudioIn initialization)
+                                        , _volume(VOLUME_INVALID)
+                                        , _mute(MUTE_INVALID)
+                                        , _volumeRange(VOLUMERANGE_INVALID)
+                                        , _signal(SIGNAL_INVALID)
+                                        , _noSignalFor(NOSIGNALFOR_INVALID)
+                                        , _valueCallbackAudioIn(NULL)
 //--- (end of AudioIn initialization)
 {
-    _className="AudioIn";
+	_className = "AudioIn";
 }
 
 YAudioIn::~YAudioIn()
 {
-//--- (YAudioIn cleanup)
-//--- (end of YAudioIn cleanup)
+	//--- (YAudioIn cleanup)
+	//--- (end of YAudioIn cleanup)
 }
+
 //--- (YAudioIn implementation)
 // static attributes
 const string YAudioIn::VOLUMERANGE_INVALID = YAPI_INVALID_STRING;
 
 int YAudioIn::_parseAttr(YJSONObject* json_val)
 {
-    if(json_val->has("volume")) {
-        _volume =  json_val->getInt("volume");
-    }
-    if(json_val->has("mute")) {
-        _mute =  (Y_MUTE_enum)json_val->getInt("mute");
-    }
-    if(json_val->has("volumeRange")) {
-        _volumeRange =  json_val->getString("volumeRange");
-    }
-    if(json_val->has("signal")) {
-        _signal =  json_val->getInt("signal");
-    }
-    if(json_val->has("noSignalFor")) {
-        _noSignalFor =  json_val->getInt("noSignalFor");
-    }
-    return YFunction::_parseAttr(json_val);
+	if (json_val->has("volume"))
+	{
+		_volume = json_val->getInt("volume");
+	}
+	if (json_val->has("mute"))
+	{
+		_mute = (Y_MUTE_enum)json_val->getInt("mute");
+	}
+	if (json_val->has("volumeRange"))
+	{
+		_volumeRange = json_val->getString("volumeRange");
+	}
+	if (json_val->has("signal"))
+	{
+		_signal = json_val->getInt("signal");
+	}
+	if (json_val->has("noSignalFor"))
+	{
+		_noSignalFor = json_val->getInt("noSignalFor");
+	}
+	return YFunction::_parseAttr(json_val);
 }
 
 
@@ -100,24 +106,29 @@ int YAudioIn::_parseAttr(YJSONObject* json_val)
  */
 int YAudioIn::get_volume(void)
 {
-    int res = 0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YAudioIn::VOLUME_INVALID;
-                }
-            }
-        }
-        res = _volume;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	int res = 0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YAudioIn::VOLUME_INVALID;
+				}
+			}
+		}
+		res = _volume;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -131,18 +142,23 @@ int YAudioIn::get_volume(void)
  */
 int YAudioIn::set_volume(int newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        char buf[32]; sprintf(buf, "%d", newval); rest_val = string(buf);
-        res = _setAttr("volume", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		char buf[32];
+		sprintf(buf, "%d", newval);
+		rest_val = string(buf);
+		res = _setAttr("volume", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -154,24 +170,29 @@ int YAudioIn::set_volume(int newval)
  */
 Y_MUTE_enum YAudioIn::get_mute(void)
 {
-    Y_MUTE_enum res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YAudioIn::MUTE_INVALID;
-                }
-            }
-        }
-        res = _mute;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	Y_MUTE_enum res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YAudioIn::MUTE_INVALID;
+				}
+			}
+		}
+		res = _mute;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -186,18 +207,21 @@ Y_MUTE_enum YAudioIn::get_mute(void)
  */
 int YAudioIn::set_mute(Y_MUTE_enum newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        rest_val = (newval>0 ? "1" : "0");
-        res = _setAttr("mute", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		rest_val = (newval > 0 ? "1" : "0");
+		res = _setAttr("mute", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -212,24 +236,29 @@ int YAudioIn::set_mute(Y_MUTE_enum newval)
  */
 string YAudioIn::get_volumeRange(void)
 {
-    string res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YAudioIn::VOLUMERANGE_INVALID;
-                }
-            }
-        }
-        res = _volumeRange;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YAudioIn::VOLUMERANGE_INVALID;
+				}
+			}
+		}
+		res = _volumeRange;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -241,24 +270,29 @@ string YAudioIn::get_volumeRange(void)
  */
 int YAudioIn::get_signal(void)
 {
-    int res = 0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YAudioIn::SIGNAL_INVALID;
-                }
-            }
-        }
-        res = _signal;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	int res = 0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YAudioIn::SIGNAL_INVALID;
+				}
+			}
+		}
+		res = _signal;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -270,24 +304,29 @@ int YAudioIn::get_signal(void)
  */
 int YAudioIn::get_noSignalFor(void)
 {
-    int res = 0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YAudioIn::NOSIGNALFOR_INVALID;
-                }
-            }
-        }
-        res = _noSignalFor;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	int res = 0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YAudioIn::NOSIGNALFOR_INVALID;
+				}
+			}
+		}
+		res = _noSignalFor;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -315,23 +354,29 @@ int YAudioIn::get_noSignalFor(void)
  */
 YAudioIn* YAudioIn::FindAudioIn(string func)
 {
-    YAudioIn* obj = NULL;
-    int taken = 0;
-    if (YAPI::_apiInitialized) {
-        yEnterCriticalSection(&YAPI::_global_cs);
-        taken = 1;
-    }try {
-        obj = (YAudioIn*) YFunction::_FindFromCache("AudioIn", func);
-        if (obj == NULL) {
-            obj = new YAudioIn(func);
-            YFunction::_AddToCache("AudioIn", func, obj);
-        }
-    } catch (std::exception) {
-        if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
-        throw;
-    }
-    if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
-    return obj;
+	YAudioIn* obj = NULL;
+	int taken = 0;
+	if (YAPI::_apiInitialized)
+	{
+		yEnterCriticalSection(&YAPI::_global_cs);
+		taken = 1;
+	}
+	try
+	{
+		obj = (YAudioIn*)YFunction::_FindFromCache("AudioIn", func);
+		if (obj == NULL)
+		{
+			obj = new YAudioIn(func);
+			YFunction::_AddToCache("AudioIn", func, obj);
+		}
+	}
+	catch (std::exception)
+	{
+		if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
+		throw;
+	}
+	if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
+	return obj;
 }
 
 /**
@@ -347,55 +392,65 @@ YAudioIn* YAudioIn::FindAudioIn(string func)
  */
 int YAudioIn::registerValueCallback(YAudioInValueCallback callback)
 {
-    string val;
-    if (callback != NULL) {
-        YFunction::_UpdateValueCallbackList(this, true);
-    } else {
-        YFunction::_UpdateValueCallbackList(this, false);
-    }
-    _valueCallbackAudioIn = callback;
-    // Immediately invoke value callback with current value
-    if (callback != NULL && this->isOnline()) {
-        val = _advertisedValue;
-        if (!(val == "")) {
-            this->_invokeValueCallback(val);
-        }
-    }
-    return 0;
+	string val;
+	if (callback != NULL)
+	{
+		YFunction::_UpdateValueCallbackList(this, true);
+	}
+	else
+	{
+		YFunction::_UpdateValueCallbackList(this, false);
+	}
+	_valueCallbackAudioIn = callback;
+	// Immediately invoke value callback with current value
+	if (callback != NULL && this->isOnline())
+	{
+		val = _advertisedValue;
+		if (!(val == ""))
+		{
+			this->_invokeValueCallback(val);
+		}
+	}
+	return 0;
 }
 
 int YAudioIn::_invokeValueCallback(string value)
 {
-    if (_valueCallbackAudioIn != NULL) {
-        _valueCallbackAudioIn(this, value);
-    } else {
-        YFunction::_invokeValueCallback(value);
-    }
-    return 0;
+	if (_valueCallbackAudioIn != NULL)
+	{
+		_valueCallbackAudioIn(this, value);
+	}
+	else
+	{
+		YFunction::_invokeValueCallback(value);
+	}
+	return 0;
 }
 
-YAudioIn *YAudioIn::nextAudioIn(void)
+YAudioIn* YAudioIn::nextAudioIn(void)
 {
-    string  hwid;
+	string hwid;
 
-    if(YISERR(_nextFunction(hwid)) || hwid=="") {
-        return NULL;
-    }
-    return YAudioIn::FindAudioIn(hwid);
+	if (YISERR(_nextFunction(hwid)) || hwid == "")
+	{
+		return NULL;
+	}
+	return YAudioIn::FindAudioIn(hwid);
 }
 
 YAudioIn* YAudioIn::FirstAudioIn(void)
 {
-    vector<YFUN_DESCR>   v_fundescr;
-    YDEV_DESCR             ydevice;
-    string              serial, funcId, funcName, funcVal, errmsg;
+	vector<YFUN_DESCR> v_fundescr;
+	YDEV_DESCR ydevice;
+	string serial, funcId, funcName, funcVal, errmsg;
 
-    if(YISERR(YapiWrapper::getFunctionsByClass("AudioIn", 0, v_fundescr, sizeof(YFUN_DESCR), errmsg)) ||
-       v_fundescr.size() == 0 ||
-       YISERR(YapiWrapper::getFunctionInfo(v_fundescr[0], ydevice, serial, funcId, funcName, funcVal, errmsg))) {
-        return NULL;
-    }
-    return YAudioIn::FindAudioIn(serial+"."+funcId);
+	if (YISERR(YapiWrapper::getFunctionsByClass("AudioIn", 0, v_fundescr, sizeof(YFUN_DESCR), errmsg)) ||
+		v_fundescr.size() == 0 ||
+		YISERR(YapiWrapper::getFunctionInfo(v_fundescr[0], ydevice, serial, funcId, funcName, funcVal, errmsg)))
+	{
+		return NULL;
+	}
+	return YAudioIn::FindAudioIn(serial + "." + funcId);
 }
 
 //--- (end of YAudioIn implementation)

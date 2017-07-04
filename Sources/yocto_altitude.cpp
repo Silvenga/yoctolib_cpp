@@ -49,21 +49,22 @@
 #define  __FILE_ID__  "altitude"
 
 YAltitude::YAltitude(const string& func): YSensor(func)
-//--- (Altitude initialization)
-    ,_qnh(QNH_INVALID)
-    ,_technology(TECHNOLOGY_INVALID)
-    ,_valueCallbackAltitude(NULL)
-    ,_timedReportCallbackAltitude(NULL)
+                                          //--- (Altitude initialization)
+                                          , _qnh(QNH_INVALID)
+                                          , _technology(TECHNOLOGY_INVALID)
+                                          , _valueCallbackAltitude(NULL)
+                                          , _timedReportCallbackAltitude(NULL)
 //--- (end of Altitude initialization)
 {
-    _className="Altitude";
+	_className = "Altitude";
 }
 
 YAltitude::~YAltitude()
 {
-//--- (YAltitude cleanup)
-//--- (end of YAltitude cleanup)
+	//--- (YAltitude cleanup)
+	//--- (end of YAltitude cleanup)
 }
+
 //--- (YAltitude implementation)
 // static attributes
 const double YAltitude::QNH_INVALID = YAPI_INVALID_DOUBLE;
@@ -71,13 +72,15 @@ const string YAltitude::TECHNOLOGY_INVALID = YAPI_INVALID_STRING;
 
 int YAltitude::_parseAttr(YJSONObject* json_val)
 {
-    if(json_val->has("qnh")) {
-        _qnh =  floor(json_val->getDouble("qnh") * 1000.0 / 65536.0 + 0.5) / 1000.0;
-    }
-    if(json_val->has("technology")) {
-        _technology =  json_val->getString("technology");
-    }
-    return YSensor::_parseAttr(json_val);
+	if (json_val->has("qnh"))
+	{
+		_qnh = floor(json_val->getDouble("qnh") * 1000.0 / 65536.0 + 0.5) / 1000.0;
+	}
+	if (json_val->has("technology"))
+	{
+		_technology = json_val->getString("technology");
+	}
+	return YSensor::_parseAttr(json_val);
 }
 
 
@@ -93,18 +96,23 @@ int YAltitude::_parseAttr(YJSONObject* json_val)
  */
 int YAltitude::set_currentValue(double newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        char buf[32]; sprintf(buf,"%d", (int)floor(newval * 65536.0 + 0.5)); rest_val = string(buf);
-        res = _setAttr("currentValue", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		char buf[32];
+		sprintf(buf, "%d", (int)floor(newval * 65536.0 + 0.5));
+		rest_val = string(buf);
+		res = _setAttr("currentValue", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -122,18 +130,23 @@ int YAltitude::set_currentValue(double newval)
  */
 int YAltitude::set_qnh(double newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        char buf[32]; sprintf(buf,"%d", (int)floor(newval * 65536.0 + 0.5)); rest_val = string(buf);
-        res = _setAttr("qnh", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		char buf[32];
+		sprintf(buf, "%d", (int)floor(newval * 65536.0 + 0.5));
+		rest_val = string(buf);
+		res = _setAttr("qnh", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -147,24 +160,29 @@ int YAltitude::set_qnh(double newval)
  */
 double YAltitude::get_qnh(void)
 {
-    double res = 0.0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YAltitude::QNH_INVALID;
-                }
-            }
-        }
-        res = _qnh;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	double res = 0.0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YAltitude::QNH_INVALID;
+				}
+			}
+		}
+		res = _qnh;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -178,24 +196,29 @@ double YAltitude::get_qnh(void)
  */
 string YAltitude::get_technology(void)
 {
-    string res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YAltitude::TECHNOLOGY_INVALID;
-                }
-            }
-        }
-        res = _technology;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YAltitude::TECHNOLOGY_INVALID;
+				}
+			}
+		}
+		res = _technology;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -223,23 +246,29 @@ string YAltitude::get_technology(void)
  */
 YAltitude* YAltitude::FindAltitude(string func)
 {
-    YAltitude* obj = NULL;
-    int taken = 0;
-    if (YAPI::_apiInitialized) {
-        yEnterCriticalSection(&YAPI::_global_cs);
-        taken = 1;
-    }try {
-        obj = (YAltitude*) YFunction::_FindFromCache("Altitude", func);
-        if (obj == NULL) {
-            obj = new YAltitude(func);
-            YFunction::_AddToCache("Altitude", func, obj);
-        }
-    } catch (std::exception) {
-        if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
-        throw;
-    }
-    if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
-    return obj;
+	YAltitude* obj = NULL;
+	int taken = 0;
+	if (YAPI::_apiInitialized)
+	{
+		yEnterCriticalSection(&YAPI::_global_cs);
+		taken = 1;
+	}
+	try
+	{
+		obj = (YAltitude*)YFunction::_FindFromCache("Altitude", func);
+		if (obj == NULL)
+		{
+			obj = new YAltitude(func);
+			YFunction::_AddToCache("Altitude", func, obj);
+		}
+	}
+	catch (std::exception)
+	{
+		if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
+		throw;
+	}
+	if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
+	return obj;
 }
 
 /**
@@ -255,31 +284,39 @@ YAltitude* YAltitude::FindAltitude(string func)
  */
 int YAltitude::registerValueCallback(YAltitudeValueCallback callback)
 {
-    string val;
-    if (callback != NULL) {
-        YFunction::_UpdateValueCallbackList(this, true);
-    } else {
-        YFunction::_UpdateValueCallbackList(this, false);
-    }
-    _valueCallbackAltitude = callback;
-    // Immediately invoke value callback with current value
-    if (callback != NULL && this->isOnline()) {
-        val = _advertisedValue;
-        if (!(val == "")) {
-            this->_invokeValueCallback(val);
-        }
-    }
-    return 0;
+	string val;
+	if (callback != NULL)
+	{
+		YFunction::_UpdateValueCallbackList(this, true);
+	}
+	else
+	{
+		YFunction::_UpdateValueCallbackList(this, false);
+	}
+	_valueCallbackAltitude = callback;
+	// Immediately invoke value callback with current value
+	if (callback != NULL && this->isOnline())
+	{
+		val = _advertisedValue;
+		if (!(val == ""))
+		{
+			this->_invokeValueCallback(val);
+		}
+	}
+	return 0;
 }
 
 int YAltitude::_invokeValueCallback(string value)
 {
-    if (_valueCallbackAltitude != NULL) {
-        _valueCallbackAltitude(this, value);
-    } else {
-        YSensor::_invokeValueCallback(value);
-    }
-    return 0;
+	if (_valueCallbackAltitude != NULL)
+	{
+		_valueCallbackAltitude(this, value);
+	}
+	else
+	{
+		YSensor::_invokeValueCallback(value);
+	}
+	return 0;
 }
 
 /**
@@ -295,49 +332,57 @@ int YAltitude::_invokeValueCallback(string value)
  */
 int YAltitude::registerTimedReportCallback(YAltitudeTimedReportCallback callback)
 {
-    YSensor* sensor = NULL;
-    sensor = this;
-    if (callback != NULL) {
-        YFunction::_UpdateTimedReportCallbackList(sensor, true);
-    } else {
-        YFunction::_UpdateTimedReportCallbackList(sensor, false);
-    }
-    _timedReportCallbackAltitude = callback;
-    return 0;
+	YSensor* sensor = NULL;
+	sensor = this;
+	if (callback != NULL)
+	{
+		YFunction::_UpdateTimedReportCallbackList(sensor, true);
+	}
+	else
+	{
+		YFunction::_UpdateTimedReportCallbackList(sensor, false);
+	}
+	_timedReportCallbackAltitude = callback;
+	return 0;
 }
 
 int YAltitude::_invokeTimedReportCallback(YMeasure value)
 {
-    if (_timedReportCallbackAltitude != NULL) {
-        _timedReportCallbackAltitude(this, value);
-    } else {
-        YSensor::_invokeTimedReportCallback(value);
-    }
-    return 0;
+	if (_timedReportCallbackAltitude != NULL)
+	{
+		_timedReportCallbackAltitude(this, value);
+	}
+	else
+	{
+		YSensor::_invokeTimedReportCallback(value);
+	}
+	return 0;
 }
 
-YAltitude *YAltitude::nextAltitude(void)
+YAltitude* YAltitude::nextAltitude(void)
 {
-    string  hwid;
+	string hwid;
 
-    if(YISERR(_nextFunction(hwid)) || hwid=="") {
-        return NULL;
-    }
-    return YAltitude::FindAltitude(hwid);
+	if (YISERR(_nextFunction(hwid)) || hwid == "")
+	{
+		return NULL;
+	}
+	return YAltitude::FindAltitude(hwid);
 }
 
 YAltitude* YAltitude::FirstAltitude(void)
 {
-    vector<YFUN_DESCR>   v_fundescr;
-    YDEV_DESCR             ydevice;
-    string              serial, funcId, funcName, funcVal, errmsg;
+	vector<YFUN_DESCR> v_fundescr;
+	YDEV_DESCR ydevice;
+	string serial, funcId, funcName, funcVal, errmsg;
 
-    if(YISERR(YapiWrapper::getFunctionsByClass("Altitude", 0, v_fundescr, sizeof(YFUN_DESCR), errmsg)) ||
-       v_fundescr.size() == 0 ||
-       YISERR(YapiWrapper::getFunctionInfo(v_fundescr[0], ydevice, serial, funcId, funcName, funcVal, errmsg))) {
-        return NULL;
-    }
-    return YAltitude::FindAltitude(serial+"."+funcId);
+	if (YISERR(YapiWrapper::getFunctionsByClass("Altitude", 0, v_fundescr, sizeof(YFUN_DESCR), errmsg)) ||
+		v_fundescr.size() == 0 ||
+		YISERR(YapiWrapper::getFunctionInfo(v_fundescr[0], ydevice, serial, funcId, funcName, funcVal, errmsg)))
+	{
+		return NULL;
+	}
+	return YAltitude::FindAltitude(serial + "." + funcId);
 }
 
 //--- (end of YAltitude implementation)

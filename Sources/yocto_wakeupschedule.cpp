@@ -49,52 +49,60 @@
 #define  __FILE_ID__  "wakeupschedule"
 
 YWakeUpSchedule::YWakeUpSchedule(const string& func): YFunction(func)
-//--- (WakeUpSchedule initialization)
-    ,_minutesA(MINUTESA_INVALID)
-    ,_minutesB(MINUTESB_INVALID)
-    ,_hours(HOURS_INVALID)
-    ,_weekDays(WEEKDAYS_INVALID)
-    ,_monthDays(MONTHDAYS_INVALID)
-    ,_months(MONTHS_INVALID)
-    ,_nextOccurence(NEXTOCCURENCE_INVALID)
-    ,_valueCallbackWakeUpSchedule(NULL)
+                                                      //--- (WakeUpSchedule initialization)
+                                                      , _minutesA(MINUTESA_INVALID)
+                                                      , _minutesB(MINUTESB_INVALID)
+                                                      , _hours(HOURS_INVALID)
+                                                      , _weekDays(WEEKDAYS_INVALID)
+                                                      , _monthDays(MONTHDAYS_INVALID)
+                                                      , _months(MONTHS_INVALID)
+                                                      , _nextOccurence(NEXTOCCURENCE_INVALID)
+                                                      , _valueCallbackWakeUpSchedule(NULL)
 //--- (end of WakeUpSchedule initialization)
 {
-    _className="WakeUpSchedule";
+	_className = "WakeUpSchedule";
 }
 
 YWakeUpSchedule::~YWakeUpSchedule()
 {
-//--- (YWakeUpSchedule cleanup)
-//--- (end of YWakeUpSchedule cleanup)
+	//--- (YWakeUpSchedule cleanup)
+	//--- (end of YWakeUpSchedule cleanup)
 }
+
 //--- (YWakeUpSchedule implementation)
 // static attributes
 
 int YWakeUpSchedule::_parseAttr(YJSONObject* json_val)
 {
-    if(json_val->has("minutesA")) {
-        _minutesA =  json_val->getInt("minutesA");
-    }
-    if(json_val->has("minutesB")) {
-        _minutesB =  json_val->getInt("minutesB");
-    }
-    if(json_val->has("hours")) {
-        _hours =  json_val->getInt("hours");
-    }
-    if(json_val->has("weekDays")) {
-        _weekDays =  json_val->getInt("weekDays");
-    }
-    if(json_val->has("monthDays")) {
-        _monthDays =  json_val->getInt("monthDays");
-    }
-    if(json_val->has("months")) {
-        _months =  json_val->getInt("months");
-    }
-    if(json_val->has("nextOccurence")) {
-        _nextOccurence =  json_val->getLong("nextOccurence");
-    }
-    return YFunction::_parseAttr(json_val);
+	if (json_val->has("minutesA"))
+	{
+		_minutesA = json_val->getInt("minutesA");
+	}
+	if (json_val->has("minutesB"))
+	{
+		_minutesB = json_val->getInt("minutesB");
+	}
+	if (json_val->has("hours"))
+	{
+		_hours = json_val->getInt("hours");
+	}
+	if (json_val->has("weekDays"))
+	{
+		_weekDays = json_val->getInt("weekDays");
+	}
+	if (json_val->has("monthDays"))
+	{
+		_monthDays = json_val->getInt("monthDays");
+	}
+	if (json_val->has("months"))
+	{
+		_months = json_val->getInt("months");
+	}
+	if (json_val->has("nextOccurence"))
+	{
+		_nextOccurence = json_val->getLong("nextOccurence");
+	}
+	return YFunction::_parseAttr(json_val);
 }
 
 
@@ -107,24 +115,29 @@ int YWakeUpSchedule::_parseAttr(YJSONObject* json_val)
  */
 int YWakeUpSchedule::get_minutesA(void)
 {
-    int res = 0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YWakeUpSchedule::MINUTESA_INVALID;
-                }
-            }
-        }
-        res = _minutesA;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	int res = 0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YWakeUpSchedule::MINUTESA_INVALID;
+				}
+			}
+		}
+		res = _minutesA;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -138,18 +151,23 @@ int YWakeUpSchedule::get_minutesA(void)
  */
 int YWakeUpSchedule::set_minutesA(int newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        char buf[32]; sprintf(buf, "%d", newval); rest_val = string(buf);
-        res = _setAttr("minutesA", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		char buf[32];
+		sprintf(buf, "%d", newval);
+		rest_val = string(buf);
+		res = _setAttr("minutesA", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -161,24 +179,29 @@ int YWakeUpSchedule::set_minutesA(int newval)
  */
 int YWakeUpSchedule::get_minutesB(void)
 {
-    int res = 0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YWakeUpSchedule::MINUTESB_INVALID;
-                }
-            }
-        }
-        res = _minutesB;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	int res = 0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YWakeUpSchedule::MINUTESB_INVALID;
+				}
+			}
+		}
+		res = _minutesB;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -192,18 +215,23 @@ int YWakeUpSchedule::get_minutesB(void)
  */
 int YWakeUpSchedule::set_minutesB(int newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        char buf[32]; sprintf(buf, "%d", newval); rest_val = string(buf);
-        res = _setAttr("minutesB", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		char buf[32];
+		sprintf(buf, "%d", newval);
+		rest_val = string(buf);
+		res = _setAttr("minutesB", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -215,24 +243,29 @@ int YWakeUpSchedule::set_minutesB(int newval)
  */
 int YWakeUpSchedule::get_hours(void)
 {
-    int res = 0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YWakeUpSchedule::HOURS_INVALID;
-                }
-            }
-        }
-        res = _hours;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	int res = 0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YWakeUpSchedule::HOURS_INVALID;
+				}
+			}
+		}
+		res = _hours;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -246,18 +279,23 @@ int YWakeUpSchedule::get_hours(void)
  */
 int YWakeUpSchedule::set_hours(int newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        char buf[32]; sprintf(buf, "%d", newval); rest_val = string(buf);
-        res = _setAttr("hours", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		char buf[32];
+		sprintf(buf, "%d", newval);
+		rest_val = string(buf);
+		res = _setAttr("hours", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -269,24 +307,29 @@ int YWakeUpSchedule::set_hours(int newval)
  */
 int YWakeUpSchedule::get_weekDays(void)
 {
-    int res = 0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YWakeUpSchedule::WEEKDAYS_INVALID;
-                }
-            }
-        }
-        res = _weekDays;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	int res = 0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YWakeUpSchedule::WEEKDAYS_INVALID;
+				}
+			}
+		}
+		res = _weekDays;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -300,18 +343,23 @@ int YWakeUpSchedule::get_weekDays(void)
  */
 int YWakeUpSchedule::set_weekDays(int newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        char buf[32]; sprintf(buf, "%d", newval); rest_val = string(buf);
-        res = _setAttr("weekDays", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		char buf[32];
+		sprintf(buf, "%d", newval);
+		rest_val = string(buf);
+		res = _setAttr("weekDays", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -323,24 +371,29 @@ int YWakeUpSchedule::set_weekDays(int newval)
  */
 int YWakeUpSchedule::get_monthDays(void)
 {
-    int res = 0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YWakeUpSchedule::MONTHDAYS_INVALID;
-                }
-            }
-        }
-        res = _monthDays;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	int res = 0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YWakeUpSchedule::MONTHDAYS_INVALID;
+				}
+			}
+		}
+		res = _monthDays;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -354,18 +407,23 @@ int YWakeUpSchedule::get_monthDays(void)
  */
 int YWakeUpSchedule::set_monthDays(int newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        char buf[32]; sprintf(buf, "%d", newval); rest_val = string(buf);
-        res = _setAttr("monthDays", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		char buf[32];
+		sprintf(buf, "%d", newval);
+		rest_val = string(buf);
+		res = _setAttr("monthDays", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -377,24 +435,29 @@ int YWakeUpSchedule::set_monthDays(int newval)
  */
 int YWakeUpSchedule::get_months(void)
 {
-    int res = 0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YWakeUpSchedule::MONTHS_INVALID;
-                }
-            }
-        }
-        res = _months;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	int res = 0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YWakeUpSchedule::MONTHS_INVALID;
+				}
+			}
+		}
+		res = _months;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -408,18 +471,23 @@ int YWakeUpSchedule::get_months(void)
  */
 int YWakeUpSchedule::set_months(int newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        char buf[32]; sprintf(buf, "%d", newval); rest_val = string(buf);
-        res = _setAttr("months", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		char buf[32];
+		sprintf(buf, "%d", newval);
+		rest_val = string(buf);
+		res = _setAttr("months", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -431,24 +499,29 @@ int YWakeUpSchedule::set_months(int newval)
  */
 s64 YWakeUpSchedule::get_nextOccurence(void)
 {
-    s64 res = 0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YWakeUpSchedule::NEXTOCCURENCE_INVALID;
-                }
-            }
-        }
-        res = _nextOccurence;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	s64 res = 0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YWakeUpSchedule::NEXTOCCURENCE_INVALID;
+				}
+			}
+		}
+		res = _nextOccurence;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -476,23 +549,29 @@ s64 YWakeUpSchedule::get_nextOccurence(void)
  */
 YWakeUpSchedule* YWakeUpSchedule::FindWakeUpSchedule(string func)
 {
-    YWakeUpSchedule* obj = NULL;
-    int taken = 0;
-    if (YAPI::_apiInitialized) {
-        yEnterCriticalSection(&YAPI::_global_cs);
-        taken = 1;
-    }try {
-        obj = (YWakeUpSchedule*) YFunction::_FindFromCache("WakeUpSchedule", func);
-        if (obj == NULL) {
-            obj = new YWakeUpSchedule(func);
-            YFunction::_AddToCache("WakeUpSchedule", func, obj);
-        }
-    } catch (std::exception) {
-        if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
-        throw;
-    }
-    if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
-    return obj;
+	YWakeUpSchedule* obj = NULL;
+	int taken = 0;
+	if (YAPI::_apiInitialized)
+	{
+		yEnterCriticalSection(&YAPI::_global_cs);
+		taken = 1;
+	}
+	try
+	{
+		obj = (YWakeUpSchedule*)YFunction::_FindFromCache("WakeUpSchedule", func);
+		if (obj == NULL)
+		{
+			obj = new YWakeUpSchedule(func);
+			YFunction::_AddToCache("WakeUpSchedule", func, obj);
+		}
+	}
+	catch (std::exception)
+	{
+		if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
+		throw;
+	}
+	if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
+	return obj;
 }
 
 /**
@@ -508,31 +587,39 @@ YWakeUpSchedule* YWakeUpSchedule::FindWakeUpSchedule(string func)
  */
 int YWakeUpSchedule::registerValueCallback(YWakeUpScheduleValueCallback callback)
 {
-    string val;
-    if (callback != NULL) {
-        YFunction::_UpdateValueCallbackList(this, true);
-    } else {
-        YFunction::_UpdateValueCallbackList(this, false);
-    }
-    _valueCallbackWakeUpSchedule = callback;
-    // Immediately invoke value callback with current value
-    if (callback != NULL && this->isOnline()) {
-        val = _advertisedValue;
-        if (!(val == "")) {
-            this->_invokeValueCallback(val);
-        }
-    }
-    return 0;
+	string val;
+	if (callback != NULL)
+	{
+		YFunction::_UpdateValueCallbackList(this, true);
+	}
+	else
+	{
+		YFunction::_UpdateValueCallbackList(this, false);
+	}
+	_valueCallbackWakeUpSchedule = callback;
+	// Immediately invoke value callback with current value
+	if (callback != NULL && this->isOnline())
+	{
+		val = _advertisedValue;
+		if (!(val == ""))
+		{
+			this->_invokeValueCallback(val);
+		}
+	}
+	return 0;
 }
 
 int YWakeUpSchedule::_invokeValueCallback(string value)
 {
-    if (_valueCallbackWakeUpSchedule != NULL) {
-        _valueCallbackWakeUpSchedule(this, value);
-    } else {
-        YFunction::_invokeValueCallback(value);
-    }
-    return 0;
+	if (_valueCallbackWakeUpSchedule != NULL)
+	{
+		_valueCallbackWakeUpSchedule(this, value);
+	}
+	else
+	{
+		YFunction::_invokeValueCallback(value);
+	}
+	return 0;
 }
 
 /**
@@ -540,12 +627,12 @@ int YWakeUpSchedule::_invokeValueCallback(string value)
  */
 s64 YWakeUpSchedule::get_minutes(void)
 {
-    s64 res = 0;
+	s64 res = 0;
 
-    res = this->get_minutesB();
-    res = ((res) << (30));
-    res = res + this->get_minutesA();
-    return res;
+	res = this->get_minutesB();
+	res = ((res) << (30));
+	res = res + this->get_minutesA();
+	return res;
 }
 
 /**
@@ -559,33 +646,35 @@ s64 YWakeUpSchedule::get_minutes(void)
  */
 int YWakeUpSchedule::set_minutes(s64 bitmap)
 {
-    this->set_minutesA((int)(((bitmap) & (0x3fffffff))));
-    bitmap = ((bitmap) >> (30));
-    return this->set_minutesB((int)(((bitmap) & (0x3fffffff))));
+	this->set_minutesA((int)(((bitmap) & (0x3fffffff))));
+	bitmap = ((bitmap) >> (30));
+	return this->set_minutesB((int)(((bitmap) & (0x3fffffff))));
 }
 
-YWakeUpSchedule *YWakeUpSchedule::nextWakeUpSchedule(void)
+YWakeUpSchedule* YWakeUpSchedule::nextWakeUpSchedule(void)
 {
-    string  hwid;
+	string hwid;
 
-    if(YISERR(_nextFunction(hwid)) || hwid=="") {
-        return NULL;
-    }
-    return YWakeUpSchedule::FindWakeUpSchedule(hwid);
+	if (YISERR(_nextFunction(hwid)) || hwid == "")
+	{
+		return NULL;
+	}
+	return YWakeUpSchedule::FindWakeUpSchedule(hwid);
 }
 
 YWakeUpSchedule* YWakeUpSchedule::FirstWakeUpSchedule(void)
 {
-    vector<YFUN_DESCR>   v_fundescr;
-    YDEV_DESCR             ydevice;
-    string              serial, funcId, funcName, funcVal, errmsg;
+	vector<YFUN_DESCR> v_fundescr;
+	YDEV_DESCR ydevice;
+	string serial, funcId, funcName, funcVal, errmsg;
 
-    if(YISERR(YapiWrapper::getFunctionsByClass("WakeUpSchedule", 0, v_fundescr, sizeof(YFUN_DESCR), errmsg)) ||
-       v_fundescr.size() == 0 ||
-       YISERR(YapiWrapper::getFunctionInfo(v_fundescr[0], ydevice, serial, funcId, funcName, funcVal, errmsg))) {
-        return NULL;
-    }
-    return YWakeUpSchedule::FindWakeUpSchedule(serial+"."+funcId);
+	if (YISERR(YapiWrapper::getFunctionsByClass("WakeUpSchedule", 0, v_fundescr, sizeof(YFUN_DESCR), errmsg)) ||
+		v_fundescr.size() == 0 ||
+		YISERR(YapiWrapper::getFunctionInfo(v_fundescr[0], ydevice, serial, funcId, funcName, funcVal, errmsg)))
+	{
+		return NULL;
+	}
+	return YWakeUpSchedule::FindWakeUpSchedule(serial + "." + funcId);
 }
 
 //--- (end of YWakeUpSchedule implementation)

@@ -49,19 +49,20 @@
 #define  __FILE_ID__  "latitude"
 
 YLatitude::YLatitude(const string& func): YSensor(func)
-//--- (Latitude initialization)
-    ,_valueCallbackLatitude(NULL)
-    ,_timedReportCallbackLatitude(NULL)
+                                          //--- (Latitude initialization)
+                                          , _valueCallbackLatitude(NULL)
+                                          , _timedReportCallbackLatitude(NULL)
 //--- (end of Latitude initialization)
 {
-    _className="Latitude";
+	_className = "Latitude";
 }
 
 YLatitude::~YLatitude()
 {
-//--- (YLatitude cleanup)
-//--- (end of YLatitude cleanup)
+	//--- (YLatitude cleanup)
+	//--- (end of YLatitude cleanup)
 }
+
 //--- (YLatitude implementation)
 // static attributes
 
@@ -91,23 +92,29 @@ YLatitude::~YLatitude()
  */
 YLatitude* YLatitude::FindLatitude(string func)
 {
-    YLatitude* obj = NULL;
-    int taken = 0;
-    if (YAPI::_apiInitialized) {
-        yEnterCriticalSection(&YAPI::_global_cs);
-        taken = 1;
-    }try {
-        obj = (YLatitude*) YFunction::_FindFromCache("Latitude", func);
-        if (obj == NULL) {
-            obj = new YLatitude(func);
-            YFunction::_AddToCache("Latitude", func, obj);
-        }
-    } catch (std::exception) {
-        if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
-        throw;
-    }
-    if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
-    return obj;
+	YLatitude* obj = NULL;
+	int taken = 0;
+	if (YAPI::_apiInitialized)
+	{
+		yEnterCriticalSection(&YAPI::_global_cs);
+		taken = 1;
+	}
+	try
+	{
+		obj = (YLatitude*)YFunction::_FindFromCache("Latitude", func);
+		if (obj == NULL)
+		{
+			obj = new YLatitude(func);
+			YFunction::_AddToCache("Latitude", func, obj);
+		}
+	}
+	catch (std::exception)
+	{
+		if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
+		throw;
+	}
+	if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
+	return obj;
 }
 
 /**
@@ -123,31 +130,39 @@ YLatitude* YLatitude::FindLatitude(string func)
  */
 int YLatitude::registerValueCallback(YLatitudeValueCallback callback)
 {
-    string val;
-    if (callback != NULL) {
-        YFunction::_UpdateValueCallbackList(this, true);
-    } else {
-        YFunction::_UpdateValueCallbackList(this, false);
-    }
-    _valueCallbackLatitude = callback;
-    // Immediately invoke value callback with current value
-    if (callback != NULL && this->isOnline()) {
-        val = _advertisedValue;
-        if (!(val == "")) {
-            this->_invokeValueCallback(val);
-        }
-    }
-    return 0;
+	string val;
+	if (callback != NULL)
+	{
+		YFunction::_UpdateValueCallbackList(this, true);
+	}
+	else
+	{
+		YFunction::_UpdateValueCallbackList(this, false);
+	}
+	_valueCallbackLatitude = callback;
+	// Immediately invoke value callback with current value
+	if (callback != NULL && this->isOnline())
+	{
+		val = _advertisedValue;
+		if (!(val == ""))
+		{
+			this->_invokeValueCallback(val);
+		}
+	}
+	return 0;
 }
 
 int YLatitude::_invokeValueCallback(string value)
 {
-    if (_valueCallbackLatitude != NULL) {
-        _valueCallbackLatitude(this, value);
-    } else {
-        YSensor::_invokeValueCallback(value);
-    }
-    return 0;
+	if (_valueCallbackLatitude != NULL)
+	{
+		_valueCallbackLatitude(this, value);
+	}
+	else
+	{
+		YSensor::_invokeValueCallback(value);
+	}
+	return 0;
 }
 
 /**
@@ -163,49 +178,57 @@ int YLatitude::_invokeValueCallback(string value)
  */
 int YLatitude::registerTimedReportCallback(YLatitudeTimedReportCallback callback)
 {
-    YSensor* sensor = NULL;
-    sensor = this;
-    if (callback != NULL) {
-        YFunction::_UpdateTimedReportCallbackList(sensor, true);
-    } else {
-        YFunction::_UpdateTimedReportCallbackList(sensor, false);
-    }
-    _timedReportCallbackLatitude = callback;
-    return 0;
+	YSensor* sensor = NULL;
+	sensor = this;
+	if (callback != NULL)
+	{
+		YFunction::_UpdateTimedReportCallbackList(sensor, true);
+	}
+	else
+	{
+		YFunction::_UpdateTimedReportCallbackList(sensor, false);
+	}
+	_timedReportCallbackLatitude = callback;
+	return 0;
 }
 
 int YLatitude::_invokeTimedReportCallback(YMeasure value)
 {
-    if (_timedReportCallbackLatitude != NULL) {
-        _timedReportCallbackLatitude(this, value);
-    } else {
-        YSensor::_invokeTimedReportCallback(value);
-    }
-    return 0;
+	if (_timedReportCallbackLatitude != NULL)
+	{
+		_timedReportCallbackLatitude(this, value);
+	}
+	else
+	{
+		YSensor::_invokeTimedReportCallback(value);
+	}
+	return 0;
 }
 
-YLatitude *YLatitude::nextLatitude(void)
+YLatitude* YLatitude::nextLatitude(void)
 {
-    string  hwid;
+	string hwid;
 
-    if(YISERR(_nextFunction(hwid)) || hwid=="") {
-        return NULL;
-    }
-    return YLatitude::FindLatitude(hwid);
+	if (YISERR(_nextFunction(hwid)) || hwid == "")
+	{
+		return NULL;
+	}
+	return YLatitude::FindLatitude(hwid);
 }
 
 YLatitude* YLatitude::FirstLatitude(void)
 {
-    vector<YFUN_DESCR>   v_fundescr;
-    YDEV_DESCR             ydevice;
-    string              serial, funcId, funcName, funcVal, errmsg;
+	vector<YFUN_DESCR> v_fundescr;
+	YDEV_DESCR ydevice;
+	string serial, funcId, funcName, funcVal, errmsg;
 
-    if(YISERR(YapiWrapper::getFunctionsByClass("Latitude", 0, v_fundescr, sizeof(YFUN_DESCR), errmsg)) ||
-       v_fundescr.size() == 0 ||
-       YISERR(YapiWrapper::getFunctionInfo(v_fundescr[0], ydevice, serial, funcId, funcName, funcVal, errmsg))) {
-        return NULL;
-    }
-    return YLatitude::FindLatitude(serial+"."+funcId);
+	if (YISERR(YapiWrapper::getFunctionsByClass("Latitude", 0, v_fundescr, sizeof(YFUN_DESCR), errmsg)) ||
+		v_fundescr.size() == 0 ||
+		YISERR(YapiWrapper::getFunctionInfo(v_fundescr[0], ydevice, serial, funcId, funcName, funcVal, errmsg)))
+	{
+		return NULL;
+	}
+	return YLatitude::FindLatitude(serial + "." + funcId);
 }
 
 //--- (end of YLatitude implementation)

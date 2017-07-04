@@ -62,7 +62,7 @@ extern "C" {
  ****************************************************************************/
 
 // prototype of the Log callback
-typedef void YAPI_FUNCTION_EXPORT(*yapiLogFunction)(const char *log,u32 loglen);
+typedef void YAPI_FUNCTION_EXPORT(*yapiLogFunction)(const char* log, u32 loglen);
 
 // prototype of the device arrival/update/removal callback
 typedef void YAPI_FUNCTION_EXPORT(*yapiDeviceUpdateCallback)(YAPI_DEVICE devdescr);
@@ -72,15 +72,15 @@ typedef void YAPI_FUNCTION_EXPORT(*yapiDeviceUpdateCallback)(YAPI_DEVICE devdesc
 // value :
 //       if null     : notify a new logical name
 //       if not null : notify a new value, (a pointer to a  YOCTO_PUBVAL_LEN bytes null terminated string)
-typedef void YAPI_FUNCTION_EXPORT(*yapiFunctionUpdateCallback)(YAPI_FUNCTION fundescr,const char *value);
+typedef void YAPI_FUNCTION_EXPORT(*yapiFunctionUpdateCallback)(YAPI_FUNCTION fundescr, const char* value);
 
 // prototype of timed report callback
-typedef void YAPI_FUNCTION_EXPORT(*yapiTimedReportCallback)(YAPI_FUNCTION fundesc, double timestamp, const u8 *bytes, u32 len);
+typedef void YAPI_FUNCTION_EXPORT(*yapiTimedReportCallback)(YAPI_FUNCTION fundesc, double timestamp, const u8* bytes, u32 len);
 
 // prototype of the ssdp hub discovery callback
-typedef void YAPI_FUNCTION_EXPORT(*yapiHubDiscoveryCallback)(const char *serial, const char *url);
+typedef void YAPI_FUNCTION_EXPORT(*yapiHubDiscoveryCallback)(const char* serial, const char* url);
 
-typedef void YAPI_FUNCTION_EXPORT(*yapiDeviceLogCallback)(YAPI_FUNCTION fundescr,const char *line);
+typedef void YAPI_FUNCTION_EXPORT(*yapiDeviceLogCallback)(YAPI_FUNCTION fundescr, const char* line);
 
 
 /*****************************************************************************
@@ -88,10 +88,7 @@ typedef void YAPI_FUNCTION_EXPORT(*yapiDeviceLogCallback)(YAPI_FUNCTION fundescr
  ****************************************************************************/
 
 
-void YAPI_FUNCTION_EXPORT yapiStartStopDeviceLogCallback(const char *serial,int start);
-
-
-
+void YAPI_FUNCTION_EXPORT yapiStartStopDeviceLogCallback(const char* serial, int start);
 
 
 /*****************************************************************************
@@ -117,7 +114,7 @@ void YAPI_FUNCTION_EXPORT yapiStartStopDeviceLogCallback(const char *serial,int 
     manually registering network hubs; auto-detection only applies to
     Bonjour-based and NBNS-based discovery.
   ***************************************************************************/
-YRETCODE YAPI_FUNCTION_EXPORT yapiInitAPI(int type,char *errmsg);
+YRETCODE YAPI_FUNCTION_EXPORT yapiInitAPI(int type, char* errmsg);
 
 #define Y_DETECT_NONE           0
 #define Y_DETECT_USB            1
@@ -265,17 +262,15 @@ void YAPI_FUNCTION_EXPORT yapiRegisterFunctionUpdateCallback(yapiFunctionUpdateC
  ***************************************************************************/
 void YAPI_FUNCTION_EXPORT yapiRegisterTimedReportCallback(yapiTimedReportCallback timedReportCallback);
 
-YRETCODE YAPI_FUNCTION_EXPORT yapiLockFunctionCallBack( char *errmsg);
+YRETCODE YAPI_FUNCTION_EXPORT yapiLockFunctionCallBack(char* errmsg);
 
 
-YRETCODE YAPI_FUNCTION_EXPORT yapiUnlockFunctionCallBack(char *errmsg);
+YRETCODE YAPI_FUNCTION_EXPORT yapiUnlockFunctionCallBack(char* errmsg);
 
-YRETCODE YAPI_FUNCTION_EXPORT yapiLockDeviceCallBack( char *errmsg);
-
-
-YRETCODE YAPI_FUNCTION_EXPORT yapiUnlockDeviceCallBack(char *errmsg);
+YRETCODE YAPI_FUNCTION_EXPORT yapiLockDeviceCallBack(char* errmsg);
 
 
+YRETCODE YAPI_FUNCTION_EXPORT yapiUnlockDeviceCallBack(char* errmsg);
 
 
 /*****************************************************************************
@@ -300,7 +295,7 @@ YRETCODE YAPI_FUNCTION_EXPORT yapiUnlockDeviceCallBack(char *errmsg);
  Remarks:
 
  ***************************************************************************/
-YRETCODE YAPI_FUNCTION_EXPORT yapiTestHub(const char *rooturl, int mstimeout, char *errmsg);
+YRETCODE YAPI_FUNCTION_EXPORT yapiTestHub(const char* rooturl, int mstimeout, char* errmsg);
 
 
 /*****************************************************************************
@@ -325,7 +320,7 @@ YRETCODE YAPI_FUNCTION_EXPORT yapiTestHub(const char *rooturl, int mstimeout, ch
     manually to call this function with "usb"
 
  ***************************************************************************/
-YRETCODE YAPI_FUNCTION_EXPORT yapiRegisterHub(const char *rooturl, char *errmsg);
+YRETCODE YAPI_FUNCTION_EXPORT yapiRegisterHub(const char* rooturl, char* errmsg);
 
 
 /*****************************************************************************
@@ -350,9 +345,7 @@ YRETCODE YAPI_FUNCTION_EXPORT yapiRegisterHub(const char *rooturl, char *errmsg)
  manually to call this function with "usb"
 
  ***************************************************************************/
-YRETCODE YAPI_FUNCTION_EXPORT yapiPreregisterHub(const char *rooturl, char *errmsg);
-
-
+YRETCODE YAPI_FUNCTION_EXPORT yapiPreregisterHub(const char* rooturl, char* errmsg);
 
 
 /*****************************************************************************
@@ -370,8 +363,7 @@ YRETCODE YAPI_FUNCTION_EXPORT yapiPreregisterHub(const char *rooturl, char *errm
  Remarks:
 
  ***************************************************************************/
-void YAPI_FUNCTION_EXPORT yapiUnregisterHub(const char *url);
-
+void YAPI_FUNCTION_EXPORT yapiUnregisterHub(const char* url);
 
 
 /*****************************************************************************
@@ -392,7 +384,7 @@ void YAPI_FUNCTION_EXPORT yapiUnregisterHub(const char *url);
   Remarks:
 
  ***************************************************************************/
-YRETCODE YAPI_FUNCTION_EXPORT yapiUpdateDeviceList(u32 forceupdate, char *errmsg);
+YRETCODE YAPI_FUNCTION_EXPORT yapiUpdateDeviceList(u32 forceupdate, char* errmsg);
 
 
 /*****************************************************************************
@@ -414,7 +406,7 @@ YRETCODE YAPI_FUNCTION_EXPORT yapiUpdateDeviceList(u32 forceupdate, char *errmsg
  Remarks:
 
  ***************************************************************************/
-YRETCODE YAPI_FUNCTION_EXPORT yapiHandleEvents(char *errmsg);
+YRETCODE YAPI_FUNCTION_EXPORT yapiHandleEvents(char* errmsg);
 
 
 /*****************************************************************************
@@ -436,7 +428,7 @@ YRETCODE YAPI_FUNCTION_EXPORT yapiHandleEvents(char *errmsg);
  Remarks:
 
  ***************************************************************************/
-YRETCODE YAPI_FUNCTION_EXPORT yapiSleep(int duration_ms, char *errmsg);
+YRETCODE YAPI_FUNCTION_EXPORT yapiSleep(int duration_ms, char* errmsg);
 
 
 /*****************************************************************************
@@ -470,7 +462,7 @@ u64 YAPI_FUNCTION_EXPORT yapiGetTickCount(void);
  Remarks:
 
  *****************************************************************************/
-int YAPI_FUNCTION_EXPORT yapiCheckLogicalName(const char *name);
+int YAPI_FUNCTION_EXPORT yapiCheckLogicalName(const char* name);
 
 /*****************************************************************************
  Function:
@@ -489,7 +481,7 @@ int YAPI_FUNCTION_EXPORT yapiCheckLogicalName(const char *name);
 
  Remarks:
  ***************************************************************************/
-u16 YAPI_FUNCTION_EXPORT yapiGetAPIVersion(const char **version,const char **apidate);
+u16 YAPI_FUNCTION_EXPORT yapiGetAPIVersion(const char** version, const char** apidate);
 
 
 //
@@ -508,7 +500,7 @@ u16 YAPI_FUNCTION_EXPORT yapiGetAPIVersion(const char **version,const char **api
  It is optional, and should only be called when low-level logs
  are desirable.
  ***************************************************************************/
-void YAPI_FUNCTION_EXPORT yapiSetTraceFile(const char *file);
+void YAPI_FUNCTION_EXPORT yapiSetTraceFile(const char* file);
 
 
 /*****************************************************************************
@@ -539,7 +531,7 @@ void YAPI_FUNCTION_EXPORT yapiSetTraceFile(const char *file);
    }
 
  ***************************************************************************/
-YAPI_DEVICE YAPI_FUNCTION_EXPORT yapiGetDevice(const char *device_str,char *errmsg);
+YAPI_DEVICE YAPI_FUNCTION_EXPORT yapiGetDevice(const char* device_str, char* errmsg);
 
 
 /*****************************************************************************
@@ -573,7 +565,7 @@ YAPI_DEVICE YAPI_FUNCTION_EXPORT yapiGetDevice(const char *device_str,char *errm
     }
 
  ***************************************************************************/
-int YAPI_FUNCTION_EXPORT yapiGetAllDevices(YAPI_DEVICE *buffer,int maxsize,int *neededsize,char *errmsg);
+int YAPI_FUNCTION_EXPORT yapiGetAllDevices(YAPI_DEVICE* buffer, int maxsize, int* neededsize, char* errmsg);
 
 
 /*****************************************************************************
@@ -596,7 +588,7 @@ int YAPI_FUNCTION_EXPORT yapiGetAllDevices(YAPI_DEVICE *buffer,int maxsize,int *
     the call may fail if the device pointed by devhdl has been disconnected
 
  ***************************************************************************/
-YRETCODE YAPI_FUNCTION_EXPORT yapiGetDeviceInfo(YAPI_DEVICE devdesc,yDeviceSt *infos,char *errmsg);
+YRETCODE YAPI_FUNCTION_EXPORT yapiGetDeviceInfo(YAPI_DEVICE devdesc, yDeviceSt* infos, char* errmsg);
 
 
 /*****************************************************************************
@@ -622,7 +614,7 @@ YRETCODE YAPI_FUNCTION_EXPORT yapiGetDeviceInfo(YAPI_DEVICE devdesc,yDeviceSt *i
 
  ***************************************************************************/
 
-YRETCODE YAPI_FUNCTION_EXPORT yapiGetDevicePath(YAPI_DEVICE devdesc, char *rootdevice, char *path, int pathsize, int *neededsize, char *errmsg);
+YRETCODE YAPI_FUNCTION_EXPORT yapiGetDevicePath(YAPI_DEVICE devdesc, char* rootdevice, char* path, int pathsize, int* neededsize, char* errmsg);
 
 
 /*****************************************************************************
@@ -647,7 +639,7 @@ YRETCODE YAPI_FUNCTION_EXPORT yapiGetDevicePath(YAPI_DEVICE devdesc, char *rootd
  Remarks:
 
  ***************************************************************************/
-YRETCODE YAPI_FUNCTION_EXPORT yapiGetDevicePathEx(const char * serial, char *rootdevice, char *request, int requestsize, int *neededsize, char *errmsg);
+YRETCODE YAPI_FUNCTION_EXPORT yapiGetDevicePathEx(const char* serial, char* rootdevice, char* request, int requestsize, int* neededsize, char* errmsg);
 
 
 /*****************************************************************************
@@ -678,7 +670,7 @@ YRETCODE YAPI_FUNCTION_EXPORT yapiGetDevicePathEx(const char * serial, char *roo
    }
 
  ***************************************************************************/
-YAPI_FUNCTION YAPI_FUNCTION_EXPORT yapiGetFunction(const char *class_str, const char *function_str,char *errmsg);
+YAPI_FUNCTION YAPI_FUNCTION_EXPORT yapiGetFunction(const char* class_str, const char* function_str, char* errmsg);
 
 
 /*****************************************************************************
@@ -719,10 +711,10 @@ YAPI_FUNCTION YAPI_FUNCTION_EXPORT yapiGetFunction(const char *class_str, const 
    }
 
  ***************************************************************************/
-int YAPI_FUNCTION_EXPORT yapiGetFunctionsByClass(const char *class_str, YAPI_FUNCTION prevfundesc,
-                                          YAPI_FUNCTION *buffer,int maxsize,int *neededsize,char *errmsg);
+int YAPI_FUNCTION_EXPORT yapiGetFunctionsByClass(const char* class_str, YAPI_FUNCTION prevfundesc,
+                                                 YAPI_FUNCTION* buffer, int maxsize, int* neededsize, char* errmsg);
 int YAPI_FUNCTION_EXPORT yapiGetFunctionsByDevice(YAPI_DEVICE devdesc, YAPI_FUNCTION prevfundesc,
-                                           YAPI_FUNCTION *buffer,int maxsize,int *neededsize,char *errmsg);
+                                                  YAPI_FUNCTION* buffer, int maxsize, int* neededsize, char* errmsg);
 
 
 /*****************************************************************************
@@ -749,7 +741,7 @@ int YAPI_FUNCTION_EXPORT yapiGetFunctionsByDevice(YAPI_DEVICE devdesc, YAPI_FUNC
  Remarks:
 
  ***************************************************************************/
-YRETCODE YAPI_FUNCTION_EXPORT yapiGetFunctionInfo(YAPI_FUNCTION fundesc,YAPI_DEVICE *devdesc,char *serial,char *funcId,char *funcName,char *funcVal,char *errmsg);
+YRETCODE YAPI_FUNCTION_EXPORT yapiGetFunctionInfo(YAPI_FUNCTION fundesc, YAPI_DEVICE* devdesc, char* serial, char* funcId, char* funcName, char* funcVal, char* errmsg);
 
 /*****************************************************************************
  Function:
@@ -776,34 +768,34 @@ YRETCODE YAPI_FUNCTION_EXPORT yapiGetFunctionInfo(YAPI_FUNCTION fundesc,YAPI_DEV
  Remarks:
 
  ***************************************************************************/
-YRETCODE YAPI_FUNCTION_EXPORT yapiGetFunctionInfoEx(YAPI_FUNCTION fundesc, YAPI_DEVICE *devdesc, char *serial, char *funcId, char *baseType, char *funcName, char *funcVal, char *errmsg);
+YRETCODE YAPI_FUNCTION_EXPORT yapiGetFunctionInfoEx(YAPI_FUNCTION fundesc, YAPI_DEVICE* devdesc, char* serial, char* funcId, char* baseType, char* funcName, char* funcVal, char* errmsg);
 
 
- /*****************************************************************************
-  Function:
-    int yapiHTTPRequestSyncStartEx(YIOHDL *iohdl, const char *device, const char *request, int requestsize, char **reply, int *replysize, char *errmsg);
+/*****************************************************************************
+ Function:
+   int yapiHTTPRequestSyncStartEx(YIOHDL *iohdl, const char *device, const char *request, int requestsize, char **reply, int *replysize, char *errmsg);
 
-  Description:
-    Open a HTTP request to a given device, send a query and receive the HTTP header and
-    page content into the buffer. The buffer with result will be returned by reference,
-    so that the caller can use it or copy it. Do not free reply buffer manually, but
-    always call yapiHTTPRequestSyncDone when finished.
+ Description:
+   Open a HTTP request to a given device, send a query and receive the HTTP header and
+   page content into the buffer. The buffer with result will be returned by reference,
+   so that the caller can use it or copy it. Do not free reply buffer manually, but
+   always call yapiHTTPRequestSyncDone when finished.
 
-  Parameters:
-    iohdl      : the request handle that will be initialized
-    device     : a string that contain one of the flowing value: serial, logicalname, url
-    request    : the HTTP request (HTTP header + body, in case of POST) of the page/file to retreive
-    requestsize: the length of the HTTP request
-    reply      : a pointer to the reply buffer, returned by reference
-    replysize  : the length of the reply buffer, returned by reference
-    errmsg     : a pointer to a buffer of YOCTO_ERRMSG_LEN bytes to store any error message
+ Parameters:
+   iohdl      : the request handle that will be initialized
+   device     : a string that contain one of the flowing value: serial, logicalname, url
+   request    : the HTTP request (HTTP header + body, in case of POST) of the page/file to retreive
+   requestsize: the length of the HTTP request
+   reply      : a pointer to the reply buffer, returned by reference
+   replysize  : the length of the reply buffer, returned by reference
+   errmsg     : a pointer to a buffer of YOCTO_ERRMSG_LEN bytes to store any error message
 
-  Returns:
-    on SUCCESS : YAPI_SUCCESS
-    on ERROR   : return the YRETCODE
+ Returns:
+   on SUCCESS : YAPI_SUCCESS
+   on ERROR   : return the YRETCODE
 
- ***************************************************************************/
-YRETCODE YAPI_FUNCTION_EXPORT yapiHTTPRequestSyncStartEx(YIOHDL *iohdl, const char *device, const char *request, int requestsize, char **reply, int *replysize, char *errmsg);
+***************************************************************************/
+YRETCODE YAPI_FUNCTION_EXPORT yapiHTTPRequestSyncStartEx(YIOHDL* iohdl, const char* device, const char* request, int requestsize, char** reply, int* replysize, char* errmsg);
 
 /*****************************************************************************
 Function:
@@ -832,7 +824,7 @@ on SUCCESS : YAPI_SUCCESS
 on ERROR   : return the YRETCODE
 
 ***************************************************************************/
-YRETCODE YAPI_FUNCTION_EXPORT yapiHTTPRequestSyncStartOutOfBand(YIOHDL *iohdl, int channel, const char *device, const char *request, int requestsize, char **reply, int *replysize, yapiRequestProgressCallback progress_cb, void *progress_ctx, char *errmsg);
+YRETCODE YAPI_FUNCTION_EXPORT yapiHTTPRequestSyncStartOutOfBand(YIOHDL* iohdl, int channel, const char* device, const char* request, int requestsize, char** reply, int* replysize, yapiRequestProgressCallback progress_cb, void* progress_ctx, char* errmsg);
 
 
 /*****************************************************************************
@@ -858,7 +850,7 @@ YRETCODE YAPI_FUNCTION_EXPORT yapiHTTPRequestSyncStartOutOfBand(YIOHDL *iohdl, i
  on ERROR   : return the YRETCODE
 
  ***************************************************************************/
-YRETCODE YAPI_FUNCTION_EXPORT yapiHTTPRequestSyncStart(YIOHDL *iohdl, const char *device, const char *request, char **reply, int *replysize, char *errmsg);
+YRETCODE YAPI_FUNCTION_EXPORT yapiHTTPRequestSyncStart(YIOHDL* iohdl, const char* device, const char* request, char** reply, int* replysize, char* errmsg);
 
 
 /*****************************************************************************
@@ -878,7 +870,7 @@ YRETCODE YAPI_FUNCTION_EXPORT yapiHTTPRequestSyncStart(YIOHDL *iohdl, const char
    on ERROR   : return the YRETCODE
 
  ***************************************************************************/
-YRETCODE YAPI_FUNCTION_EXPORT yapiHTTPRequestSyncDone(YIOHDL *iohdl, char *errmsg);
+YRETCODE YAPI_FUNCTION_EXPORT yapiHTTPRequestSyncDone(YIOHDL* iohdl, char* errmsg);
 
 
 /*****************************************************************************
@@ -903,7 +895,7 @@ YRETCODE YAPI_FUNCTION_EXPORT yapiHTTPRequestSyncDone(YIOHDL *iohdl, char *errms
    we match the device string in this order: serial,logicalname,url
 
  ***************************************************************************/
-YRETCODE YAPI_FUNCTION_EXPORT yapiHTTPRequestAsync(const char *device, const char *request, yapiRequestAsyncCallback callback, void *context, char *errmsg);
+YRETCODE YAPI_FUNCTION_EXPORT yapiHTTPRequestAsync(const char* device, const char* request, yapiRequestAsyncCallback callback, void* context, char* errmsg);
 
 /*****************************************************************************
  Function:
@@ -928,7 +920,7 @@ YRETCODE YAPI_FUNCTION_EXPORT yapiHTTPRequestAsync(const char *device, const cha
    we match the device string in this order: serial,logicalname,url
 
  ***************************************************************************/
-YRETCODE YAPI_FUNCTION_EXPORT yapiHTTPRequestAsyncEx(const char *device, const char *request, int requestsize, yapiRequestAsyncCallback callback, void *context, char *errmsg);
+YRETCODE YAPI_FUNCTION_EXPORT yapiHTTPRequestAsyncEx(const char* device, const char* request, int requestsize, yapiRequestAsyncCallback callback, void* context, char* errmsg);
 
 
 /*****************************************************************************
@@ -955,9 +947,7 @@ Remarks:
 we match the device string in this order: serial,logicalname,url
 
 ***************************************************************************/
-YRETCODE YAPI_FUNCTION_EXPORT yapiHTTPRequestAsyncOutOfBand(int channel, const char *device, const char *request, int requestsize, yapiRequestAsyncCallback callback, void *context, char *errmsg);
-
-
+YRETCODE YAPI_FUNCTION_EXPORT yapiHTTPRequestAsyncOutOfBand(int channel, const char* device, const char* request, int requestsize, yapiRequestAsyncCallback callback, void* context, char* errmsg);
 
 
 /*****************************************************************************
@@ -986,7 +976,7 @@ YRETCODE YAPI_FUNCTION_EXPORT yapiHTTPRequestAsyncOutOfBand(int channel, const c
    we always null terminate the returning buffer
 
  ***************************************************************************/
-int YAPI_FUNCTION_EXPORT yapiHTTPRequest(const char *device, const char *request, char* buffer,int buffsize,int *fullsize, char *errmsg);
+int YAPI_FUNCTION_EXPORT yapiHTTPRequest(const char* device, const char* request, char* buffer, int buffsize, int* fullsize, char* errmsg);
 
 /*****************************************************************************
  Function:
@@ -1024,46 +1014,41 @@ void YAPI_FUNCTION_EXPORT yapiRegisterHubDiscoveryCallback(yapiHubDiscoveryCallb
  Remarks:
 
  ***************************************************************************/
-YRETCODE YAPI_FUNCTION_EXPORT yapiTriggerHubDiscovery(char *errmsg);
+YRETCODE YAPI_FUNCTION_EXPORT yapiTriggerHubDiscovery(char* errmsg);
 
 
-
-YRETCODE YAPI_FUNCTION_EXPORT yapiGetSubdevices(const char *serial, char *buffer, int buffersize, int *fullsize, char *errmsg);
+YRETCODE YAPI_FUNCTION_EXPORT yapiGetSubdevices(const char* serial, char* buffer, int buffersize, int* fullsize, char* errmsg);
 
 /*****************************************************************************
   Flash API
  ***************************************************************************/
 
-YRETCODE YAPI_FUNCTION_EXPORT yapiGetAllJsonKeys(const char *jsonbuffer, char *out_buffer, int out_buffersize, int *fullsize, char *errmsg);
-YRETCODE YAPI_FUNCTION_EXPORT yapiCheckFirmware(const char *serial, const char *rev, const char *path, char *buffer, int buffersize, int *fullsize, char *errmsg);
-YRETCODE YAPI_FUNCTION_EXPORT yapiGetBootloaders(char *buffer, int buffersize, int *fullsize, char *errmsg);
-YRETCODE YAPI_FUNCTION_EXPORT yapiUpdateFirmware(const char *serial, const char *firmwarePath, const char *settings, int startUpdate, char *errmsg);
-YRETCODE YAPI_FUNCTION_EXPORT yapiUpdateFirmwareEx(const char *serial, const char *firmwarePath, const char *settings, int force, int startUpdate, char *errmsg);
+YRETCODE YAPI_FUNCTION_EXPORT yapiGetAllJsonKeys(const char* jsonbuffer, char* out_buffer, int out_buffersize, int* fullsize, char* errmsg);
+YRETCODE YAPI_FUNCTION_EXPORT yapiCheckFirmware(const char* serial, const char* rev, const char* path, char* buffer, int buffersize, int* fullsize, char* errmsg);
+YRETCODE YAPI_FUNCTION_EXPORT yapiGetBootloaders(char* buffer, int buffersize, int* fullsize, char* errmsg);
+YRETCODE YAPI_FUNCTION_EXPORT yapiUpdateFirmware(const char* serial, const char* firmwarePath, const char* settings, int startUpdate, char* errmsg);
+YRETCODE YAPI_FUNCTION_EXPORT yapiUpdateFirmwareEx(const char* serial, const char* firmwarePath, const char* settings, int force, int startUpdate, char* errmsg);
 
-int YAPI_FUNCTION_EXPORT yapiJsonDecodeString(const char *json_string, char *output);
-int YAPI_FUNCTION_EXPORT yapiJsonGetPath(const char *path, const char *json_data, int json_size, const char  **result, char *errmsg);
+int YAPI_FUNCTION_EXPORT yapiJsonDecodeString(const char* json_string, char* output);
+int YAPI_FUNCTION_EXPORT yapiJsonGetPath(const char* path, const char* json_data, int json_size, const char** result, char* errmsg);
 
 
 /*****************************************************************************
   helper for delphi
  ***************************************************************************/
 YAPI_FUNCTION_EXPORT void* yapiGetMem(int size);
-YAPI_FUNCTION_EXPORT void yapiFreeMem(void *ptr);
+YAPI_FUNCTION_EXPORT void yapiFreeMem(void* ptr);
 
 
-typedef  void (*yRawNotificationCb)(USB_Notify_Pkt*);
-typedef  void (*yRawReportCb)(YAPI_DEVICE serialref, USB_Report_Pkt_V1 *report, int pktsize);
-typedef  void (*yRawReportV2Cb)(YAPI_DEVICE serialref, USB_Report_Pkt_V2 *report, int pktsize);
+typedef void (*yRawNotificationCb)(USB_Notify_Pkt*);
+typedef void (*yRawReportCb)(YAPI_DEVICE serialref, USB_Report_Pkt_V1* report, int pktsize);
+typedef void (*yRawReportV2Cb)(YAPI_DEVICE serialref, USB_Report_Pkt_V2* report, int pktsize);
 void yapiRegisterRawNotificationCb(yRawNotificationCb callback);
 void yapiRegisterRawReportCb(yRawReportCb callback);
 void yapiRegisterRawReportV2Cb(yRawReportV2Cb callback);
-
-
 
 
 #ifdef  __cplusplus
 }
 #endif
 #endif
-
-

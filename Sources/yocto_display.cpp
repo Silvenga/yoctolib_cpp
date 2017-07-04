@@ -48,54 +48,55 @@
 #define  __FILE_ID__  "display"
 
 
-
-
-
 int YDisplayLayer::flush_now(void)
 {
-    int res = YAPI_SUCCESS;
-    if(_cmdbuff.length() > 0) {
-        res = _display->sendCommand(_cmdbuff);
-        _cmdbuff="";
-    }
-    return res;
+	int res = YAPI_SUCCESS;
+	if (_cmdbuff.length() > 0)
+	{
+		res = _display->sendCommand(_cmdbuff);
+		_cmdbuff = "";
+	}
+	return res;
 }
 
 
 // internal function to send a command for this layer
 int YDisplayLayer::command_push(string cmd)
 {
-    int res = YAPI_SUCCESS;
-    
-    if(_cmdbuff.length() + cmd.length() >= 100) {
-        // force flush before, to prevent overflow
-        res = flush_now();
-    }
-    if(_cmdbuff.length() == 0) {
-        // always prepend layer ID first
-        _cmdbuff.append(YapiWrapper::ysprintf("%d",_id));
-    }
-    _cmdbuff.append(cmd);
-    return res;
+	int res = YAPI_SUCCESS;
+
+	if (_cmdbuff.length() + cmd.length() >= 100)
+	{
+		// force flush before, to prevent overflow
+		res = flush_now();
+	}
+	if (_cmdbuff.length() == 0)
+	{
+		// always prepend layer ID first
+		_cmdbuff.append(YapiWrapper::ysprintf("%d", _id));
+	}
+	_cmdbuff.append(cmd);
+	return res;
 }
 
 // internal function to send a command for this layer
 int YDisplayLayer::command_flush(string cmd)
 {
-    int  res = command_push(cmd);
-    if(_hidden) {
-        return res;
-    }
-    return flush_now();
+	int res = command_push(cmd);
+	if (_hidden)
+	{
+		return res;
+	}
+	return flush_now();
 }
 
-int YDisplayLayer::drawBitmap(int x,int y,int w,const std::vector<unsigned char>& data,int bgcol)
+int YDisplayLayer::drawBitmap(int x, int y, int w, const std::vector<unsigned char>& data, int bgcol)
 {
 	int size = (int)data.size();
-	char *arr = new char[size];
-	for (int i=0;i<size;i++) arr[i] = data[i];
-	string strval = string(arr,size);
-	return this->drawBitmap(x,y,w,strval,bgcol);
+	char* arr = new char[size];
+	for (int i = 0; i < size; i++) arr[i] = data[i];
+	string strval = string(arr, size);
+	return this->drawBitmap(x, y, w, strval, bgcol);
 }
 
 
@@ -115,8 +116,8 @@ int YDisplayLayer::drawBitmap(int x,int y,int w,const std::vector<unsigned char>
  */
 int YDisplayLayer::reset(void)
 {
-    _hidden = false;
-    return this->command_flush("X");
+	_hidden = false;
+	return this->command_flush("X");
 }
 
 /**
@@ -131,7 +132,7 @@ int YDisplayLayer::reset(void)
  */
 int YDisplayLayer::clear(void)
 {
-    return this->command_flush("x");
+	return this->command_flush("x");
 }
 
 /**
@@ -148,7 +149,7 @@ int YDisplayLayer::clear(void)
  */
 int YDisplayLayer::selectColorPen(int color)
 {
-    return this->command_push(YapiWrapper::ysprintf("c%06x",color));
+	return this->command_push(YapiWrapper::ysprintf("c%06x", color));
 }
 
 /**
@@ -167,7 +168,7 @@ int YDisplayLayer::selectColorPen(int color)
  */
 int YDisplayLayer::selectGrayPen(int graylevel)
 {
-    return this->command_push(YapiWrapper::ysprintf("g%d",graylevel));
+	return this->command_push(YapiWrapper::ysprintf("g%d", graylevel));
 }
 
 /**
@@ -182,7 +183,7 @@ int YDisplayLayer::selectGrayPen(int graylevel)
  */
 int YDisplayLayer::selectEraser(void)
 {
-    return this->command_push("e");
+	return this->command_push("e");
 }
 
 /**
@@ -203,7 +204,7 @@ int YDisplayLayer::selectEraser(void)
  */
 int YDisplayLayer::setAntialiasingMode(bool mode)
 {
-    return this->command_push(YapiWrapper::ysprintf("a%d",mode));
+	return this->command_push(YapiWrapper::ysprintf("a%d", mode));
 }
 
 /**
@@ -216,9 +217,9 @@ int YDisplayLayer::setAntialiasingMode(bool mode)
  *
  * On failure, throws an exception or returns a negative error code.
  */
-int YDisplayLayer::drawPixel(int x,int y)
+int YDisplayLayer::drawPixel(int x, int y)
 {
-    return this->command_flush(YapiWrapper::ysprintf("P%d,%d",x,y));
+	return this->command_flush(YapiWrapper::ysprintf("P%d,%d", x, y));
 }
 
 /**
@@ -233,9 +234,9 @@ int YDisplayLayer::drawPixel(int x,int y)
  *
  * On failure, throws an exception or returns a negative error code.
  */
-int YDisplayLayer::drawRect(int x1,int y1,int x2,int y2)
+int YDisplayLayer::drawRect(int x1, int y1, int x2, int y2)
 {
-    return this->command_flush(YapiWrapper::ysprintf("R%d,%d,%d,%d",x1,y1,x2,y2));
+	return this->command_flush(YapiWrapper::ysprintf("R%d,%d,%d,%d", x1, y1, x2, y2));
 }
 
 /**
@@ -250,9 +251,9 @@ int YDisplayLayer::drawRect(int x1,int y1,int x2,int y2)
  *
  * On failure, throws an exception or returns a negative error code.
  */
-int YDisplayLayer::drawBar(int x1,int y1,int x2,int y2)
+int YDisplayLayer::drawBar(int x1, int y1, int x2, int y2)
 {
-    return this->command_flush(YapiWrapper::ysprintf("B%d,%d,%d,%d",x1,y1,x2,y2));
+	return this->command_flush(YapiWrapper::ysprintf("B%d,%d,%d,%d", x1, y1, x2, y2));
 }
 
 /**
@@ -266,9 +267,9 @@ int YDisplayLayer::drawBar(int x1,int y1,int x2,int y2)
  *
  * On failure, throws an exception or returns a negative error code.
  */
-int YDisplayLayer::drawCircle(int x,int y,int r)
+int YDisplayLayer::drawCircle(int x, int y, int r)
 {
-    return this->command_flush(YapiWrapper::ysprintf("C%d,%d,%d",x,y,r));
+	return this->command_flush(YapiWrapper::ysprintf("C%d,%d,%d", x, y, r));
 }
 
 /**
@@ -282,9 +283,9 @@ int YDisplayLayer::drawCircle(int x,int y,int r)
  *
  * On failure, throws an exception or returns a negative error code.
  */
-int YDisplayLayer::drawDisc(int x,int y,int r)
+int YDisplayLayer::drawDisc(int x, int y, int r)
 {
-    return this->command_flush(YapiWrapper::ysprintf("D%d,%d,%d",x,y,r));
+	return this->command_flush(YapiWrapper::ysprintf("D%d,%d,%d", x, y, r));
 }
 
 /**
@@ -302,7 +303,7 @@ int YDisplayLayer::drawDisc(int x,int y,int r)
  */
 int YDisplayLayer::selectFont(string fontname)
 {
-    return this->command_push(YapiWrapper::ysprintf("&%s%c",fontname.c_str(),27));
+	return this->command_push(YapiWrapper::ysprintf("&%s%c", fontname.c_str(), 27));
 }
 
 /**
@@ -323,9 +324,9 @@ int YDisplayLayer::selectFont(string fontname)
  *
  * On failure, throws an exception or returns a negative error code.
  */
-int YDisplayLayer::drawText(int x,int y,Y_ALIGN anchor,string text)
+int YDisplayLayer::drawText(int x, int y, Y_ALIGN anchor, string text)
 {
-    return this->command_flush(YapiWrapper::ysprintf("T%d,%d,%d,%s%c",x,y,anchor,text.c_str(),27));
+	return this->command_flush(YapiWrapper::ysprintf("T%d,%d,%d,%s%c", x, y, anchor, text.c_str(), 27));
 }
 
 /**
@@ -342,9 +343,9 @@ int YDisplayLayer::drawText(int x,int y,Y_ALIGN anchor,string text)
  *
  * On failure, throws an exception or returns a negative error code.
  */
-int YDisplayLayer::drawImage(int x,int y,string imagename)
+int YDisplayLayer::drawImage(int x, int y, string imagename)
 {
-    return this->command_flush(YapiWrapper::ysprintf("*%d,%d,%s%c",x,y,imagename.c_str(),27));
+	return this->command_flush(YapiWrapper::ysprintf("*%d,%d,%s%c", x, y, imagename.c_str(), 27));
 }
 
 /**
@@ -367,11 +368,11 @@ int YDisplayLayer::drawImage(int x,int y,string imagename)
  *
  * On failure, throws an exception or returns a negative error code.
  */
-int YDisplayLayer::drawBitmap(int x,int y,int w,string bitmap,int bgcol)
+int YDisplayLayer::drawBitmap(int x, int y, int w, string bitmap, int bgcol)
 {
-    string destname;
-    destname = YapiWrapper::ysprintf("layer%d:%d,%d@%d,%d",_id,w,bgcol,x,y);
-    return _display->upload(destname,bitmap);
+	string destname;
+	destname = YapiWrapper::ysprintf("layer%d:%d,%d@%d,%d", _id, w, bgcol, x, y);
+	return _display->upload(destname, bitmap);
 }
 
 /**
@@ -384,9 +385,9 @@ int YDisplayLayer::drawBitmap(int x,int y,int w,string bitmap,int bgcol)
  *
  * On failure, throws an exception or returns a negative error code.
  */
-int YDisplayLayer::moveTo(int x,int y)
+int YDisplayLayer::moveTo(int x, int y)
 {
-    return this->command_push(YapiWrapper::ysprintf("@%d,%d",x,y));
+	return this->command_push(YapiWrapper::ysprintf("@%d,%d", x, y));
 }
 
 /**
@@ -401,9 +402,9 @@ int YDisplayLayer::moveTo(int x,int y)
  *
  * On failure, throws an exception or returns a negative error code.
  */
-int YDisplayLayer::lineTo(int x,int y)
+int YDisplayLayer::lineTo(int x, int y)
 {
-    return this->command_flush(YapiWrapper::ysprintf("-%d,%d",x,y));
+	return this->command_flush(YapiWrapper::ysprintf("-%d,%d", x, y));
 }
 
 /**
@@ -421,7 +422,7 @@ int YDisplayLayer::lineTo(int x,int y)
  */
 int YDisplayLayer::consoleOut(string text)
 {
-    return this->command_flush(YapiWrapper::ysprintf("!%s%c",text.c_str(),27));
+	return this->command_flush(YapiWrapper::ysprintf("!%s%c", text.c_str(), 27));
 }
 
 /**
@@ -436,9 +437,9 @@ int YDisplayLayer::consoleOut(string text)
  *
  * On failure, throws an exception or returns a negative error code.
  */
-int YDisplayLayer::setConsoleMargins(int x1,int y1,int x2,int y2)
+int YDisplayLayer::setConsoleMargins(int x1, int y1, int x2, int y2)
 {
-    return this->command_push(YapiWrapper::ysprintf("m%d,%d,%d,%d",x1,y1,x2,y2));
+	return this->command_push(YapiWrapper::ysprintf("m%d,%d,%d,%d", x1, y1, x2, y2));
 }
 
 /**
@@ -454,7 +455,7 @@ int YDisplayLayer::setConsoleMargins(int x1,int y1,int x2,int y2)
  */
 int YDisplayLayer::setConsoleBackground(int bgcol)
 {
-    return this->command_push(YapiWrapper::ysprintf("b%d",bgcol));
+	return this->command_push(YapiWrapper::ysprintf("b%d", bgcol));
 }
 
 /**
@@ -469,7 +470,7 @@ int YDisplayLayer::setConsoleBackground(int bgcol)
  */
 int YDisplayLayer::setConsoleWordWrap(bool wordwrap)
 {
-    return this->command_push(YapiWrapper::ysprintf("w%d",wordwrap));
+	return this->command_push(YapiWrapper::ysprintf("w%d", wordwrap));
 }
 
 /**
@@ -482,7 +483,7 @@ int YDisplayLayer::setConsoleWordWrap(bool wordwrap)
  */
 int YDisplayLayer::clearConsole(void)
 {
-    return this->command_flush("^");
+	return this->command_flush("^");
 }
 
 /**
@@ -499,9 +500,9 @@ int YDisplayLayer::clearConsole(void)
  *
  * On failure, throws an exception or returns a negative error code.
  */
-int YDisplayLayer::setLayerPosition(int x,int y,int scrollTime)
+int YDisplayLayer::setLayerPosition(int x, int y, int scrollTime)
 {
-    return this->command_flush(YapiWrapper::ysprintf("#%d,%d,%d",x,y,scrollTime));
+	return this->command_flush(YapiWrapper::ysprintf("#%d,%d,%d", x, y, scrollTime));
 }
 
 /**
@@ -516,9 +517,9 @@ int YDisplayLayer::setLayerPosition(int x,int y,int scrollTime)
  */
 int YDisplayLayer::hide(void)
 {
-    this->command_push("h");
-    _hidden = true;
-    return this->flush_now();
+	this->command_push("h");
+	_hidden = true;
+	return this->flush_now();
 }
 
 /**
@@ -530,8 +531,8 @@ int YDisplayLayer::hide(void)
  */
 int YDisplayLayer::unhide(void)
 {
-    _hidden = false;
-    return this->command_flush("s");
+	_hidden = false;
+	return this->command_flush("s");
 }
 
 /**
@@ -541,7 +542,7 @@ int YDisplayLayer::unhide(void)
  */
 YDisplay* YDisplayLayer::get_display(void)
 {
-    return _display;
+	return _display;
 }
 
 /**
@@ -553,7 +554,7 @@ YDisplay* YDisplayLayer::get_display(void)
  */
 int YDisplayLayer::get_displayWidth(void)
 {
-    return _display->get_displayWidth();
+	return _display->get_displayWidth();
 }
 
 /**
@@ -565,7 +566,7 @@ int YDisplayLayer::get_displayWidth(void)
  */
 int YDisplayLayer::get_displayHeight(void)
 {
-    return _display->get_displayHeight();
+	return _display->get_displayHeight();
 }
 
 /**
@@ -577,7 +578,7 @@ int YDisplayLayer::get_displayHeight(void)
  */
 int YDisplayLayer::get_layerWidth(void)
 {
-    return _display->get_layerWidth();
+	return _display->get_layerWidth();
 }
 
 /**
@@ -589,48 +590,50 @@ int YDisplayLayer::get_layerWidth(void)
  */
 int YDisplayLayer::get_layerHeight(void)
 {
-    return _display->get_layerHeight();
+	return _display->get_layerHeight();
 }
 
 int YDisplayLayer::resetHiddenFlag(void)
 {
-    _hidden = false;
-    return YAPI_SUCCESS;
+	_hidden = false;
+	return YAPI_SUCCESS;
 }
+
 //--- (end of generated code: YDisplayLayer implementation)
 
 
 YDisplay::YDisplay(const string& func): YFunction(func)
-//--- (generated code: Display initialization)
-    ,_enabled(ENABLED_INVALID)
-    ,_startupSeq(STARTUPSEQ_INVALID)
-    ,_brightness(BRIGHTNESS_INVALID)
-    ,_orientation(ORIENTATION_INVALID)
-    ,_displayWidth(DISPLAYWIDTH_INVALID)
-    ,_displayHeight(DISPLAYHEIGHT_INVALID)
-    ,_displayType(DISPLAYTYPE_INVALID)
-    ,_layerWidth(LAYERWIDTH_INVALID)
-    ,_layerHeight(LAYERHEIGHT_INVALID)
-    ,_layerCount(LAYERCOUNT_INVALID)
-    ,_command(COMMAND_INVALID)
-    ,_valueCallbackDisplay(NULL)
-//--- (end of generated code: Display initialization)
-            ,_allDisplayLayers(0)
-            ,_recording(false)
-            ,_sequence("")
+                                        //--- (generated code: Display initialization)
+                                        , _enabled(ENABLED_INVALID)
+                                        , _startupSeq(STARTUPSEQ_INVALID)
+                                        , _brightness(BRIGHTNESS_INVALID)
+                                        , _orientation(ORIENTATION_INVALID)
+                                        , _displayWidth(DISPLAYWIDTH_INVALID)
+                                        , _displayHeight(DISPLAYHEIGHT_INVALID)
+                                        , _displayType(DISPLAYTYPE_INVALID)
+                                        , _layerWidth(LAYERWIDTH_INVALID)
+                                        , _layerHeight(LAYERHEIGHT_INVALID)
+                                        , _layerCount(LAYERCOUNT_INVALID)
+                                        , _command(COMMAND_INVALID)
+                                        , _valueCallbackDisplay(NULL)
+                                        //--- (end of generated code: Display initialization)
+                                        , _allDisplayLayers(0)
+                                        , _recording(false)
+                                        , _sequence("")
 {
-    _className ="Display";
+	_className = "Display";
 }
 
 YDisplay::~YDisplay()
 {
-    unsigned int i;
-    for (i=0;i<_allDisplayLayers.size();i++){
-        delete _allDisplayLayers[i];
-    }
-    _allDisplayLayers.clear();
-    //--- (generated code: YDisplay cleanup)
-//--- (end of generated code: YDisplay cleanup)
+	unsigned int i;
+	for (i = 0; i < _allDisplayLayers.size(); i++)
+	{
+		delete _allDisplayLayers[i];
+	}
+	_allDisplayLayers.clear();
+	//--- (generated code: YDisplay cleanup)
+	//--- (end of generated code: YDisplay cleanup)
 }
 
 
@@ -641,40 +644,51 @@ const string YDisplay::COMMAND_INVALID = YAPI_INVALID_STRING;
 
 int YDisplay::_parseAttr(YJSONObject* json_val)
 {
-    if(json_val->has("enabled")) {
-        _enabled =  (Y_ENABLED_enum)json_val->getInt("enabled");
-    }
-    if(json_val->has("startupSeq")) {
-        _startupSeq =  json_val->getString("startupSeq");
-    }
-    if(json_val->has("brightness")) {
-        _brightness =  json_val->getInt("brightness");
-    }
-    if(json_val->has("orientation")) {
-        _orientation =  (Y_ORIENTATION_enum)json_val->getInt("orientation");
-    }
-    if(json_val->has("displayWidth")) {
-        _displayWidth =  json_val->getInt("displayWidth");
-    }
-    if(json_val->has("displayHeight")) {
-        _displayHeight =  json_val->getInt("displayHeight");
-    }
-    if(json_val->has("displayType")) {
-        _displayType =  (Y_DISPLAYTYPE_enum)json_val->getInt("displayType");
-    }
-    if(json_val->has("layerWidth")) {
-        _layerWidth =  json_val->getInt("layerWidth");
-    }
-    if(json_val->has("layerHeight")) {
-        _layerHeight =  json_val->getInt("layerHeight");
-    }
-    if(json_val->has("layerCount")) {
-        _layerCount =  json_val->getInt("layerCount");
-    }
-    if(json_val->has("command")) {
-        _command =  json_val->getString("command");
-    }
-    return YFunction::_parseAttr(json_val);
+	if (json_val->has("enabled"))
+	{
+		_enabled = (Y_ENABLED_enum)json_val->getInt("enabled");
+	}
+	if (json_val->has("startupSeq"))
+	{
+		_startupSeq = json_val->getString("startupSeq");
+	}
+	if (json_val->has("brightness"))
+	{
+		_brightness = json_val->getInt("brightness");
+	}
+	if (json_val->has("orientation"))
+	{
+		_orientation = (Y_ORIENTATION_enum)json_val->getInt("orientation");
+	}
+	if (json_val->has("displayWidth"))
+	{
+		_displayWidth = json_val->getInt("displayWidth");
+	}
+	if (json_val->has("displayHeight"))
+	{
+		_displayHeight = json_val->getInt("displayHeight");
+	}
+	if (json_val->has("displayType"))
+	{
+		_displayType = (Y_DISPLAYTYPE_enum)json_val->getInt("displayType");
+	}
+	if (json_val->has("layerWidth"))
+	{
+		_layerWidth = json_val->getInt("layerWidth");
+	}
+	if (json_val->has("layerHeight"))
+	{
+		_layerHeight = json_val->getInt("layerHeight");
+	}
+	if (json_val->has("layerCount"))
+	{
+		_layerCount = json_val->getInt("layerCount");
+	}
+	if (json_val->has("command"))
+	{
+		_command = json_val->getString("command");
+	}
+	return YFunction::_parseAttr(json_val);
 }
 
 
@@ -687,24 +701,29 @@ int YDisplay::_parseAttr(YJSONObject* json_val)
  */
 Y_ENABLED_enum YDisplay::get_enabled(void)
 {
-    Y_ENABLED_enum res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YDisplay::ENABLED_INVALID;
-                }
-            }
-        }
-        res = _enabled;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	Y_ENABLED_enum res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YDisplay::ENABLED_INVALID;
+				}
+			}
+		}
+		res = _enabled;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -718,18 +737,21 @@ Y_ENABLED_enum YDisplay::get_enabled(void)
  */
 int YDisplay::set_enabled(Y_ENABLED_enum newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        rest_val = (newval>0 ? "1" : "0");
-        res = _setAttr("enabled", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		rest_val = (newval > 0 ? "1" : "0");
+		res = _setAttr("enabled", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -741,24 +763,29 @@ int YDisplay::set_enabled(Y_ENABLED_enum newval)
  */
 string YDisplay::get_startupSeq(void)
 {
-    string res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YDisplay::STARTUPSEQ_INVALID;
-                }
-            }
-        }
-        res = _startupSeq;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YDisplay::STARTUPSEQ_INVALID;
+				}
+			}
+		}
+		res = _startupSeq;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -774,18 +801,21 @@ string YDisplay::get_startupSeq(void)
  */
 int YDisplay::set_startupSeq(const string& newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        rest_val = newval;
-        res = _setAttr("startupSeq", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		rest_val = newval;
+		res = _setAttr("startupSeq", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -797,24 +827,29 @@ int YDisplay::set_startupSeq(const string& newval)
  */
 int YDisplay::get_brightness(void)
 {
-    int res = 0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YDisplay::BRIGHTNESS_INVALID;
-                }
-            }
-        }
-        res = _brightness;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	int res = 0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YDisplay::BRIGHTNESS_INVALID;
+				}
+			}
+		}
+		res = _brightness;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -830,18 +865,23 @@ int YDisplay::get_brightness(void)
  */
 int YDisplay::set_brightness(int newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        char buf[32]; sprintf(buf, "%d", newval); rest_val = string(buf);
-        res = _setAttr("brightness", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		char buf[32];
+		sprintf(buf, "%d", newval);
+		rest_val = string(buf);
+		res = _setAttr("brightness", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -854,24 +894,29 @@ int YDisplay::set_brightness(int newval)
  */
 Y_ORIENTATION_enum YDisplay::get_orientation(void)
 {
-    Y_ORIENTATION_enum res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YDisplay::ORIENTATION_INVALID;
-                }
-            }
-        }
-        res = _orientation;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	Y_ORIENTATION_enum res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YDisplay::ORIENTATION_INVALID;
+				}
+			}
+		}
+		res = _orientation;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -887,18 +932,23 @@ Y_ORIENTATION_enum YDisplay::get_orientation(void)
  */
 int YDisplay::set_orientation(Y_ORIENTATION_enum newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        char buf[32]; sprintf(buf, "%d", newval); rest_val = string(buf);
-        res = _setAttr("orientation", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		char buf[32];
+		sprintf(buf, "%d", newval);
+		rest_val = string(buf);
+		res = _setAttr("orientation", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -910,24 +960,29 @@ int YDisplay::set_orientation(Y_ORIENTATION_enum newval)
  */
 int YDisplay::get_displayWidth(void)
 {
-    int res = 0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YDisplay::DISPLAYWIDTH_INVALID;
-                }
-            }
-        }
-        res = _displayWidth;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	int res = 0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YDisplay::DISPLAYWIDTH_INVALID;
+				}
+			}
+		}
+		res = _displayWidth;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -939,24 +994,29 @@ int YDisplay::get_displayWidth(void)
  */
 int YDisplay::get_displayHeight(void)
 {
-    int res = 0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YDisplay::DISPLAYHEIGHT_INVALID;
-                }
-            }
-        }
-        res = _displayHeight;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	int res = 0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YDisplay::DISPLAYHEIGHT_INVALID;
+				}
+			}
+		}
+		res = _displayHeight;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -969,24 +1029,29 @@ int YDisplay::get_displayHeight(void)
  */
 Y_DISPLAYTYPE_enum YDisplay::get_displayType(void)
 {
-    Y_DISPLAYTYPE_enum res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration == 0) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YDisplay::DISPLAYTYPE_INVALID;
-                }
-            }
-        }
-        res = _displayType;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	Y_DISPLAYTYPE_enum res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration == 0)
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YDisplay::DISPLAYTYPE_INVALID;
+				}
+			}
+		}
+		res = _displayType;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -998,24 +1063,29 @@ Y_DISPLAYTYPE_enum YDisplay::get_displayType(void)
  */
 int YDisplay::get_layerWidth(void)
 {
-    int res = 0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration == 0) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YDisplay::LAYERWIDTH_INVALID;
-                }
-            }
-        }
-        res = _layerWidth;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	int res = 0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration == 0)
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YDisplay::LAYERWIDTH_INVALID;
+				}
+			}
+		}
+		res = _layerWidth;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -1027,24 +1097,29 @@ int YDisplay::get_layerWidth(void)
  */
 int YDisplay::get_layerHeight(void)
 {
-    int res = 0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration == 0) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YDisplay::LAYERHEIGHT_INVALID;
-                }
-            }
-        }
-        res = _layerHeight;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	int res = 0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration == 0)
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YDisplay::LAYERHEIGHT_INVALID;
+				}
+			}
+		}
+		res = _layerHeight;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -1056,62 +1131,75 @@ int YDisplay::get_layerHeight(void)
  */
 int YDisplay::get_layerCount(void)
 {
-    int res = 0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration == 0) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YDisplay::LAYERCOUNT_INVALID;
-                }
-            }
-        }
-        res = _layerCount;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	int res = 0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration == 0)
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YDisplay::LAYERCOUNT_INVALID;
+				}
+			}
+		}
+		res = _layerCount;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 string YDisplay::get_command(void)
 {
-    string res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YDisplay::COMMAND_INVALID;
-                }
-            }
-        }
-        res = _command;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YDisplay::COMMAND_INVALID;
+				}
+			}
+		}
+		res = _command;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 int YDisplay::set_command(const string& newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        rest_val = newval;
-        res = _setAttr("command", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		rest_val = newval;
+		res = _setAttr("command", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -1139,23 +1227,29 @@ int YDisplay::set_command(const string& newval)
  */
 YDisplay* YDisplay::FindDisplay(string func)
 {
-    YDisplay* obj = NULL;
-    int taken = 0;
-    if (YAPI::_apiInitialized) {
-        yEnterCriticalSection(&YAPI::_global_cs);
-        taken = 1;
-    }try {
-        obj = (YDisplay*) YFunction::_FindFromCache("Display", func);
-        if (obj == NULL) {
-            obj = new YDisplay(func);
-            YFunction::_AddToCache("Display", func, obj);
-        }
-    } catch (std::exception) {
-        if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
-        throw;
-    }
-    if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
-    return obj;
+	YDisplay* obj = NULL;
+	int taken = 0;
+	if (YAPI::_apiInitialized)
+	{
+		yEnterCriticalSection(&YAPI::_global_cs);
+		taken = 1;
+	}
+	try
+	{
+		obj = (YDisplay*)YFunction::_FindFromCache("Display", func);
+		if (obj == NULL)
+		{
+			obj = new YDisplay(func);
+			YFunction::_AddToCache("Display", func, obj);
+		}
+	}
+	catch (std::exception)
+	{
+		if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
+		throw;
+	}
+	if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
+	return obj;
 }
 
 /**
@@ -1171,31 +1265,39 @@ YDisplay* YDisplay::FindDisplay(string func)
  */
 int YDisplay::registerValueCallback(YDisplayValueCallback callback)
 {
-    string val;
-    if (callback != NULL) {
-        YFunction::_UpdateValueCallbackList(this, true);
-    } else {
-        YFunction::_UpdateValueCallbackList(this, false);
-    }
-    _valueCallbackDisplay = callback;
-    // Immediately invoke value callback with current value
-    if (callback != NULL && this->isOnline()) {
-        val = _advertisedValue;
-        if (!(val == "")) {
-            this->_invokeValueCallback(val);
-        }
-    }
-    return 0;
+	string val;
+	if (callback != NULL)
+	{
+		YFunction::_UpdateValueCallbackList(this, true);
+	}
+	else
+	{
+		YFunction::_UpdateValueCallbackList(this, false);
+	}
+	_valueCallbackDisplay = callback;
+	// Immediately invoke value callback with current value
+	if (callback != NULL && this->isOnline())
+	{
+		val = _advertisedValue;
+		if (!(val == ""))
+		{
+			this->_invokeValueCallback(val);
+		}
+	}
+	return 0;
 }
 
 int YDisplay::_invokeValueCallback(string value)
 {
-    if (_valueCallbackDisplay != NULL) {
-        _valueCallbackDisplay(this, value);
-    } else {
-        YFunction::_invokeValueCallback(value);
-    }
-    return 0;
+	if (_valueCallbackDisplay != NULL)
+	{
+		_valueCallbackDisplay(this, value);
+	}
+	else
+	{
+		YFunction::_invokeValueCallback(value);
+	}
+	return 0;
 }
 
 /**
@@ -1209,9 +1311,9 @@ int YDisplay::_invokeValueCallback(string value)
  */
 int YDisplay::resetAll(void)
 {
-    this->flushLayers();
-    this->resetHiddenLayerFlags();
-    return this->sendCommand("Z");
+	this->flushLayers();
+	this->resetHiddenLayerFlags();
+	return this->sendCommand("Z");
 }
 
 /**
@@ -1225,10 +1327,10 @@ int YDisplay::resetAll(void)
  *
  * On failure, throws an exception or returns a negative error code.
  */
-int YDisplay::fade(int brightness,int duration)
+int YDisplay::fade(int brightness, int duration)
 {
-    this->flushLayers();
-    return this->sendCommand(YapiWrapper::ysprintf("+%d,%d",brightness,duration));
+	this->flushLayers();
+	return this->sendCommand(YapiWrapper::ysprintf("+%d,%d", brightness, duration));
 }
 
 /**
@@ -1242,10 +1344,10 @@ int YDisplay::fade(int brightness,int duration)
  */
 int YDisplay::newSequence(void)
 {
-    this->flushLayers();
-    _sequence = "";
-    _recording = true;
-    return YAPI_SUCCESS;
+	this->flushLayers();
+	_sequence = "";
+	_recording = true;
+	return YAPI_SUCCESS;
 }
 
 /**
@@ -1261,12 +1363,12 @@ int YDisplay::newSequence(void)
  */
 int YDisplay::saveSequence(string sequenceName)
 {
-    this->flushLayers();
-    _recording = false;
-    this->_upload(sequenceName, _sequence);
-    //We need to use YPRINTF("") for Objective-C
-    _sequence = YapiWrapper::ysprintf("");
-    return YAPI_SUCCESS;
+	this->flushLayers();
+	_recording = false;
+	this->_upload(sequenceName, _sequence);
+	//We need to use YPRINTF("") for Objective-C
+	_sequence = YapiWrapper::ysprintf("");
+	return YAPI_SUCCESS;
 }
 
 /**
@@ -1281,8 +1383,8 @@ int YDisplay::saveSequence(string sequenceName)
  */
 int YDisplay::playSequence(string sequenceName)
 {
-    this->flushLayers();
-    return this->sendCommand(YapiWrapper::ysprintf("S%s",sequenceName.c_str()));
+	this->flushLayers();
+	return this->sendCommand(YapiWrapper::ysprintf("S%s", sequenceName.c_str()));
 }
 
 /**
@@ -1301,8 +1403,8 @@ int YDisplay::playSequence(string sequenceName)
  */
 int YDisplay::pauseSequence(int delay_ms)
 {
-    this->flushLayers();
-    return this->sendCommand(YapiWrapper::ysprintf("W%d",delay_ms));
+	this->flushLayers();
+	return this->sendCommand(YapiWrapper::ysprintf("W%d", delay_ms));
 }
 
 /**
@@ -1315,8 +1417,8 @@ int YDisplay::pauseSequence(int delay_ms)
  */
 int YDisplay::stopSequence(void)
 {
-    this->flushLayers();
-    return this->sendCommand("S");
+	this->flushLayers();
+	return this->sendCommand("S");
 }
 
 /**
@@ -1331,9 +1433,9 @@ int YDisplay::stopSequence(void)
  *
  * On failure, throws an exception or returns a negative error code.
  */
-int YDisplay::upload(string pathname,string content)
+int YDisplay::upload(string pathname, string content)
 {
-    return this->_upload(pathname, content);
+	return this->_upload(pathname, content);
 }
 
 /**
@@ -1350,10 +1452,10 @@ int YDisplay::upload(string pathname,string content)
  *
  * On failure, throws an exception or returns a negative error code.
  */
-int YDisplay::copyLayerContent(int srcLayerId,int dstLayerId)
+int YDisplay::copyLayerContent(int srcLayerId, int dstLayerId)
 {
-    this->flushLayers();
-    return this->sendCommand(YapiWrapper::ysprintf("o%d,%d",srcLayerId,dstLayerId));
+	this->flushLayers();
+	return this->sendCommand(YapiWrapper::ysprintf("o%d,%d", srcLayerId, dstLayerId));
 }
 
 /**
@@ -1371,34 +1473,36 @@ int YDisplay::copyLayerContent(int srcLayerId,int dstLayerId)
  *
  * On failure, throws an exception or returns a negative error code.
  */
-int YDisplay::swapLayerContent(int layerIdA,int layerIdB)
+int YDisplay::swapLayerContent(int layerIdA, int layerIdB)
 {
-    this->flushLayers();
-    return this->sendCommand(YapiWrapper::ysprintf("E%d,%d",layerIdA,layerIdB));
+	this->flushLayers();
+	return this->sendCommand(YapiWrapper::ysprintf("E%d,%d", layerIdA, layerIdB));
 }
 
-YDisplay *YDisplay::nextDisplay(void)
+YDisplay* YDisplay::nextDisplay(void)
 {
-    string  hwid;
+	string hwid;
 
-    if(YISERR(_nextFunction(hwid)) || hwid=="") {
-        return NULL;
-    }
-    return YDisplay::FindDisplay(hwid);
+	if (YISERR(_nextFunction(hwid)) || hwid == "")
+	{
+		return NULL;
+	}
+	return YDisplay::FindDisplay(hwid);
 }
 
 YDisplay* YDisplay::FirstDisplay(void)
 {
-    vector<YFUN_DESCR>   v_fundescr;
-    YDEV_DESCR             ydevice;
-    string              serial, funcId, funcName, funcVal, errmsg;
+	vector<YFUN_DESCR> v_fundescr;
+	YDEV_DESCR ydevice;
+	string serial, funcId, funcName, funcVal, errmsg;
 
-    if(YISERR(YapiWrapper::getFunctionsByClass("Display", 0, v_fundescr, sizeof(YFUN_DESCR), errmsg)) ||
-       v_fundescr.size() == 0 ||
-       YISERR(YapiWrapper::getFunctionInfo(v_fundescr[0], ydevice, serial, funcId, funcName, funcVal, errmsg))) {
-        return NULL;
-    }
-    return YDisplay::FindDisplay(serial+"."+funcId);
+	if (YISERR(YapiWrapper::getFunctionsByClass("Display", 0, v_fundescr, sizeof(YFUN_DESCR), errmsg)) ||
+		v_fundescr.size() == 0 ||
+		YISERR(YapiWrapper::getFunctionInfo(v_fundescr[0], ydevice, serial, funcId, funcName, funcVal, errmsg)))
+	{
+		return NULL;
+	}
+	return YDisplay::FindDisplay(serial + "." + funcId);
 }
 
 //--- (end of generated code: YDisplay implementation)
@@ -1406,43 +1510,49 @@ YDisplay* YDisplay::FirstDisplay(void)
 
 YDisplayLayer* YDisplay::get_displayLayer(unsigned layerId)
 {
-    if(_allDisplayLayers.size()==0) {
-        unsigned nb_display_layer = this->get_layerCount();
-        for(unsigned i = 0; i < nb_display_layer; i++) {
-            _allDisplayLayers.push_back(new YDisplayLayer(this, i));
-        }
-    }
-    if(layerId >= _allDisplayLayers.size()) {
-        this->_throw(YAPI_INVALID_ARGUMENT, "Invalid layerId");
-        return NULL;
-    }
-    return _allDisplayLayers[layerId];
+	if (_allDisplayLayers.size() == 0)
+	{
+		unsigned nb_display_layer = this->get_layerCount();
+		for (unsigned i = 0; i < nb_display_layer; i++)
+		{
+			_allDisplayLayers.push_back(new YDisplayLayer(this, i));
+		}
+	}
+	if (layerId >= _allDisplayLayers.size())
+	{
+		this->_throw(YAPI_INVALID_ARGUMENT, "Invalid layerId");
+		return NULL;
+	}
+	return _allDisplayLayers[layerId];
 }
 
 
 int YDisplay::flushLayers(void)
 {
-    for(unsigned i = 0; i < _allDisplayLayers.size(); i++) {
-        _allDisplayLayers[i]->flush_now();
-    }
-    return YAPI_SUCCESS;
+	for (unsigned i = 0; i < _allDisplayLayers.size(); i++)
+	{
+		_allDisplayLayers[i]->flush_now();
+	}
+	return YAPI_SUCCESS;
 }
 
 // internal function to clear hidden flag during resetAll
 void YDisplay::resetHiddenLayerFlags(void)
 {
-    for(unsigned i = 0; i < _allDisplayLayers.size(); i++) {
-        _allDisplayLayers[i]->resetHiddenFlag();
-    }
+	for (unsigned i = 0; i < _allDisplayLayers.size(); i++)
+	{
+		_allDisplayLayers[i]->resetHiddenFlag();
+	}
 }
 
 int YDisplay::sendCommand(string cmd)
 {
-    if(!_recording) {
-        return this->set_command(cmd);
-    }
-    _sequence += cmd+"\n";
-    return YAPI_SUCCESS;
+	if (!_recording)
+	{
+		return this->set_command(cmd);
+	}
+	_sequence += cmd + "\n";
+	return YAPI_SUCCESS;
 }
 
 

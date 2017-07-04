@@ -51,7 +51,7 @@
 //--- (YWakeUpSchedule definitions)
 class YWakeUpSchedule; // forward declaration
 
-typedef void (*YWakeUpScheduleValueCallback)(YWakeUpSchedule *func, const string& functionValue);
+typedef void (*YWakeUpScheduleValueCallback)(YWakeUpSchedule* func, const string& functionValue);
 #define Y_MINUTESA_INVALID              (YAPI_INVALID_UINT)
 #define Y_MINUTESB_INVALID              (YAPI_INVALID_UINT)
 #define Y_HOURS_INVALID                 (YAPI_INVALID_UINT)
@@ -59,6 +59,7 @@ typedef void (*YWakeUpScheduleValueCallback)(YWakeUpSchedule *func, const string
 #define Y_MONTHDAYS_INVALID             (YAPI_INVALID_UINT)
 #define Y_MONTHS_INVALID                (YAPI_INVALID_UINT)
 #define Y_NEXTOCCURENCE_INVALID         (YAPI_INVALID_LONG)
+
 //--- (end of YWakeUpSchedule definitions)
 
 //--- (YWakeUpSchedule declaration)
@@ -69,295 +70,336 @@ typedef void (*YWakeUpScheduleValueCallback)(YWakeUpSchedule *func, const string
  * specified as a set of months and/or days and/or hours and/or minutes when the
  * wake up should happen.
  */
-class YOCTO_CLASS_EXPORT YWakeUpSchedule: public YFunction {
+class YOCTO_CLASS_EXPORT YWakeUpSchedule: public YFunction
+{
 #ifdef __BORLANDC__
 #pragma option push -w-8022
 #endif
-//--- (end of YWakeUpSchedule declaration)
+	//--- (end of YWakeUpSchedule declaration)
 protected:
-    //--- (YWakeUpSchedule attributes)
-    // Attributes (function value cache)
-    int             _minutesA;
-    int             _minutesB;
-    int             _hours;
-    int             _weekDays;
-    int             _monthDays;
-    int             _months;
-    s64             _nextOccurence;
-    YWakeUpScheduleValueCallback _valueCallbackWakeUpSchedule;
+	//--- (YWakeUpSchedule attributes)
+	// Attributes (function value cache)
+	int _minutesA;
+	int _minutesB;
+	int _hours;
+	int _weekDays;
+	int _monthDays;
+	int _months;
+	s64 _nextOccurence;
+	YWakeUpScheduleValueCallback _valueCallbackWakeUpSchedule;
 
-    friend YWakeUpSchedule *yFindWakeUpSchedule(const string& func);
-    friend YWakeUpSchedule *yFirstWakeUpSchedule(void);
+	friend YWakeUpSchedule* yFindWakeUpSchedule(const string& func);
+	friend YWakeUpSchedule* yFirstWakeUpSchedule(void);
 
-    // Function-specific method for parsing of JSON output and caching result
-    virtual int     _parseAttr(YJSONObject* json_val);
+	// Function-specific method for parsing of JSON output and caching result
+	virtual int _parseAttr(YJSONObject* json_val);
 
-    // Constructor is protected, use yFindWakeUpSchedule factory function to instantiate
-    YWakeUpSchedule(const string& func);
-    //--- (end of YWakeUpSchedule attributes)
+	// Constructor is protected, use yFindWakeUpSchedule factory function to instantiate
+	YWakeUpSchedule(const string& func);
+	//--- (end of YWakeUpSchedule attributes)
 
 public:
-    ~YWakeUpSchedule();
-    //--- (YWakeUpSchedule accessors declaration)
+	~YWakeUpSchedule();
+	//--- (YWakeUpSchedule accessors declaration)
 
-    static const int MINUTESA_INVALID = YAPI_INVALID_UINT;
-    static const int MINUTESB_INVALID = YAPI_INVALID_UINT;
-    static const int HOURS_INVALID = YAPI_INVALID_UINT;
-    static const int WEEKDAYS_INVALID = YAPI_INVALID_UINT;
-    static const int MONTHDAYS_INVALID = YAPI_INVALID_UINT;
-    static const int MONTHS_INVALID = YAPI_INVALID_UINT;
-    static const s64 NEXTOCCURENCE_INVALID = YAPI_INVALID_LONG;
+	static const int MINUTESA_INVALID = YAPI_INVALID_UINT;
+	static const int MINUTESB_INVALID = YAPI_INVALID_UINT;
+	static const int HOURS_INVALID = YAPI_INVALID_UINT;
+	static const int WEEKDAYS_INVALID = YAPI_INVALID_UINT;
+	static const int MONTHDAYS_INVALID = YAPI_INVALID_UINT;
+	static const int MONTHS_INVALID = YAPI_INVALID_UINT;
+	static const s64 NEXTOCCURENCE_INVALID = YAPI_INVALID_LONG;
 
-    /**
-     * Returns the minutes in the 00-29 interval of each hour scheduled for wake up.
-     *
-     * @return an integer corresponding to the minutes in the 00-29 interval of each hour scheduled for wake up
-     *
-     * On failure, throws an exception or returns Y_MINUTESA_INVALID.
-     */
-    int                 get_minutesA(void);
+	/**
+	 * Returns the minutes in the 00-29 interval of each hour scheduled for wake up.
+	 *
+	 * @return an integer corresponding to the minutes in the 00-29 interval of each hour scheduled for wake up
+	 *
+	 * On failure, throws an exception or returns Y_MINUTESA_INVALID.
+	 */
+	int get_minutesA(void);
 
-    inline int          minutesA(void)
-    { return this->get_minutesA(); }
+	inline int minutesA(void)
+	{
+		return this->get_minutesA();
+	}
 
-    /**
-     * Changes the minutes in the 00-29 interval when a wake up must take place.
-     *
-     * @param newval : an integer corresponding to the minutes in the 00-29 interval when a wake up must take place
-     *
-     * @return YAPI_SUCCESS if the call succeeds.
-     *
-     * On failure, throws an exception or returns a negative error code.
-     */
-    int             set_minutesA(int newval);
-    inline int      setMinutesA(int newval)
-    { return this->set_minutesA(newval); }
+	/**
+	 * Changes the minutes in the 00-29 interval when a wake up must take place.
+	 *
+	 * @param newval : an integer corresponding to the minutes in the 00-29 interval when a wake up must take place
+	 *
+	 * @return YAPI_SUCCESS if the call succeeds.
+	 *
+	 * On failure, throws an exception or returns a negative error code.
+	 */
+	int set_minutesA(int newval);
 
-    /**
-     * Returns the minutes in the 30-59 intervalof each hour scheduled for wake up.
-     *
-     * @return an integer corresponding to the minutes in the 30-59 intervalof each hour scheduled for wake up
-     *
-     * On failure, throws an exception or returns Y_MINUTESB_INVALID.
-     */
-    int                 get_minutesB(void);
+	inline int setMinutesA(int newval)
+	{
+		return this->set_minutesA(newval);
+	}
 
-    inline int          minutesB(void)
-    { return this->get_minutesB(); }
+	/**
+	 * Returns the minutes in the 30-59 intervalof each hour scheduled for wake up.
+	 *
+	 * @return an integer corresponding to the minutes in the 30-59 intervalof each hour scheduled for wake up
+	 *
+	 * On failure, throws an exception or returns Y_MINUTESB_INVALID.
+	 */
+	int get_minutesB(void);
 
-    /**
-     * Changes the minutes in the 30-59 interval when a wake up must take place.
-     *
-     * @param newval : an integer corresponding to the minutes in the 30-59 interval when a wake up must take place
-     *
-     * @return YAPI_SUCCESS if the call succeeds.
-     *
-     * On failure, throws an exception or returns a negative error code.
-     */
-    int             set_minutesB(int newval);
-    inline int      setMinutesB(int newval)
-    { return this->set_minutesB(newval); }
+	inline int minutesB(void)
+	{
+		return this->get_minutesB();
+	}
 
-    /**
-     * Returns the hours scheduled for wake up.
-     *
-     * @return an integer corresponding to the hours scheduled for wake up
-     *
-     * On failure, throws an exception or returns Y_HOURS_INVALID.
-     */
-    int                 get_hours(void);
+	/**
+	 * Changes the minutes in the 30-59 interval when a wake up must take place.
+	 *
+	 * @param newval : an integer corresponding to the minutes in the 30-59 interval when a wake up must take place
+	 *
+	 * @return YAPI_SUCCESS if the call succeeds.
+	 *
+	 * On failure, throws an exception or returns a negative error code.
+	 */
+	int set_minutesB(int newval);
 
-    inline int          hours(void)
-    { return this->get_hours(); }
+	inline int setMinutesB(int newval)
+	{
+		return this->set_minutesB(newval);
+	}
 
-    /**
-     * Changes the hours when a wake up must take place.
-     *
-     * @param newval : an integer corresponding to the hours when a wake up must take place
-     *
-     * @return YAPI_SUCCESS if the call succeeds.
-     *
-     * On failure, throws an exception or returns a negative error code.
-     */
-    int             set_hours(int newval);
-    inline int      setHours(int newval)
-    { return this->set_hours(newval); }
+	/**
+	 * Returns the hours scheduled for wake up.
+	 *
+	 * @return an integer corresponding to the hours scheduled for wake up
+	 *
+	 * On failure, throws an exception or returns Y_HOURS_INVALID.
+	 */
+	int get_hours(void);
 
-    /**
-     * Returns the days of the week scheduled for wake up.
-     *
-     * @return an integer corresponding to the days of the week scheduled for wake up
-     *
-     * On failure, throws an exception or returns Y_WEEKDAYS_INVALID.
-     */
-    int                 get_weekDays(void);
+	inline int hours(void)
+	{
+		return this->get_hours();
+	}
 
-    inline int          weekDays(void)
-    { return this->get_weekDays(); }
+	/**
+	 * Changes the hours when a wake up must take place.
+	 *
+	 * @param newval : an integer corresponding to the hours when a wake up must take place
+	 *
+	 * @return YAPI_SUCCESS if the call succeeds.
+	 *
+	 * On failure, throws an exception or returns a negative error code.
+	 */
+	int set_hours(int newval);
 
-    /**
-     * Changes the days of the week when a wake up must take place.
-     *
-     * @param newval : an integer corresponding to the days of the week when a wake up must take place
-     *
-     * @return YAPI_SUCCESS if the call succeeds.
-     *
-     * On failure, throws an exception or returns a negative error code.
-     */
-    int             set_weekDays(int newval);
-    inline int      setWeekDays(int newval)
-    { return this->set_weekDays(newval); }
+	inline int setHours(int newval)
+	{
+		return this->set_hours(newval);
+	}
 
-    /**
-     * Returns the days of the month scheduled for wake up.
-     *
-     * @return an integer corresponding to the days of the month scheduled for wake up
-     *
-     * On failure, throws an exception or returns Y_MONTHDAYS_INVALID.
-     */
-    int                 get_monthDays(void);
+	/**
+	 * Returns the days of the week scheduled for wake up.
+	 *
+	 * @return an integer corresponding to the days of the week scheduled for wake up
+	 *
+	 * On failure, throws an exception or returns Y_WEEKDAYS_INVALID.
+	 */
+	int get_weekDays(void);
 
-    inline int          monthDays(void)
-    { return this->get_monthDays(); }
+	inline int weekDays(void)
+	{
+		return this->get_weekDays();
+	}
 
-    /**
-     * Changes the days of the month when a wake up must take place.
-     *
-     * @param newval : an integer corresponding to the days of the month when a wake up must take place
-     *
-     * @return YAPI_SUCCESS if the call succeeds.
-     *
-     * On failure, throws an exception or returns a negative error code.
-     */
-    int             set_monthDays(int newval);
-    inline int      setMonthDays(int newval)
-    { return this->set_monthDays(newval); }
+	/**
+	 * Changes the days of the week when a wake up must take place.
+	 *
+	 * @param newval : an integer corresponding to the days of the week when a wake up must take place
+	 *
+	 * @return YAPI_SUCCESS if the call succeeds.
+	 *
+	 * On failure, throws an exception or returns a negative error code.
+	 */
+	int set_weekDays(int newval);
 
-    /**
-     * Returns the months scheduled for wake up.
-     *
-     * @return an integer corresponding to the months scheduled for wake up
-     *
-     * On failure, throws an exception or returns Y_MONTHS_INVALID.
-     */
-    int                 get_months(void);
+	inline int setWeekDays(int newval)
+	{
+		return this->set_weekDays(newval);
+	}
 
-    inline int          months(void)
-    { return this->get_months(); }
+	/**
+	 * Returns the days of the month scheduled for wake up.
+	 *
+	 * @return an integer corresponding to the days of the month scheduled for wake up
+	 *
+	 * On failure, throws an exception or returns Y_MONTHDAYS_INVALID.
+	 */
+	int get_monthDays(void);
 
-    /**
-     * Changes the months when a wake up must take place.
-     *
-     * @param newval : an integer corresponding to the months when a wake up must take place
-     *
-     * @return YAPI_SUCCESS if the call succeeds.
-     *
-     * On failure, throws an exception or returns a negative error code.
-     */
-    int             set_months(int newval);
-    inline int      setMonths(int newval)
-    { return this->set_months(newval); }
+	inline int monthDays(void)
+	{
+		return this->get_monthDays();
+	}
 
-    /**
-     * Returns the date/time (seconds) of the next wake up occurence.
-     *
-     * @return an integer corresponding to the date/time (seconds) of the next wake up occurence
-     *
-     * On failure, throws an exception or returns Y_NEXTOCCURENCE_INVALID.
-     */
-    s64                 get_nextOccurence(void);
+	/**
+	 * Changes the days of the month when a wake up must take place.
+	 *
+	 * @param newval : an integer corresponding to the days of the month when a wake up must take place
+	 *
+	 * @return YAPI_SUCCESS if the call succeeds.
+	 *
+	 * On failure, throws an exception or returns a negative error code.
+	 */
+	int set_monthDays(int newval);
 
-    inline s64          nextOccurence(void)
-    { return this->get_nextOccurence(); }
+	inline int setMonthDays(int newval)
+	{
+		return this->set_monthDays(newval);
+	}
 
-    /**
-     * Retrieves a wake up schedule for a given identifier.
-     * The identifier can be specified using several formats:
-     * <ul>
-     * <li>FunctionLogicalName</li>
-     * <li>ModuleSerialNumber.FunctionIdentifier</li>
-     * <li>ModuleSerialNumber.FunctionLogicalName</li>
-     * <li>ModuleLogicalName.FunctionIdentifier</li>
-     * <li>ModuleLogicalName.FunctionLogicalName</li>
-     * </ul>
-     *
-     * This function does not require that the wake up schedule is online at the time
-     * it is invoked. The returned object is nevertheless valid.
-     * Use the method YWakeUpSchedule.isOnline() to test if the wake up schedule is
-     * indeed online at a given time. In case of ambiguity when looking for
-     * a wake up schedule by logical name, no error is notified: the first instance
-     * found is returned. The search is performed first by hardware name,
-     * then by logical name.
-     *
-     * @param func : a string that uniquely characterizes the wake up schedule
-     *
-     * @return a YWakeUpSchedule object allowing you to drive the wake up schedule.
-     */
-    static YWakeUpSchedule* FindWakeUpSchedule(string func);
+	/**
+	 * Returns the months scheduled for wake up.
+	 *
+	 * @return an integer corresponding to the months scheduled for wake up
+	 *
+	 * On failure, throws an exception or returns Y_MONTHS_INVALID.
+	 */
+	int get_months(void);
 
-    /**
-     * Registers the callback function that is invoked on every change of advertised value.
-     * The callback is invoked only during the execution of ySleep or yHandleEvents.
-     * This provides control over the time when the callback is triggered. For good responsiveness, remember to call
-     * one of these two functions periodically. To unregister a callback, pass a NULL pointer as argument.
-     *
-     * @param callback : the callback function to call, or a NULL pointer. The callback function should take two
-     *         arguments: the function object of which the value has changed, and the character string describing
-     *         the new advertised value.
-     * @noreturn
-     */
-    virtual int         registerValueCallback(YWakeUpScheduleValueCallback callback);
-    using YFunction::registerValueCallback;
+	inline int months(void)
+	{
+		return this->get_months();
+	}
 
-    virtual int         _invokeValueCallback(string value);
+	/**
+	 * Changes the months when a wake up must take place.
+	 *
+	 * @param newval : an integer corresponding to the months when a wake up must take place
+	 *
+	 * @return YAPI_SUCCESS if the call succeeds.
+	 *
+	 * On failure, throws an exception or returns a negative error code.
+	 */
+	int set_months(int newval);
 
-    /**
-     * Returns all the minutes of each hour that are scheduled for wake up.
-     */
-    virtual s64         get_minutes(void);
+	inline int setMonths(int newval)
+	{
+		return this->set_months(newval);
+	}
 
-    /**
-     * Changes all the minutes where a wake up must take place.
-     *
-     * @param bitmap : Minutes 00-59 of each hour scheduled for wake up.
-     *
-     * @return YAPI_SUCCESS if the call succeeds.
-     *
-     * On failure, throws an exception or returns a negative error code.
-     */
-    virtual int         set_minutes(s64 bitmap);
+	/**
+	 * Returns the date/time (seconds) of the next wake up occurence.
+	 *
+	 * @return an integer corresponding to the date/time (seconds) of the next wake up occurence
+	 *
+	 * On failure, throws an exception or returns Y_NEXTOCCURENCE_INVALID.
+	 */
+	s64 get_nextOccurence(void);
+
+	inline s64 nextOccurence(void)
+	{
+		return this->get_nextOccurence();
+	}
+
+	/**
+	 * Retrieves a wake up schedule for a given identifier.
+	 * The identifier can be specified using several formats:
+	 * <ul>
+	 * <li>FunctionLogicalName</li>
+	 * <li>ModuleSerialNumber.FunctionIdentifier</li>
+	 * <li>ModuleSerialNumber.FunctionLogicalName</li>
+	 * <li>ModuleLogicalName.FunctionIdentifier</li>
+	 * <li>ModuleLogicalName.FunctionLogicalName</li>
+	 * </ul>
+	 *
+	 * This function does not require that the wake up schedule is online at the time
+	 * it is invoked. The returned object is nevertheless valid.
+	 * Use the method YWakeUpSchedule.isOnline() to test if the wake up schedule is
+	 * indeed online at a given time. In case of ambiguity when looking for
+	 * a wake up schedule by logical name, no error is notified: the first instance
+	 * found is returned. The search is performed first by hardware name,
+	 * then by logical name.
+	 *
+	 * @param func : a string that uniquely characterizes the wake up schedule
+	 *
+	 * @return a YWakeUpSchedule object allowing you to drive the wake up schedule.
+	 */
+	static YWakeUpSchedule* FindWakeUpSchedule(string func);
+
+	/**
+	 * Registers the callback function that is invoked on every change of advertised value.
+	 * The callback is invoked only during the execution of ySleep or yHandleEvents.
+	 * This provides control over the time when the callback is triggered. For good responsiveness, remember to call
+	 * one of these two functions periodically. To unregister a callback, pass a NULL pointer as argument.
+	 *
+	 * @param callback : the callback function to call, or a NULL pointer. The callback function should take two
+	 *         arguments: the function object of which the value has changed, and the character string describing
+	 *         the new advertised value.
+	 * @noreturn
+	 */
+	virtual int registerValueCallback(YWakeUpScheduleValueCallback callback);
+	using YFunction::registerValueCallback;
+
+	virtual int _invokeValueCallback(string value);
+
+	/**
+	 * Returns all the minutes of each hour that are scheduled for wake up.
+	 */
+	virtual s64 get_minutes(void);
+
+	/**
+	 * Changes all the minutes where a wake up must take place.
+	 *
+	 * @param bitmap : Minutes 00-59 of each hour scheduled for wake up.
+	 *
+	 * @return YAPI_SUCCESS if the call succeeds.
+	 *
+	 * On failure, throws an exception or returns a negative error code.
+	 */
+	virtual int set_minutes(s64 bitmap);
 
 
-    inline static YWakeUpSchedule* Find(string func)
-    { return YWakeUpSchedule::FindWakeUpSchedule(func); }
+	inline static YWakeUpSchedule* Find(string func)
+	{
+		return YWakeUpSchedule::FindWakeUpSchedule(func);
+	}
 
-    /**
-     * Continues the enumeration of wake up schedules started using yFirstWakeUpSchedule().
-     *
-     * @return a pointer to a YWakeUpSchedule object, corresponding to
-     *         a wake up schedule currently online, or a NULL pointer
-     *         if there are no more wake up schedules to enumerate.
-     */
-           YWakeUpSchedule *nextWakeUpSchedule(void);
-    inline YWakeUpSchedule *next(void)
-    { return this->nextWakeUpSchedule();}
+	/**
+	 * Continues the enumeration of wake up schedules started using yFirstWakeUpSchedule().
+	 *
+	 * @return a pointer to a YWakeUpSchedule object, corresponding to
+	 *         a wake up schedule currently online, or a NULL pointer
+	 *         if there are no more wake up schedules to enumerate.
+	 */
+	YWakeUpSchedule* nextWakeUpSchedule(void);
 
-    /**
-     * Starts the enumeration of wake up schedules currently accessible.
-     * Use the method YWakeUpSchedule.nextWakeUpSchedule() to iterate on
-     * next wake up schedules.
-     *
-     * @return a pointer to a YWakeUpSchedule object, corresponding to
-     *         the first wake up schedule currently online, or a NULL pointer
-     *         if there are none.
-     */
-           static YWakeUpSchedule* FirstWakeUpSchedule(void);
-    inline static YWakeUpSchedule* First(void)
-    { return YWakeUpSchedule::FirstWakeUpSchedule();}
+	inline YWakeUpSchedule* next(void)
+	{
+		return this->nextWakeUpSchedule();
+	}
+
+	/**
+	 * Starts the enumeration of wake up schedules currently accessible.
+	 * Use the method YWakeUpSchedule.nextWakeUpSchedule() to iterate on
+	 * next wake up schedules.
+	 *
+	 * @return a pointer to a YWakeUpSchedule object, corresponding to
+	 *         the first wake up schedule currently online, or a NULL pointer
+	 *         if there are none.
+	 */
+	static YWakeUpSchedule* FirstWakeUpSchedule(void);
+
+	inline static YWakeUpSchedule* First(void)
+	{
+		return YWakeUpSchedule::FirstWakeUpSchedule();
+	}
 #ifdef __BORLANDC__
 #pragma option pop
 #endif
-    //--- (end of YWakeUpSchedule accessors declaration)
+	//--- (end of YWakeUpSchedule accessors declaration)
 };
 
 //--- (WakeUpSchedule functions declaration)
@@ -386,7 +428,10 @@ public:
  * @return a YWakeUpSchedule object allowing you to drive the wake up schedule.
  */
 inline YWakeUpSchedule* yFindWakeUpSchedule(const string& func)
-{ return YWakeUpSchedule::FindWakeUpSchedule(func);}
+{
+	return YWakeUpSchedule::FindWakeUpSchedule(func);
+}
+
 /**
  * Starts the enumeration of wake up schedules currently accessible.
  * Use the method YWakeUpSchedule.nextWakeUpSchedule() to iterate on
@@ -397,7 +442,9 @@ inline YWakeUpSchedule* yFindWakeUpSchedule(const string& func)
  *         if there are none.
  */
 inline YWakeUpSchedule* yFirstWakeUpSchedule(void)
-{ return YWakeUpSchedule::FirstWakeUpSchedule();}
+{
+	return YWakeUpSchedule::FirstWakeUpSchedule();
+}
 
 //--- (end of WakeUpSchedule functions declaration)
 

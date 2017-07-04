@@ -49,33 +49,36 @@
 #define  __FILE_ID__  "segmenteddisplay"
 
 YSegmentedDisplay::YSegmentedDisplay(const string& func): YFunction(func)
-//--- (SegmentedDisplay initialization)
-    ,_displayedText(DISPLAYEDTEXT_INVALID)
-    ,_displayMode(DISPLAYMODE_INVALID)
-    ,_valueCallbackSegmentedDisplay(NULL)
+                                                          //--- (SegmentedDisplay initialization)
+                                                          , _displayedText(DISPLAYEDTEXT_INVALID)
+                                                          , _displayMode(DISPLAYMODE_INVALID)
+                                                          , _valueCallbackSegmentedDisplay(NULL)
 //--- (end of SegmentedDisplay initialization)
 {
-    _className="SegmentedDisplay";
+	_className = "SegmentedDisplay";
 }
 
 YSegmentedDisplay::~YSegmentedDisplay()
 {
-//--- (YSegmentedDisplay cleanup)
-//--- (end of YSegmentedDisplay cleanup)
+	//--- (YSegmentedDisplay cleanup)
+	//--- (end of YSegmentedDisplay cleanup)
 }
+
 //--- (YSegmentedDisplay implementation)
 // static attributes
 const string YSegmentedDisplay::DISPLAYEDTEXT_INVALID = YAPI_INVALID_STRING;
 
 int YSegmentedDisplay::_parseAttr(YJSONObject* json_val)
 {
-    if(json_val->has("displayedText")) {
-        _displayedText =  json_val->getString("displayedText");
-    }
-    if(json_val->has("displayMode")) {
-        _displayMode =  (Y_DISPLAYMODE_enum)json_val->getInt("displayMode");
-    }
-    return YFunction::_parseAttr(json_val);
+	if (json_val->has("displayedText"))
+	{
+		_displayedText = json_val->getString("displayedText");
+	}
+	if (json_val->has("displayMode"))
+	{
+		_displayMode = (Y_DISPLAYMODE_enum)json_val->getInt("displayMode");
+	}
+	return YFunction::_parseAttr(json_val);
 }
 
 
@@ -88,24 +91,29 @@ int YSegmentedDisplay::_parseAttr(YJSONObject* json_val)
  */
 string YSegmentedDisplay::get_displayedText(void)
 {
-    string res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YSegmentedDisplay::DISPLAYEDTEXT_INVALID;
-                }
-            }
-        }
-        res = _displayedText;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YSegmentedDisplay::DISPLAYEDTEXT_INVALID;
+				}
+			}
+		}
+		res = _displayedText;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -119,56 +127,69 @@ string YSegmentedDisplay::get_displayedText(void)
  */
 int YSegmentedDisplay::set_displayedText(const string& newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        rest_val = newval;
-        res = _setAttr("displayedText", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		rest_val = newval;
+		res = _setAttr("displayedText", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 Y_DISPLAYMODE_enum YSegmentedDisplay::get_displayMode(void)
 {
-    Y_DISPLAYMODE_enum res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YSegmentedDisplay::DISPLAYMODE_INVALID;
-                }
-            }
-        }
-        res = _displayMode;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	Y_DISPLAYMODE_enum res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YSegmentedDisplay::DISPLAYMODE_INVALID;
+				}
+			}
+		}
+		res = _displayMode;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 int YSegmentedDisplay::set_displayMode(Y_DISPLAYMODE_enum newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        char buf[32]; sprintf(buf, "%d", newval); rest_val = string(buf);
-        res = _setAttr("displayMode", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		char buf[32];
+		sprintf(buf, "%d", newval);
+		rest_val = string(buf);
+		res = _setAttr("displayMode", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -196,23 +217,29 @@ int YSegmentedDisplay::set_displayMode(Y_DISPLAYMODE_enum newval)
  */
 YSegmentedDisplay* YSegmentedDisplay::FindSegmentedDisplay(string func)
 {
-    YSegmentedDisplay* obj = NULL;
-    int taken = 0;
-    if (YAPI::_apiInitialized) {
-        yEnterCriticalSection(&YAPI::_global_cs);
-        taken = 1;
-    }try {
-        obj = (YSegmentedDisplay*) YFunction::_FindFromCache("SegmentedDisplay", func);
-        if (obj == NULL) {
-            obj = new YSegmentedDisplay(func);
-            YFunction::_AddToCache("SegmentedDisplay", func, obj);
-        }
-    } catch (std::exception) {
-        if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
-        throw;
-    }
-    if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
-    return obj;
+	YSegmentedDisplay* obj = NULL;
+	int taken = 0;
+	if (YAPI::_apiInitialized)
+	{
+		yEnterCriticalSection(&YAPI::_global_cs);
+		taken = 1;
+	}
+	try
+	{
+		obj = (YSegmentedDisplay*)YFunction::_FindFromCache("SegmentedDisplay", func);
+		if (obj == NULL)
+		{
+			obj = new YSegmentedDisplay(func);
+			YFunction::_AddToCache("SegmentedDisplay", func, obj);
+		}
+	}
+	catch (std::exception)
+	{
+		if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
+		throw;
+	}
+	if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
+	return obj;
 }
 
 /**
@@ -228,55 +255,65 @@ YSegmentedDisplay* YSegmentedDisplay::FindSegmentedDisplay(string func)
  */
 int YSegmentedDisplay::registerValueCallback(YSegmentedDisplayValueCallback callback)
 {
-    string val;
-    if (callback != NULL) {
-        YFunction::_UpdateValueCallbackList(this, true);
-    } else {
-        YFunction::_UpdateValueCallbackList(this, false);
-    }
-    _valueCallbackSegmentedDisplay = callback;
-    // Immediately invoke value callback with current value
-    if (callback != NULL && this->isOnline()) {
-        val = _advertisedValue;
-        if (!(val == "")) {
-            this->_invokeValueCallback(val);
-        }
-    }
-    return 0;
+	string val;
+	if (callback != NULL)
+	{
+		YFunction::_UpdateValueCallbackList(this, true);
+	}
+	else
+	{
+		YFunction::_UpdateValueCallbackList(this, false);
+	}
+	_valueCallbackSegmentedDisplay = callback;
+	// Immediately invoke value callback with current value
+	if (callback != NULL && this->isOnline())
+	{
+		val = _advertisedValue;
+		if (!(val == ""))
+		{
+			this->_invokeValueCallback(val);
+		}
+	}
+	return 0;
 }
 
 int YSegmentedDisplay::_invokeValueCallback(string value)
 {
-    if (_valueCallbackSegmentedDisplay != NULL) {
-        _valueCallbackSegmentedDisplay(this, value);
-    } else {
-        YFunction::_invokeValueCallback(value);
-    }
-    return 0;
+	if (_valueCallbackSegmentedDisplay != NULL)
+	{
+		_valueCallbackSegmentedDisplay(this, value);
+	}
+	else
+	{
+		YFunction::_invokeValueCallback(value);
+	}
+	return 0;
 }
 
-YSegmentedDisplay *YSegmentedDisplay::nextSegmentedDisplay(void)
+YSegmentedDisplay* YSegmentedDisplay::nextSegmentedDisplay(void)
 {
-    string  hwid;
+	string hwid;
 
-    if(YISERR(_nextFunction(hwid)) || hwid=="") {
-        return NULL;
-    }
-    return YSegmentedDisplay::FindSegmentedDisplay(hwid);
+	if (YISERR(_nextFunction(hwid)) || hwid == "")
+	{
+		return NULL;
+	}
+	return YSegmentedDisplay::FindSegmentedDisplay(hwid);
 }
 
 YSegmentedDisplay* YSegmentedDisplay::FirstSegmentedDisplay(void)
 {
-    vector<YFUN_DESCR>   v_fundescr;
-    YDEV_DESCR             ydevice;
-    string              serial, funcId, funcName, funcVal, errmsg;
+	vector<YFUN_DESCR> v_fundescr;
+	YDEV_DESCR ydevice;
+	string serial, funcId, funcName, funcVal, errmsg;
 
-    if(YISERR(YapiWrapper::getFunctionsByClass("SegmentedDisplay", 0, v_fundescr, sizeof(YFUN_DESCR), errmsg)) ||
-       v_fundescr.size() == 0 ||
-       YISERR(YapiWrapper::getFunctionInfo(v_fundescr[0], ydevice, serial, funcId, funcName, funcVal, errmsg))) {
-        return NULL;
-    }
-    return YSegmentedDisplay::FindSegmentedDisplay(serial+"."+funcId);
+	if (YISERR(YapiWrapper::getFunctionsByClass("SegmentedDisplay", 0, v_fundescr, sizeof(YFUN_DESCR), errmsg)) ||
+		v_fundescr.size() == 0 ||
+		YISERR(YapiWrapper::getFunctionInfo(v_fundescr[0], ydevice, serial, funcId, funcName, funcVal, errmsg)))
+	{
+		return NULL;
+	}
+	return YSegmentedDisplay::FindSegmentedDisplay(serial + "." + funcId);
 }
 
 //--- (end of YSegmentedDisplay implementation)

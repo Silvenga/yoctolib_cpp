@@ -38,7 +38,7 @@
  *********************************************************************/
 
 #define __FILE_ID__  "ymemory"
- // do not use microsoft secure string
+// do not use microsoft secure string
 #define _CRT_SECURE_NO_DEPRECATE
 #define YMEMORY_ALLOW_MALLOC
 #include "yproto.h"
@@ -136,10 +136,10 @@ void *ySafeMalloc(const char *file,u32 line,u32 size)
 
     yEnterCriticalSection(&yMapCS);
     if(yMapUsed < yMapSize){
-        //use a new one
+//use a new one
         entry=yMap+yMapUsed;
     }else{
-        // find a freed entry
+// find a freed entry
         for(i=0; i< yMapSize;i++){
             if(yMap[i].state == YMEM_FREED)
                 break;
@@ -267,126 +267,139 @@ void  ySafeMemoryStop(void)
 
 
 // return the min of strlen and maxlen
-static unsigned ystrnlen(const char *src,unsigned maxlen)
+static unsigned ystrnlen(const char* src, unsigned maxlen)
 {
-    unsigned len;
-    for (len=0 ; *src && len < maxlen ;len++,src++);
-    return len;
+	unsigned len;
+	for (len = 0; *src && len < maxlen; len++ , src++);
+	return len;
 }
 
-YRETCODE ystrcpy_s(char *dst, unsigned dstsize,const char *src)
+YRETCODE ystrcpy_s(char* dst, unsigned dstsize, const char* src)
 {
-
-    return ystrncpy_s(dst,dstsize,src,dstsize);
-}
-
-
-char* ystrdup_s(const char *src)
-{
-    int len = YSTRLEN(src);
-    char *tmp = yMalloc(len+1);
-    memcpy(tmp, src, len + 1);
-    return tmp;
+	return ystrncpy_s(dst, dstsize, src, dstsize);
 }
 
 
-YRETCODE ystrcat_s(char *dst, unsigned dstsize,const char *src)
+char* ystrdup_s(const char* src)
 {
-    return ystrncat_s(dst, dstsize, src, dstsize);
-}
-
-int ysprintf_s(char *dst, unsigned dstsize,const char *fmt ,...)
-{
-    int len;
-    va_list args;
-    va_start( args, fmt );
-    len = yvsprintf_s(dst,dstsize,fmt,args);
-    va_end(args);
-    return len;
-}
-
-YRETCODE ystrncpy_s(char *dst,unsigned dstsize,const char *src,unsigned arglen)
-{
-    unsigned len;
-
-    if (dst==NULL){
-        YPANIC;
-        return YAPI_INVALID_ARGUMENT;
-    }
-    if (src==NULL){
-        YPANIC;
-        return YAPI_INVALID_ARGUMENT;
-    }
-    if(dstsize ==0){
-        YPANIC;
-        return YAPI_INVALID_ARGUMENT;
-    }
-    len = ystrnlen(src,arglen);
-    if(len+1 > dstsize){
-        YPANIC;
-        dst[0]=0;
-        return YAPI_INVALID_ARGUMENT;
-    }else{
-        memcpy(dst,src,len);
-        dst[len]=0;
-    }
-    return YAPI_SUCCESS;
+	int len = YSTRLEN(src);
+	char* tmp = yMalloc(len+1);
+	memcpy(tmp, src, len + 1);
+	return tmp;
 }
 
 
-YRETCODE ystrncat_s(char *dst, unsigned dstsize,const char *src,unsigned len)
+YRETCODE ystrcat_s(char* dst, unsigned dstsize, const char* src)
 {
-    unsigned dstlen;
-    if (dst==NULL){
-        YPANIC;
-        return YAPI_INVALID_ARGUMENT;
-    }
-    if (src==NULL){
-        YPANIC;
-        return YAPI_INVALID_ARGUMENT;
-    }
-    dstlen = ystrnlen(dst, dstsize);
-    if(dstlen+1 > dstsize){
-        YPANIC;
-        return YAPI_INVALID_ARGUMENT;
-    }
-    return ystrncpy_s(dst+dstlen, dstsize-dstlen, src, len);
+	return ystrncat_s(dst, dstsize, src, dstsize);
+}
+
+int ysprintf_s(char* dst, unsigned dstsize, const char* fmt,...)
+{
+	int len;
+	va_list args;
+	va_start( args, fmt );
+	len = yvsprintf_s(dst, dstsize, fmt, args);
+	va_end(args);
+	return len;
+}
+
+YRETCODE ystrncpy_s(char* dst, unsigned dstsize, const char* src, unsigned arglen)
+{
+	unsigned len;
+
+	if (dst == NULL)
+	{
+		YPANIC;
+		return YAPI_INVALID_ARGUMENT;
+	}
+	if (src == NULL)
+	{
+		YPANIC;
+		return YAPI_INVALID_ARGUMENT;
+	}
+	if (dstsize == 0)
+	{
+		YPANIC;
+		return YAPI_INVALID_ARGUMENT;
+	}
+	len = ystrnlen(src, arglen);
+	if (len + 1 > dstsize)
+	{
+		YPANIC;
+		dst[0] = 0;
+		return YAPI_INVALID_ARGUMENT;
+	}
+	else
+	{
+		memcpy(dst, src, len);
+		dst[len] = 0;
+	}
+	return YAPI_SUCCESS;
 }
 
 
-int yvsprintf_s (char *dst, unsigned dstsize, const char * fmt, va_list arg )
+YRETCODE ystrncat_s(char* dst, unsigned dstsize, const char* src, unsigned len)
 {
-    int len;
+	unsigned dstlen;
+	if (dst == NULL)
+	{
+		YPANIC;
+		return YAPI_INVALID_ARGUMENT;
+	}
+	if (src == NULL)
+	{
+		YPANIC;
+		return YAPI_INVALID_ARGUMENT;
+	}
+	dstlen = ystrnlen(dst, dstsize);
+	if (dstlen + 1 > dstsize)
+	{
+		YPANIC;
+		return YAPI_INVALID_ARGUMENT;
+	}
+	return ystrncpy_s(dst + dstlen, dstsize - dstlen, src, len);
+}
+
+
+int yvsprintf_s(char* dst, unsigned dstsize, const char* fmt, va_list arg)
+{
+	int len;
 #if defined(_MSC_VER) && (_MSC_VER <= MSC_VS2003)
     len = _vsnprintf(dst,dstsize,fmt,arg);
 #else
-    len = vsnprintf(dst,dstsize,fmt,arg);
+	len = vsnprintf(dst, dstsize, fmt, arg);
 #endif
-    if(len <0 || len >=(long)dstsize){
-        YPANIC;
-        dst[dstsize-1]=0;
-        return YAPI_INVALID_ARGUMENT;
-    }
-    return len;
+	if (len < 0 || len >= (long)dstsize)
+	{
+		YPANIC;
+		dst[dstsize - 1] = 0;
+		return YAPI_INVALID_ARGUMENT;
+	}
+	return len;
 }
 
-int ymemfind(const u8 *haystack, u32 haystack_len, const u8 *needle, u32 needle_len)
+int ymemfind(const u8* haystack, u32 haystack_len, const u8* needle, u32 needle_len)
 {
-    u32 abspos = 0;
-    u32 needle_pos = 0;
+	u32 abspos = 0;
+	u32 needle_pos = 0;
 
-    do {
-        while (needle_pos < needle_len && (abspos + needle_pos)<haystack_len && needle[needle_pos] == haystack[abspos + needle_pos]) {
-            needle_pos++;
-        }
-        if (needle_pos == needle_len) {
-            return abspos;
-        } else {
-            abspos++;
-            needle_pos = 0;
-        }
-    } while (abspos + needle_len < haystack_len);
-    return -1;
+	do
+	{
+		while (needle_pos < needle_len && (abspos + needle_pos) < haystack_len && needle[needle_pos] == haystack[abspos + needle_pos])
+		{
+			needle_pos++;
+		}
+		if (needle_pos == needle_len)
+		{
+			return abspos;
+		}
+		else
+		{
+			abspos++;
+			needle_pos = 0;
+		}
+	}
+	while (abspos + needle_len < haystack_len);
+	return -1;
 }
-
-

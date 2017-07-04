@@ -49,24 +49,25 @@
 #define  __FILE_ID__  "buzzer"
 
 YBuzzer::YBuzzer(const string& func): YFunction(func)
-//--- (Buzzer initialization)
-    ,_frequency(FREQUENCY_INVALID)
-    ,_volume(VOLUME_INVALID)
-    ,_playSeqSize(PLAYSEQSIZE_INVALID)
-    ,_playSeqMaxSize(PLAYSEQMAXSIZE_INVALID)
-    ,_playSeqSignature(PLAYSEQSIGNATURE_INVALID)
-    ,_command(COMMAND_INVALID)
-    ,_valueCallbackBuzzer(NULL)
+                                      //--- (Buzzer initialization)
+                                      , _frequency(FREQUENCY_INVALID)
+                                      , _volume(VOLUME_INVALID)
+                                      , _playSeqSize(PLAYSEQSIZE_INVALID)
+                                      , _playSeqMaxSize(PLAYSEQMAXSIZE_INVALID)
+                                      , _playSeqSignature(PLAYSEQSIGNATURE_INVALID)
+                                      , _command(COMMAND_INVALID)
+                                      , _valueCallbackBuzzer(NULL)
 //--- (end of Buzzer initialization)
 {
-    _className="Buzzer";
+	_className = "Buzzer";
 }
 
 YBuzzer::~YBuzzer()
 {
-//--- (YBuzzer cleanup)
-//--- (end of YBuzzer cleanup)
+	//--- (YBuzzer cleanup)
+	//--- (end of YBuzzer cleanup)
 }
+
 //--- (YBuzzer implementation)
 // static attributes
 const double YBuzzer::FREQUENCY_INVALID = YAPI_INVALID_DOUBLE;
@@ -74,25 +75,31 @@ const string YBuzzer::COMMAND_INVALID = YAPI_INVALID_STRING;
 
 int YBuzzer::_parseAttr(YJSONObject* json_val)
 {
-    if(json_val->has("frequency")) {
-        _frequency =  floor(json_val->getDouble("frequency") * 1000.0 / 65536.0 + 0.5) / 1000.0;
-    }
-    if(json_val->has("volume")) {
-        _volume =  json_val->getInt("volume");
-    }
-    if(json_val->has("playSeqSize")) {
-        _playSeqSize =  json_val->getInt("playSeqSize");
-    }
-    if(json_val->has("playSeqMaxSize")) {
-        _playSeqMaxSize =  json_val->getInt("playSeqMaxSize");
-    }
-    if(json_val->has("playSeqSignature")) {
-        _playSeqSignature =  json_val->getInt("playSeqSignature");
-    }
-    if(json_val->has("command")) {
-        _command =  json_val->getString("command");
-    }
-    return YFunction::_parseAttr(json_val);
+	if (json_val->has("frequency"))
+	{
+		_frequency = floor(json_val->getDouble("frequency") * 1000.0 / 65536.0 + 0.5) / 1000.0;
+	}
+	if (json_val->has("volume"))
+	{
+		_volume = json_val->getInt("volume");
+	}
+	if (json_val->has("playSeqSize"))
+	{
+		_playSeqSize = json_val->getInt("playSeqSize");
+	}
+	if (json_val->has("playSeqMaxSize"))
+	{
+		_playSeqMaxSize = json_val->getInt("playSeqMaxSize");
+	}
+	if (json_val->has("playSeqSignature"))
+	{
+		_playSeqSignature = json_val->getInt("playSeqSignature");
+	}
+	if (json_val->has("command"))
+	{
+		_command = json_val->getString("command");
+	}
+	return YFunction::_parseAttr(json_val);
 }
 
 
@@ -107,18 +114,23 @@ int YBuzzer::_parseAttr(YJSONObject* json_val)
  */
 int YBuzzer::set_frequency(double newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        char buf[32]; sprintf(buf,"%d", (int)floor(newval * 65536.0 + 0.5)); rest_val = string(buf);
-        res = _setAttr("frequency", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		char buf[32];
+		sprintf(buf, "%d", (int)floor(newval * 65536.0 + 0.5));
+		rest_val = string(buf);
+		res = _setAttr("frequency", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -130,24 +142,29 @@ int YBuzzer::set_frequency(double newval)
  */
 double YBuzzer::get_frequency(void)
 {
-    double res = 0.0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YBuzzer::FREQUENCY_INVALID;
-                }
-            }
-        }
-        res = _frequency;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	double res = 0.0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YBuzzer::FREQUENCY_INVALID;
+				}
+			}
+		}
+		res = _frequency;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -159,24 +176,29 @@ double YBuzzer::get_frequency(void)
  */
 int YBuzzer::get_volume(void)
 {
-    int res = 0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YBuzzer::VOLUME_INVALID;
-                }
-            }
-        }
-        res = _volume;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	int res = 0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YBuzzer::VOLUME_INVALID;
+				}
+			}
+		}
+		res = _volume;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -190,18 +212,23 @@ int YBuzzer::get_volume(void)
  */
 int YBuzzer::set_volume(int newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        char buf[32]; sprintf(buf, "%d", newval); rest_val = string(buf);
-        res = _setAttr("volume", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		char buf[32];
+		sprintf(buf, "%d", newval);
+		rest_val = string(buf);
+		res = _setAttr("volume", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -213,24 +240,29 @@ int YBuzzer::set_volume(int newval)
  */
 int YBuzzer::get_playSeqSize(void)
 {
-    int res = 0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YBuzzer::PLAYSEQSIZE_INVALID;
-                }
-            }
-        }
-        res = _playSeqSize;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	int res = 0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YBuzzer::PLAYSEQSIZE_INVALID;
+				}
+			}
+		}
+		res = _playSeqSize;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -242,24 +274,29 @@ int YBuzzer::get_playSeqSize(void)
  */
 int YBuzzer::get_playSeqMaxSize(void)
 {
-    int res = 0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration == 0) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YBuzzer::PLAYSEQMAXSIZE_INVALID;
-                }
-            }
-        }
-        res = _playSeqMaxSize;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	int res = 0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration == 0)
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YBuzzer::PLAYSEQMAXSIZE_INVALID;
+				}
+			}
+		}
+		res = _playSeqMaxSize;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -274,62 +311,75 @@ int YBuzzer::get_playSeqMaxSize(void)
  */
 int YBuzzer::get_playSeqSignature(void)
 {
-    int res = 0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YBuzzer::PLAYSEQSIGNATURE_INVALID;
-                }
-            }
-        }
-        res = _playSeqSignature;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	int res = 0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YBuzzer::PLAYSEQSIGNATURE_INVALID;
+				}
+			}
+		}
+		res = _playSeqSignature;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 string YBuzzer::get_command(void)
 {
-    string res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YBuzzer::COMMAND_INVALID;
-                }
-            }
-        }
-        res = _command;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YBuzzer::COMMAND_INVALID;
+				}
+			}
+		}
+		res = _command;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 int YBuzzer::set_command(const string& newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        rest_val = newval;
-        res = _setAttr("command", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		rest_val = newval;
+		res = _setAttr("command", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -357,23 +407,29 @@ int YBuzzer::set_command(const string& newval)
  */
 YBuzzer* YBuzzer::FindBuzzer(string func)
 {
-    YBuzzer* obj = NULL;
-    int taken = 0;
-    if (YAPI::_apiInitialized) {
-        yEnterCriticalSection(&YAPI::_global_cs);
-        taken = 1;
-    }try {
-        obj = (YBuzzer*) YFunction::_FindFromCache("Buzzer", func);
-        if (obj == NULL) {
-            obj = new YBuzzer(func);
-            YFunction::_AddToCache("Buzzer", func, obj);
-        }
-    } catch (std::exception) {
-        if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
-        throw;
-    }
-    if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
-    return obj;
+	YBuzzer* obj = NULL;
+	int taken = 0;
+	if (YAPI::_apiInitialized)
+	{
+		yEnterCriticalSection(&YAPI::_global_cs);
+		taken = 1;
+	}
+	try
+	{
+		obj = (YBuzzer*)YFunction::_FindFromCache("Buzzer", func);
+		if (obj == NULL)
+		{
+			obj = new YBuzzer(func);
+			YFunction::_AddToCache("Buzzer", func, obj);
+		}
+	}
+	catch (std::exception)
+	{
+		if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
+		throw;
+	}
+	if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
+	return obj;
 }
 
 /**
@@ -389,36 +445,44 @@ YBuzzer* YBuzzer::FindBuzzer(string func)
  */
 int YBuzzer::registerValueCallback(YBuzzerValueCallback callback)
 {
-    string val;
-    if (callback != NULL) {
-        YFunction::_UpdateValueCallbackList(this, true);
-    } else {
-        YFunction::_UpdateValueCallbackList(this, false);
-    }
-    _valueCallbackBuzzer = callback;
-    // Immediately invoke value callback with current value
-    if (callback != NULL && this->isOnline()) {
-        val = _advertisedValue;
-        if (!(val == "")) {
-            this->_invokeValueCallback(val);
-        }
-    }
-    return 0;
+	string val;
+	if (callback != NULL)
+	{
+		YFunction::_UpdateValueCallbackList(this, true);
+	}
+	else
+	{
+		YFunction::_UpdateValueCallbackList(this, false);
+	}
+	_valueCallbackBuzzer = callback;
+	// Immediately invoke value callback with current value
+	if (callback != NULL && this->isOnline())
+	{
+		val = _advertisedValue;
+		if (!(val == ""))
+		{
+			this->_invokeValueCallback(val);
+		}
+	}
+	return 0;
 }
 
 int YBuzzer::_invokeValueCallback(string value)
 {
-    if (_valueCallbackBuzzer != NULL) {
-        _valueCallbackBuzzer(this, value);
-    } else {
-        YFunction::_invokeValueCallback(value);
-    }
-    return 0;
+	if (_valueCallbackBuzzer != NULL)
+	{
+		_valueCallbackBuzzer(this, value);
+	}
+	else
+	{
+		YFunction::_invokeValueCallback(value);
+	}
+	return 0;
 }
 
 int YBuzzer::sendCommand(string command)
 {
-    return this->set_command(command);
+	return this->set_command(command);
 }
 
 /**
@@ -430,9 +494,9 @@ int YBuzzer::sendCommand(string command)
  * @return YAPI_SUCCESS if the call succeeds.
  *         On failure, throws an exception or returns a negative error code.
  */
-int YBuzzer::addFreqMoveToPlaySeq(int freq,int msDelay)
+int YBuzzer::addFreqMoveToPlaySeq(int freq, int msDelay)
 {
-    return this->sendCommand(YapiWrapper::ysprintf("A%d,%d",freq,msDelay));
+	return this->sendCommand(YapiWrapper::ysprintf("A%d,%d", freq, msDelay));
 }
 
 /**
@@ -444,9 +508,9 @@ int YBuzzer::addFreqMoveToPlaySeq(int freq,int msDelay)
  * @return YAPI_SUCCESS if the call succeeds.
  *         On failure, throws an exception or returns a negative error code.
  */
-int YBuzzer::addPulseToPlaySeq(int freq,int msDuration)
+int YBuzzer::addPulseToPlaySeq(int freq, int msDuration)
 {
-    return this->sendCommand(YapiWrapper::ysprintf("B%d,%d",freq,msDuration));
+	return this->sendCommand(YapiWrapper::ysprintf("B%d,%d", freq, msDuration));
 }
 
 /**
@@ -459,9 +523,9 @@ int YBuzzer::addPulseToPlaySeq(int freq,int msDuration)
  * @return YAPI_SUCCESS if the call succeeds.
  *         On failure, throws an exception or returns a negative error code.
  */
-int YBuzzer::addVolMoveToPlaySeq(int volume,int msDuration)
+int YBuzzer::addVolMoveToPlaySeq(int volume, int msDuration)
 {
-    return this->sendCommand(YapiWrapper::ysprintf("C%d,%d",volume,msDuration));
+	return this->sendCommand(YapiWrapper::ysprintf("C%d,%d", volume, msDuration));
 }
 
 /**
@@ -479,162 +543,198 @@ int YBuzzer::addVolMoveToPlaySeq(int volume,int msDuration)
  */
 int YBuzzer::addNotesToPlaySeq(string notes)
 {
-    int tempo = 0;
-    int prevPitch = 0;
-    int prevDuration = 0;
-    int prevFreq = 0;
-    int note = 0;
-    int num = 0;
-    int typ = 0;
-    string ascNotes;
-    int notesLen = 0;
-    int i = 0;
-    int ch = 0;
-    int dNote = 0;
-    int pitch = 0;
-    int freq = 0;
-    int ms = 0;
-    int ms16 = 0;
-    int rest = 0;
-    tempo = 100;
-    prevPitch = 3;
-    prevDuration = 4;
-    prevFreq = 110;
-    note = -99;
-    num = 0;
-    typ = 3;
-    ascNotes = notes;
-    notesLen = (int)(ascNotes).size();
-    i = 0;
-    while (i < notesLen) {
-        ch = ((u8)ascNotes[i]);
-        // A (note))
-        if (ch == 65) {
-            note = 0;
-        }
-        // B (note)
-        if (ch == 66) {
-            note = 2;
-        }
-        // C (note)
-        if (ch == 67) {
-            note = 3;
-        }
-        // D (note)
-        if (ch == 68) {
-            note = 5;
-        }
-        // E (note)
-        if (ch == 69) {
-            note = 7;
-        }
-        // F (note)
-        if (ch == 70) {
-            note = 8;
-        }
-        // G (note)
-        if (ch == 71) {
-            note = 10;
-        }
-        // '#' (sharp modifier)
-        if (ch == 35) {
-            note = note + 1;
-        }
-        // 'b' (flat modifier)
-        if (ch == 98) {
-            note = note - 1;
-        }
-        // ' (octave up)
-        if (ch == 39) {
-            prevPitch = prevPitch + 12;
-        }
-        // , (octave down)
-        if (ch == 44) {
-            prevPitch = prevPitch - 12;
-        }
-        // R (rest)
-        if (ch == 82) {
-            typ = 0;
-        }
-        // ! (staccato modifier)
-        if (ch == 33) {
-            typ = 1;
-        }
-        // ^ (short modifier)
-        if (ch == 94) {
-            typ = 2;
-        }
-        // _ (legato modifier)
-        if (ch == 95) {
-            typ = 4;
-        }
-        // - (glissando modifier)
-        if (ch == 45) {
-            typ = 5;
-        }
-        // % (tempo change)
-        if ((ch == 37) && (num > 0)) {
-            tempo = num;
-            num = 0;
-        }
-        if ((ch >= 48) && (ch <= 57)) {
-            // 0-9 (number)
-            num = (num * 10) + (ch - 48);
-        }
-        if (ch == 46) {
-            // . (duration modifier)
-            num = ((num * 2) / (3));
-        }
-        if (((ch == 32) || (i+1 == notesLen)) && ((note > -99) || (typ != 3))) {
-            if (num == 0) {
-                num = prevDuration;
-            } else {
-                prevDuration = num;
-            }
-            ms = (int) floor(320000.0 / (tempo * num)+0.5);
-            if (typ == 0) {
-                this->addPulseToPlaySeq(0, ms);
-            } else {
-                dNote = note - (((prevPitch) % (12)));
-                if (dNote > 6) {
-                    dNote = dNote - 12;
-                }
-                if (dNote <= -6) {
-                    dNote = dNote + 12;
-                }
-                pitch = prevPitch + dNote;
-                freq = (int) floor(440 * exp(pitch * 0.05776226504666)+0.5);
-                ms16 = ((ms) >> (4));
-                rest = 0;
-                if (typ == 3) {
-                    rest = 2 * ms16;
-                }
-                if (typ == 2) {
-                    rest = 8 * ms16;
-                }
-                if (typ == 1) {
-                    rest = 12 * ms16;
-                }
-                if (typ == 5) {
-                    this->addPulseToPlaySeq(prevFreq, ms16);
-                    this->addFreqMoveToPlaySeq(freq, 8 * ms16);
-                    this->addPulseToPlaySeq(freq, ms - 9 * ms16);
-                } else {
-                    this->addPulseToPlaySeq(freq, ms - rest);
-                    if (rest > 0) {
-                        this->addPulseToPlaySeq(0, rest);
-                    }
-                }
-                prevFreq = freq;
-                prevPitch = pitch;
-            }
-            note = -99;
-            num = 0;
-            typ = 3;
-        }
-        i = i + 1;
-    }
-    return YAPI_SUCCESS;
+	int tempo = 0;
+	int prevPitch = 0;
+	int prevDuration = 0;
+	int prevFreq = 0;
+	int note = 0;
+	int num = 0;
+	int typ = 0;
+	string ascNotes;
+	int notesLen = 0;
+	int i = 0;
+	int ch = 0;
+	int dNote = 0;
+	int pitch = 0;
+	int freq = 0;
+	int ms = 0;
+	int ms16 = 0;
+	int rest = 0;
+	tempo = 100;
+	prevPitch = 3;
+	prevDuration = 4;
+	prevFreq = 110;
+	note = -99;
+	num = 0;
+	typ = 3;
+	ascNotes = notes;
+	notesLen = (int)(ascNotes).size();
+	i = 0;
+	while (i < notesLen)
+	{
+		ch = ((u8)ascNotes[i]);
+		// A (note))
+		if (ch == 65)
+		{
+			note = 0;
+		}
+		// B (note)
+		if (ch == 66)
+		{
+			note = 2;
+		}
+		// C (note)
+		if (ch == 67)
+		{
+			note = 3;
+		}
+		// D (note)
+		if (ch == 68)
+		{
+			note = 5;
+		}
+		// E (note)
+		if (ch == 69)
+		{
+			note = 7;
+		}
+		// F (note)
+		if (ch == 70)
+		{
+			note = 8;
+		}
+		// G (note)
+		if (ch == 71)
+		{
+			note = 10;
+		}
+		// '#' (sharp modifier)
+		if (ch == 35)
+		{
+			note = note + 1;
+		}
+		// 'b' (flat modifier)
+		if (ch == 98)
+		{
+			note = note - 1;
+		}
+		// ' (octave up)
+		if (ch == 39)
+		{
+			prevPitch = prevPitch + 12;
+		}
+		// , (octave down)
+		if (ch == 44)
+		{
+			prevPitch = prevPitch - 12;
+		}
+		// R (rest)
+		if (ch == 82)
+		{
+			typ = 0;
+		}
+		// ! (staccato modifier)
+		if (ch == 33)
+		{
+			typ = 1;
+		}
+		// ^ (short modifier)
+		if (ch == 94)
+		{
+			typ = 2;
+		}
+		// _ (legato modifier)
+		if (ch == 95)
+		{
+			typ = 4;
+		}
+		// - (glissando modifier)
+		if (ch == 45)
+		{
+			typ = 5;
+		}
+		// % (tempo change)
+		if ((ch == 37) && (num > 0))
+		{
+			tempo = num;
+			num = 0;
+		}
+		if ((ch >= 48) && (ch <= 57))
+		{
+			// 0-9 (number)
+			num = (num * 10) + (ch - 48);
+		}
+		if (ch == 46)
+		{
+			// . (duration modifier)
+			num = ((num * 2) / (3));
+		}
+		if (((ch == 32) || (i + 1 == notesLen)) && ((note > -99) || (typ != 3)))
+		{
+			if (num == 0)
+			{
+				num = prevDuration;
+			}
+			else
+			{
+				prevDuration = num;
+			}
+			ms = (int)floor(320000.0 / (tempo * num) + 0.5);
+			if (typ == 0)
+			{
+				this->addPulseToPlaySeq(0, ms);
+			}
+			else
+			{
+				dNote = note - (((prevPitch) % (12)));
+				if (dNote > 6)
+				{
+					dNote = dNote - 12;
+				}
+				if (dNote <= -6)
+				{
+					dNote = dNote + 12;
+				}
+				pitch = prevPitch + dNote;
+				freq = (int)floor(440 * exp(pitch * 0.05776226504666) + 0.5);
+				ms16 = ((ms) >> (4));
+				rest = 0;
+				if (typ == 3)
+				{
+					rest = 2 * ms16;
+				}
+				if (typ == 2)
+				{
+					rest = 8 * ms16;
+				}
+				if (typ == 1)
+				{
+					rest = 12 * ms16;
+				}
+				if (typ == 5)
+				{
+					this->addPulseToPlaySeq(prevFreq, ms16);
+					this->addFreqMoveToPlaySeq(freq, 8 * ms16);
+					this->addPulseToPlaySeq(freq, ms - 9 * ms16);
+				}
+				else
+				{
+					this->addPulseToPlaySeq(freq, ms - rest);
+					if (rest > 0)
+					{
+						this->addPulseToPlaySeq(0, rest);
+					}
+				}
+				prevFreq = freq;
+				prevPitch = pitch;
+			}
+			note = -99;
+			num = 0;
+			typ = 3;
+		}
+		i = i + 1;
+	}
+	return YAPI_SUCCESS;
 }
 
 /**
@@ -647,7 +747,7 @@ int YBuzzer::addNotesToPlaySeq(string notes)
  */
 int YBuzzer::startPlaySeq(void)
 {
-    return this->sendCommand("S");
+	return this->sendCommand("S");
 }
 
 /**
@@ -658,7 +758,7 @@ int YBuzzer::startPlaySeq(void)
  */
 int YBuzzer::stopPlaySeq(void)
 {
-    return this->sendCommand("X");
+	return this->sendCommand("X");
 }
 
 /**
@@ -669,7 +769,7 @@ int YBuzzer::stopPlaySeq(void)
  */
 int YBuzzer::resetPlaySeq(void)
 {
-    return this->sendCommand("Z");
+	return this->sendCommand("Z");
 }
 
 /**
@@ -680,7 +780,7 @@ int YBuzzer::resetPlaySeq(void)
  */
 int YBuzzer::oncePlaySeq(void)
 {
-    return this->sendCommand("s");
+	return this->sendCommand("s");
 }
 
 /**
@@ -693,9 +793,9 @@ int YBuzzer::oncePlaySeq(void)
  *
  * On failure, throws an exception or returns a negative error code.
  */
-int YBuzzer::pulse(int frequency,int duration)
+int YBuzzer::pulse(int frequency, int duration)
 {
-    return this->set_command(YapiWrapper::ysprintf("P%d,%d",frequency,duration));
+	return this->set_command(YapiWrapper::ysprintf("P%d,%d", frequency, duration));
 }
 
 /**
@@ -708,9 +808,9 @@ int YBuzzer::pulse(int frequency,int duration)
  *
  * On failure, throws an exception or returns a negative error code.
  */
-int YBuzzer::freqMove(int frequency,int duration)
+int YBuzzer::freqMove(int frequency, int duration)
 {
-    return this->set_command(YapiWrapper::ysprintf("F%d,%d",frequency,duration));
+	return this->set_command(YapiWrapper::ysprintf("F%d,%d", frequency, duration));
 }
 
 /**
@@ -723,9 +823,9 @@ int YBuzzer::freqMove(int frequency,int duration)
  *
  * On failure, throws an exception or returns a negative error code.
  */
-int YBuzzer::volumeMove(int volume,int duration)
+int YBuzzer::volumeMove(int volume, int duration)
 {
-    return this->set_command(YapiWrapper::ysprintf("V%d,%d",volume,duration));
+	return this->set_command(YapiWrapper::ysprintf("V%d,%d", volume, duration));
 }
 
 /**
@@ -743,33 +843,35 @@ int YBuzzer::volumeMove(int volume,int duration)
  */
 int YBuzzer::playNotes(string notes)
 {
-    this->resetPlaySeq();
-    this->addNotesToPlaySeq(notes);
-    return this->oncePlaySeq();
+	this->resetPlaySeq();
+	this->addNotesToPlaySeq(notes);
+	return this->oncePlaySeq();
 }
 
-YBuzzer *YBuzzer::nextBuzzer(void)
+YBuzzer* YBuzzer::nextBuzzer(void)
 {
-    string  hwid;
+	string hwid;
 
-    if(YISERR(_nextFunction(hwid)) || hwid=="") {
-        return NULL;
-    }
-    return YBuzzer::FindBuzzer(hwid);
+	if (YISERR(_nextFunction(hwid)) || hwid == "")
+	{
+		return NULL;
+	}
+	return YBuzzer::FindBuzzer(hwid);
 }
 
 YBuzzer* YBuzzer::FirstBuzzer(void)
 {
-    vector<YFUN_DESCR>   v_fundescr;
-    YDEV_DESCR             ydevice;
-    string              serial, funcId, funcName, funcVal, errmsg;
+	vector<YFUN_DESCR> v_fundescr;
+	YDEV_DESCR ydevice;
+	string serial, funcId, funcName, funcVal, errmsg;
 
-    if(YISERR(YapiWrapper::getFunctionsByClass("Buzzer", 0, v_fundescr, sizeof(YFUN_DESCR), errmsg)) ||
-       v_fundescr.size() == 0 ||
-       YISERR(YapiWrapper::getFunctionInfo(v_fundescr[0], ydevice, serial, funcId, funcName, funcVal, errmsg))) {
-        return NULL;
-    }
-    return YBuzzer::FindBuzzer(serial+"."+funcId);
+	if (YISERR(YapiWrapper::getFunctionsByClass("Buzzer", 0, v_fundescr, sizeof(YFUN_DESCR), errmsg)) ||
+		v_fundescr.size() == 0 ||
+		YISERR(YapiWrapper::getFunctionInfo(v_fundescr[0], ydevice, serial, funcId, funcName, funcVal, errmsg)))
+	{
+		return NULL;
+	}
+	return YBuzzer::FindBuzzer(serial + "." + funcId);
 }
 
 //--- (end of YBuzzer implementation)

@@ -81,8 +81,8 @@ static int yLinSetErrEx(u32 line,char *intro, int err,char *errmsg)
 };
 
 
- /*****************************************************************
- * USB ENUMERATION
+/*****************************************************************
+* USB ENUMERATION
 *****************************************************************/
 
 
@@ -114,9 +114,9 @@ static int yReserveGlobalAccess(yContextSt *ctx, char *errmsg)
         if(errno==EACCES) {
             return YERRMSG(YAPI_DOUBLE_ACCES, "we do not have acces to lock fifo");
         }else{
-            // we cannot open lock file so we cannot realy
-            // check double instance so we asume that we are
-            // alone
+// we cannot open lock file so we cannot realy
+// check double instance so we asume that we are
+// alone
             return YAPI_SUCCESS;
         }
     }
@@ -124,10 +124,10 @@ static int yReserveGlobalAccess(yContextSt *ctx, char *errmsg)
     mypid = (int) getpid();
     res = read(fd, &chk_val, sizeof(chk_val));
     if (res == sizeof(chk_val)) {
-        //there is allready someone
+//there is allready someone
         usedpid = chk_val;
     } else{
-        // nobody there -> store my PID
+// nobody there -> store my PID
         chk_val = mypid;
     }
     res = write(fd, &chk_val, sizeof(chk_val));
@@ -139,7 +139,7 @@ static int yReserveGlobalAccess(yContextSt *ctx, char *errmsg)
     if (usedpid != 0) {
         if (usedpid == 1) {
             close(fd);
-            // locked by api that not store the pid
+// locked by api that not store the pid
             return YERRMSG(YAPI_DOUBLE_ACCES, "Another process is already using yAPI");
         } else {
             YSPRINTF(msg, YOCTO_ERRMSG_LEN, "Another process (pid %d) is already using yAPI", (u32) usedpid);
@@ -270,7 +270,7 @@ static void *event_thread(void *param)
     yContextSt *ctx = (yContextSt*)param;
     char            errmsg[YOCTO_ERRMSG_LEN];
     ctx->usb_thread_state = USB_THREAD_RUNNING;
-    /* Non-blocking. See if the OS has any reports to give. */
+/* Non-blocking. See if the OS has any reports to give. */
     HALLOG("Start event_thread run loop\n");
     while (ctx->usb_thread_state != USB_THREAD_MUST_STOP) {
         int res = process_libusb_events(ctx, 1000, errmsg);
@@ -305,7 +305,7 @@ int yyyUSB_init(yContextSt *ctx,char *errmsg)
 #endif
     ctx->usb_thread_state = USB_THREAD_NOT_STARTED;
     pthread_create(&ctx->usb_thread, NULL, event_thread, ctx);
-    //wait thead start
+//wait thead start
     while(ctx->usb_thread_state != USB_THREAD_RUNNING){
         usleep(50000);
     }
@@ -371,7 +371,7 @@ int yyyUSBGetInterfaces(yInterfaceSt **ifaces,int *nbifaceDetect,char *errmsg)
         return yLinSetErr("Unable to get device list", nbdev, errmsg);
     HALENUMLOG("%d devices found\n",nbdev);
 
-     // allocate buffer for detected interfaces
+// allocate buffer for detected interfaces
     *nbifaceDetect = 0;
     alloc_size = (nbdev + 1) * sizeof(yInterfaceSt);
     *ifaces = (yInterfaceSt*) yMalloc(alloc_size);
@@ -510,7 +510,7 @@ static void rd_callback(struct libusb_transfer *transfer)
 
     switch(transfer->status){
     case LIBUSB_TRANSFER_COMPLETED:
-        //HALLOG("%s:%d pkt_arrived (len=%d)\n",iface->serial,iface->ifaceno,transfer->actual_length);
+//HALLOG("%s:%d pkt_arrived (len=%d)\n",iface->serial,iface->ifaceno,transfer->actual_length);
         yPktQueuePushD2H(iface,&lintr->tmppkt,NULL);
         break;
     case LIBUSB_TRANSFER_ERROR:
@@ -573,8 +573,8 @@ static void wr_callback(struct libusb_transfer *transfer)
 
     switch(transfer->status) {
     case LIBUSB_TRANSFER_COMPLETED:
-        //HALLOG("CBwr:%s pkt_sent (len=%d)\n",iface->serial, transfer->actual_length);
-        // remove sent packet
+//HALLOG("CBwr:%s pkt_sent (len=%d)\n",iface->serial, transfer->actual_length);
+// remove sent packet
         yPktQueuePopH2D(iface, &pktitem);
         yFree(pktitem);
         sendNextPkt(iface, errmsg);
@@ -619,9 +619,9 @@ int yyySetup(yInterfaceSt *iface,char *errmsg)
         return YERR(YAPI_DEVICE_NOT_FOUND);
     }
 
-    // we need to do this as it is possible that the device was not closed properly in a previous session
-    // if we don't do this and the device wasn't closed properly odd behavior results.
-    // thanks to Rob Krakora who find this solution
+// we need to do this as it is possible that the device was not closed properly in a previous session
+// if we don't do this and the device wasn't closed properly odd behavior results.
+// thanks to Rob Krakora who find this solution
     if((res=libusb_open(iface->devref,&iface->hdl))!=0){
         return yLinSetErr("libusb_open", res,errmsg);
     } else {
@@ -662,7 +662,7 @@ int yyySetup(yInterfaceSt *iface,char *errmsg)
 
     ifd = &config->interface[iface->ifaceno].altsetting[0];
     for (j = 0; j < ifd->bNumEndpoints; j++) {
-        //HALLOG("endpoint %X size=%d \n",ifd->endpoint[j].bEndpointAddress,ifd->endpoint[j].wMaxPacketSize);
+//HALLOG("endpoint %X size=%d \n",ifd->endpoint[j].bEndpointAddress,ifd->endpoint[j].wMaxPacketSize);
         if((ifd->endpoint[j].bEndpointAddress & LIBUSB_ENDPOINT_DIR_MASK) == LIBUSB_ENDPOINT_IN){
             iface->rdendp = ifd->endpoint[j].bEndpointAddress;
         }else{

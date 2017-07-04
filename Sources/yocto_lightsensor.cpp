@@ -49,46 +49,53 @@
 #define  __FILE_ID__  "lightsensor"
 
 YLightSensor::YLightSensor(const string& func): YSensor(func)
-//--- (LightSensor initialization)
-    ,_measureType(MEASURETYPE_INVALID)
-    ,_valueCallbackLightSensor(NULL)
-    ,_timedReportCallbackLightSensor(NULL)
+                                                //--- (LightSensor initialization)
+                                                , _measureType(MEASURETYPE_INVALID)
+                                                , _valueCallbackLightSensor(NULL)
+                                                , _timedReportCallbackLightSensor(NULL)
 //--- (end of LightSensor initialization)
 {
-    _className="LightSensor";
+	_className = "LightSensor";
 }
 
 YLightSensor::~YLightSensor()
 {
-//--- (YLightSensor cleanup)
-//--- (end of YLightSensor cleanup)
+	//--- (YLightSensor cleanup)
+	//--- (end of YLightSensor cleanup)
 }
+
 //--- (YLightSensor implementation)
 // static attributes
 
 int YLightSensor::_parseAttr(YJSONObject* json_val)
 {
-    if(json_val->has("measureType")) {
-        _measureType =  (Y_MEASURETYPE_enum)json_val->getInt("measureType");
-    }
-    return YSensor::_parseAttr(json_val);
+	if (json_val->has("measureType"))
+	{
+		_measureType = (Y_MEASURETYPE_enum)json_val->getInt("measureType");
+	}
+	return YSensor::_parseAttr(json_val);
 }
 
 
 int YLightSensor::set_currentValue(double newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        char buf[32]; sprintf(buf,"%d", (int)floor(newval * 65536.0 + 0.5)); rest_val = string(buf);
-        res = _setAttr("currentValue", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		char buf[32];
+		sprintf(buf, "%d", (int)floor(newval * 65536.0 + 0.5));
+		rest_val = string(buf);
+		res = _setAttr("currentValue", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -106,9 +113,11 @@ int YLightSensor::set_currentValue(double newval)
  */
 int YLightSensor::calibrate(double calibratedVal)
 {
-    string rest_val;
-    char buf[32]; sprintf(buf,"%d", (int)floor(calibratedVal * 65536.0 + 0.5)); rest_val = string(buf);
-    return _setAttr("currentValue", rest_val);
+	string rest_val;
+	char buf[32];
+	sprintf(buf, "%d", (int)floor(calibratedVal * 65536.0 + 0.5));
+	rest_val = string(buf);
+	return _setAttr("currentValue", rest_val);
 }
 
 /**
@@ -121,24 +130,29 @@ int YLightSensor::calibrate(double calibratedVal)
  */
 Y_MEASURETYPE_enum YLightSensor::get_measureType(void)
 {
-    Y_MEASURETYPE_enum res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YLightSensor::MEASURETYPE_INVALID;
-                }
-            }
-        }
-        res = _measureType;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	Y_MEASURETYPE_enum res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YLightSensor::MEASURETYPE_INVALID;
+				}
+			}
+		}
+		res = _measureType;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -157,18 +171,23 @@ Y_MEASURETYPE_enum YLightSensor::get_measureType(void)
  */
 int YLightSensor::set_measureType(Y_MEASURETYPE_enum newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        char buf[32]; sprintf(buf, "%d", newval); rest_val = string(buf);
-        res = _setAttr("measureType", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		char buf[32];
+		sprintf(buf, "%d", newval);
+		rest_val = string(buf);
+		res = _setAttr("measureType", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -196,23 +215,29 @@ int YLightSensor::set_measureType(Y_MEASURETYPE_enum newval)
  */
 YLightSensor* YLightSensor::FindLightSensor(string func)
 {
-    YLightSensor* obj = NULL;
-    int taken = 0;
-    if (YAPI::_apiInitialized) {
-        yEnterCriticalSection(&YAPI::_global_cs);
-        taken = 1;
-    }try {
-        obj = (YLightSensor*) YFunction::_FindFromCache("LightSensor", func);
-        if (obj == NULL) {
-            obj = new YLightSensor(func);
-            YFunction::_AddToCache("LightSensor", func, obj);
-        }
-    } catch (std::exception) {
-        if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
-        throw;
-    }
-    if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
-    return obj;
+	YLightSensor* obj = NULL;
+	int taken = 0;
+	if (YAPI::_apiInitialized)
+	{
+		yEnterCriticalSection(&YAPI::_global_cs);
+		taken = 1;
+	}
+	try
+	{
+		obj = (YLightSensor*)YFunction::_FindFromCache("LightSensor", func);
+		if (obj == NULL)
+		{
+			obj = new YLightSensor(func);
+			YFunction::_AddToCache("LightSensor", func, obj);
+		}
+	}
+	catch (std::exception)
+	{
+		if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
+		throw;
+	}
+	if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
+	return obj;
 }
 
 /**
@@ -228,31 +253,39 @@ YLightSensor* YLightSensor::FindLightSensor(string func)
  */
 int YLightSensor::registerValueCallback(YLightSensorValueCallback callback)
 {
-    string val;
-    if (callback != NULL) {
-        YFunction::_UpdateValueCallbackList(this, true);
-    } else {
-        YFunction::_UpdateValueCallbackList(this, false);
-    }
-    _valueCallbackLightSensor = callback;
-    // Immediately invoke value callback with current value
-    if (callback != NULL && this->isOnline()) {
-        val = _advertisedValue;
-        if (!(val == "")) {
-            this->_invokeValueCallback(val);
-        }
-    }
-    return 0;
+	string val;
+	if (callback != NULL)
+	{
+		YFunction::_UpdateValueCallbackList(this, true);
+	}
+	else
+	{
+		YFunction::_UpdateValueCallbackList(this, false);
+	}
+	_valueCallbackLightSensor = callback;
+	// Immediately invoke value callback with current value
+	if (callback != NULL && this->isOnline())
+	{
+		val = _advertisedValue;
+		if (!(val == ""))
+		{
+			this->_invokeValueCallback(val);
+		}
+	}
+	return 0;
 }
 
 int YLightSensor::_invokeValueCallback(string value)
 {
-    if (_valueCallbackLightSensor != NULL) {
-        _valueCallbackLightSensor(this, value);
-    } else {
-        YSensor::_invokeValueCallback(value);
-    }
-    return 0;
+	if (_valueCallbackLightSensor != NULL)
+	{
+		_valueCallbackLightSensor(this, value);
+	}
+	else
+	{
+		YSensor::_invokeValueCallback(value);
+	}
+	return 0;
 }
 
 /**
@@ -268,49 +301,57 @@ int YLightSensor::_invokeValueCallback(string value)
  */
 int YLightSensor::registerTimedReportCallback(YLightSensorTimedReportCallback callback)
 {
-    YSensor* sensor = NULL;
-    sensor = this;
-    if (callback != NULL) {
-        YFunction::_UpdateTimedReportCallbackList(sensor, true);
-    } else {
-        YFunction::_UpdateTimedReportCallbackList(sensor, false);
-    }
-    _timedReportCallbackLightSensor = callback;
-    return 0;
+	YSensor* sensor = NULL;
+	sensor = this;
+	if (callback != NULL)
+	{
+		YFunction::_UpdateTimedReportCallbackList(sensor, true);
+	}
+	else
+	{
+		YFunction::_UpdateTimedReportCallbackList(sensor, false);
+	}
+	_timedReportCallbackLightSensor = callback;
+	return 0;
 }
 
 int YLightSensor::_invokeTimedReportCallback(YMeasure value)
 {
-    if (_timedReportCallbackLightSensor != NULL) {
-        _timedReportCallbackLightSensor(this, value);
-    } else {
-        YSensor::_invokeTimedReportCallback(value);
-    }
-    return 0;
+	if (_timedReportCallbackLightSensor != NULL)
+	{
+		_timedReportCallbackLightSensor(this, value);
+	}
+	else
+	{
+		YSensor::_invokeTimedReportCallback(value);
+	}
+	return 0;
 }
 
-YLightSensor *YLightSensor::nextLightSensor(void)
+YLightSensor* YLightSensor::nextLightSensor(void)
 {
-    string  hwid;
+	string hwid;
 
-    if(YISERR(_nextFunction(hwid)) || hwid=="") {
-        return NULL;
-    }
-    return YLightSensor::FindLightSensor(hwid);
+	if (YISERR(_nextFunction(hwid)) || hwid == "")
+	{
+		return NULL;
+	}
+	return YLightSensor::FindLightSensor(hwid);
 }
 
 YLightSensor* YLightSensor::FirstLightSensor(void)
 {
-    vector<YFUN_DESCR>   v_fundescr;
-    YDEV_DESCR             ydevice;
-    string              serial, funcId, funcName, funcVal, errmsg;
+	vector<YFUN_DESCR> v_fundescr;
+	YDEV_DESCR ydevice;
+	string serial, funcId, funcName, funcVal, errmsg;
 
-    if(YISERR(YapiWrapper::getFunctionsByClass("LightSensor", 0, v_fundescr, sizeof(YFUN_DESCR), errmsg)) ||
-       v_fundescr.size() == 0 ||
-       YISERR(YapiWrapper::getFunctionInfo(v_fundescr[0], ydevice, serial, funcId, funcName, funcVal, errmsg))) {
-        return NULL;
-    }
-    return YLightSensor::FindLightSensor(serial+"."+funcId);
+	if (YISERR(YapiWrapper::getFunctionsByClass("LightSensor", 0, v_fundescr, sizeof(YFUN_DESCR), errmsg)) ||
+		v_fundescr.size() == 0 ||
+		YISERR(YapiWrapper::getFunctionInfo(v_fundescr[0], ydevice, serial, funcId, funcName, funcVal, errmsg)))
+	{
+		return NULL;
+	}
+	return YLightSensor::FindLightSensor(serial + "." + funcId);
 }
 
 //--- (end of YLightSensor implementation)

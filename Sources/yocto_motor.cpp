@@ -49,27 +49,28 @@
 #define  __FILE_ID__  "motor"
 
 YMotor::YMotor(const string& func): YFunction(func)
-//--- (Motor initialization)
-    ,_motorStatus(MOTORSTATUS_INVALID)
-    ,_drivingForce(DRIVINGFORCE_INVALID)
-    ,_brakingForce(BRAKINGFORCE_INVALID)
-    ,_cutOffVoltage(CUTOFFVOLTAGE_INVALID)
-    ,_overCurrentLimit(OVERCURRENTLIMIT_INVALID)
-    ,_frequency(FREQUENCY_INVALID)
-    ,_starterTime(STARTERTIME_INVALID)
-    ,_failSafeTimeout(FAILSAFETIMEOUT_INVALID)
-    ,_command(COMMAND_INVALID)
-    ,_valueCallbackMotor(NULL)
+                                    //--- (Motor initialization)
+                                    , _motorStatus(MOTORSTATUS_INVALID)
+                                    , _drivingForce(DRIVINGFORCE_INVALID)
+                                    , _brakingForce(BRAKINGFORCE_INVALID)
+                                    , _cutOffVoltage(CUTOFFVOLTAGE_INVALID)
+                                    , _overCurrentLimit(OVERCURRENTLIMIT_INVALID)
+                                    , _frequency(FREQUENCY_INVALID)
+                                    , _starterTime(STARTERTIME_INVALID)
+                                    , _failSafeTimeout(FAILSAFETIMEOUT_INVALID)
+                                    , _command(COMMAND_INVALID)
+                                    , _valueCallbackMotor(NULL)
 //--- (end of Motor initialization)
 {
-    _className="Motor";
+	_className = "Motor";
 }
 
 YMotor::~YMotor()
 {
-//--- (YMotor cleanup)
-//--- (end of YMotor cleanup)
+	//--- (YMotor cleanup)
+	//--- (end of YMotor cleanup)
 }
+
 //--- (YMotor implementation)
 // static attributes
 const double YMotor::DRIVINGFORCE_INVALID = YAPI_INVALID_DOUBLE;
@@ -80,34 +81,43 @@ const string YMotor::COMMAND_INVALID = YAPI_INVALID_STRING;
 
 int YMotor::_parseAttr(YJSONObject* json_val)
 {
-    if(json_val->has("motorStatus")) {
-        _motorStatus =  (Y_MOTORSTATUS_enum)json_val->getInt("motorStatus");
-    }
-    if(json_val->has("drivingForce")) {
-        _drivingForce =  floor(json_val->getDouble("drivingForce") * 1000.0 / 65536.0 + 0.5) / 1000.0;
-    }
-    if(json_val->has("brakingForce")) {
-        _brakingForce =  floor(json_val->getDouble("brakingForce") * 1000.0 / 65536.0 + 0.5) / 1000.0;
-    }
-    if(json_val->has("cutOffVoltage")) {
-        _cutOffVoltage =  floor(json_val->getDouble("cutOffVoltage") * 1000.0 / 65536.0 + 0.5) / 1000.0;
-    }
-    if(json_val->has("overCurrentLimit")) {
-        _overCurrentLimit =  json_val->getInt("overCurrentLimit");
-    }
-    if(json_val->has("frequency")) {
-        _frequency =  floor(json_val->getDouble("frequency") * 1000.0 / 65536.0 + 0.5) / 1000.0;
-    }
-    if(json_val->has("starterTime")) {
-        _starterTime =  json_val->getInt("starterTime");
-    }
-    if(json_val->has("failSafeTimeout")) {
-        _failSafeTimeout =  json_val->getInt("failSafeTimeout");
-    }
-    if(json_val->has("command")) {
-        _command =  json_val->getString("command");
-    }
-    return YFunction::_parseAttr(json_val);
+	if (json_val->has("motorStatus"))
+	{
+		_motorStatus = (Y_MOTORSTATUS_enum)json_val->getInt("motorStatus");
+	}
+	if (json_val->has("drivingForce"))
+	{
+		_drivingForce = floor(json_val->getDouble("drivingForce") * 1000.0 / 65536.0 + 0.5) / 1000.0;
+	}
+	if (json_val->has("brakingForce"))
+	{
+		_brakingForce = floor(json_val->getDouble("brakingForce") * 1000.0 / 65536.0 + 0.5) / 1000.0;
+	}
+	if (json_val->has("cutOffVoltage"))
+	{
+		_cutOffVoltage = floor(json_val->getDouble("cutOffVoltage") * 1000.0 / 65536.0 + 0.5) / 1000.0;
+	}
+	if (json_val->has("overCurrentLimit"))
+	{
+		_overCurrentLimit = json_val->getInt("overCurrentLimit");
+	}
+	if (json_val->has("frequency"))
+	{
+		_frequency = floor(json_val->getDouble("frequency") * 1000.0 / 65536.0 + 0.5) / 1000.0;
+	}
+	if (json_val->has("starterTime"))
+	{
+		_starterTime = json_val->getInt("starterTime");
+	}
+	if (json_val->has("failSafeTimeout"))
+	{
+		_failSafeTimeout = json_val->getInt("failSafeTimeout");
+	}
+	if (json_val->has("command"))
+	{
+		_command = json_val->getString("command");
+	}
+	return YFunction::_parseAttr(json_val);
 }
 
 
@@ -132,40 +142,50 @@ int YMotor::_parseAttr(YJSONObject* json_val)
  */
 Y_MOTORSTATUS_enum YMotor::get_motorStatus(void)
 {
-    Y_MOTORSTATUS_enum res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YMotor::MOTORSTATUS_INVALID;
-                }
-            }
-        }
-        res = _motorStatus;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	Y_MOTORSTATUS_enum res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YMotor::MOTORSTATUS_INVALID;
+				}
+			}
+		}
+		res = _motorStatus;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 int YMotor::set_motorStatus(Y_MOTORSTATUS_enum newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        char buf[32]; sprintf(buf, "%d", newval); rest_val = string(buf);
-        res = _setAttr("motorStatus", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		char buf[32];
+		sprintf(buf, "%d", newval);
+		rest_val = string(buf);
+		res = _setAttr("motorStatus", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -183,18 +203,23 @@ int YMotor::set_motorStatus(Y_MOTORSTATUS_enum newval)
  */
 int YMotor::set_drivingForce(double newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        char buf[32]; sprintf(buf,"%d", (int)floor(newval * 65536.0 + 0.5)); rest_val = string(buf);
-        res = _setAttr("drivingForce", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		char buf[32];
+		sprintf(buf, "%d", (int)floor(newval * 65536.0 + 0.5));
+		rest_val = string(buf);
+		res = _setAttr("drivingForce", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -207,24 +232,29 @@ int YMotor::set_drivingForce(double newval)
  */
 double YMotor::get_drivingForce(void)
 {
-    double res = 0.0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YMotor::DRIVINGFORCE_INVALID;
-                }
-            }
-        }
-        res = _drivingForce;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	double res = 0.0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YMotor::DRIVINGFORCE_INVALID;
+				}
+			}
+		}
+		res = _drivingForce;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -241,18 +271,23 @@ double YMotor::get_drivingForce(void)
  */
 int YMotor::set_brakingForce(double newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        char buf[32]; sprintf(buf,"%d", (int)floor(newval * 65536.0 + 0.5)); rest_val = string(buf);
-        res = _setAttr("brakingForce", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		char buf[32];
+		sprintf(buf, "%d", (int)floor(newval * 65536.0 + 0.5));
+		rest_val = string(buf);
+		res = _setAttr("brakingForce", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -265,24 +300,29 @@ int YMotor::set_brakingForce(double newval)
  */
 double YMotor::get_brakingForce(void)
 {
-    double res = 0.0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YMotor::BRAKINGFORCE_INVALID;
-                }
-            }
-        }
-        res = _brakingForce;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	double res = 0.0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YMotor::BRAKINGFORCE_INVALID;
+				}
+			}
+		}
+		res = _brakingForce;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -302,18 +342,23 @@ double YMotor::get_brakingForce(void)
  */
 int YMotor::set_cutOffVoltage(double newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        char buf[32]; sprintf(buf,"%d", (int)floor(newval * 65536.0 + 0.5)); rest_val = string(buf);
-        res = _setAttr("cutOffVoltage", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		char buf[32];
+		sprintf(buf, "%d", (int)floor(newval * 65536.0 + 0.5));
+		rest_val = string(buf);
+		res = _setAttr("cutOffVoltage", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -329,24 +374,29 @@ int YMotor::set_cutOffVoltage(double newval)
  */
 double YMotor::get_cutOffVoltage(void)
 {
-    double res = 0.0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YMotor::CUTOFFVOLTAGE_INVALID;
-                }
-            }
-        }
-        res = _cutOffVoltage;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	double res = 0.0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YMotor::CUTOFFVOLTAGE_INVALID;
+				}
+			}
+		}
+		res = _cutOffVoltage;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -360,24 +410,29 @@ double YMotor::get_cutOffVoltage(void)
  */
 int YMotor::get_overCurrentLimit(void)
 {
-    int res = 0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YMotor::OVERCURRENTLIMIT_INVALID;
-                }
-            }
-        }
-        res = _overCurrentLimit;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	int res = 0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YMotor::OVERCURRENTLIMIT_INVALID;
+				}
+			}
+		}
+		res = _overCurrentLimit;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -396,18 +451,23 @@ int YMotor::get_overCurrentLimit(void)
  */
 int YMotor::set_overCurrentLimit(int newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        char buf[32]; sprintf(buf, "%d", newval); rest_val = string(buf);
-        res = _setAttr("overCurrentLimit", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		char buf[32];
+		sprintf(buf, "%d", newval);
+		rest_val = string(buf);
+		res = _setAttr("overCurrentLimit", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -424,18 +484,23 @@ int YMotor::set_overCurrentLimit(int newval)
  */
 int YMotor::set_frequency(double newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        char buf[32]; sprintf(buf,"%d", (int)floor(newval * 65536.0 + 0.5)); rest_val = string(buf);
-        res = _setAttr("frequency", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		char buf[32];
+		sprintf(buf, "%d", (int)floor(newval * 65536.0 + 0.5));
+		rest_val = string(buf);
+		res = _setAttr("frequency", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -447,24 +512,29 @@ int YMotor::set_frequency(double newval)
  */
 double YMotor::get_frequency(void)
 {
-    double res = 0.0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YMotor::FREQUENCY_INVALID;
-                }
-            }
-        }
-        res = _frequency;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	double res = 0.0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YMotor::FREQUENCY_INVALID;
+				}
+			}
+		}
+		res = _frequency;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -479,24 +549,29 @@ double YMotor::get_frequency(void)
  */
 int YMotor::get_starterTime(void)
 {
-    int res = 0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YMotor::STARTERTIME_INVALID;
-                }
-            }
-        }
-        res = _starterTime;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	int res = 0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YMotor::STARTERTIME_INVALID;
+				}
+			}
+		}
+		res = _starterTime;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -513,18 +588,23 @@ int YMotor::get_starterTime(void)
  */
 int YMotor::set_starterTime(int newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        char buf[32]; sprintf(buf, "%d", newval); rest_val = string(buf);
-        res = _setAttr("starterTime", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		char buf[32];
+		sprintf(buf, "%d", newval);
+		rest_val = string(buf);
+		res = _setAttr("starterTime", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -541,24 +621,29 @@ int YMotor::set_starterTime(int newval)
  */
 int YMotor::get_failSafeTimeout(void)
 {
-    int res = 0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YMotor::FAILSAFETIMEOUT_INVALID;
-                }
-            }
-        }
-        res = _failSafeTimeout;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	int res = 0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YMotor::FAILSAFETIMEOUT_INVALID;
+				}
+			}
+		}
+		res = _failSafeTimeout;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -577,56 +662,69 @@ int YMotor::get_failSafeTimeout(void)
  */
 int YMotor::set_failSafeTimeout(int newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        char buf[32]; sprintf(buf, "%d", newval); rest_val = string(buf);
-        res = _setAttr("failSafeTimeout", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		char buf[32];
+		sprintf(buf, "%d", newval);
+		rest_val = string(buf);
+		res = _setAttr("failSafeTimeout", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 string YMotor::get_command(void)
 {
-    string res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YMotor::COMMAND_INVALID;
-                }
-            }
-        }
-        res = _command;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YMotor::COMMAND_INVALID;
+				}
+			}
+		}
+		res = _command;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 int YMotor::set_command(const string& newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        rest_val = newval;
-        res = _setAttr("command", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		rest_val = newval;
+		res = _setAttr("command", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -654,23 +752,29 @@ int YMotor::set_command(const string& newval)
  */
 YMotor* YMotor::FindMotor(string func)
 {
-    YMotor* obj = NULL;
-    int taken = 0;
-    if (YAPI::_apiInitialized) {
-        yEnterCriticalSection(&YAPI::_global_cs);
-        taken = 1;
-    }try {
-        obj = (YMotor*) YFunction::_FindFromCache("Motor", func);
-        if (obj == NULL) {
-            obj = new YMotor(func);
-            YFunction::_AddToCache("Motor", func, obj);
-        }
-    } catch (std::exception) {
-        if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
-        throw;
-    }
-    if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
-    return obj;
+	YMotor* obj = NULL;
+	int taken = 0;
+	if (YAPI::_apiInitialized)
+	{
+		yEnterCriticalSection(&YAPI::_global_cs);
+		taken = 1;
+	}
+	try
+	{
+		obj = (YMotor*)YFunction::_FindFromCache("Motor", func);
+		if (obj == NULL)
+		{
+			obj = new YMotor(func);
+			YFunction::_AddToCache("Motor", func, obj);
+		}
+	}
+	catch (std::exception)
+	{
+		if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
+		throw;
+	}
+	if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
+	return obj;
 }
 
 /**
@@ -686,31 +790,39 @@ YMotor* YMotor::FindMotor(string func)
  */
 int YMotor::registerValueCallback(YMotorValueCallback callback)
 {
-    string val;
-    if (callback != NULL) {
-        YFunction::_UpdateValueCallbackList(this, true);
-    } else {
-        YFunction::_UpdateValueCallbackList(this, false);
-    }
-    _valueCallbackMotor = callback;
-    // Immediately invoke value callback with current value
-    if (callback != NULL && this->isOnline()) {
-        val = _advertisedValue;
-        if (!(val == "")) {
-            this->_invokeValueCallback(val);
-        }
-    }
-    return 0;
+	string val;
+	if (callback != NULL)
+	{
+		YFunction::_UpdateValueCallbackList(this, true);
+	}
+	else
+	{
+		YFunction::_UpdateValueCallbackList(this, false);
+	}
+	_valueCallbackMotor = callback;
+	// Immediately invoke value callback with current value
+	if (callback != NULL && this->isOnline())
+	{
+		val = _advertisedValue;
+		if (!(val == ""))
+		{
+			this->_invokeValueCallback(val);
+		}
+	}
+	return 0;
 }
 
 int YMotor::_invokeValueCallback(string value)
 {
-    if (_valueCallbackMotor != NULL) {
-        _valueCallbackMotor(this, value);
-    } else {
-        YFunction::_invokeValueCallback(value);
-    }
-    return 0;
+	if (_valueCallbackMotor != NULL)
+	{
+		_valueCallbackMotor(this, value);
+	}
+	else
+	{
+		YFunction::_invokeValueCallback(value);
+	}
+	return 0;
 }
 
 /**
@@ -721,7 +833,7 @@ int YMotor::_invokeValueCallback(string value)
  */
 int YMotor::keepALive(void)
 {
-    return this->set_command("K");
+	return this->set_command("K");
 }
 
 /**
@@ -730,7 +842,7 @@ int YMotor::keepALive(void)
  */
 int YMotor::resetStatus(void)
 {
-    return this->set_motorStatus(Y_MOTORSTATUS_IDLE);
+	return this->set_motorStatus(Y_MOTORSTATUS_IDLE);
 }
 
 /**
@@ -743,9 +855,9 @@ int YMotor::resetStatus(void)
  *
  * On failure, throws an exception or returns a negative error code.
  */
-int YMotor::drivingForceMove(double targetPower,int delay)
+int YMotor::drivingForceMove(double targetPower, int delay)
 {
-    return this->set_command(YapiWrapper::ysprintf("P%d,%d",(int) floor(targetPower*10+0.5),delay));
+	return this->set_command(YapiWrapper::ysprintf("P%d,%d", (int)floor(targetPower * 10 + 0.5), delay));
 }
 
 /**
@@ -758,33 +870,35 @@ int YMotor::drivingForceMove(double targetPower,int delay)
  *
  * On failure, throws an exception or returns a negative error code.
  */
-int YMotor::brakingForceMove(double targetPower,int delay)
+int YMotor::brakingForceMove(double targetPower, int delay)
 {
-    return this->set_command(YapiWrapper::ysprintf("B%d,%d",(int) floor(targetPower*10+0.5),delay));
+	return this->set_command(YapiWrapper::ysprintf("B%d,%d", (int)floor(targetPower * 10 + 0.5), delay));
 }
 
-YMotor *YMotor::nextMotor(void)
+YMotor* YMotor::nextMotor(void)
 {
-    string  hwid;
+	string hwid;
 
-    if(YISERR(_nextFunction(hwid)) || hwid=="") {
-        return NULL;
-    }
-    return YMotor::FindMotor(hwid);
+	if (YISERR(_nextFunction(hwid)) || hwid == "")
+	{
+		return NULL;
+	}
+	return YMotor::FindMotor(hwid);
 }
 
 YMotor* YMotor::FirstMotor(void)
 {
-    vector<YFUN_DESCR>   v_fundescr;
-    YDEV_DESCR             ydevice;
-    string              serial, funcId, funcName, funcVal, errmsg;
+	vector<YFUN_DESCR> v_fundescr;
+	YDEV_DESCR ydevice;
+	string serial, funcId, funcName, funcVal, errmsg;
 
-    if(YISERR(YapiWrapper::getFunctionsByClass("Motor", 0, v_fundescr, sizeof(YFUN_DESCR), errmsg)) ||
-       v_fundescr.size() == 0 ||
-       YISERR(YapiWrapper::getFunctionInfo(v_fundescr[0], ydevice, serial, funcId, funcName, funcVal, errmsg))) {
-        return NULL;
-    }
-    return YMotor::FindMotor(serial+"."+funcId);
+	if (YISERR(YapiWrapper::getFunctionsByClass("Motor", 0, v_fundescr, sizeof(YFUN_DESCR), errmsg)) ||
+		v_fundescr.size() == 0 ||
+		YISERR(YapiWrapper::getFunctionInfo(v_fundescr[0], ydevice, serial, funcId, funcName, funcVal, errmsg)))
+	{
+		return NULL;
+	}
+	return YMotor::FindMotor(serial + "." + funcId);
 }
 
 //--- (end of YMotor implementation)

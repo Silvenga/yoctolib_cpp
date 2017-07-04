@@ -49,32 +49,33 @@
 #define  __FILE_ID__  "serialport"
 
 YSerialPort::YSerialPort(const string& func): YFunction(func)
-//--- (SerialPort initialization)
-    ,_rxCount(RXCOUNT_INVALID)
-    ,_txCount(TXCOUNT_INVALID)
-    ,_errCount(ERRCOUNT_INVALID)
-    ,_rxMsgCount(RXMSGCOUNT_INVALID)
-    ,_txMsgCount(TXMSGCOUNT_INVALID)
-    ,_lastMsg(LASTMSG_INVALID)
-    ,_currentJob(CURRENTJOB_INVALID)
-    ,_startupJob(STARTUPJOB_INVALID)
-    ,_command(COMMAND_INVALID)
-    ,_voltageLevel(VOLTAGELEVEL_INVALID)
-    ,_protocol(PROTOCOL_INVALID)
-    ,_serialMode(SERIALMODE_INVALID)
-    ,_valueCallbackSerialPort(NULL)
-    ,_rxptr(0)
-    ,_rxbuffptr(0)
+                                              //--- (SerialPort initialization)
+                                              , _rxCount(RXCOUNT_INVALID)
+                                              , _txCount(TXCOUNT_INVALID)
+                                              , _errCount(ERRCOUNT_INVALID)
+                                              , _rxMsgCount(RXMSGCOUNT_INVALID)
+                                              , _txMsgCount(TXMSGCOUNT_INVALID)
+                                              , _lastMsg(LASTMSG_INVALID)
+                                              , _currentJob(CURRENTJOB_INVALID)
+                                              , _startupJob(STARTUPJOB_INVALID)
+                                              , _command(COMMAND_INVALID)
+                                              , _voltageLevel(VOLTAGELEVEL_INVALID)
+                                              , _protocol(PROTOCOL_INVALID)
+                                              , _serialMode(SERIALMODE_INVALID)
+                                              , _valueCallbackSerialPort(NULL)
+                                              , _rxptr(0)
+                                              , _rxbuffptr(0)
 //--- (end of SerialPort initialization)
 {
-    _className="SerialPort";
+	_className = "SerialPort";
 }
 
 YSerialPort::~YSerialPort()
 {
-//--- (YSerialPort cleanup)
-//--- (end of YSerialPort cleanup)
+	//--- (YSerialPort cleanup)
+	//--- (end of YSerialPort cleanup)
 }
+
 //--- (YSerialPort implementation)
 // static attributes
 const string YSerialPort::LASTMSG_INVALID = YAPI_INVALID_STRING;
@@ -86,43 +87,55 @@ const string YSerialPort::SERIALMODE_INVALID = YAPI_INVALID_STRING;
 
 int YSerialPort::_parseAttr(YJSONObject* json_val)
 {
-    if(json_val->has("rxCount")) {
-        _rxCount =  json_val->getInt("rxCount");
-    }
-    if(json_val->has("txCount")) {
-        _txCount =  json_val->getInt("txCount");
-    }
-    if(json_val->has("errCount")) {
-        _errCount =  json_val->getInt("errCount");
-    }
-    if(json_val->has("rxMsgCount")) {
-        _rxMsgCount =  json_val->getInt("rxMsgCount");
-    }
-    if(json_val->has("txMsgCount")) {
-        _txMsgCount =  json_val->getInt("txMsgCount");
-    }
-    if(json_val->has("lastMsg")) {
-        _lastMsg =  json_val->getString("lastMsg");
-    }
-    if(json_val->has("currentJob")) {
-        _currentJob =  json_val->getString("currentJob");
-    }
-    if(json_val->has("startupJob")) {
-        _startupJob =  json_val->getString("startupJob");
-    }
-    if(json_val->has("command")) {
-        _command =  json_val->getString("command");
-    }
-    if(json_val->has("voltageLevel")) {
-        _voltageLevel =  (Y_VOLTAGELEVEL_enum)json_val->getInt("voltageLevel");
-    }
-    if(json_val->has("protocol")) {
-        _protocol =  json_val->getString("protocol");
-    }
-    if(json_val->has("serialMode")) {
-        _serialMode =  json_val->getString("serialMode");
-    }
-    return YFunction::_parseAttr(json_val);
+	if (json_val->has("rxCount"))
+	{
+		_rxCount = json_val->getInt("rxCount");
+	}
+	if (json_val->has("txCount"))
+	{
+		_txCount = json_val->getInt("txCount");
+	}
+	if (json_val->has("errCount"))
+	{
+		_errCount = json_val->getInt("errCount");
+	}
+	if (json_val->has("rxMsgCount"))
+	{
+		_rxMsgCount = json_val->getInt("rxMsgCount");
+	}
+	if (json_val->has("txMsgCount"))
+	{
+		_txMsgCount = json_val->getInt("txMsgCount");
+	}
+	if (json_val->has("lastMsg"))
+	{
+		_lastMsg = json_val->getString("lastMsg");
+	}
+	if (json_val->has("currentJob"))
+	{
+		_currentJob = json_val->getString("currentJob");
+	}
+	if (json_val->has("startupJob"))
+	{
+		_startupJob = json_val->getString("startupJob");
+	}
+	if (json_val->has("command"))
+	{
+		_command = json_val->getString("command");
+	}
+	if (json_val->has("voltageLevel"))
+	{
+		_voltageLevel = (Y_VOLTAGELEVEL_enum)json_val->getInt("voltageLevel");
+	}
+	if (json_val->has("protocol"))
+	{
+		_protocol = json_val->getString("protocol");
+	}
+	if (json_val->has("serialMode"))
+	{
+		_serialMode = json_val->getString("serialMode");
+	}
+	return YFunction::_parseAttr(json_val);
 }
 
 
@@ -135,24 +148,29 @@ int YSerialPort::_parseAttr(YJSONObject* json_val)
  */
 int YSerialPort::get_rxCount(void)
 {
-    int res = 0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YSerialPort::RXCOUNT_INVALID;
-                }
-            }
-        }
-        res = _rxCount;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	int res = 0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YSerialPort::RXCOUNT_INVALID;
+				}
+			}
+		}
+		res = _rxCount;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -164,24 +182,29 @@ int YSerialPort::get_rxCount(void)
  */
 int YSerialPort::get_txCount(void)
 {
-    int res = 0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YSerialPort::TXCOUNT_INVALID;
-                }
-            }
-        }
-        res = _txCount;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	int res = 0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YSerialPort::TXCOUNT_INVALID;
+				}
+			}
+		}
+		res = _txCount;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -193,24 +216,29 @@ int YSerialPort::get_txCount(void)
  */
 int YSerialPort::get_errCount(void)
 {
-    int res = 0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YSerialPort::ERRCOUNT_INVALID;
-                }
-            }
-        }
-        res = _errCount;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	int res = 0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YSerialPort::ERRCOUNT_INVALID;
+				}
+			}
+		}
+		res = _errCount;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -222,24 +250,29 @@ int YSerialPort::get_errCount(void)
  */
 int YSerialPort::get_rxMsgCount(void)
 {
-    int res = 0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YSerialPort::RXMSGCOUNT_INVALID;
-                }
-            }
-        }
-        res = _rxMsgCount;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	int res = 0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YSerialPort::RXMSGCOUNT_INVALID;
+				}
+			}
+		}
+		res = _rxMsgCount;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -251,24 +284,29 @@ int YSerialPort::get_rxMsgCount(void)
  */
 int YSerialPort::get_txMsgCount(void)
 {
-    int res = 0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YSerialPort::TXMSGCOUNT_INVALID;
-                }
-            }
-        }
-        res = _txMsgCount;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	int res = 0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YSerialPort::TXMSGCOUNT_INVALID;
+				}
+			}
+		}
+		res = _txMsgCount;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -280,24 +318,29 @@ int YSerialPort::get_txMsgCount(void)
  */
 string YSerialPort::get_lastMsg(void)
 {
-    string res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YSerialPort::LASTMSG_INVALID;
-                }
-            }
-        }
-        res = _lastMsg;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YSerialPort::LASTMSG_INVALID;
+				}
+			}
+		}
+		res = _lastMsg;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -309,24 +352,29 @@ string YSerialPort::get_lastMsg(void)
  */
 string YSerialPort::get_currentJob(void)
 {
-    string res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YSerialPort::CURRENTJOB_INVALID;
-                }
-            }
-        }
-        res = _currentJob;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YSerialPort::CURRENTJOB_INVALID;
+				}
+			}
+		}
+		res = _currentJob;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -342,18 +390,21 @@ string YSerialPort::get_currentJob(void)
  */
 int YSerialPort::set_currentJob(const string& newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        rest_val = newval;
-        res = _setAttr("currentJob", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		rest_val = newval;
+		res = _setAttr("currentJob", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -365,24 +416,29 @@ int YSerialPort::set_currentJob(const string& newval)
  */
 string YSerialPort::get_startupJob(void)
 {
-    string res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YSerialPort::STARTUPJOB_INVALID;
-                }
-            }
-        }
-        res = _startupJob;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YSerialPort::STARTUPJOB_INVALID;
+				}
+			}
+		}
+		res = _startupJob;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -398,56 +454,67 @@ string YSerialPort::get_startupJob(void)
  */
 int YSerialPort::set_startupJob(const string& newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        rest_val = newval;
-        res = _setAttr("startupJob", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		rest_val = newval;
+		res = _setAttr("startupJob", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 string YSerialPort::get_command(void)
 {
-    string res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YSerialPort::COMMAND_INVALID;
-                }
-            }
-        }
-        res = _command;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YSerialPort::COMMAND_INVALID;
+				}
+			}
+		}
+		res = _command;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 int YSerialPort::set_command(const string& newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        rest_val = newval;
-        res = _setAttr("command", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		rest_val = newval;
+		res = _setAttr("command", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -461,24 +528,29 @@ int YSerialPort::set_command(const string& newval)
  */
 Y_VOLTAGELEVEL_enum YSerialPort::get_voltageLevel(void)
 {
-    Y_VOLTAGELEVEL_enum res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YSerialPort::VOLTAGELEVEL_INVALID;
-                }
-            }
-        }
-        res = _voltageLevel;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	Y_VOLTAGELEVEL_enum res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YSerialPort::VOLTAGELEVEL_INVALID;
+				}
+			}
+		}
+		res = _voltageLevel;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -498,18 +570,23 @@ Y_VOLTAGELEVEL_enum YSerialPort::get_voltageLevel(void)
  */
 int YSerialPort::set_voltageLevel(Y_VOLTAGELEVEL_enum newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        char buf[32]; sprintf(buf, "%d", newval); rest_val = string(buf);
-        res = _setAttr("voltageLevel", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		char buf[32];
+		sprintf(buf, "%d", newval);
+		rest_val = string(buf);
+		res = _setAttr("voltageLevel", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -527,24 +604,29 @@ int YSerialPort::set_voltageLevel(Y_VOLTAGELEVEL_enum newval)
  */
 string YSerialPort::get_protocol(void)
 {
-    string res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YSerialPort::PROTOCOL_INVALID;
-                }
-            }
-        }
-        res = _protocol;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YSerialPort::PROTOCOL_INVALID;
+				}
+			}
+		}
+		res = _protocol;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -566,18 +648,21 @@ string YSerialPort::get_protocol(void)
  */
 int YSerialPort::set_protocol(const string& newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        rest_val = newval;
-        res = _setAttr("protocol", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		rest_val = newval;
+		res = _setAttr("protocol", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -595,24 +680,29 @@ int YSerialPort::set_protocol(const string& newval)
  */
 string YSerialPort::get_serialMode(void)
 {
-    string res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YSerialPort::SERIALMODE_INVALID;
-                }
-            }
-        }
-        res = _serialMode;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YSerialPort::SERIALMODE_INVALID;
+				}
+			}
+		}
+		res = _serialMode;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -632,18 +722,21 @@ string YSerialPort::get_serialMode(void)
  */
 int YSerialPort::set_serialMode(const string& newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        rest_val = newval;
-        res = _setAttr("serialMode", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		rest_val = newval;
+		res = _setAttr("serialMode", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -671,23 +764,29 @@ int YSerialPort::set_serialMode(const string& newval)
  */
 YSerialPort* YSerialPort::FindSerialPort(string func)
 {
-    YSerialPort* obj = NULL;
-    int taken = 0;
-    if (YAPI::_apiInitialized) {
-        yEnterCriticalSection(&YAPI::_global_cs);
-        taken = 1;
-    }try {
-        obj = (YSerialPort*) YFunction::_FindFromCache("SerialPort", func);
-        if (obj == NULL) {
-            obj = new YSerialPort(func);
-            YFunction::_AddToCache("SerialPort", func, obj);
-        }
-    } catch (std::exception) {
-        if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
-        throw;
-    }
-    if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
-    return obj;
+	YSerialPort* obj = NULL;
+	int taken = 0;
+	if (YAPI::_apiInitialized)
+	{
+		yEnterCriticalSection(&YAPI::_global_cs);
+		taken = 1;
+	}
+	try
+	{
+		obj = (YSerialPort*)YFunction::_FindFromCache("SerialPort", func);
+		if (obj == NULL)
+		{
+			obj = new YSerialPort(func);
+			YFunction::_AddToCache("SerialPort", func, obj);
+		}
+	}
+	catch (std::exception)
+	{
+		if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
+		throw;
+	}
+	if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
+	return obj;
 }
 
 /**
@@ -703,36 +802,44 @@ YSerialPort* YSerialPort::FindSerialPort(string func)
  */
 int YSerialPort::registerValueCallback(YSerialPortValueCallback callback)
 {
-    string val;
-    if (callback != NULL) {
-        YFunction::_UpdateValueCallbackList(this, true);
-    } else {
-        YFunction::_UpdateValueCallbackList(this, false);
-    }
-    _valueCallbackSerialPort = callback;
-    // Immediately invoke value callback with current value
-    if (callback != NULL && this->isOnline()) {
-        val = _advertisedValue;
-        if (!(val == "")) {
-            this->_invokeValueCallback(val);
-        }
-    }
-    return 0;
+	string val;
+	if (callback != NULL)
+	{
+		YFunction::_UpdateValueCallbackList(this, true);
+	}
+	else
+	{
+		YFunction::_UpdateValueCallbackList(this, false);
+	}
+	_valueCallbackSerialPort = callback;
+	// Immediately invoke value callback with current value
+	if (callback != NULL && this->isOnline())
+	{
+		val = _advertisedValue;
+		if (!(val == ""))
+		{
+			this->_invokeValueCallback(val);
+		}
+	}
+	return 0;
 }
 
 int YSerialPort::_invokeValueCallback(string value)
 {
-    if (_valueCallbackSerialPort != NULL) {
-        _valueCallbackSerialPort(this, value);
-    } else {
-        YFunction::_invokeValueCallback(value);
-    }
-    return 0;
+	if (_valueCallbackSerialPort != NULL)
+	{
+		_valueCallbackSerialPort(this, value);
+	}
+	else
+	{
+		YFunction::_invokeValueCallback(value);
+	}
+	return 0;
 }
 
 int YSerialPort::sendCommand(string text)
 {
-    return this->set_command(text);
+	return this->set_command(text);
 }
 
 /**
@@ -744,11 +851,11 @@ int YSerialPort::sendCommand(string text)
  */
 int YSerialPort::reset(void)
 {
-    _rxptr = 0;
-    _rxbuffptr = 0;
-    _rxbuff = string(0, (char)0);
+	_rxptr = 0;
+	_rxbuffptr = 0;
+	_rxbuff = string(0, (char)0);
 
-    return this->sendCommand("Z");
+	return this->sendCommand("Z");
 }
 
 /**
@@ -762,7 +869,7 @@ int YSerialPort::reset(void)
  */
 int YSerialPort::writeByte(int code)
 {
-    return this->sendCommand(YapiWrapper::ysprintf("$%02x",code));
+	return this->sendCommand(YapiWrapper::ysprintf("$%02x", code));
 }
 
 /**
@@ -776,30 +883,36 @@ int YSerialPort::writeByte(int code)
  */
 int YSerialPort::writeStr(string text)
 {
-    string buff;
-    int bufflen = 0;
-    int idx = 0;
-    int ch = 0;
-    buff = text;
-    bufflen = (int)(buff).size();
-    if (bufflen < 100) {
-        // if string is pure text, we can send it as a simple command (faster)
-        ch = 0x20;
-        idx = 0;
-        while ((idx < bufflen) && (ch != 0)) {
-            ch = ((u8)buff[idx]);
-            if ((ch >= 0x20) && (ch < 0x7f)) {
-                idx = idx + 1;
-            } else {
-                ch = 0;
-            }
-        }
-        if (idx >= bufflen) {
-            return this->sendCommand(YapiWrapper::ysprintf("+%s",text.c_str()));
-        }
-    }
-    // send string using file upload
-    return this->_upload("txdata", buff);
+	string buff;
+	int bufflen = 0;
+	int idx = 0;
+	int ch = 0;
+	buff = text;
+	bufflen = (int)(buff).size();
+	if (bufflen < 100)
+	{
+		// if string is pure text, we can send it as a simple command (faster)
+		ch = 0x20;
+		idx = 0;
+		while ((idx < bufflen) && (ch != 0))
+		{
+			ch = ((u8)buff[idx]);
+			if ((ch >= 0x20) && (ch < 0x7f))
+			{
+				idx = idx + 1;
+			}
+			else
+			{
+				ch = 0;
+			}
+		}
+		if (idx >= bufflen)
+		{
+			return this->sendCommand(YapiWrapper::ysprintf("+%s", text.c_str()));
+		}
+	}
+	// send string using file upload
+	return this->_upload("txdata", buff);
 }
 
 /**
@@ -813,7 +926,7 @@ int YSerialPort::writeStr(string text)
  */
 int YSerialPort::writeBin(string buff)
 {
-    return this->_upload("txdata", buff);
+	return this->_upload("txdata", buff);
 }
 
 /**
@@ -827,22 +940,23 @@ int YSerialPort::writeBin(string buff)
  */
 int YSerialPort::writeArray(vector<int> byteList)
 {
-    string buff;
-    int bufflen = 0;
-    int idx = 0;
-    int hexb = 0;
-    int res = 0;
-    bufflen = (int)byteList.size();
-    buff = string(bufflen, (char)0);
-    idx = 0;
-    while (idx < bufflen) {
-        hexb = byteList[idx];
-        buff[idx] = (char)(hexb);
-        idx = idx + 1;
-    }
+	string buff;
+	int bufflen = 0;
+	int idx = 0;
+	int hexb = 0;
+	int res = 0;
+	bufflen = (int)byteList.size();
+	buff = string(bufflen, (char)0);
+	idx = 0;
+	while (idx < bufflen)
+	{
+		hexb = byteList[idx];
+		buff[idx] = (char)(hexb);
+		idx = idx + 1;
+	}
 
-    res = this->_upload("txdata", buff);
-    return res;
+	res = this->_upload("txdata", buff);
+	return res;
 }
 
 /**
@@ -856,26 +970,28 @@ int YSerialPort::writeArray(vector<int> byteList)
  */
 int YSerialPort::writeHex(string hexString)
 {
-    string buff;
-    int bufflen = 0;
-    int idx = 0;
-    int hexb = 0;
-    int res = 0;
-    bufflen = (int)(hexString).length();
-    if (bufflen < 100) {
-        return this->sendCommand(YapiWrapper::ysprintf("$%s",hexString.c_str()));
-    }
-    bufflen = ((bufflen) >> (1));
-    buff = string(bufflen, (char)0);
-    idx = 0;
-    while (idx < bufflen) {
-        hexb = (int)strtoul((hexString).substr( 2 * idx, 2).c_str(), NULL, 16);
-        buff[idx] = (char)(hexb);
-        idx = idx + 1;
-    }
+	string buff;
+	int bufflen = 0;
+	int idx = 0;
+	int hexb = 0;
+	int res = 0;
+	bufflen = (int)(hexString).length();
+	if (bufflen < 100)
+	{
+		return this->sendCommand(YapiWrapper::ysprintf("$%s", hexString.c_str()));
+	}
+	bufflen = ((bufflen) >> (1));
+	buff = string(bufflen, (char)0);
+	idx = 0;
+	while (idx < bufflen)
+	{
+		hexb = (int)strtoul((hexString).substr(2 * idx, 2).c_str(), NULL, 16);
+		buff[idx] = (char)(hexb);
+		idx = idx + 1;
+	}
 
-    res = this->_upload("txdata", buff);
-    return res;
+	res = this->_upload("txdata", buff);
+	return res;
 }
 
 /**
@@ -889,30 +1005,36 @@ int YSerialPort::writeHex(string hexString)
  */
 int YSerialPort::writeLine(string text)
 {
-    string buff;
-    int bufflen = 0;
-    int idx = 0;
-    int ch = 0;
-    buff = YapiWrapper::ysprintf("%s\r\n",text.c_str());
-    bufflen = (int)(buff).size()-2;
-    if (bufflen < 100) {
-        // if string is pure text, we can send it as a simple command (faster)
-        ch = 0x20;
-        idx = 0;
-        while ((idx < bufflen) && (ch != 0)) {
-            ch = ((u8)buff[idx]);
-            if ((ch >= 0x20) && (ch < 0x7f)) {
-                idx = idx + 1;
-            } else {
-                ch = 0;
-            }
-        }
-        if (idx >= bufflen) {
-            return this->sendCommand(YapiWrapper::ysprintf("!%s",text.c_str()));
-        }
-    }
-    // send string using file upload
-    return this->_upload("txdata", buff);
+	string buff;
+	int bufflen = 0;
+	int idx = 0;
+	int ch = 0;
+	buff = YapiWrapper::ysprintf("%s\r\n", text.c_str());
+	bufflen = (int)(buff).size() - 2;
+	if (bufflen < 100)
+	{
+		// if string is pure text, we can send it as a simple command (faster)
+		ch = 0x20;
+		idx = 0;
+		while ((idx < bufflen) && (ch != 0))
+		{
+			ch = ((u8)buff[idx]);
+			if ((ch >= 0x20) && (ch < 0x7f))
+			{
+				idx = idx + 1;
+			}
+			else
+			{
+				ch = 0;
+			}
+		}
+		if (idx >= bufflen)
+		{
+			return this->sendCommand(YapiWrapper::ysprintf("!%s", text.c_str()));
+		}
+	}
+	// send string using file upload
+	return this->_upload("txdata", buff);
 }
 
 /**
@@ -926,65 +1048,70 @@ int YSerialPort::writeLine(string text)
  */
 int YSerialPort::readByte(void)
 {
-    int currpos = 0;
-    int reqlen = 0;
-    string buff;
-    int bufflen = 0;
-    int mult = 0;
-    int endpos = 0;
-    int res = 0;
+	int currpos = 0;
+	int reqlen = 0;
+	string buff;
+	int bufflen = 0;
+	int mult = 0;
+	int endpos = 0;
+	int res = 0;
 
-    // first check if we have the requested character in the look-ahead buffer
-    bufflen = (int)(_rxbuff).size();
-    if ((_rxptr >= _rxbuffptr) && (_rxptr < _rxbuffptr+bufflen)) {
-        res = ((u8)_rxbuff[_rxptr-_rxbuffptr]);
-        _rxptr = _rxptr + 1;
-        return res;
-    }
+	// first check if we have the requested character in the look-ahead buffer
+	bufflen = (int)(_rxbuff).size();
+	if ((_rxptr >= _rxbuffptr) && (_rxptr < _rxbuffptr + bufflen))
+	{
+		res = ((u8)_rxbuff[_rxptr - _rxbuffptr]);
+		_rxptr = _rxptr + 1;
+		return res;
+	}
 
-    // try to preload more than one byte to speed-up byte-per-byte access
-    currpos = _rxptr;
-    reqlen = 1024;
-    buff = this->readBin(reqlen);
-    bufflen = (int)(buff).size();
-    if (_rxptr == currpos+bufflen) {
-        res = ((u8)buff[0]);
-        _rxptr = currpos+1;
-        _rxbuffptr = currpos;
-        _rxbuff = buff;
-        return res;
-    }
-    // mixed bidirectional data, retry with a smaller block
-    _rxptr = currpos;
-    reqlen = 16;
-    buff = this->readBin(reqlen);
-    bufflen = (int)(buff).size();
-    if (_rxptr == currpos+bufflen) {
-        res = ((u8)buff[0]);
-        _rxptr = currpos+1;
-        _rxbuffptr = currpos;
-        _rxbuff = buff;
-        return res;
-    }
-    // still mixed, need to process character by character
-    _rxptr = currpos;
+	// try to preload more than one byte to speed-up byte-per-byte access
+	currpos = _rxptr;
+	reqlen = 1024;
+	buff = this->readBin(reqlen);
+	bufflen = (int)(buff).size();
+	if (_rxptr == currpos + bufflen)
+	{
+		res = ((u8)buff[0]);
+		_rxptr = currpos + 1;
+		_rxbuffptr = currpos;
+		_rxbuff = buff;
+		return res;
+	}
+	// mixed bidirectional data, retry with a smaller block
+	_rxptr = currpos;
+	reqlen = 16;
+	buff = this->readBin(reqlen);
+	bufflen = (int)(buff).size();
+	if (_rxptr == currpos + bufflen)
+	{
+		res = ((u8)buff[0]);
+		_rxptr = currpos + 1;
+		_rxbuffptr = currpos;
+		_rxbuff = buff;
+		return res;
+	}
+	// still mixed, need to process character by character
+	_rxptr = currpos;
 
 
-    buff = this->_download(YapiWrapper::ysprintf("rxdata.bin?pos=%d&len=1",_rxptr));
-    bufflen = (int)(buff).size() - 1;
-    endpos = 0;
-    mult = 1;
-    while ((bufflen > 0) && (((u8)buff[bufflen]) != 64)) {
-        endpos = endpos + mult * (((u8)buff[bufflen]) - 48);
-        mult = mult * 10;
-        bufflen = bufflen - 1;
-    }
-    _rxptr = endpos;
-    if (bufflen == 0) {
-        return YAPI_NO_MORE_DATA;
-    }
-    res = ((u8)buff[0]);
-    return res;
+	buff = this->_download(YapiWrapper::ysprintf("rxdata.bin?pos=%d&len=1", _rxptr));
+	bufflen = (int)(buff).size() - 1;
+	endpos = 0;
+	mult = 1;
+	while ((bufflen > 0) && (((u8)buff[bufflen]) != 64))
+	{
+		endpos = endpos + mult * (((u8)buff[bufflen]) - 48);
+		mult = mult * 10;
+		bufflen = bufflen - 1;
+	}
+	_rxptr = endpos;
+	if (bufflen == 0)
+	{
+		return YAPI_NO_MORE_DATA;
+	}
+	res = ((u8)buff[0]);
+	return res;
 }
 
 /**
@@ -1000,27 +1127,29 @@ int YSerialPort::readByte(void)
  */
 string YSerialPort::readStr(int nChars)
 {
-    string buff;
-    int bufflen = 0;
-    int mult = 0;
-    int endpos = 0;
-    string res;
-    if (nChars > 65535) {
-        nChars = 65535;
-    }
+	string buff;
+	int bufflen = 0;
+	int mult = 0;
+	int endpos = 0;
+	string res;
+	if (nChars > 65535)
+	{
+		nChars = 65535;
+	}
 
-    buff = this->_download(YapiWrapper::ysprintf("rxdata.bin?pos=%d&len=%d", _rxptr,nChars));
-    bufflen = (int)(buff).size() - 1;
-    endpos = 0;
-    mult = 1;
-    while ((bufflen > 0) && (((u8)buff[bufflen]) != 64)) {
-        endpos = endpos + mult * (((u8)buff[bufflen]) - 48);
-        mult = mult * 10;
-        bufflen = bufflen - 1;
-    }
-    _rxptr = endpos;
-    res = (buff).substr( 0, bufflen);
-    return res;
+	buff = this->_download(YapiWrapper::ysprintf("rxdata.bin?pos=%d&len=%d", _rxptr, nChars));
+	bufflen = (int)(buff).size() - 1;
+	endpos = 0;
+	mult = 1;
+	while ((bufflen > 0) && (((u8)buff[bufflen]) != 64))
+	{
+		endpos = endpos + mult * (((u8)buff[bufflen]) - 48);
+		mult = mult * 10;
+		bufflen = bufflen - 1;
+	}
+	_rxptr = endpos;
+	res = (buff).substr(0, bufflen);
+	return res;
 }
 
 /**
@@ -1036,33 +1165,36 @@ string YSerialPort::readStr(int nChars)
  */
 string YSerialPort::readBin(int nChars)
 {
-    string buff;
-    int bufflen = 0;
-    int mult = 0;
-    int endpos = 0;
-    int idx = 0;
-    string res;
-    if (nChars > 65535) {
-        nChars = 65535;
-    }
+	string buff;
+	int bufflen = 0;
+	int mult = 0;
+	int endpos = 0;
+	int idx = 0;
+	string res;
+	if (nChars > 65535)
+	{
+		nChars = 65535;
+	}
 
-    buff = this->_download(YapiWrapper::ysprintf("rxdata.bin?pos=%d&len=%d", _rxptr,nChars));
-    bufflen = (int)(buff).size() - 1;
-    endpos = 0;
-    mult = 1;
-    while ((bufflen > 0) && (((u8)buff[bufflen]) != 64)) {
-        endpos = endpos + mult * (((u8)buff[bufflen]) - 48);
-        mult = mult * 10;
-        bufflen = bufflen - 1;
-    }
-    _rxptr = endpos;
-    res = string(bufflen, (char)0);
-    idx = 0;
-    while (idx < bufflen) {
-        res[idx] = (char)(((u8)buff[idx]));
-        idx = idx + 1;
-    }
-    return res;
+	buff = this->_download(YapiWrapper::ysprintf("rxdata.bin?pos=%d&len=%d", _rxptr, nChars));
+	bufflen = (int)(buff).size() - 1;
+	endpos = 0;
+	mult = 1;
+	while ((bufflen > 0) && (((u8)buff[bufflen]) != 64))
+	{
+		endpos = endpos + mult * (((u8)buff[bufflen]) - 48);
+		mult = mult * 10;
+		bufflen = bufflen - 1;
+	}
+	_rxptr = endpos;
+	res = string(bufflen, (char)0);
+	idx = 0;
+	while (idx < bufflen)
+	{
+		res[idx] = (char)(((u8)buff[idx]));
+		idx = idx + 1;
+	}
+	return res;
 }
 
 /**
@@ -1078,35 +1210,38 @@ string YSerialPort::readBin(int nChars)
  */
 vector<int> YSerialPort::readArray(int nChars)
 {
-    string buff;
-    int bufflen = 0;
-    int mult = 0;
-    int endpos = 0;
-    int idx = 0;
-    int b = 0;
-    vector<int> res;
-    if (nChars > 65535) {
-        nChars = 65535;
-    }
+	string buff;
+	int bufflen = 0;
+	int mult = 0;
+	int endpos = 0;
+	int idx = 0;
+	int b = 0;
+	vector<int> res;
+	if (nChars > 65535)
+	{
+		nChars = 65535;
+	}
 
-    buff = this->_download(YapiWrapper::ysprintf("rxdata.bin?pos=%d&len=%d", _rxptr,nChars));
-    bufflen = (int)(buff).size() - 1;
-    endpos = 0;
-    mult = 1;
-    while ((bufflen > 0) && (((u8)buff[bufflen]) != 64)) {
-        endpos = endpos + mult * (((u8)buff[bufflen]) - 48);
-        mult = mult * 10;
-        bufflen = bufflen - 1;
-    }
-    _rxptr = endpos;
-    res.clear();
-    idx = 0;
-    while (idx < bufflen) {
-        b = ((u8)buff[idx]);
-        res.push_back(b);
-        idx = idx + 1;
-    }
-    return res;
+	buff = this->_download(YapiWrapper::ysprintf("rxdata.bin?pos=%d&len=%d", _rxptr, nChars));
+	bufflen = (int)(buff).size() - 1;
+	endpos = 0;
+	mult = 1;
+	while ((bufflen > 0) && (((u8)buff[bufflen]) != 64))
+	{
+		endpos = endpos + mult * (((u8)buff[bufflen]) - 48);
+		mult = mult * 10;
+		bufflen = bufflen - 1;
+	}
+	_rxptr = endpos;
+	res.clear();
+	idx = 0;
+	while (idx < bufflen)
+	{
+		b = ((u8)buff[idx]);
+		res.push_back(b);
+		idx = idx + 1;
+	}
+	return res;
 }
 
 /**
@@ -1122,37 +1257,41 @@ vector<int> YSerialPort::readArray(int nChars)
  */
 string YSerialPort::readHex(int nBytes)
 {
-    string buff;
-    int bufflen = 0;
-    int mult = 0;
-    int endpos = 0;
-    int ofs = 0;
-    string res;
-    if (nBytes > 65535) {
-        nBytes = 65535;
-    }
+	string buff;
+	int bufflen = 0;
+	int mult = 0;
+	int endpos = 0;
+	int ofs = 0;
+	string res;
+	if (nBytes > 65535)
+	{
+		nBytes = 65535;
+	}
 
-    buff = this->_download(YapiWrapper::ysprintf("rxdata.bin?pos=%d&len=%d", _rxptr,nBytes));
-    bufflen = (int)(buff).size() - 1;
-    endpos = 0;
-    mult = 1;
-    while ((bufflen > 0) && (((u8)buff[bufflen]) != 64)) {
-        endpos = endpos + mult * (((u8)buff[bufflen]) - 48);
-        mult = mult * 10;
-        bufflen = bufflen - 1;
-    }
-    _rxptr = endpos;
-    res = "";
-    ofs = 0;
-    while (ofs + 3 < bufflen) {
-        res = YapiWrapper::ysprintf("%s%02x%02x%02x%02x", res.c_str(), ((u8)buff[ofs]), ((u8)buff[ofs + 1]), ((u8)buff[ofs + 2]),((u8)buff[ofs + 3]));
-        ofs = ofs + 4;
-    }
-    while (ofs < bufflen) {
-        res = YapiWrapper::ysprintf("%s%02x", res.c_str(),((u8)buff[ofs]));
-        ofs = ofs + 1;
-    }
-    return res;
+	buff = this->_download(YapiWrapper::ysprintf("rxdata.bin?pos=%d&len=%d", _rxptr, nBytes));
+	bufflen = (int)(buff).size() - 1;
+	endpos = 0;
+	mult = 1;
+	while ((bufflen > 0) && (((u8)buff[bufflen]) != 64))
+	{
+		endpos = endpos + mult * (((u8)buff[bufflen]) - 48);
+		mult = mult * 10;
+		bufflen = bufflen - 1;
+	}
+	_rxptr = endpos;
+	res = "";
+	ofs = 0;
+	while (ofs + 3 < bufflen)
+	{
+		res = YapiWrapper::ysprintf("%s%02x%02x%02x%02x", res.c_str(), ((u8)buff[ofs]), ((u8)buff[ofs + 1]), ((u8)buff[ofs + 2]), ((u8)buff[ofs + 3]));
+		ofs = ofs + 4;
+	}
+	while (ofs < bufflen)
+	{
+		res = YapiWrapper::ysprintf("%s%02x", res.c_str(), ((u8)buff[ofs]));
+		ofs = ofs + 1;
+	}
+	return res;
 }
 
 /**
@@ -1170,27 +1309,29 @@ string YSerialPort::readHex(int nBytes)
  */
 string YSerialPort::readLine(void)
 {
-    string url;
-    string msgbin;
-    vector<string> msgarr;
-    int msglen = 0;
-    string res;
+	string url;
+	string msgbin;
+	vector<string> msgarr;
+	int msglen = 0;
+	string res;
 
-    url = YapiWrapper::ysprintf("rxmsg.json?pos=%d&len=1&maxw=1",_rxptr);
-    msgbin = this->_download(url);
-    msgarr = this->_json_get_array(msgbin);
-    msglen = (int)msgarr.size();
-    if (msglen == 0) {
-        return "";
-    }
-    // last element of array is the new position
-    msglen = msglen - 1;
-    _rxptr = atoi((msgarr[msglen]).c_str());
-    if (msglen == 0) {
-        return "";
-    }
-    res = this->_json_get_string(msgarr[0]);
-    return res;
+	url = YapiWrapper::ysprintf("rxmsg.json?pos=%d&len=1&maxw=1", _rxptr);
+	msgbin = this->_download(url);
+	msgarr = this->_json_get_array(msgbin);
+	msglen = (int)msgarr.size();
+	if (msglen == 0)
+	{
+		return "";
+	}
+	// last element of array is the new position
+	msglen = msglen - 1;
+	_rxptr = atoi((msgarr[msglen]).c_str());
+	if (msglen == 0)
+	{
+		return "";
+	}
+	res = this->_json_get_string(msgarr[0]);
+	return res;
 }
 
 /**
@@ -1214,31 +1355,33 @@ string YSerialPort::readLine(void)
  *
  * On failure, throws an exception or returns an empty array.
  */
-vector<string> YSerialPort::readMessages(string pattern,int maxWait)
+vector<string> YSerialPort::readMessages(string pattern, int maxWait)
 {
-    string url;
-    string msgbin;
-    vector<string> msgarr;
-    int msglen = 0;
-    vector<string> res;
-    int idx = 0;
+	string url;
+	string msgbin;
+	vector<string> msgarr;
+	int msglen = 0;
+	vector<string> res;
+	int idx = 0;
 
-    url = YapiWrapper::ysprintf("rxmsg.json?pos=%d&maxw=%d&pat=%s", _rxptr, maxWait,pattern.c_str());
-    msgbin = this->_download(url);
-    msgarr = this->_json_get_array(msgbin);
-    msglen = (int)msgarr.size();
-    if (msglen == 0) {
-        return res;
-    }
-    // last element of array is the new position
-    msglen = msglen - 1;
-    _rxptr = atoi((msgarr[msglen]).c_str());
-    idx = 0;
-    while (idx < msglen) {
-        res.push_back(this->_json_get_string(msgarr[idx]));
-        idx = idx + 1;
-    }
-    return res;
+	url = YapiWrapper::ysprintf("rxmsg.json?pos=%d&maxw=%d&pat=%s", _rxptr, maxWait, pattern.c_str());
+	msgbin = this->_download(url);
+	msgarr = this->_json_get_array(msgbin);
+	msglen = (int)msgarr.size();
+	if (msglen == 0)
+	{
+		return res;
+	}
+	// last element of array is the new position
+	msglen = msglen - 1;
+	_rxptr = atoi((msgarr[msglen]).c_str());
+	idx = 0;
+	while (idx < msglen)
+	{
+		res.push_back(this->_json_get_string(msgarr[idx]));
+		idx = idx + 1;
+	}
+	return res;
 }
 
 /**
@@ -1252,8 +1395,8 @@ vector<string> YSerialPort::readMessages(string pattern,int maxWait)
  */
 int YSerialPort::read_seek(int absPos)
 {
-    _rxptr = absPos;
-    return YAPI_SUCCESS;
+	_rxptr = absPos;
+	return YAPI_SUCCESS;
 }
 
 /**
@@ -1263,7 +1406,7 @@ int YSerialPort::read_seek(int absPos)
  */
 int YSerialPort::read_tell(void)
 {
-    return _rxptr;
+	return _rxptr;
 }
 
 /**
@@ -1274,17 +1417,18 @@ int YSerialPort::read_tell(void)
  */
 int YSerialPort::read_avail(void)
 {
-    string buff;
-    int bufflen = 0;
-    int res = 0;
+	string buff;
+	int bufflen = 0;
+	int res = 0;
 
-    buff = this->_download(YapiWrapper::ysprintf("rxcnt.bin?pos=%d",_rxptr));
-    bufflen = (int)(buff).size() - 1;
-    while ((bufflen > 0) && (((u8)buff[bufflen]) != 64)) {
-        bufflen = bufflen - 1;
-    }
-    res = atoi(((buff).substr( 0, bufflen)).c_str());
-    return res;
+	buff = this->_download(YapiWrapper::ysprintf("rxcnt.bin?pos=%d", _rxptr));
+	bufflen = (int)(buff).size() - 1;
+	while ((bufflen > 0) && (((u8)buff[bufflen]) != 64))
+	{
+		bufflen = bufflen - 1;
+	}
+	res = atoi(((buff).substr(0, bufflen)).c_str());
+	return res;
 }
 
 /**
@@ -1299,29 +1443,31 @@ int YSerialPort::read_avail(void)
  *
  * On failure, throws an exception or returns an empty array.
  */
-string YSerialPort::queryLine(string query,int maxWait)
+string YSerialPort::queryLine(string query, int maxWait)
 {
-    string url;
-    string msgbin;
-    vector<string> msgarr;
-    int msglen = 0;
-    string res;
+	string url;
+	string msgbin;
+	vector<string> msgarr;
+	int msglen = 0;
+	string res;
 
-    url = YapiWrapper::ysprintf("rxmsg.json?len=1&maxw=%d&cmd=!%s", maxWait,query.c_str());
-    msgbin = this->_download(url);
-    msgarr = this->_json_get_array(msgbin);
-    msglen = (int)msgarr.size();
-    if (msglen == 0) {
-        return "";
-    }
-    // last element of array is the new position
-    msglen = msglen - 1;
-    _rxptr = atoi((msgarr[msglen]).c_str());
-    if (msglen == 0) {
-        return "";
-    }
-    res = this->_json_get_string(msgarr[0]);
-    return res;
+	url = YapiWrapper::ysprintf("rxmsg.json?len=1&maxw=%d&cmd=!%s", maxWait, query.c_str());
+	msgbin = this->_download(url);
+	msgarr = this->_json_get_array(msgbin);
+	msglen = (int)msgarr.size();
+	if (msglen == 0)
+	{
+		return "";
+	}
+	// last element of array is the new position
+	msglen = msglen - 1;
+	_rxptr = atoi((msgarr[msglen]).c_str());
+	if (msglen == 0)
+	{
+		return "";
+	}
+	res = this->_json_get_string(msgarr[0]);
+	return res;
 }
 
 /**
@@ -1335,10 +1481,10 @@ string YSerialPort::queryLine(string query,int maxWait)
  *
  * On failure, throws an exception or returns a negative error code.
  */
-int YSerialPort::uploadJob(string jobfile,string jsonDef)
+int YSerialPort::uploadJob(string jobfile, string jsonDef)
 {
-    this->_upload(jobfile, jsonDef);
-    return YAPI_SUCCESS;
+	this->_upload(jobfile, jsonDef);
+	return YAPI_SUCCESS;
 }
 
 /**
@@ -1354,7 +1500,7 @@ int YSerialPort::uploadJob(string jobfile,string jsonDef)
  */
 int YSerialPort::selectJob(string jobfile)
 {
-    return this->set_currentJob(jobfile);
+	return this->set_currentJob(jobfile);
 }
 
 /**
@@ -1369,7 +1515,7 @@ int YSerialPort::selectJob(string jobfile)
  */
 int YSerialPort::set_RTS(int val)
 {
-    return this->sendCommand(YapiWrapper::ysprintf("R%d",val));
+	return this->sendCommand(YapiWrapper::ysprintf("R%d", val));
 }
 
 /**
@@ -1382,16 +1528,17 @@ int YSerialPort::set_RTS(int val)
  */
 int YSerialPort::get_CTS(void)
 {
-    string buff;
-    int res = 0;
+	string buff;
+	int res = 0;
 
-    buff = this->_download("cts.txt");
-    if (!((int)(buff).size() == 1)) {
-        _throw(YAPI_IO_ERROR,"invalid CTS reply");
-        return YAPI_IO_ERROR;
-    }
-    res = ((u8)buff[0]) - 48;
-    return res;
+	buff = this->_download("cts.txt");
+	if (!((int)(buff).size() == 1))
+	{
+		_throw(YAPI_IO_ERROR, "invalid CTS reply");
+		return YAPI_IO_ERROR;
+	}
+	res = ((u8)buff[0]) - 48;
+	return res;
 }
 
 /**
@@ -1407,7 +1554,7 @@ int YSerialPort::get_CTS(void)
  */
 int YSerialPort::writeMODBUS(string hexString)
 {
-    return this->sendCommand(YapiWrapper::ysprintf(":%s",hexString.c_str()));
+	return this->sendCommand(YapiWrapper::ysprintf(":%s", hexString.c_str()));
 }
 
 /**
@@ -1422,67 +1569,76 @@ int YSerialPort::writeMODBUS(string hexString)
  *
  * On failure, throws an exception or returns an empty array (or a MODBUS error reply).
  */
-vector<int> YSerialPort::queryMODBUS(int slaveNo,vector<int> pduBytes)
+vector<int> YSerialPort::queryMODBUS(int slaveNo, vector<int> pduBytes)
 {
-    int funCode = 0;
-    int nib = 0;
-    int i = 0;
-    string cmd;
-    string url;
-    string pat;
-    string msgs;
-    vector<string> reps;
-    string rep;
-    vector<int> res;
-    int replen = 0;
-    int hexb = 0;
-    funCode = pduBytes[0];
-    nib = ((funCode) >> (4));
-    pat = YapiWrapper::ysprintf("%02x[%x%x]%x.*", slaveNo, nib, (nib+8),((funCode) & (15)));
-    cmd = YapiWrapper::ysprintf("%02x%02x", slaveNo,funCode);
-    i = 1;
-    while (i < (int)pduBytes.size()) {
-        cmd = YapiWrapper::ysprintf("%s%02x", cmd.c_str(),((pduBytes[i]) & (0xff)));
-        i = i + 1;
-    }
+	int funCode = 0;
+	int nib = 0;
+	int i = 0;
+	string cmd;
+	string url;
+	string pat;
+	string msgs;
+	vector<string> reps;
+	string rep;
+	vector<int> res;
+	int replen = 0;
+	int hexb = 0;
+	funCode = pduBytes[0];
+	nib = ((funCode) >> (4));
+	pat = YapiWrapper::ysprintf("%02x[%x%x]%x.*", slaveNo, nib, (nib + 8), ((funCode) & (15)));
+	cmd = YapiWrapper::ysprintf("%02x%02x", slaveNo, funCode);
+	i = 1;
+	while (i < (int)pduBytes.size())
+	{
+		cmd = YapiWrapper::ysprintf("%s%02x", cmd.c_str(), ((pduBytes[i]) & (0xff)));
+		i = i + 1;
+	}
 
-    url = YapiWrapper::ysprintf("rxmsg.json?cmd=:%s&pat=:%s", cmd.c_str(),pat.c_str());
-    msgs = this->_download(url);
-    reps = this->_json_get_array(msgs);
-    if (!((int)reps.size() > 1)) {
-        _throw(YAPI_IO_ERROR,"no reply from slave");
-        return res;
-    }
-    if ((int)reps.size() > 1) {
-        rep = this->_json_get_string(reps[0]);
-        replen = (((int)(rep).length() - 3) >> (1));
-        i = 0;
-        while (i < replen) {
-            hexb = (int)strtoul((rep).substr(2 * i + 3, 2).c_str(), NULL, 16);
-            res.push_back(hexb);
-            i = i + 1;
-        }
-        if (res[0] != funCode) {
-            i = res[1];
-            if (!(i > 1)) {
-                _throw(YAPI_NOT_SUPPORTED,"MODBUS error: unsupported function code");
-                return res;
-            }
-            if (!(i > 2)) {
-                _throw(YAPI_INVALID_ARGUMENT,"MODBUS error: illegal data address");
-                return res;
-            }
-            if (!(i > 3)) {
-                _throw(YAPI_INVALID_ARGUMENT,"MODBUS error: illegal data value");
-                return res;
-            }
-            if (!(i > 4)) {
-                _throw(YAPI_INVALID_ARGUMENT,"MODBUS error: failed to execute function");
-                return res;
-            }
-        }
-    }
-    return res;
+	url = YapiWrapper::ysprintf("rxmsg.json?cmd=:%s&pat=:%s", cmd.c_str(), pat.c_str());
+	msgs = this->_download(url);
+	reps = this->_json_get_array(msgs);
+	if (!((int)reps.size() > 1))
+	{
+		_throw(YAPI_IO_ERROR, "no reply from slave");
+		return res;
+	}
+	if ((int)reps.size() > 1)
+	{
+		rep = this->_json_get_string(reps[0]);
+		replen = (((int)(rep).length() - 3) >> (1));
+		i = 0;
+		while (i < replen)
+		{
+			hexb = (int)strtoul((rep).substr(2 * i + 3, 2).c_str(), NULL, 16);
+			res.push_back(hexb);
+			i = i + 1;
+		}
+		if (res[0] != funCode)
+		{
+			i = res[1];
+			if (!(i > 1))
+			{
+				_throw(YAPI_NOT_SUPPORTED, "MODBUS error: unsupported function code");
+				return res;
+			}
+			if (!(i > 2))
+			{
+				_throw(YAPI_INVALID_ARGUMENT, "MODBUS error: illegal data address");
+				return res;
+			}
+			if (!(i > 3))
+			{
+				_throw(YAPI_INVALID_ARGUMENT, "MODBUS error: illegal data value");
+				return res;
+			}
+			if (!(i > 4))
+			{
+				_throw(YAPI_INVALID_ARGUMENT, "MODBUS error: failed to execute function");
+				return res;
+			}
+		}
+	}
+	return res;
 }
 
 /**
@@ -1497,48 +1653,57 @@ vector<int> YSerialPort::queryMODBUS(int slaveNo,vector<int> pduBytes)
  *
  * On failure, throws an exception or returns an empty array.
  */
-vector<int> YSerialPort::modbusReadBits(int slaveNo,int pduAddr,int nBits)
+vector<int> YSerialPort::modbusReadBits(int slaveNo, int pduAddr, int nBits)
 {
-    vector<int> pdu;
-    vector<int> reply;
-    vector<int> res;
-    int bitpos = 0;
-    int idx = 0;
-    int val = 0;
-    int mask = 0;
-    pdu.push_back(0x01);
-    pdu.push_back(((pduAddr) >> (8)));
-    pdu.push_back(((pduAddr) & (0xff)));
-    pdu.push_back(((nBits) >> (8)));
-    pdu.push_back(((nBits) & (0xff)));
+	vector<int> pdu;
+	vector<int> reply;
+	vector<int> res;
+	int bitpos = 0;
+	int idx = 0;
+	int val = 0;
+	int mask = 0;
+	pdu.push_back(0x01);
+	pdu.push_back(((pduAddr) >> (8)));
+	pdu.push_back(((pduAddr) & (0xff)));
+	pdu.push_back(((nBits) >> (8)));
+	pdu.push_back(((nBits) & (0xff)));
 
-    reply = this->queryMODBUS(slaveNo, pdu);
-    if ((int)reply.size() == 0) {
-        return res;
-    }
-    if (reply[0] != pdu[0]) {
-        return res;
-    }
-    bitpos = 0;
-    idx = 2;
-    val = reply[idx];
-    mask = 1;
-    while (bitpos < nBits) {
-        if (((val) & (mask)) == 0) {
-            res.push_back(0);
-        } else {
-            res.push_back(1);
-        }
-        bitpos = bitpos + 1;
-        if (mask == 0x80) {
-            idx = idx + 1;
-            val = reply[idx];
-            mask = 1;
-        } else {
-            mask = ((mask) << (1));
-        }
-    }
-    return res;
+	reply = this->queryMODBUS(slaveNo, pdu);
+	if ((int)reply.size() == 0)
+	{
+		return res;
+	}
+	if (reply[0] != pdu[0])
+	{
+		return res;
+	}
+	bitpos = 0;
+	idx = 2;
+	val = reply[idx];
+	mask = 1;
+	while (bitpos < nBits)
+	{
+		if (((val) & (mask)) == 0)
+		{
+			res.push_back(0);
+		}
+		else
+		{
+			res.push_back(1);
+		}
+		bitpos = bitpos + 1;
+		if (mask == 0x80)
+		{
+			idx = idx + 1;
+			val = reply[idx];
+			mask = 1;
+		}
+		else
+		{
+			mask = ((mask) << (1));
+		}
+	}
+	return res;
 }
 
 /**
@@ -1553,48 +1718,57 @@ vector<int> YSerialPort::modbusReadBits(int slaveNo,int pduAddr,int nBits)
  *
  * On failure, throws an exception or returns an empty array.
  */
-vector<int> YSerialPort::modbusReadInputBits(int slaveNo,int pduAddr,int nBits)
+vector<int> YSerialPort::modbusReadInputBits(int slaveNo, int pduAddr, int nBits)
 {
-    vector<int> pdu;
-    vector<int> reply;
-    vector<int> res;
-    int bitpos = 0;
-    int idx = 0;
-    int val = 0;
-    int mask = 0;
-    pdu.push_back(0x02);
-    pdu.push_back(((pduAddr) >> (8)));
-    pdu.push_back(((pduAddr) & (0xff)));
-    pdu.push_back(((nBits) >> (8)));
-    pdu.push_back(((nBits) & (0xff)));
+	vector<int> pdu;
+	vector<int> reply;
+	vector<int> res;
+	int bitpos = 0;
+	int idx = 0;
+	int val = 0;
+	int mask = 0;
+	pdu.push_back(0x02);
+	pdu.push_back(((pduAddr) >> (8)));
+	pdu.push_back(((pduAddr) & (0xff)));
+	pdu.push_back(((nBits) >> (8)));
+	pdu.push_back(((nBits) & (0xff)));
 
-    reply = this->queryMODBUS(slaveNo, pdu);
-    if ((int)reply.size() == 0) {
-        return res;
-    }
-    if (reply[0] != pdu[0]) {
-        return res;
-    }
-    bitpos = 0;
-    idx = 2;
-    val = reply[idx];
-    mask = 1;
-    while (bitpos < nBits) {
-        if (((val) & (mask)) == 0) {
-            res.push_back(0);
-        } else {
-            res.push_back(1);
-        }
-        bitpos = bitpos + 1;
-        if (mask == 0x80) {
-            idx = idx + 1;
-            val = reply[idx];
-            mask = 1;
-        } else {
-            mask = ((mask) << (1));
-        }
-    }
-    return res;
+	reply = this->queryMODBUS(slaveNo, pdu);
+	if ((int)reply.size() == 0)
+	{
+		return res;
+	}
+	if (reply[0] != pdu[0])
+	{
+		return res;
+	}
+	bitpos = 0;
+	idx = 2;
+	val = reply[idx];
+	mask = 1;
+	while (bitpos < nBits)
+	{
+		if (((val) & (mask)) == 0)
+		{
+			res.push_back(0);
+		}
+		else
+		{
+			res.push_back(1);
+		}
+		bitpos = bitpos + 1;
+		if (mask == 0x80)
+		{
+			idx = idx + 1;
+			val = reply[idx];
+			mask = 1;
+		}
+		else
+		{
+			mask = ((mask) << (1));
+		}
+	}
+	return res;
 }
 
 /**
@@ -1609,38 +1783,41 @@ vector<int> YSerialPort::modbusReadInputBits(int slaveNo,int pduAddr,int nBits)
  *
  * On failure, throws an exception or returns an empty array.
  */
-vector<int> YSerialPort::modbusReadRegisters(int slaveNo,int pduAddr,int nWords)
+vector<int> YSerialPort::modbusReadRegisters(int slaveNo, int pduAddr, int nWords)
 {
-    vector<int> pdu;
-    vector<int> reply;
-    vector<int> res;
-    int regpos = 0;
-    int idx = 0;
-    int val = 0;
-    pdu.push_back(0x03);
-    pdu.push_back(((pduAddr) >> (8)));
-    pdu.push_back(((pduAddr) & (0xff)));
-    pdu.push_back(((nWords) >> (8)));
-    pdu.push_back(((nWords) & (0xff)));
+	vector<int> pdu;
+	vector<int> reply;
+	vector<int> res;
+	int regpos = 0;
+	int idx = 0;
+	int val = 0;
+	pdu.push_back(0x03);
+	pdu.push_back(((pduAddr) >> (8)));
+	pdu.push_back(((pduAddr) & (0xff)));
+	pdu.push_back(((nWords) >> (8)));
+	pdu.push_back(((nWords) & (0xff)));
 
-    reply = this->queryMODBUS(slaveNo, pdu);
-    if ((int)reply.size() == 0) {
-        return res;
-    }
-    if (reply[0] != pdu[0]) {
-        return res;
-    }
-    regpos = 0;
-    idx = 2;
-    while (regpos < nWords) {
-        val = ((reply[idx]) << (8));
-        idx = idx + 1;
-        val = val + reply[idx];
-        idx = idx + 1;
-        res.push_back(val);
-        regpos = regpos + 1;
-    }
-    return res;
+	reply = this->queryMODBUS(slaveNo, pdu);
+	if ((int)reply.size() == 0)
+	{
+		return res;
+	}
+	if (reply[0] != pdu[0])
+	{
+		return res;
+	}
+	regpos = 0;
+	idx = 2;
+	while (regpos < nWords)
+	{
+		val = ((reply[idx]) << (8));
+		idx = idx + 1;
+		val = val + reply[idx];
+		idx = idx + 1;
+		res.push_back(val);
+		regpos = regpos + 1;
+	}
+	return res;
 }
 
 /**
@@ -1655,38 +1832,41 @@ vector<int> YSerialPort::modbusReadRegisters(int slaveNo,int pduAddr,int nWords)
  *
  * On failure, throws an exception or returns an empty array.
  */
-vector<int> YSerialPort::modbusReadInputRegisters(int slaveNo,int pduAddr,int nWords)
+vector<int> YSerialPort::modbusReadInputRegisters(int slaveNo, int pduAddr, int nWords)
 {
-    vector<int> pdu;
-    vector<int> reply;
-    vector<int> res;
-    int regpos = 0;
-    int idx = 0;
-    int val = 0;
-    pdu.push_back(0x04);
-    pdu.push_back(((pduAddr) >> (8)));
-    pdu.push_back(((pduAddr) & (0xff)));
-    pdu.push_back(((nWords) >> (8)));
-    pdu.push_back(((nWords) & (0xff)));
+	vector<int> pdu;
+	vector<int> reply;
+	vector<int> res;
+	int regpos = 0;
+	int idx = 0;
+	int val = 0;
+	pdu.push_back(0x04);
+	pdu.push_back(((pduAddr) >> (8)));
+	pdu.push_back(((pduAddr) & (0xff)));
+	pdu.push_back(((nWords) >> (8)));
+	pdu.push_back(((nWords) & (0xff)));
 
-    reply = this->queryMODBUS(slaveNo, pdu);
-    if ((int)reply.size() == 0) {
-        return res;
-    }
-    if (reply[0] != pdu[0]) {
-        return res;
-    }
-    regpos = 0;
-    idx = 2;
-    while (regpos < nWords) {
-        val = ((reply[idx]) << (8));
-        idx = idx + 1;
-        val = val + reply[idx];
-        idx = idx + 1;
-        res.push_back(val);
-        regpos = regpos + 1;
-    }
-    return res;
+	reply = this->queryMODBUS(slaveNo, pdu);
+	if ((int)reply.size() == 0)
+	{
+		return res;
+	}
+	if (reply[0] != pdu[0])
+	{
+		return res;
+	}
+	regpos = 0;
+	idx = 2;
+	while (regpos < nWords)
+	{
+		val = ((reply[idx]) << (8));
+		idx = idx + 1;
+		val = val + reply[idx];
+		idx = idx + 1;
+		res.push_back(val);
+		regpos = regpos + 1;
+	}
+	return res;
 }
 
 /**
@@ -1701,30 +1881,33 @@ vector<int> YSerialPort::modbusReadInputRegisters(int slaveNo,int pduAddr,int nW
  *
  * On failure, throws an exception or returns zero.
  */
-int YSerialPort::modbusWriteBit(int slaveNo,int pduAddr,int value)
+int YSerialPort::modbusWriteBit(int slaveNo, int pduAddr, int value)
 {
-    vector<int> pdu;
-    vector<int> reply;
-    int res = 0;
-    res = 0;
-    if (value != 0) {
-        value = 0xff;
-    }
-    pdu.push_back(0x05);
-    pdu.push_back(((pduAddr) >> (8)));
-    pdu.push_back(((pduAddr) & (0xff)));
-    pdu.push_back(value);
-    pdu.push_back(0x00);
+	vector<int> pdu;
+	vector<int> reply;
+	int res = 0;
+	res = 0;
+	if (value != 0)
+	{
+		value = 0xff;
+	}
+	pdu.push_back(0x05);
+	pdu.push_back(((pduAddr) >> (8)));
+	pdu.push_back(((pduAddr) & (0xff)));
+	pdu.push_back(value);
+	pdu.push_back(0x00);
 
-    reply = this->queryMODBUS(slaveNo, pdu);
-    if ((int)reply.size() == 0) {
-        return res;
-    }
-    if (reply[0] != pdu[0]) {
-        return res;
-    }
-    res = 1;
-    return res;
+	reply = this->queryMODBUS(slaveNo, pdu);
+	if ((int)reply.size() == 0)
+	{
+		return res;
+	}
+	if (reply[0] != pdu[0])
+	{
+		return res;
+	}
+	res = 1;
+	return res;
 }
 
 /**
@@ -1739,55 +1922,63 @@ int YSerialPort::modbusWriteBit(int slaveNo,int pduAddr,int value)
  *
  * On failure, throws an exception or returns zero.
  */
-int YSerialPort::modbusWriteBits(int slaveNo,int pduAddr,vector<int> bits)
+int YSerialPort::modbusWriteBits(int slaveNo, int pduAddr, vector<int> bits)
 {
-    int nBits = 0;
-    int nBytes = 0;
-    int bitpos = 0;
-    int val = 0;
-    int mask = 0;
-    vector<int> pdu;
-    vector<int> reply;
-    int res = 0;
-    res = 0;
-    nBits = (int)bits.size();
-    nBytes = (((nBits + 7)) >> (3));
-    pdu.push_back(0x0f);
-    pdu.push_back(((pduAddr) >> (8)));
-    pdu.push_back(((pduAddr) & (0xff)));
-    pdu.push_back(((nBits) >> (8)));
-    pdu.push_back(((nBits) & (0xff)));
-    pdu.push_back(nBytes);
-    bitpos = 0;
-    val = 0;
-    mask = 1;
-    while (bitpos < nBits) {
-        if (bits[bitpos] != 0) {
-            val = ((val) | (mask));
-        }
-        bitpos = bitpos + 1;
-        if (mask == 0x80) {
-            pdu.push_back(val);
-            val = 0;
-            mask = 1;
-        } else {
-            mask = ((mask) << (1));
-        }
-    }
-    if (mask != 1) {
-        pdu.push_back(val);
-    }
+	int nBits = 0;
+	int nBytes = 0;
+	int bitpos = 0;
+	int val = 0;
+	int mask = 0;
+	vector<int> pdu;
+	vector<int> reply;
+	int res = 0;
+	res = 0;
+	nBits = (int)bits.size();
+	nBytes = (((nBits + 7)) >> (3));
+	pdu.push_back(0x0f);
+	pdu.push_back(((pduAddr) >> (8)));
+	pdu.push_back(((pduAddr) & (0xff)));
+	pdu.push_back(((nBits) >> (8)));
+	pdu.push_back(((nBits) & (0xff)));
+	pdu.push_back(nBytes);
+	bitpos = 0;
+	val = 0;
+	mask = 1;
+	while (bitpos < nBits)
+	{
+		if (bits[bitpos] != 0)
+		{
+			val = ((val) | (mask));
+		}
+		bitpos = bitpos + 1;
+		if (mask == 0x80)
+		{
+			pdu.push_back(val);
+			val = 0;
+			mask = 1;
+		}
+		else
+		{
+			mask = ((mask) << (1));
+		}
+	}
+	if (mask != 1)
+	{
+		pdu.push_back(val);
+	}
 
-    reply = this->queryMODBUS(slaveNo, pdu);
-    if ((int)reply.size() == 0) {
-        return res;
-    }
-    if (reply[0] != pdu[0]) {
-        return res;
-    }
-    res = ((reply[3]) << (8));
-    res = res + reply[4];
-    return res;
+	reply = this->queryMODBUS(slaveNo, pdu);
+	if ((int)reply.size() == 0)
+	{
+		return res;
+	}
+	if (reply[0] != pdu[0])
+	{
+		return res;
+	}
+	res = ((reply[3]) << (8));
+	res = res + reply[4];
+	return res;
 }
 
 /**
@@ -1802,27 +1993,29 @@ int YSerialPort::modbusWriteBits(int slaveNo,int pduAddr,vector<int> bits)
  *
  * On failure, throws an exception or returns zero.
  */
-int YSerialPort::modbusWriteRegister(int slaveNo,int pduAddr,int value)
+int YSerialPort::modbusWriteRegister(int slaveNo, int pduAddr, int value)
 {
-    vector<int> pdu;
-    vector<int> reply;
-    int res = 0;
-    res = 0;
-    pdu.push_back(0x06);
-    pdu.push_back(((pduAddr) >> (8)));
-    pdu.push_back(((pduAddr) & (0xff)));
-    pdu.push_back(((value) >> (8)));
-    pdu.push_back(((value) & (0xff)));
+	vector<int> pdu;
+	vector<int> reply;
+	int res = 0;
+	res = 0;
+	pdu.push_back(0x06);
+	pdu.push_back(((pduAddr) >> (8)));
+	pdu.push_back(((pduAddr) & (0xff)));
+	pdu.push_back(((value) >> (8)));
+	pdu.push_back(((value) & (0xff)));
 
-    reply = this->queryMODBUS(slaveNo, pdu);
-    if ((int)reply.size() == 0) {
-        return res;
-    }
-    if (reply[0] != pdu[0]) {
-        return res;
-    }
-    res = 1;
-    return res;
+	reply = this->queryMODBUS(slaveNo, pdu);
+	if ((int)reply.size() == 0)
+	{
+		return res;
+	}
+	if (reply[0] != pdu[0])
+	{
+		return res;
+	}
+	res = 1;
+	return res;
 }
 
 /**
@@ -1837,42 +2030,45 @@ int YSerialPort::modbusWriteRegister(int slaveNo,int pduAddr,int value)
  *
  * On failure, throws an exception or returns zero.
  */
-int YSerialPort::modbusWriteRegisters(int slaveNo,int pduAddr,vector<int> values)
+int YSerialPort::modbusWriteRegisters(int slaveNo, int pduAddr, vector<int> values)
 {
-    int nWords = 0;
-    int nBytes = 0;
-    int regpos = 0;
-    int val = 0;
-    vector<int> pdu;
-    vector<int> reply;
-    int res = 0;
-    res = 0;
-    nWords = (int)values.size();
-    nBytes = 2 * nWords;
-    pdu.push_back(0x10);
-    pdu.push_back(((pduAddr) >> (8)));
-    pdu.push_back(((pduAddr) & (0xff)));
-    pdu.push_back(((nWords) >> (8)));
-    pdu.push_back(((nWords) & (0xff)));
-    pdu.push_back(nBytes);
-    regpos = 0;
-    while (regpos < nWords) {
-        val = values[regpos];
-        pdu.push_back(((val) >> (8)));
-        pdu.push_back(((val) & (0xff)));
-        regpos = regpos + 1;
-    }
+	int nWords = 0;
+	int nBytes = 0;
+	int regpos = 0;
+	int val = 0;
+	vector<int> pdu;
+	vector<int> reply;
+	int res = 0;
+	res = 0;
+	nWords = (int)values.size();
+	nBytes = 2 * nWords;
+	pdu.push_back(0x10);
+	pdu.push_back(((pduAddr) >> (8)));
+	pdu.push_back(((pduAddr) & (0xff)));
+	pdu.push_back(((nWords) >> (8)));
+	pdu.push_back(((nWords) & (0xff)));
+	pdu.push_back(nBytes);
+	regpos = 0;
+	while (regpos < nWords)
+	{
+		val = values[regpos];
+		pdu.push_back(((val) >> (8)));
+		pdu.push_back(((val) & (0xff)));
+		regpos = regpos + 1;
+	}
 
-    reply = this->queryMODBUS(slaveNo, pdu);
-    if ((int)reply.size() == 0) {
-        return res;
-    }
-    if (reply[0] != pdu[0]) {
-        return res;
-    }
-    res = ((reply[3]) << (8));
-    res = res + reply[4];
-    return res;
+	reply = this->queryMODBUS(slaveNo, pdu);
+	if ((int)reply.size() == 0)
+	{
+		return res;
+	}
+	if (reply[0] != pdu[0])
+	{
+		return res;
+	}
+	res = ((reply[3]) << (8));
+	res = res + reply[4];
+	return res;
 }
 
 /**
@@ -1890,78 +2086,84 @@ int YSerialPort::modbusWriteRegisters(int slaveNo,int pduAddr,vector<int> values
  *
  * On failure, throws an exception or returns an empty array.
  */
-vector<int> YSerialPort::modbusWriteAndReadRegisters(int slaveNo,int pduWriteAddr,vector<int> values,int pduReadAddr,int nReadWords)
+vector<int> YSerialPort::modbusWriteAndReadRegisters(int slaveNo, int pduWriteAddr, vector<int> values, int pduReadAddr, int nReadWords)
 {
-    int nWriteWords = 0;
-    int nBytes = 0;
-    int regpos = 0;
-    int val = 0;
-    int idx = 0;
-    vector<int> pdu;
-    vector<int> reply;
-    vector<int> res;
-    nWriteWords = (int)values.size();
-    nBytes = 2 * nWriteWords;
-    pdu.push_back(0x17);
-    pdu.push_back(((pduReadAddr) >> (8)));
-    pdu.push_back(((pduReadAddr) & (0xff)));
-    pdu.push_back(((nReadWords) >> (8)));
-    pdu.push_back(((nReadWords) & (0xff)));
-    pdu.push_back(((pduWriteAddr) >> (8)));
-    pdu.push_back(((pduWriteAddr) & (0xff)));
-    pdu.push_back(((nWriteWords) >> (8)));
-    pdu.push_back(((nWriteWords) & (0xff)));
-    pdu.push_back(nBytes);
-    regpos = 0;
-    while (regpos < nWriteWords) {
-        val = values[regpos];
-        pdu.push_back(((val) >> (8)));
-        pdu.push_back(((val) & (0xff)));
-        regpos = regpos + 1;
-    }
+	int nWriteWords = 0;
+	int nBytes = 0;
+	int regpos = 0;
+	int val = 0;
+	int idx = 0;
+	vector<int> pdu;
+	vector<int> reply;
+	vector<int> res;
+	nWriteWords = (int)values.size();
+	nBytes = 2 * nWriteWords;
+	pdu.push_back(0x17);
+	pdu.push_back(((pduReadAddr) >> (8)));
+	pdu.push_back(((pduReadAddr) & (0xff)));
+	pdu.push_back(((nReadWords) >> (8)));
+	pdu.push_back(((nReadWords) & (0xff)));
+	pdu.push_back(((pduWriteAddr) >> (8)));
+	pdu.push_back(((pduWriteAddr) & (0xff)));
+	pdu.push_back(((nWriteWords) >> (8)));
+	pdu.push_back(((nWriteWords) & (0xff)));
+	pdu.push_back(nBytes);
+	regpos = 0;
+	while (regpos < nWriteWords)
+	{
+		val = values[regpos];
+		pdu.push_back(((val) >> (8)));
+		pdu.push_back(((val) & (0xff)));
+		regpos = regpos + 1;
+	}
 
-    reply = this->queryMODBUS(slaveNo, pdu);
-    if ((int)reply.size() == 0) {
-        return res;
-    }
-    if (reply[0] != pdu[0]) {
-        return res;
-    }
-    regpos = 0;
-    idx = 2;
-    while (regpos < nReadWords) {
-        val = ((reply[idx]) << (8));
-        idx = idx + 1;
-        val = val + reply[idx];
-        idx = idx + 1;
-        res.push_back(val);
-        regpos = regpos + 1;
-    }
-    return res;
+	reply = this->queryMODBUS(slaveNo, pdu);
+	if ((int)reply.size() == 0)
+	{
+		return res;
+	}
+	if (reply[0] != pdu[0])
+	{
+		return res;
+	}
+	regpos = 0;
+	idx = 2;
+	while (regpos < nReadWords)
+	{
+		val = ((reply[idx]) << (8));
+		idx = idx + 1;
+		val = val + reply[idx];
+		idx = idx + 1;
+		res.push_back(val);
+		regpos = regpos + 1;
+	}
+	return res;
 }
 
-YSerialPort *YSerialPort::nextSerialPort(void)
+YSerialPort* YSerialPort::nextSerialPort(void)
 {
-    string  hwid;
+	string hwid;
 
-    if(YISERR(_nextFunction(hwid)) || hwid=="") {
-        return NULL;
-    }
-    return YSerialPort::FindSerialPort(hwid);
+	if (YISERR(_nextFunction(hwid)) || hwid == "")
+	{
+		return NULL;
+	}
+	return YSerialPort::FindSerialPort(hwid);
 }
 
 YSerialPort* YSerialPort::FirstSerialPort(void)
 {
-    vector<YFUN_DESCR>   v_fundescr;
-    YDEV_DESCR             ydevice;
-    string              serial, funcId, funcName, funcVal, errmsg;
+	vector<YFUN_DESCR> v_fundescr;
+	YDEV_DESCR ydevice;
+	string serial, funcId, funcName, funcVal, errmsg;
 
-    if(YISERR(YapiWrapper::getFunctionsByClass("SerialPort", 0, v_fundescr, sizeof(YFUN_DESCR), errmsg)) ||
-       v_fundescr.size() == 0 ||
-       YISERR(YapiWrapper::getFunctionInfo(v_fundescr[0], ydevice, serial, funcId, funcName, funcVal, errmsg))) {
-        return NULL;
-    }
-    return YSerialPort::FindSerialPort(serial+"."+funcId);
+	if (YISERR(YapiWrapper::getFunctionsByClass("SerialPort", 0, v_fundescr, sizeof(YFUN_DESCR), errmsg)) ||
+		v_fundescr.size() == 0 ||
+		YISERR(YapiWrapper::getFunctionInfo(v_fundescr[0], ydevice, serial, funcId, funcName, funcVal, errmsg)))
+	{
+		return NULL;
+	}
+	return YSerialPort::FindSerialPort(serial + "." + funcId);
 }
 
 //--- (end of YSerialPort implementation)

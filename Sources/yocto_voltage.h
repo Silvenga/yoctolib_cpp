@@ -51,15 +51,17 @@
 //--- (YVoltage definitions)
 class YVoltage; // forward declaration
 
-typedef void (*YVoltageValueCallback)(YVoltage *func, const string& functionValue);
+typedef void (*YVoltageValueCallback)(YVoltage* func, const string& functionValue);
 class YMeasure; // forward declaration
-typedef void (*YVoltageTimedReportCallback)(YVoltage *func, YMeasure measure);
+typedef void (*YVoltageTimedReportCallback)(YVoltage* func, YMeasure measure);
 #ifndef _Y_ENABLED_ENUM
 #define _Y_ENABLED_ENUM
-typedef enum {
-    Y_ENABLED_FALSE = 0,
-    Y_ENABLED_TRUE = 1,
-    Y_ENABLED_INVALID = -1,
+
+typedef enum
+{
+	Y_ENABLED_FALSE = 0,
+	Y_ENABLED_TRUE = 1,
+	Y_ENABLED_INVALID = -1,
 } Y_ENABLED_enum;
 #endif
 //--- (end of YVoltage definitions)
@@ -72,133 +74,147 @@ typedef enum {
  * sensors. It inherits from YSensor class the core functions to read measurements,
  * to register callback functions, to access the autonomous datalogger.
  */
-class YOCTO_CLASS_EXPORT YVoltage: public YSensor {
+class YOCTO_CLASS_EXPORT YVoltage: public YSensor
+{
 #ifdef __BORLANDC__
 #pragma option push -w-8022
 #endif
-//--- (end of YVoltage declaration)
+	//--- (end of YVoltage declaration)
 protected:
-    //--- (YVoltage attributes)
-    // Attributes (function value cache)
-    Y_ENABLED_enum  _enabled;
-    YVoltageValueCallback _valueCallbackVoltage;
-    YVoltageTimedReportCallback _timedReportCallbackVoltage;
+	//--- (YVoltage attributes)
+	// Attributes (function value cache)
+	Y_ENABLED_enum _enabled;
+	YVoltageValueCallback _valueCallbackVoltage;
+	YVoltageTimedReportCallback _timedReportCallbackVoltage;
 
-    friend YVoltage *yFindVoltage(const string& func);
-    friend YVoltage *yFirstVoltage(void);
+	friend YVoltage* yFindVoltage(const string& func);
+	friend YVoltage* yFirstVoltage(void);
 
-    // Function-specific method for parsing of JSON output and caching result
-    virtual int     _parseAttr(YJSONObject* json_val);
+	// Function-specific method for parsing of JSON output and caching result
+	virtual int _parseAttr(YJSONObject* json_val);
 
-    // Constructor is protected, use yFindVoltage factory function to instantiate
-    YVoltage(const string& func);
-    //--- (end of YVoltage attributes)
+	// Constructor is protected, use yFindVoltage factory function to instantiate
+	YVoltage(const string& func);
+	//--- (end of YVoltage attributes)
 
 public:
-    ~YVoltage();
-    //--- (YVoltage accessors declaration)
+	~YVoltage();
+	//--- (YVoltage accessors declaration)
 
-    static const Y_ENABLED_enum ENABLED_FALSE = Y_ENABLED_FALSE;
-    static const Y_ENABLED_enum ENABLED_TRUE = Y_ENABLED_TRUE;
-    static const Y_ENABLED_enum ENABLED_INVALID = Y_ENABLED_INVALID;
+	static const Y_ENABLED_enum ENABLED_FALSE = Y_ENABLED_FALSE;
+	static const Y_ENABLED_enum ENABLED_TRUE = Y_ENABLED_TRUE;
+	static const Y_ENABLED_enum ENABLED_INVALID = Y_ENABLED_INVALID;
 
-    Y_ENABLED_enum      get_enabled(void);
+	Y_ENABLED_enum get_enabled(void);
 
-    inline Y_ENABLED_enum enabled(void)
-    { return this->get_enabled(); }
+	inline Y_ENABLED_enum enabled(void)
+	{
+		return this->get_enabled();
+	}
 
-    int             set_enabled(Y_ENABLED_enum newval);
-    inline int      setEnabled(Y_ENABLED_enum newval)
-    { return this->set_enabled(newval); }
+	int set_enabled(Y_ENABLED_enum newval);
 
-    /**
-     * Retrieves a voltage sensor for a given identifier.
-     * The identifier can be specified using several formats:
-     * <ul>
-     * <li>FunctionLogicalName</li>
-     * <li>ModuleSerialNumber.FunctionIdentifier</li>
-     * <li>ModuleSerialNumber.FunctionLogicalName</li>
-     * <li>ModuleLogicalName.FunctionIdentifier</li>
-     * <li>ModuleLogicalName.FunctionLogicalName</li>
-     * </ul>
-     *
-     * This function does not require that the voltage sensor is online at the time
-     * it is invoked. The returned object is nevertheless valid.
-     * Use the method YVoltage.isOnline() to test if the voltage sensor is
-     * indeed online at a given time. In case of ambiguity when looking for
-     * a voltage sensor by logical name, no error is notified: the first instance
-     * found is returned. The search is performed first by hardware name,
-     * then by logical name.
-     *
-     * @param func : a string that uniquely characterizes the voltage sensor
-     *
-     * @return a YVoltage object allowing you to drive the voltage sensor.
-     */
-    static YVoltage*    FindVoltage(string func);
+	inline int setEnabled(Y_ENABLED_enum newval)
+	{
+		return this->set_enabled(newval);
+	}
 
-    /**
-     * Registers the callback function that is invoked on every change of advertised value.
-     * The callback is invoked only during the execution of ySleep or yHandleEvents.
-     * This provides control over the time when the callback is triggered. For good responsiveness, remember to call
-     * one of these two functions periodically. To unregister a callback, pass a NULL pointer as argument.
-     *
-     * @param callback : the callback function to call, or a NULL pointer. The callback function should take two
-     *         arguments: the function object of which the value has changed, and the character string describing
-     *         the new advertised value.
-     * @noreturn
-     */
-    virtual int         registerValueCallback(YVoltageValueCallback callback);
-    using YSensor::registerValueCallback;
+	/**
+	 * Retrieves a voltage sensor for a given identifier.
+	 * The identifier can be specified using several formats:
+	 * <ul>
+	 * <li>FunctionLogicalName</li>
+	 * <li>ModuleSerialNumber.FunctionIdentifier</li>
+	 * <li>ModuleSerialNumber.FunctionLogicalName</li>
+	 * <li>ModuleLogicalName.FunctionIdentifier</li>
+	 * <li>ModuleLogicalName.FunctionLogicalName</li>
+	 * </ul>
+	 *
+	 * This function does not require that the voltage sensor is online at the time
+	 * it is invoked. The returned object is nevertheless valid.
+	 * Use the method YVoltage.isOnline() to test if the voltage sensor is
+	 * indeed online at a given time. In case of ambiguity when looking for
+	 * a voltage sensor by logical name, no error is notified: the first instance
+	 * found is returned. The search is performed first by hardware name,
+	 * then by logical name.
+	 *
+	 * @param func : a string that uniquely characterizes the voltage sensor
+	 *
+	 * @return a YVoltage object allowing you to drive the voltage sensor.
+	 */
+	static YVoltage* FindVoltage(string func);
 
-    virtual int         _invokeValueCallback(string value);
+	/**
+	 * Registers the callback function that is invoked on every change of advertised value.
+	 * The callback is invoked only during the execution of ySleep or yHandleEvents.
+	 * This provides control over the time when the callback is triggered. For good responsiveness, remember to call
+	 * one of these two functions periodically. To unregister a callback, pass a NULL pointer as argument.
+	 *
+	 * @param callback : the callback function to call, or a NULL pointer. The callback function should take two
+	 *         arguments: the function object of which the value has changed, and the character string describing
+	 *         the new advertised value.
+	 * @noreturn
+	 */
+	virtual int registerValueCallback(YVoltageValueCallback callback);
+	using YSensor::registerValueCallback;
 
-    /**
-     * Registers the callback function that is invoked on every periodic timed notification.
-     * The callback is invoked only during the execution of ySleep or yHandleEvents.
-     * This provides control over the time when the callback is triggered. For good responsiveness, remember to call
-     * one of these two functions periodically. To unregister a callback, pass a NULL pointer as argument.
-     *
-     * @param callback : the callback function to call, or a NULL pointer. The callback function should take two
-     *         arguments: the function object of which the value has changed, and an YMeasure object describing
-     *         the new advertised value.
-     * @noreturn
-     */
-    virtual int         registerTimedReportCallback(YVoltageTimedReportCallback callback);
-    using YSensor::registerTimedReportCallback;
+	virtual int _invokeValueCallback(string value);
 
-    virtual int         _invokeTimedReportCallback(YMeasure value);
+	/**
+	 * Registers the callback function that is invoked on every periodic timed notification.
+	 * The callback is invoked only during the execution of ySleep or yHandleEvents.
+	 * This provides control over the time when the callback is triggered. For good responsiveness, remember to call
+	 * one of these two functions periodically. To unregister a callback, pass a NULL pointer as argument.
+	 *
+	 * @param callback : the callback function to call, or a NULL pointer. The callback function should take two
+	 *         arguments: the function object of which the value has changed, and an YMeasure object describing
+	 *         the new advertised value.
+	 * @noreturn
+	 */
+	virtual int registerTimedReportCallback(YVoltageTimedReportCallback callback);
+	using YSensor::registerTimedReportCallback;
+
+	virtual int _invokeTimedReportCallback(YMeasure value);
 
 
-    inline static YVoltage* Find(string func)
-    { return YVoltage::FindVoltage(func); }
+	inline static YVoltage* Find(string func)
+	{
+		return YVoltage::FindVoltage(func);
+	}
 
-    /**
-     * Continues the enumeration of voltage sensors started using yFirstVoltage().
-     *
-     * @return a pointer to a YVoltage object, corresponding to
-     *         a voltage sensor currently online, or a NULL pointer
-     *         if there are no more voltage sensors to enumerate.
-     */
-           YVoltage        *nextVoltage(void);
-    inline YVoltage        *next(void)
-    { return this->nextVoltage();}
+	/**
+	 * Continues the enumeration of voltage sensors started using yFirstVoltage().
+	 *
+	 * @return a pointer to a YVoltage object, corresponding to
+	 *         a voltage sensor currently online, or a NULL pointer
+	 *         if there are no more voltage sensors to enumerate.
+	 */
+	YVoltage* nextVoltage(void);
 
-    /**
-     * Starts the enumeration of voltage sensors currently accessible.
-     * Use the method YVoltage.nextVoltage() to iterate on
-     * next voltage sensors.
-     *
-     * @return a pointer to a YVoltage object, corresponding to
-     *         the first voltage sensor currently online, or a NULL pointer
-     *         if there are none.
-     */
-           static YVoltage* FirstVoltage(void);
-    inline static YVoltage* First(void)
-    { return YVoltage::FirstVoltage();}
+	inline YVoltage* next(void)
+	{
+		return this->nextVoltage();
+	}
+
+	/**
+	 * Starts the enumeration of voltage sensors currently accessible.
+	 * Use the method YVoltage.nextVoltage() to iterate on
+	 * next voltage sensors.
+	 *
+	 * @return a pointer to a YVoltage object, corresponding to
+	 *         the first voltage sensor currently online, or a NULL pointer
+	 *         if there are none.
+	 */
+	static YVoltage* FirstVoltage(void);
+
+	inline static YVoltage* First(void)
+	{
+		return YVoltage::FirstVoltage();
+	}
 #ifdef __BORLANDC__
 #pragma option pop
 #endif
-    //--- (end of YVoltage accessors declaration)
+	//--- (end of YVoltage accessors declaration)
 };
 
 //--- (Voltage functions declaration)
@@ -227,7 +243,10 @@ public:
  * @return a YVoltage object allowing you to drive the voltage sensor.
  */
 inline YVoltage* yFindVoltage(const string& func)
-{ return YVoltage::FindVoltage(func);}
+{
+	return YVoltage::FindVoltage(func);
+}
+
 /**
  * Starts the enumeration of voltage sensors currently accessible.
  * Use the method YVoltage.nextVoltage() to iterate on
@@ -238,7 +257,9 @@ inline YVoltage* yFindVoltage(const string& func)
  *         if there are none.
  */
 inline YVoltage* yFirstVoltage(void)
-{ return YVoltage::FirstVoltage();}
+{
+	return YVoltage::FirstVoltage();
+}
 
 //--- (end of Voltage functions declaration)
 

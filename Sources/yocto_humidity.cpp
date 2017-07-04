@@ -49,21 +49,22 @@
 #define  __FILE_ID__  "humidity"
 
 YHumidity::YHumidity(const string& func): YSensor(func)
-//--- (Humidity initialization)
-    ,_relHum(RELHUM_INVALID)
-    ,_absHum(ABSHUM_INVALID)
-    ,_valueCallbackHumidity(NULL)
-    ,_timedReportCallbackHumidity(NULL)
+                                          //--- (Humidity initialization)
+                                          , _relHum(RELHUM_INVALID)
+                                          , _absHum(ABSHUM_INVALID)
+                                          , _valueCallbackHumidity(NULL)
+                                          , _timedReportCallbackHumidity(NULL)
 //--- (end of Humidity initialization)
 {
-    _className="Humidity";
+	_className = "Humidity";
 }
 
 YHumidity::~YHumidity()
 {
-//--- (YHumidity cleanup)
-//--- (end of YHumidity cleanup)
+	//--- (YHumidity cleanup)
+	//--- (end of YHumidity cleanup)
 }
+
 //--- (YHumidity implementation)
 // static attributes
 const double YHumidity::RELHUM_INVALID = YAPI_INVALID_DOUBLE;
@@ -71,13 +72,15 @@ const double YHumidity::ABSHUM_INVALID = YAPI_INVALID_DOUBLE;
 
 int YHumidity::_parseAttr(YJSONObject* json_val)
 {
-    if(json_val->has("relHum")) {
-        _relHum =  floor(json_val->getDouble("relHum") * 1000.0 / 65536.0 + 0.5) / 1000.0;
-    }
-    if(json_val->has("absHum")) {
-        _absHum =  floor(json_val->getDouble("absHum") * 1000.0 / 65536.0 + 0.5) / 1000.0;
-    }
-    return YSensor::_parseAttr(json_val);
+	if (json_val->has("relHum"))
+	{
+		_relHum = floor(json_val->getDouble("relHum") * 1000.0 / 65536.0 + 0.5) / 1000.0;
+	}
+	if (json_val->has("absHum"))
+	{
+		_absHum = floor(json_val->getDouble("absHum") * 1000.0 / 65536.0 + 0.5) / 1000.0;
+	}
+	return YSensor::_parseAttr(json_val);
 }
 
 
@@ -98,18 +101,21 @@ int YHumidity::_parseAttr(YJSONObject* json_val)
  */
 int YHumidity::set_unit(const string& newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        rest_val = newval;
-        res = _setAttr("unit", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		rest_val = newval;
+		res = _setAttr("unit", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -121,24 +127,29 @@ int YHumidity::set_unit(const string& newval)
  */
 double YHumidity::get_relHum(void)
 {
-    double res = 0.0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YHumidity::RELHUM_INVALID;
-                }
-            }
-        }
-        res = _relHum;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	double res = 0.0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YHumidity::RELHUM_INVALID;
+				}
+			}
+		}
+		res = _relHum;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -150,24 +161,29 @@ double YHumidity::get_relHum(void)
  */
 double YHumidity::get_absHum(void)
 {
-    double res = 0.0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YHumidity::ABSHUM_INVALID;
-                }
-            }
-        }
-        res = _absHum;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	double res = 0.0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YHumidity::ABSHUM_INVALID;
+				}
+			}
+		}
+		res = _absHum;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -195,23 +211,29 @@ double YHumidity::get_absHum(void)
  */
 YHumidity* YHumidity::FindHumidity(string func)
 {
-    YHumidity* obj = NULL;
-    int taken = 0;
-    if (YAPI::_apiInitialized) {
-        yEnterCriticalSection(&YAPI::_global_cs);
-        taken = 1;
-    }try {
-        obj = (YHumidity*) YFunction::_FindFromCache("Humidity", func);
-        if (obj == NULL) {
-            obj = new YHumidity(func);
-            YFunction::_AddToCache("Humidity", func, obj);
-        }
-    } catch (std::exception) {
-        if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
-        throw;
-    }
-    if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
-    return obj;
+	YHumidity* obj = NULL;
+	int taken = 0;
+	if (YAPI::_apiInitialized)
+	{
+		yEnterCriticalSection(&YAPI::_global_cs);
+		taken = 1;
+	}
+	try
+	{
+		obj = (YHumidity*)YFunction::_FindFromCache("Humidity", func);
+		if (obj == NULL)
+		{
+			obj = new YHumidity(func);
+			YFunction::_AddToCache("Humidity", func, obj);
+		}
+	}
+	catch (std::exception)
+	{
+		if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
+		throw;
+	}
+	if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
+	return obj;
 }
 
 /**
@@ -227,31 +249,39 @@ YHumidity* YHumidity::FindHumidity(string func)
  */
 int YHumidity::registerValueCallback(YHumidityValueCallback callback)
 {
-    string val;
-    if (callback != NULL) {
-        YFunction::_UpdateValueCallbackList(this, true);
-    } else {
-        YFunction::_UpdateValueCallbackList(this, false);
-    }
-    _valueCallbackHumidity = callback;
-    // Immediately invoke value callback with current value
-    if (callback != NULL && this->isOnline()) {
-        val = _advertisedValue;
-        if (!(val == "")) {
-            this->_invokeValueCallback(val);
-        }
-    }
-    return 0;
+	string val;
+	if (callback != NULL)
+	{
+		YFunction::_UpdateValueCallbackList(this, true);
+	}
+	else
+	{
+		YFunction::_UpdateValueCallbackList(this, false);
+	}
+	_valueCallbackHumidity = callback;
+	// Immediately invoke value callback with current value
+	if (callback != NULL && this->isOnline())
+	{
+		val = _advertisedValue;
+		if (!(val == ""))
+		{
+			this->_invokeValueCallback(val);
+		}
+	}
+	return 0;
 }
 
 int YHumidity::_invokeValueCallback(string value)
 {
-    if (_valueCallbackHumidity != NULL) {
-        _valueCallbackHumidity(this, value);
-    } else {
-        YSensor::_invokeValueCallback(value);
-    }
-    return 0;
+	if (_valueCallbackHumidity != NULL)
+	{
+		_valueCallbackHumidity(this, value);
+	}
+	else
+	{
+		YSensor::_invokeValueCallback(value);
+	}
+	return 0;
 }
 
 /**
@@ -267,49 +297,57 @@ int YHumidity::_invokeValueCallback(string value)
  */
 int YHumidity::registerTimedReportCallback(YHumidityTimedReportCallback callback)
 {
-    YSensor* sensor = NULL;
-    sensor = this;
-    if (callback != NULL) {
-        YFunction::_UpdateTimedReportCallbackList(sensor, true);
-    } else {
-        YFunction::_UpdateTimedReportCallbackList(sensor, false);
-    }
-    _timedReportCallbackHumidity = callback;
-    return 0;
+	YSensor* sensor = NULL;
+	sensor = this;
+	if (callback != NULL)
+	{
+		YFunction::_UpdateTimedReportCallbackList(sensor, true);
+	}
+	else
+	{
+		YFunction::_UpdateTimedReportCallbackList(sensor, false);
+	}
+	_timedReportCallbackHumidity = callback;
+	return 0;
 }
 
 int YHumidity::_invokeTimedReportCallback(YMeasure value)
 {
-    if (_timedReportCallbackHumidity != NULL) {
-        _timedReportCallbackHumidity(this, value);
-    } else {
-        YSensor::_invokeTimedReportCallback(value);
-    }
-    return 0;
+	if (_timedReportCallbackHumidity != NULL)
+	{
+		_timedReportCallbackHumidity(this, value);
+	}
+	else
+	{
+		YSensor::_invokeTimedReportCallback(value);
+	}
+	return 0;
 }
 
-YHumidity *YHumidity::nextHumidity(void)
+YHumidity* YHumidity::nextHumidity(void)
 {
-    string  hwid;
+	string hwid;
 
-    if(YISERR(_nextFunction(hwid)) || hwid=="") {
-        return NULL;
-    }
-    return YHumidity::FindHumidity(hwid);
+	if (YISERR(_nextFunction(hwid)) || hwid == "")
+	{
+		return NULL;
+	}
+	return YHumidity::FindHumidity(hwid);
 }
 
 YHumidity* YHumidity::FirstHumidity(void)
 {
-    vector<YFUN_DESCR>   v_fundescr;
-    YDEV_DESCR             ydevice;
-    string              serial, funcId, funcName, funcVal, errmsg;
+	vector<YFUN_DESCR> v_fundescr;
+	YDEV_DESCR ydevice;
+	string serial, funcId, funcName, funcVal, errmsg;
 
-    if(YISERR(YapiWrapper::getFunctionsByClass("Humidity", 0, v_fundescr, sizeof(YFUN_DESCR), errmsg)) ||
-       v_fundescr.size() == 0 ||
-       YISERR(YapiWrapper::getFunctionInfo(v_fundescr[0], ydevice, serial, funcId, funcName, funcVal, errmsg))) {
-        return NULL;
-    }
-    return YHumidity::FindHumidity(serial+"."+funcId);
+	if (YISERR(YapiWrapper::getFunctionsByClass("Humidity", 0, v_fundescr, sizeof(YFUN_DESCR), errmsg)) ||
+		v_fundescr.size() == 0 ||
+		YISERR(YapiWrapper::getFunctionInfo(v_fundescr[0], ydevice, serial, funcId, funcName, funcVal, errmsg)))
+	{
+		return NULL;
+	}
+	return YHumidity::FindHumidity(serial + "." + funcId);
 }
 
 //--- (end of YHumidity implementation)

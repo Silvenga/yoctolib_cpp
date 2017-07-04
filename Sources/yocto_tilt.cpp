@@ -49,33 +49,36 @@
 #define  __FILE_ID__  "tilt"
 
 YTilt::YTilt(const string& func): YSensor(func)
-//--- (Tilt initialization)
-    ,_bandwidth(BANDWIDTH_INVALID)
-    ,_axis(AXIS_INVALID)
-    ,_valueCallbackTilt(NULL)
-    ,_timedReportCallbackTilt(NULL)
+                                  //--- (Tilt initialization)
+                                  , _bandwidth(BANDWIDTH_INVALID)
+                                  , _axis(AXIS_INVALID)
+                                  , _valueCallbackTilt(NULL)
+                                  , _timedReportCallbackTilt(NULL)
 //--- (end of Tilt initialization)
 {
-    _className="Tilt";
+	_className = "Tilt";
 }
 
 YTilt::~YTilt()
 {
-//--- (YTilt cleanup)
-//--- (end of YTilt cleanup)
+	//--- (YTilt cleanup)
+	//--- (end of YTilt cleanup)
 }
+
 //--- (YTilt implementation)
 // static attributes
 
 int YTilt::_parseAttr(YJSONObject* json_val)
 {
-    if(json_val->has("bandwidth")) {
-        _bandwidth =  json_val->getInt("bandwidth");
-    }
-    if(json_val->has("axis")) {
-        _axis =  (Y_AXIS_enum) json_val->getInt("axis");
-    }
-    return YSensor::_parseAttr(json_val);
+	if (json_val->has("bandwidth"))
+	{
+		_bandwidth = json_val->getInt("bandwidth");
+	}
+	if (json_val->has("axis"))
+	{
+		_axis = (Y_AXIS_enum)json_val->getInt("axis");
+	}
+	return YSensor::_parseAttr(json_val);
 }
 
 
@@ -88,24 +91,29 @@ int YTilt::_parseAttr(YJSONObject* json_val)
  */
 int YTilt::get_bandwidth(void)
 {
-    int res = 0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YTilt::BANDWIDTH_INVALID;
-                }
-            }
-        }
-        res = _bandwidth;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	int res = 0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YTilt::BANDWIDTH_INVALID;
+				}
+			}
+		}
+		res = _bandwidth;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -120,40 +128,50 @@ int YTilt::get_bandwidth(void)
  */
 int YTilt::set_bandwidth(int newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        char buf[32]; sprintf(buf, "%d", newval); rest_val = string(buf);
-        res = _setAttr("bandwidth", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		char buf[32];
+		sprintf(buf, "%d", newval);
+		rest_val = string(buf);
+		res = _setAttr("bandwidth", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 Y_AXIS_enum YTilt::get_axis(void)
 {
-    Y_AXIS_enum res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YTilt::AXIS_INVALID;
-                }
-            }
-        }
-        res = _axis;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	Y_AXIS_enum res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YTilt::AXIS_INVALID;
+				}
+			}
+		}
+		res = _axis;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -181,23 +199,29 @@ Y_AXIS_enum YTilt::get_axis(void)
  */
 YTilt* YTilt::FindTilt(string func)
 {
-    YTilt* obj = NULL;
-    int taken = 0;
-    if (YAPI::_apiInitialized) {
-        yEnterCriticalSection(&YAPI::_global_cs);
-        taken = 1;
-    }try {
-        obj = (YTilt*) YFunction::_FindFromCache("Tilt", func);
-        if (obj == NULL) {
-            obj = new YTilt(func);
-            YFunction::_AddToCache("Tilt", func, obj);
-        }
-    } catch (std::exception) {
-        if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
-        throw;
-    }
-    if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
-    return obj;
+	YTilt* obj = NULL;
+	int taken = 0;
+	if (YAPI::_apiInitialized)
+	{
+		yEnterCriticalSection(&YAPI::_global_cs);
+		taken = 1;
+	}
+	try
+	{
+		obj = (YTilt*)YFunction::_FindFromCache("Tilt", func);
+		if (obj == NULL)
+		{
+			obj = new YTilt(func);
+			YFunction::_AddToCache("Tilt", func, obj);
+		}
+	}
+	catch (std::exception)
+	{
+		if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
+		throw;
+	}
+	if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
+	return obj;
 }
 
 /**
@@ -213,31 +237,39 @@ YTilt* YTilt::FindTilt(string func)
  */
 int YTilt::registerValueCallback(YTiltValueCallback callback)
 {
-    string val;
-    if (callback != NULL) {
-        YFunction::_UpdateValueCallbackList(this, true);
-    } else {
-        YFunction::_UpdateValueCallbackList(this, false);
-    }
-    _valueCallbackTilt = callback;
-    // Immediately invoke value callback with current value
-    if (callback != NULL && this->isOnline()) {
-        val = _advertisedValue;
-        if (!(val == "")) {
-            this->_invokeValueCallback(val);
-        }
-    }
-    return 0;
+	string val;
+	if (callback != NULL)
+	{
+		YFunction::_UpdateValueCallbackList(this, true);
+	}
+	else
+	{
+		YFunction::_UpdateValueCallbackList(this, false);
+	}
+	_valueCallbackTilt = callback;
+	// Immediately invoke value callback with current value
+	if (callback != NULL && this->isOnline())
+	{
+		val = _advertisedValue;
+		if (!(val == ""))
+		{
+			this->_invokeValueCallback(val);
+		}
+	}
+	return 0;
 }
 
 int YTilt::_invokeValueCallback(string value)
 {
-    if (_valueCallbackTilt != NULL) {
-        _valueCallbackTilt(this, value);
-    } else {
-        YSensor::_invokeValueCallback(value);
-    }
-    return 0;
+	if (_valueCallbackTilt != NULL)
+	{
+		_valueCallbackTilt(this, value);
+	}
+	else
+	{
+		YSensor::_invokeValueCallback(value);
+	}
+	return 0;
 }
 
 /**
@@ -253,49 +285,57 @@ int YTilt::_invokeValueCallback(string value)
  */
 int YTilt::registerTimedReportCallback(YTiltTimedReportCallback callback)
 {
-    YSensor* sensor = NULL;
-    sensor = this;
-    if (callback != NULL) {
-        YFunction::_UpdateTimedReportCallbackList(sensor, true);
-    } else {
-        YFunction::_UpdateTimedReportCallbackList(sensor, false);
-    }
-    _timedReportCallbackTilt = callback;
-    return 0;
+	YSensor* sensor = NULL;
+	sensor = this;
+	if (callback != NULL)
+	{
+		YFunction::_UpdateTimedReportCallbackList(sensor, true);
+	}
+	else
+	{
+		YFunction::_UpdateTimedReportCallbackList(sensor, false);
+	}
+	_timedReportCallbackTilt = callback;
+	return 0;
 }
 
 int YTilt::_invokeTimedReportCallback(YMeasure value)
 {
-    if (_timedReportCallbackTilt != NULL) {
-        _timedReportCallbackTilt(this, value);
-    } else {
-        YSensor::_invokeTimedReportCallback(value);
-    }
-    return 0;
+	if (_timedReportCallbackTilt != NULL)
+	{
+		_timedReportCallbackTilt(this, value);
+	}
+	else
+	{
+		YSensor::_invokeTimedReportCallback(value);
+	}
+	return 0;
 }
 
-YTilt *YTilt::nextTilt(void)
+YTilt* YTilt::nextTilt(void)
 {
-    string  hwid;
+	string hwid;
 
-    if(YISERR(_nextFunction(hwid)) || hwid=="") {
-        return NULL;
-    }
-    return YTilt::FindTilt(hwid);
+	if (YISERR(_nextFunction(hwid)) || hwid == "")
+	{
+		return NULL;
+	}
+	return YTilt::FindTilt(hwid);
 }
 
 YTilt* YTilt::FirstTilt(void)
 {
-    vector<YFUN_DESCR>   v_fundescr;
-    YDEV_DESCR             ydevice;
-    string              serial, funcId, funcName, funcVal, errmsg;
+	vector<YFUN_DESCR> v_fundescr;
+	YDEV_DESCR ydevice;
+	string serial, funcId, funcName, funcVal, errmsg;
 
-    if(YISERR(YapiWrapper::getFunctionsByClass("Tilt", 0, v_fundescr, sizeof(YFUN_DESCR), errmsg)) ||
-       v_fundescr.size() == 0 ||
-       YISERR(YapiWrapper::getFunctionInfo(v_fundescr[0], ydevice, serial, funcId, funcName, funcVal, errmsg))) {
-        return NULL;
-    }
-    return YTilt::FindTilt(serial+"."+funcId);
+	if (YISERR(YapiWrapper::getFunctionsByClass("Tilt", 0, v_fundescr, sizeof(YFUN_DESCR), errmsg)) ||
+		v_fundescr.size() == 0 ||
+		YISERR(YapiWrapper::getFunctionInfo(v_fundescr[0], ydevice, serial, funcId, funcName, funcVal, errmsg)))
+	{
+		return NULL;
+	}
+	return YTilt::FindTilt(serial + "." + funcId);
 }
 
 //--- (end of YTilt implementation)

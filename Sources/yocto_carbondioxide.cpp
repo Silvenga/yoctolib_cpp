@@ -49,34 +49,37 @@
 #define  __FILE_ID__  "carbondioxide"
 
 YCarbonDioxide::YCarbonDioxide(const string& func): YSensor(func)
-//--- (CarbonDioxide initialization)
-    ,_abcPeriod(ABCPERIOD_INVALID)
-    ,_command(COMMAND_INVALID)
-    ,_valueCallbackCarbonDioxide(NULL)
-    ,_timedReportCallbackCarbonDioxide(NULL)
+                                                    //--- (CarbonDioxide initialization)
+                                                    , _abcPeriod(ABCPERIOD_INVALID)
+                                                    , _command(COMMAND_INVALID)
+                                                    , _valueCallbackCarbonDioxide(NULL)
+                                                    , _timedReportCallbackCarbonDioxide(NULL)
 //--- (end of CarbonDioxide initialization)
 {
-    _className="CarbonDioxide";
+	_className = "CarbonDioxide";
 }
 
 YCarbonDioxide::~YCarbonDioxide()
 {
-//--- (YCarbonDioxide cleanup)
-//--- (end of YCarbonDioxide cleanup)
+	//--- (YCarbonDioxide cleanup)
+	//--- (end of YCarbonDioxide cleanup)
 }
+
 //--- (YCarbonDioxide implementation)
 // static attributes
 const string YCarbonDioxide::COMMAND_INVALID = YAPI_INVALID_STRING;
 
 int YCarbonDioxide::_parseAttr(YJSONObject* json_val)
 {
-    if(json_val->has("abcPeriod")) {
-        _abcPeriod =  json_val->getInt("abcPeriod");
-    }
-    if(json_val->has("command")) {
-        _command =  json_val->getString("command");
-    }
-    return YSensor::_parseAttr(json_val);
+	if (json_val->has("abcPeriod"))
+	{
+		_abcPeriod = json_val->getInt("abcPeriod");
+	}
+	if (json_val->has("command"))
+	{
+		_command = json_val->getString("command");
+	}
+	return YSensor::_parseAttr(json_val);
 }
 
 
@@ -90,24 +93,29 @@ int YCarbonDioxide::_parseAttr(YJSONObject* json_val)
  */
 int YCarbonDioxide::get_abcPeriod(void)
 {
-    int res = 0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YCarbonDioxide::ABCPERIOD_INVALID;
-                }
-            }
-        }
-        res = _abcPeriod;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	int res = 0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YCarbonDioxide::ABCPERIOD_INVALID;
+				}
+			}
+		}
+		res = _abcPeriod;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -125,56 +133,69 @@ int YCarbonDioxide::get_abcPeriod(void)
  */
 int YCarbonDioxide::set_abcPeriod(int newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        char buf[32]; sprintf(buf, "%d", newval); rest_val = string(buf);
-        res = _setAttr("abcPeriod", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		char buf[32];
+		sprintf(buf, "%d", newval);
+		rest_val = string(buf);
+		res = _setAttr("abcPeriod", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 string YCarbonDioxide::get_command(void)
 {
-    string res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YCarbonDioxide::COMMAND_INVALID;
-                }
-            }
-        }
-        res = _command;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YCarbonDioxide::COMMAND_INVALID;
+				}
+			}
+		}
+		res = _command;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 int YCarbonDioxide::set_command(const string& newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        rest_val = newval;
-        res = _setAttr("command", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		rest_val = newval;
+		res = _setAttr("command", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -202,23 +223,29 @@ int YCarbonDioxide::set_command(const string& newval)
  */
 YCarbonDioxide* YCarbonDioxide::FindCarbonDioxide(string func)
 {
-    YCarbonDioxide* obj = NULL;
-    int taken = 0;
-    if (YAPI::_apiInitialized) {
-        yEnterCriticalSection(&YAPI::_global_cs);
-        taken = 1;
-    }try {
-        obj = (YCarbonDioxide*) YFunction::_FindFromCache("CarbonDioxide", func);
-        if (obj == NULL) {
-            obj = new YCarbonDioxide(func);
-            YFunction::_AddToCache("CarbonDioxide", func, obj);
-        }
-    } catch (std::exception) {
-        if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
-        throw;
-    }
-    if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
-    return obj;
+	YCarbonDioxide* obj = NULL;
+	int taken = 0;
+	if (YAPI::_apiInitialized)
+	{
+		yEnterCriticalSection(&YAPI::_global_cs);
+		taken = 1;
+	}
+	try
+	{
+		obj = (YCarbonDioxide*)YFunction::_FindFromCache("CarbonDioxide", func);
+		if (obj == NULL)
+		{
+			obj = new YCarbonDioxide(func);
+			YFunction::_AddToCache("CarbonDioxide", func, obj);
+		}
+	}
+	catch (std::exception)
+	{
+		if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
+		throw;
+	}
+	if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
+	return obj;
 }
 
 /**
@@ -234,31 +261,39 @@ YCarbonDioxide* YCarbonDioxide::FindCarbonDioxide(string func)
  */
 int YCarbonDioxide::registerValueCallback(YCarbonDioxideValueCallback callback)
 {
-    string val;
-    if (callback != NULL) {
-        YFunction::_UpdateValueCallbackList(this, true);
-    } else {
-        YFunction::_UpdateValueCallbackList(this, false);
-    }
-    _valueCallbackCarbonDioxide = callback;
-    // Immediately invoke value callback with current value
-    if (callback != NULL && this->isOnline()) {
-        val = _advertisedValue;
-        if (!(val == "")) {
-            this->_invokeValueCallback(val);
-        }
-    }
-    return 0;
+	string val;
+	if (callback != NULL)
+	{
+		YFunction::_UpdateValueCallbackList(this, true);
+	}
+	else
+	{
+		YFunction::_UpdateValueCallbackList(this, false);
+	}
+	_valueCallbackCarbonDioxide = callback;
+	// Immediately invoke value callback with current value
+	if (callback != NULL && this->isOnline())
+	{
+		val = _advertisedValue;
+		if (!(val == ""))
+		{
+			this->_invokeValueCallback(val);
+		}
+	}
+	return 0;
 }
 
 int YCarbonDioxide::_invokeValueCallback(string value)
 {
-    if (_valueCallbackCarbonDioxide != NULL) {
-        _valueCallbackCarbonDioxide(this, value);
-    } else {
-        YSensor::_invokeValueCallback(value);
-    }
-    return 0;
+	if (_valueCallbackCarbonDioxide != NULL)
+	{
+		_valueCallbackCarbonDioxide(this, value);
+	}
+	else
+	{
+		YSensor::_invokeValueCallback(value);
+	}
+	return 0;
 }
 
 /**
@@ -274,25 +309,31 @@ int YCarbonDioxide::_invokeValueCallback(string value)
  */
 int YCarbonDioxide::registerTimedReportCallback(YCarbonDioxideTimedReportCallback callback)
 {
-    YSensor* sensor = NULL;
-    sensor = this;
-    if (callback != NULL) {
-        YFunction::_UpdateTimedReportCallbackList(sensor, true);
-    } else {
-        YFunction::_UpdateTimedReportCallbackList(sensor, false);
-    }
-    _timedReportCallbackCarbonDioxide = callback;
-    return 0;
+	YSensor* sensor = NULL;
+	sensor = this;
+	if (callback != NULL)
+	{
+		YFunction::_UpdateTimedReportCallbackList(sensor, true);
+	}
+	else
+	{
+		YFunction::_UpdateTimedReportCallbackList(sensor, false);
+	}
+	_timedReportCallbackCarbonDioxide = callback;
+	return 0;
 }
 
 int YCarbonDioxide::_invokeTimedReportCallback(YMeasure value)
 {
-    if (_timedReportCallbackCarbonDioxide != NULL) {
-        _timedReportCallbackCarbonDioxide(this, value);
-    } else {
-        YSensor::_invokeTimedReportCallback(value);
-    }
-    return 0;
+	if (_timedReportCallbackCarbonDioxide != NULL)
+	{
+		_timedReportCallbackCarbonDioxide(this, value);
+	}
+	else
+	{
+		YSensor::_invokeTimedReportCallback(value);
+	}
+	return 0;
 }
 
 /**
@@ -311,12 +352,12 @@ int YCarbonDioxide::_invokeTimedReportCallback(YMeasure value)
  */
 int YCarbonDioxide::triggerBaselineCalibration(void)
 {
-    return this->set_command("BC");
+	return this->set_command("BC");
 }
 
 int YCarbonDioxide::triggetBaselineCalibration(void)
 {
-    return this->triggerBaselineCalibration();
+	return this->triggerBaselineCalibration();
 }
 
 /**
@@ -337,36 +378,38 @@ int YCarbonDioxide::triggetBaselineCalibration(void)
  */
 int YCarbonDioxide::triggerZeroCalibration(void)
 {
-    return this->set_command("ZC");
+	return this->set_command("ZC");
 }
 
 int YCarbonDioxide::triggetZeroCalibration(void)
 {
-    return this->triggerZeroCalibration();
+	return this->triggerZeroCalibration();
 }
 
-YCarbonDioxide *YCarbonDioxide::nextCarbonDioxide(void)
+YCarbonDioxide* YCarbonDioxide::nextCarbonDioxide(void)
 {
-    string  hwid;
+	string hwid;
 
-    if(YISERR(_nextFunction(hwid)) || hwid=="") {
-        return NULL;
-    }
-    return YCarbonDioxide::FindCarbonDioxide(hwid);
+	if (YISERR(_nextFunction(hwid)) || hwid == "")
+	{
+		return NULL;
+	}
+	return YCarbonDioxide::FindCarbonDioxide(hwid);
 }
 
 YCarbonDioxide* YCarbonDioxide::FirstCarbonDioxide(void)
 {
-    vector<YFUN_DESCR>   v_fundescr;
-    YDEV_DESCR             ydevice;
-    string              serial, funcId, funcName, funcVal, errmsg;
+	vector<YFUN_DESCR> v_fundescr;
+	YDEV_DESCR ydevice;
+	string serial, funcId, funcName, funcVal, errmsg;
 
-    if(YISERR(YapiWrapper::getFunctionsByClass("CarbonDioxide", 0, v_fundescr, sizeof(YFUN_DESCR), errmsg)) ||
-       v_fundescr.size() == 0 ||
-       YISERR(YapiWrapper::getFunctionInfo(v_fundescr[0], ydevice, serial, funcId, funcName, funcVal, errmsg))) {
-        return NULL;
-    }
-    return YCarbonDioxide::FindCarbonDioxide(serial+"."+funcId);
+	if (YISERR(YapiWrapper::getFunctionsByClass("CarbonDioxide", 0, v_fundescr, sizeof(YFUN_DESCR), errmsg)) ||
+		v_fundescr.size() == 0 ||
+		YISERR(YapiWrapper::getFunctionInfo(v_fundescr[0], ydevice, serial, funcId, funcName, funcVal, errmsg)))
+	{
+		return NULL;
+	}
+	return YCarbonDioxide::FindCarbonDioxide(serial + "." + funcId);
 }
 
 //--- (end of YCarbonDioxide implementation)

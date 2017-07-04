@@ -67,57 +67,57 @@ typedef struct {
 
 #endif
 
-void   yCreateEvent(yEvent *ev);
-void   yCreateManualEvent(yEvent *event,int initialState);
-void   ySetEvent(yEvent* ev);
-void   yResetEvent(yEvent *ev);
-int    yWaitForEvent(yEvent *ev,int time);
-void   yCloseEvent(yEvent *ev);
+void yCreateEvent(yEvent* ev);
+void yCreateManualEvent(yEvent* event, int initialState);
+void ySetEvent(yEvent* ev);
+void yResetEvent(yEvent* ev);
+int yWaitForEvent(yEvent* ev, int time);
+void yCloseEvent(yEvent* ev);
 
 
 /*********************************************************************
  * THREAD FUNCTION 
  *********************************************************************/
 #ifdef WIN32
-typedef HANDLE      osThread;
+typedef HANDLE osThread;
 #else
 typedef pthread_t   osThread;
 #endif
 
-typedef enum {
-    YTHREAD_NOT_STARTED=0,
-    YTHREAD_RUNNING,
-    YTHREAD_MUST_STOP,
-    YTHREAD_STOPED
+typedef enum
+{
+	YTHREAD_NOT_STARTED=0,
+	YTHREAD_RUNNING,
+	YTHREAD_MUST_STOP,
+	YTHREAD_STOPED
 } YTHREAD_STATE;
 
 
-typedef struct {
-	void 			*ctx;
-	yEvent 			ev;
-	YTHREAD_STATE 	st;
-	osThread   		th;
+typedef struct
+{
+	void* ctx;
+	yEvent ev;
+	YTHREAD_STATE st;
+	osThread th;
 } yThread;
 
 #ifdef  __cplusplus
 extern "C" {
 #endif
-    
-int    yCreateDetachedThread(void* (*fun)(void *), void *arg);
-    
-int    yThreadCreate(yThread *yth,void* (*fun)(void *), void *arg);
-int    yThreadIsRunning(yThread *yth);
-void   yThreadSignalStart(yThread *yth);
-void   yThreadSignalEnd(yThread *yth);
-void   yThreadRequestEnd(yThread *yth);
-int    yThreadMustEnd(yThread *yth);
-void   yThreadKill(yThread *yth);
-int    yThreadIndex(void);
+
+int yCreateDetachedThread(void* (*fun)(void*), void* arg);
+
+int yThreadCreate(yThread* yth, void* (*fun)(void*), void* arg);
+int yThreadIsRunning(yThread* yth);
+void yThreadSignalStart(yThread* yth);
+void yThreadSignalEnd(yThread* yth);
+void yThreadRequestEnd(yThread* yth);
+int yThreadMustEnd(yThread* yth);
+void yThreadKill(yThread* yth);
+int yThreadIndex(void);
 
 #ifdef  __cplusplus
 }
 #endif
-    
+
 #endif
-
-

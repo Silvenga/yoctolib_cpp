@@ -49,37 +49,41 @@
 #define  __FILE_ID__  "multiaxiscontroller"
 
 YMultiAxisController::YMultiAxisController(const string& func): YFunction(func)
-//--- (MultiAxisController initialization)
-    ,_nAxis(NAXIS_INVALID)
-    ,_globalState(GLOBALSTATE_INVALID)
-    ,_command(COMMAND_INVALID)
-    ,_valueCallbackMultiAxisController(NULL)
+                                                                //--- (MultiAxisController initialization)
+                                                                , _nAxis(NAXIS_INVALID)
+                                                                , _globalState(GLOBALSTATE_INVALID)
+                                                                , _command(COMMAND_INVALID)
+                                                                , _valueCallbackMultiAxisController(NULL)
 //--- (end of MultiAxisController initialization)
 {
-    _className="MultiAxisController";
+	_className = "MultiAxisController";
 }
 
 YMultiAxisController::~YMultiAxisController()
 {
-//--- (YMultiAxisController cleanup)
-//--- (end of YMultiAxisController cleanup)
+	//--- (YMultiAxisController cleanup)
+	//--- (end of YMultiAxisController cleanup)
 }
+
 //--- (YMultiAxisController implementation)
 // static attributes
 const string YMultiAxisController::COMMAND_INVALID = YAPI_INVALID_STRING;
 
 int YMultiAxisController::_parseAttr(YJSONObject* json_val)
 {
-    if(json_val->has("nAxis")) {
-        _nAxis =  json_val->getInt("nAxis");
-    }
-    if(json_val->has("globalState")) {
-        _globalState =  (Y_GLOBALSTATE_enum)json_val->getInt("globalState");
-    }
-    if(json_val->has("command")) {
-        _command =  json_val->getString("command");
-    }
-    return YFunction::_parseAttr(json_val);
+	if (json_val->has("nAxis"))
+	{
+		_nAxis = json_val->getInt("nAxis");
+	}
+	if (json_val->has("globalState"))
+	{
+		_globalState = (Y_GLOBALSTATE_enum)json_val->getInt("globalState");
+	}
+	if (json_val->has("command"))
+	{
+		_command = json_val->getString("command");
+	}
+	return YFunction::_parseAttr(json_val);
 }
 
 
@@ -92,24 +96,29 @@ int YMultiAxisController::_parseAttr(YJSONObject* json_val)
  */
 int YMultiAxisController::get_nAxis(void)
 {
-    int res = 0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YMultiAxisController::NAXIS_INVALID;
-                }
-            }
-        }
-        res = _nAxis;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	int res = 0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YMultiAxisController::NAXIS_INVALID;
+				}
+			}
+		}
+		res = _nAxis;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -123,18 +132,23 @@ int YMultiAxisController::get_nAxis(void)
  */
 int YMultiAxisController::set_nAxis(int newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        char buf[32]; sprintf(buf, "%d", newval); rest_val = string(buf);
-        res = _setAttr("nAxis", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		char buf[32];
+		sprintf(buf, "%d", newval);
+		rest_val = string(buf);
+		res = _setAttr("nAxis", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -148,62 +162,75 @@ int YMultiAxisController::set_nAxis(int newval)
  */
 Y_GLOBALSTATE_enum YMultiAxisController::get_globalState(void)
 {
-    Y_GLOBALSTATE_enum res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YMultiAxisController::GLOBALSTATE_INVALID;
-                }
-            }
-        }
-        res = _globalState;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	Y_GLOBALSTATE_enum res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YMultiAxisController::GLOBALSTATE_INVALID;
+				}
+			}
+		}
+		res = _globalState;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 string YMultiAxisController::get_command(void)
 {
-    string res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YMultiAxisController::COMMAND_INVALID;
-                }
-            }
-        }
-        res = _command;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YMultiAxisController::COMMAND_INVALID;
+				}
+			}
+		}
+		res = _command;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 int YMultiAxisController::set_command(const string& newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        rest_val = newval;
-        res = _setAttr("command", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		rest_val = newval;
+		res = _setAttr("command", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -231,23 +258,29 @@ int YMultiAxisController::set_command(const string& newval)
  */
 YMultiAxisController* YMultiAxisController::FindMultiAxisController(string func)
 {
-    YMultiAxisController* obj = NULL;
-    int taken = 0;
-    if (YAPI::_apiInitialized) {
-        yEnterCriticalSection(&YAPI::_global_cs);
-        taken = 1;
-    }try {
-        obj = (YMultiAxisController*) YFunction::_FindFromCache("MultiAxisController", func);
-        if (obj == NULL) {
-            obj = new YMultiAxisController(func);
-            YFunction::_AddToCache("MultiAxisController", func, obj);
-        }
-    } catch (std::exception) {
-        if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
-        throw;
-    }
-    if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
-    return obj;
+	YMultiAxisController* obj = NULL;
+	int taken = 0;
+	if (YAPI::_apiInitialized)
+	{
+		yEnterCriticalSection(&YAPI::_global_cs);
+		taken = 1;
+	}
+	try
+	{
+		obj = (YMultiAxisController*)YFunction::_FindFromCache("MultiAxisController", func);
+		if (obj == NULL)
+		{
+			obj = new YMultiAxisController(func);
+			YFunction::_AddToCache("MultiAxisController", func, obj);
+		}
+	}
+	catch (std::exception)
+	{
+		if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
+		throw;
+	}
+	if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
+	return obj;
 }
 
 /**
@@ -263,36 +296,44 @@ YMultiAxisController* YMultiAxisController::FindMultiAxisController(string func)
  */
 int YMultiAxisController::registerValueCallback(YMultiAxisControllerValueCallback callback)
 {
-    string val;
-    if (callback != NULL) {
-        YFunction::_UpdateValueCallbackList(this, true);
-    } else {
-        YFunction::_UpdateValueCallbackList(this, false);
-    }
-    _valueCallbackMultiAxisController = callback;
-    // Immediately invoke value callback with current value
-    if (callback != NULL && this->isOnline()) {
-        val = _advertisedValue;
-        if (!(val == "")) {
-            this->_invokeValueCallback(val);
-        }
-    }
-    return 0;
+	string val;
+	if (callback != NULL)
+	{
+		YFunction::_UpdateValueCallbackList(this, true);
+	}
+	else
+	{
+		YFunction::_UpdateValueCallbackList(this, false);
+	}
+	_valueCallbackMultiAxisController = callback;
+	// Immediately invoke value callback with current value
+	if (callback != NULL && this->isOnline())
+	{
+		val = _advertisedValue;
+		if (!(val == ""))
+		{
+			this->_invokeValueCallback(val);
+		}
+	}
+	return 0;
 }
 
 int YMultiAxisController::_invokeValueCallback(string value)
 {
-    if (_valueCallbackMultiAxisController != NULL) {
-        _valueCallbackMultiAxisController(this, value);
-    } else {
-        YFunction::_invokeValueCallback(value);
-    }
-    return 0;
+	if (_valueCallbackMultiAxisController != NULL)
+	{
+		_valueCallbackMultiAxisController(this, value);
+	}
+	else
+	{
+		YFunction::_invokeValueCallback(value);
+	}
+	return 0;
 }
 
 int YMultiAxisController::sendCommand(string command)
 {
-    return this->set_command(command);
+	return this->set_command(command);
 }
 
 /**
@@ -303,7 +344,7 @@ int YMultiAxisController::sendCommand(string command)
  */
 int YMultiAxisController::reset(void)
 {
-    return this->sendCommand("Z");
+	return this->sendCommand("Z");
 }
 
 /**
@@ -316,17 +357,18 @@ int YMultiAxisController::reset(void)
  */
 int YMultiAxisController::findHomePosition(vector<double> speed)
 {
-    string cmd;
-    int i = 0;
-    int ndim = 0;
-    ndim = (int)speed.size();
-    cmd = YapiWrapper::ysprintf("H%d",(int) floor(1000*speed[0]+0.5));
-    i = 1;
-    while (i < ndim) {
-        cmd = YapiWrapper::ysprintf("%s,%d", cmd.c_str(),(int) floor(1000*speed[i]+0.5));
-        i = i + 1;
-    }
-    return this->sendCommand(cmd);
+	string cmd;
+	int i = 0;
+	int ndim = 0;
+	ndim = (int)speed.size();
+	cmd = YapiWrapper::ysprintf("H%d", (int)floor(1000 * speed[0] + 0.5));
+	i = 1;
+	while (i < ndim)
+	{
+		cmd = YapiWrapper::ysprintf("%s,%d", cmd.c_str(), (int)floor(1000 * speed[i] + 0.5));
+		i = i + 1;
+	}
+	return this->sendCommand(cmd);
 }
 
 /**
@@ -342,17 +384,18 @@ int YMultiAxisController::findHomePosition(vector<double> speed)
  */
 int YMultiAxisController::moveTo(vector<double> absPos)
 {
-    string cmd;
-    int i = 0;
-    int ndim = 0;
-    ndim = (int)absPos.size();
-    cmd = YapiWrapper::ysprintf("M%d",(int) floor(16*absPos[0]+0.5));
-    i = 1;
-    while (i < ndim) {
-        cmd = YapiWrapper::ysprintf("%s,%d", cmd.c_str(),(int) floor(16*absPos[i]+0.5));
-        i = i + 1;
-    }
-    return this->sendCommand(cmd);
+	string cmd;
+	int i = 0;
+	int ndim = 0;
+	ndim = (int)absPos.size();
+	cmd = YapiWrapper::ysprintf("M%d", (int)floor(16 * absPos[0] + 0.5));
+	i = 1;
+	while (i < ndim)
+	{
+		cmd = YapiWrapper::ysprintf("%s,%d", cmd.c_str(), (int)floor(16 * absPos[i] + 0.5));
+		i = i + 1;
+	}
+	return this->sendCommand(cmd);
 }
 
 /**
@@ -368,17 +411,18 @@ int YMultiAxisController::moveTo(vector<double> absPos)
  */
 int YMultiAxisController::moveRel(vector<double> relPos)
 {
-    string cmd;
-    int i = 0;
-    int ndim = 0;
-    ndim = (int)relPos.size();
-    cmd = YapiWrapper::ysprintf("m%d",(int) floor(16*relPos[0]+0.5));
-    i = 1;
-    while (i < ndim) {
-        cmd = YapiWrapper::ysprintf("%s,%d", cmd.c_str(),(int) floor(16*relPos[i]+0.5));
-        i = i + 1;
-    }
-    return this->sendCommand(cmd);
+	string cmd;
+	int i = 0;
+	int ndim = 0;
+	ndim = (int)relPos.size();
+	cmd = YapiWrapper::ysprintf("m%d", (int)floor(16 * relPos[0] + 0.5));
+	i = 1;
+	while (i < ndim)
+	{
+		cmd = YapiWrapper::ysprintf("%s,%d", cmd.c_str(), (int)floor(16 * relPos[i] + 0.5));
+		i = i + 1;
+	}
+	return this->sendCommand(cmd);
 }
 
 /**
@@ -391,7 +435,7 @@ int YMultiAxisController::moveRel(vector<double> relPos)
  */
 int YMultiAxisController::pause(int waitMs)
 {
-    return this->sendCommand(YapiWrapper::ysprintf("_%d",waitMs));
+	return this->sendCommand(YapiWrapper::ysprintf("_%d", waitMs));
 }
 
 /**
@@ -402,7 +446,7 @@ int YMultiAxisController::pause(int waitMs)
  */
 int YMultiAxisController::emergencyStop(void)
 {
-    return this->sendCommand("!");
+	return this->sendCommand("!");
 }
 
 /**
@@ -413,7 +457,7 @@ int YMultiAxisController::emergencyStop(void)
  */
 int YMultiAxisController::abortAndBrake(void)
 {
-    return this->sendCommand("B");
+	return this->sendCommand("B");
 }
 
 /**
@@ -424,31 +468,33 @@ int YMultiAxisController::abortAndBrake(void)
  */
 int YMultiAxisController::abortAndHiZ(void)
 {
-    return this->sendCommand("z");
+	return this->sendCommand("z");
 }
 
-YMultiAxisController *YMultiAxisController::nextMultiAxisController(void)
+YMultiAxisController* YMultiAxisController::nextMultiAxisController(void)
 {
-    string  hwid;
+	string hwid;
 
-    if(YISERR(_nextFunction(hwid)) || hwid=="") {
-        return NULL;
-    }
-    return YMultiAxisController::FindMultiAxisController(hwid);
+	if (YISERR(_nextFunction(hwid)) || hwid == "")
+	{
+		return NULL;
+	}
+	return YMultiAxisController::FindMultiAxisController(hwid);
 }
 
 YMultiAxisController* YMultiAxisController::FirstMultiAxisController(void)
 {
-    vector<YFUN_DESCR>   v_fundescr;
-    YDEV_DESCR             ydevice;
-    string              serial, funcId, funcName, funcVal, errmsg;
+	vector<YFUN_DESCR> v_fundescr;
+	YDEV_DESCR ydevice;
+	string serial, funcId, funcName, funcVal, errmsg;
 
-    if(YISERR(YapiWrapper::getFunctionsByClass("MultiAxisController", 0, v_fundescr, sizeof(YFUN_DESCR), errmsg)) ||
-       v_fundescr.size() == 0 ||
-       YISERR(YapiWrapper::getFunctionInfo(v_fundescr[0], ydevice, serial, funcId, funcName, funcVal, errmsg))) {
-        return NULL;
-    }
-    return YMultiAxisController::FindMultiAxisController(serial+"."+funcId);
+	if (YISERR(YapiWrapper::getFunctionsByClass("MultiAxisController", 0, v_fundescr, sizeof(YFUN_DESCR), errmsg)) ||
+		v_fundescr.size() == 0 ||
+		YISERR(YapiWrapper::getFunctionInfo(v_fundescr[0], ydevice, serial, funcId, funcName, funcVal, errmsg)))
+	{
+		return NULL;
+	}
+	return YMultiAxisController::FindMultiAxisController(serial + "." + funcId);
 }
 
 //--- (end of YMultiAxisController implementation)

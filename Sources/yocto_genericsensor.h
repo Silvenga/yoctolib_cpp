@@ -51,17 +51,19 @@
 //--- (YGenericSensor definitions)
 class YGenericSensor; // forward declaration
 
-typedef void (*YGenericSensorValueCallback)(YGenericSensor *func, const string& functionValue);
+typedef void (*YGenericSensorValueCallback)(YGenericSensor* func, const string& functionValue);
 class YMeasure; // forward declaration
-typedef void (*YGenericSensorTimedReportCallback)(YGenericSensor *func, YMeasure measure);
+typedef void (*YGenericSensorTimedReportCallback)(YGenericSensor* func, YMeasure measure);
 #ifndef _Y_SIGNALSAMPLING_ENUM
 #define _Y_SIGNALSAMPLING_ENUM
-typedef enum {
-    Y_SIGNALSAMPLING_HIGH_RATE = 0,
-    Y_SIGNALSAMPLING_HIGH_RATE_FILTERED = 1,
-    Y_SIGNALSAMPLING_LOW_NOISE = 2,
-    Y_SIGNALSAMPLING_LOW_NOISE_FILTERED = 3,
-    Y_SIGNALSAMPLING_INVALID = -1,
+
+typedef enum
+{
+	Y_SIGNALSAMPLING_HIGH_RATE = 0,
+	Y_SIGNALSAMPLING_HIGH_RATE_FILTERED = 1,
+	Y_SIGNALSAMPLING_LOW_NOISE = 2,
+	Y_SIGNALSAMPLING_LOW_NOISE_FILTERED = 3,
+	Y_SIGNALSAMPLING_INVALID = -1,
 } Y_SIGNALSAMPLING_enum;
 #endif
 #define Y_SIGNALVALUE_INVALID           (YAPI_INVALID_DOUBLE)
@@ -69,6 +71,7 @@ typedef enum {
 #define Y_SIGNALRANGE_INVALID           (YAPI_INVALID_STRING)
 #define Y_VALUERANGE_INVALID            (YAPI_INVALID_STRING)
 #define Y_SIGNALBIAS_INVALID            (YAPI_INVALID_DOUBLE)
+
 //--- (end of YGenericSensor definitions)
 
 //--- (YGenericSensor declaration)
@@ -81,305 +84,341 @@ typedef enum {
  * This class adds the ability to configure the automatic conversion between the
  * measured signal and the corresponding engineering unit.
  */
-class YOCTO_CLASS_EXPORT YGenericSensor: public YSensor {
+class YOCTO_CLASS_EXPORT YGenericSensor: public YSensor
+{
 #ifdef __BORLANDC__
 #pragma option push -w-8022
 #endif
-//--- (end of YGenericSensor declaration)
+	//--- (end of YGenericSensor declaration)
 protected:
-    //--- (YGenericSensor attributes)
-    // Attributes (function value cache)
-    double          _signalValue;
-    string          _signalUnit;
-    string          _signalRange;
-    string          _valueRange;
-    double          _signalBias;
-    Y_SIGNALSAMPLING_enum _signalSampling;
-    YGenericSensorValueCallback _valueCallbackGenericSensor;
-    YGenericSensorTimedReportCallback _timedReportCallbackGenericSensor;
+	//--- (YGenericSensor attributes)
+	// Attributes (function value cache)
+	double _signalValue;
+	string _signalUnit;
+	string _signalRange;
+	string _valueRange;
+	double _signalBias;
+	Y_SIGNALSAMPLING_enum _signalSampling;
+	YGenericSensorValueCallback _valueCallbackGenericSensor;
+	YGenericSensorTimedReportCallback _timedReportCallbackGenericSensor;
 
-    friend YGenericSensor *yFindGenericSensor(const string& func);
-    friend YGenericSensor *yFirstGenericSensor(void);
+	friend YGenericSensor* yFindGenericSensor(const string& func);
+	friend YGenericSensor* yFirstGenericSensor(void);
 
-    // Function-specific method for parsing of JSON output and caching result
-    virtual int     _parseAttr(YJSONObject* json_val);
+	// Function-specific method for parsing of JSON output and caching result
+	virtual int _parseAttr(YJSONObject* json_val);
 
-    // Constructor is protected, use yFindGenericSensor factory function to instantiate
-    YGenericSensor(const string& func);
-    //--- (end of YGenericSensor attributes)
+	// Constructor is protected, use yFindGenericSensor factory function to instantiate
+	YGenericSensor(const string& func);
+	//--- (end of YGenericSensor attributes)
 
 public:
-    ~YGenericSensor();
-    //--- (YGenericSensor accessors declaration)
+	~YGenericSensor();
+	//--- (YGenericSensor accessors declaration)
 
-    static const double SIGNALVALUE_INVALID;
-    static const string SIGNALUNIT_INVALID;
-    static const string SIGNALRANGE_INVALID;
-    static const string VALUERANGE_INVALID;
-    static const double SIGNALBIAS_INVALID;
-    static const Y_SIGNALSAMPLING_enum SIGNALSAMPLING_HIGH_RATE = Y_SIGNALSAMPLING_HIGH_RATE;
-    static const Y_SIGNALSAMPLING_enum SIGNALSAMPLING_HIGH_RATE_FILTERED = Y_SIGNALSAMPLING_HIGH_RATE_FILTERED;
-    static const Y_SIGNALSAMPLING_enum SIGNALSAMPLING_LOW_NOISE = Y_SIGNALSAMPLING_LOW_NOISE;
-    static const Y_SIGNALSAMPLING_enum SIGNALSAMPLING_LOW_NOISE_FILTERED = Y_SIGNALSAMPLING_LOW_NOISE_FILTERED;
-    static const Y_SIGNALSAMPLING_enum SIGNALSAMPLING_INVALID = Y_SIGNALSAMPLING_INVALID;
+	static const double SIGNALVALUE_INVALID;
+	static const string SIGNALUNIT_INVALID;
+	static const string SIGNALRANGE_INVALID;
+	static const string VALUERANGE_INVALID;
+	static const double SIGNALBIAS_INVALID;
+	static const Y_SIGNALSAMPLING_enum SIGNALSAMPLING_HIGH_RATE = Y_SIGNALSAMPLING_HIGH_RATE;
+	static const Y_SIGNALSAMPLING_enum SIGNALSAMPLING_HIGH_RATE_FILTERED = Y_SIGNALSAMPLING_HIGH_RATE_FILTERED;
+	static const Y_SIGNALSAMPLING_enum SIGNALSAMPLING_LOW_NOISE = Y_SIGNALSAMPLING_LOW_NOISE;
+	static const Y_SIGNALSAMPLING_enum SIGNALSAMPLING_LOW_NOISE_FILTERED = Y_SIGNALSAMPLING_LOW_NOISE_FILTERED;
+	static const Y_SIGNALSAMPLING_enum SIGNALSAMPLING_INVALID = Y_SIGNALSAMPLING_INVALID;
 
-    /**
-     * Changes the measuring unit for the measured value.
-     * Remember to call the saveToFlash() method of the module if the
-     * modification must be kept.
-     *
-     * @param newval : a string corresponding to the measuring unit for the measured value
-     *
-     * @return YAPI_SUCCESS if the call succeeds.
-     *
-     * On failure, throws an exception or returns a negative error code.
-     */
-    int             set_unit(const string& newval);
-    inline int      setUnit(const string& newval)
-    { return this->set_unit(newval); }
+	/**
+	 * Changes the measuring unit for the measured value.
+	 * Remember to call the saveToFlash() method of the module if the
+	 * modification must be kept.
+	 *
+	 * @param newval : a string corresponding to the measuring unit for the measured value
+	 *
+	 * @return YAPI_SUCCESS if the call succeeds.
+	 *
+	 * On failure, throws an exception or returns a negative error code.
+	 */
+	int set_unit(const string& newval);
 
-    /**
-     * Returns the current value of the electrical signal measured by the sensor.
-     *
-     * @return a floating point number corresponding to the current value of the electrical signal
-     * measured by the sensor
-     *
-     * On failure, throws an exception or returns Y_SIGNALVALUE_INVALID.
-     */
-    double              get_signalValue(void);
+	inline int setUnit(const string& newval)
+	{
+		return this->set_unit(newval);
+	}
 
-    inline double       signalValue(void)
-    { return this->get_signalValue(); }
+	/**
+	 * Returns the current value of the electrical signal measured by the sensor.
+	 *
+	 * @return a floating point number corresponding to the current value of the electrical signal
+	 * measured by the sensor
+	 *
+	 * On failure, throws an exception or returns Y_SIGNALVALUE_INVALID.
+	 */
+	double get_signalValue(void);
 
-    /**
-     * Returns the measuring unit of the electrical signal used by the sensor.
-     *
-     * @return a string corresponding to the measuring unit of the electrical signal used by the sensor
-     *
-     * On failure, throws an exception or returns Y_SIGNALUNIT_INVALID.
-     */
-    string              get_signalUnit(void);
+	inline double signalValue(void)
+	{
+		return this->get_signalValue();
+	}
 
-    inline string       signalUnit(void)
-    { return this->get_signalUnit(); }
+	/**
+	 * Returns the measuring unit of the electrical signal used by the sensor.
+	 *
+	 * @return a string corresponding to the measuring unit of the electrical signal used by the sensor
+	 *
+	 * On failure, throws an exception or returns Y_SIGNALUNIT_INVALID.
+	 */
+	string get_signalUnit(void);
 
-    /**
-     * Returns the electric signal range used by the sensor.
-     *
-     * @return a string corresponding to the electric signal range used by the sensor
-     *
-     * On failure, throws an exception or returns Y_SIGNALRANGE_INVALID.
-     */
-    string              get_signalRange(void);
+	inline string signalUnit(void)
+	{
+		return this->get_signalUnit();
+	}
 
-    inline string       signalRange(void)
-    { return this->get_signalRange(); }
+	/**
+	 * Returns the electric signal range used by the sensor.
+	 *
+	 * @return a string corresponding to the electric signal range used by the sensor
+	 *
+	 * On failure, throws an exception or returns Y_SIGNALRANGE_INVALID.
+	 */
+	string get_signalRange(void);
 
-    /**
-     * Changes the electric signal range used by the sensor. Default value is "-999999.999...999999.999".
-     *
-     * @param newval : a string corresponding to the electric signal range used by the sensor
-     *
-     * @return YAPI_SUCCESS if the call succeeds.
-     *
-     * On failure, throws an exception or returns a negative error code.
-     */
-    int             set_signalRange(const string& newval);
-    inline int      setSignalRange(const string& newval)
-    { return this->set_signalRange(newval); }
+	inline string signalRange(void)
+	{
+		return this->get_signalRange();
+	}
 
-    /**
-     * Returns the physical value range measured by the sensor.
-     *
-     * @return a string corresponding to the physical value range measured by the sensor
-     *
-     * On failure, throws an exception or returns Y_VALUERANGE_INVALID.
-     */
-    string              get_valueRange(void);
+	/**
+	 * Changes the electric signal range used by the sensor. Default value is "-999999.999...999999.999".
+	 *
+	 * @param newval : a string corresponding to the electric signal range used by the sensor
+	 *
+	 * @return YAPI_SUCCESS if the call succeeds.
+	 *
+	 * On failure, throws an exception or returns a negative error code.
+	 */
+	int set_signalRange(const string& newval);
 
-    inline string       valueRange(void)
-    { return this->get_valueRange(); }
+	inline int setSignalRange(const string& newval)
+	{
+		return this->set_signalRange(newval);
+	}
 
-    /**
-     * Changes the physical value range measured by the sensor. As a side effect, the range modification may
-     * automatically modify the display resolution. Default value is "-999999.999...999999.999".
-     *
-     * @param newval : a string corresponding to the physical value range measured by the sensor
-     *
-     * @return YAPI_SUCCESS if the call succeeds.
-     *
-     * On failure, throws an exception or returns a negative error code.
-     */
-    int             set_valueRange(const string& newval);
-    inline int      setValueRange(const string& newval)
-    { return this->set_valueRange(newval); }
+	/**
+	 * Returns the physical value range measured by the sensor.
+	 *
+	 * @return a string corresponding to the physical value range measured by the sensor
+	 *
+	 * On failure, throws an exception or returns Y_VALUERANGE_INVALID.
+	 */
+	string get_valueRange(void);
 
-    /**
-     * Changes the electric signal bias for zero shift adjustment.
-     * If your electric signal reads positif when it should be zero, setup
-     * a positive signalBias of the same value to fix the zero shift.
-     *
-     * @param newval : a floating point number corresponding to the electric signal bias for zero shift adjustment
-     *
-     * @return YAPI_SUCCESS if the call succeeds.
-     *
-     * On failure, throws an exception or returns a negative error code.
-     */
-    int             set_signalBias(double newval);
-    inline int      setSignalBias(double newval)
-    { return this->set_signalBias(newval); }
+	inline string valueRange(void)
+	{
+		return this->get_valueRange();
+	}
 
-    /**
-     * Returns the electric signal bias for zero shift adjustment.
-     * A positive bias means that the signal is over-reporting the measure,
-     * while a negative bias means that the signal is underreporting the measure.
-     *
-     * @return a floating point number corresponding to the electric signal bias for zero shift adjustment
-     *
-     * On failure, throws an exception or returns Y_SIGNALBIAS_INVALID.
-     */
-    double              get_signalBias(void);
+	/**
+	 * Changes the physical value range measured by the sensor. As a side effect, the range modification may
+	 * automatically modify the display resolution. Default value is "-999999.999...999999.999".
+	 *
+	 * @param newval : a string corresponding to the physical value range measured by the sensor
+	 *
+	 * @return YAPI_SUCCESS if the call succeeds.
+	 *
+	 * On failure, throws an exception or returns a negative error code.
+	 */
+	int set_valueRange(const string& newval);
 
-    inline double       signalBias(void)
-    { return this->get_signalBias(); }
+	inline int setValueRange(const string& newval)
+	{
+		return this->set_valueRange(newval);
+	}
 
-    /**
-     * Returns the electric signal sampling method to use.
-     * The HIGH_RATE method uses the highest sampling frequency, without any filtering.
-     * The HIGH_RATE_FILTERED method adds a windowed 7-sample median filter.
-     * The LOW_NOISE method uses a reduced acquisition frequency to reduce noise.
-     * The LOW_NOISE_FILTERED method combines a reduced frequency with the median filter
-     * to get measures as stable as possible when working on a noisy signal.
-     *
-     * @return a value among Y_SIGNALSAMPLING_HIGH_RATE, Y_SIGNALSAMPLING_HIGH_RATE_FILTERED,
-     * Y_SIGNALSAMPLING_LOW_NOISE and Y_SIGNALSAMPLING_LOW_NOISE_FILTERED corresponding to the electric
-     * signal sampling method to use
-     *
-     * On failure, throws an exception or returns Y_SIGNALSAMPLING_INVALID.
-     */
-    Y_SIGNALSAMPLING_enum get_signalSampling(void);
+	/**
+	 * Changes the electric signal bias for zero shift adjustment.
+	 * If your electric signal reads positif when it should be zero, setup
+	 * a positive signalBias of the same value to fix the zero shift.
+	 *
+	 * @param newval : a floating point number corresponding to the electric signal bias for zero shift adjustment
+	 *
+	 * @return YAPI_SUCCESS if the call succeeds.
+	 *
+	 * On failure, throws an exception or returns a negative error code.
+	 */
+	int set_signalBias(double newval);
 
-    inline Y_SIGNALSAMPLING_enum signalSampling(void)
-    { return this->get_signalSampling(); }
+	inline int setSignalBias(double newval)
+	{
+		return this->set_signalBias(newval);
+	}
 
-    /**
-     * Changes the electric signal sampling method to use.
-     * The HIGH_RATE method uses the highest sampling frequency, without any filtering.
-     * The HIGH_RATE_FILTERED method adds a windowed 7-sample median filter.
-     * The LOW_NOISE method uses a reduced acquisition frequency to reduce noise.
-     * The LOW_NOISE_FILTERED method combines a reduced frequency with the median filter
-     * to get measures as stable as possible when working on a noisy signal.
-     *
-     * @param newval : a value among Y_SIGNALSAMPLING_HIGH_RATE, Y_SIGNALSAMPLING_HIGH_RATE_FILTERED,
-     * Y_SIGNALSAMPLING_LOW_NOISE and Y_SIGNALSAMPLING_LOW_NOISE_FILTERED corresponding to the electric
-     * signal sampling method to use
-     *
-     * @return YAPI_SUCCESS if the call succeeds.
-     *
-     * On failure, throws an exception or returns a negative error code.
-     */
-    int             set_signalSampling(Y_SIGNALSAMPLING_enum newval);
-    inline int      setSignalSampling(Y_SIGNALSAMPLING_enum newval)
-    { return this->set_signalSampling(newval); }
+	/**
+	 * Returns the electric signal bias for zero shift adjustment.
+	 * A positive bias means that the signal is over-reporting the measure,
+	 * while a negative bias means that the signal is underreporting the measure.
+	 *
+	 * @return a floating point number corresponding to the electric signal bias for zero shift adjustment
+	 *
+	 * On failure, throws an exception or returns Y_SIGNALBIAS_INVALID.
+	 */
+	double get_signalBias(void);
 
-    /**
-     * Retrieves a generic sensor for a given identifier.
-     * The identifier can be specified using several formats:
-     * <ul>
-     * <li>FunctionLogicalName</li>
-     * <li>ModuleSerialNumber.FunctionIdentifier</li>
-     * <li>ModuleSerialNumber.FunctionLogicalName</li>
-     * <li>ModuleLogicalName.FunctionIdentifier</li>
-     * <li>ModuleLogicalName.FunctionLogicalName</li>
-     * </ul>
-     *
-     * This function does not require that the generic sensor is online at the time
-     * it is invoked. The returned object is nevertheless valid.
-     * Use the method YGenericSensor.isOnline() to test if the generic sensor is
-     * indeed online at a given time. In case of ambiguity when looking for
-     * a generic sensor by logical name, no error is notified: the first instance
-     * found is returned. The search is performed first by hardware name,
-     * then by logical name.
-     *
-     * @param func : a string that uniquely characterizes the generic sensor
-     *
-     * @return a YGenericSensor object allowing you to drive the generic sensor.
-     */
-    static YGenericSensor* FindGenericSensor(string func);
+	inline double signalBias(void)
+	{
+		return this->get_signalBias();
+	}
 
-    /**
-     * Registers the callback function that is invoked on every change of advertised value.
-     * The callback is invoked only during the execution of ySleep or yHandleEvents.
-     * This provides control over the time when the callback is triggered. For good responsiveness, remember to call
-     * one of these two functions periodically. To unregister a callback, pass a NULL pointer as argument.
-     *
-     * @param callback : the callback function to call, or a NULL pointer. The callback function should take two
-     *         arguments: the function object of which the value has changed, and the character string describing
-     *         the new advertised value.
-     * @noreturn
-     */
-    virtual int         registerValueCallback(YGenericSensorValueCallback callback);
-    using YSensor::registerValueCallback;
+	/**
+	 * Returns the electric signal sampling method to use.
+	 * The HIGH_RATE method uses the highest sampling frequency, without any filtering.
+	 * The HIGH_RATE_FILTERED method adds a windowed 7-sample median filter.
+	 * The LOW_NOISE method uses a reduced acquisition frequency to reduce noise.
+	 * The LOW_NOISE_FILTERED method combines a reduced frequency with the median filter
+	 * to get measures as stable as possible when working on a noisy signal.
+	 *
+	 * @return a value among Y_SIGNALSAMPLING_HIGH_RATE, Y_SIGNALSAMPLING_HIGH_RATE_FILTERED,
+	 * Y_SIGNALSAMPLING_LOW_NOISE and Y_SIGNALSAMPLING_LOW_NOISE_FILTERED corresponding to the electric
+	 * signal sampling method to use
+	 *
+	 * On failure, throws an exception or returns Y_SIGNALSAMPLING_INVALID.
+	 */
+	Y_SIGNALSAMPLING_enum get_signalSampling(void);
 
-    virtual int         _invokeValueCallback(string value);
+	inline Y_SIGNALSAMPLING_enum signalSampling(void)
+	{
+		return this->get_signalSampling();
+	}
 
-    /**
-     * Registers the callback function that is invoked on every periodic timed notification.
-     * The callback is invoked only during the execution of ySleep or yHandleEvents.
-     * This provides control over the time when the callback is triggered. For good responsiveness, remember to call
-     * one of these two functions periodically. To unregister a callback, pass a NULL pointer as argument.
-     *
-     * @param callback : the callback function to call, or a NULL pointer. The callback function should take two
-     *         arguments: the function object of which the value has changed, and an YMeasure object describing
-     *         the new advertised value.
-     * @noreturn
-     */
-    virtual int         registerTimedReportCallback(YGenericSensorTimedReportCallback callback);
-    using YSensor::registerTimedReportCallback;
+	/**
+	 * Changes the electric signal sampling method to use.
+	 * The HIGH_RATE method uses the highest sampling frequency, without any filtering.
+	 * The HIGH_RATE_FILTERED method adds a windowed 7-sample median filter.
+	 * The LOW_NOISE method uses a reduced acquisition frequency to reduce noise.
+	 * The LOW_NOISE_FILTERED method combines a reduced frequency with the median filter
+	 * to get measures as stable as possible when working on a noisy signal.
+	 *
+	 * @param newval : a value among Y_SIGNALSAMPLING_HIGH_RATE, Y_SIGNALSAMPLING_HIGH_RATE_FILTERED,
+	 * Y_SIGNALSAMPLING_LOW_NOISE and Y_SIGNALSAMPLING_LOW_NOISE_FILTERED corresponding to the electric
+	 * signal sampling method to use
+	 *
+	 * @return YAPI_SUCCESS if the call succeeds.
+	 *
+	 * On failure, throws an exception or returns a negative error code.
+	 */
+	int set_signalSampling(Y_SIGNALSAMPLING_enum newval);
 
-    virtual int         _invokeTimedReportCallback(YMeasure value);
+	inline int setSignalSampling(Y_SIGNALSAMPLING_enum newval)
+	{
+		return this->set_signalSampling(newval);
+	}
 
-    /**
-     * Adjusts the signal bias so that the current signal value is need
-     * precisely as zero.
-     *
-     * @return YAPI_SUCCESS if the call succeeds.
-     *
-     * On failure, throws an exception or returns a negative error code.
-     */
-    virtual int         zeroAdjust(void);
+	/**
+	 * Retrieves a generic sensor for a given identifier.
+	 * The identifier can be specified using several formats:
+	 * <ul>
+	 * <li>FunctionLogicalName</li>
+	 * <li>ModuleSerialNumber.FunctionIdentifier</li>
+	 * <li>ModuleSerialNumber.FunctionLogicalName</li>
+	 * <li>ModuleLogicalName.FunctionIdentifier</li>
+	 * <li>ModuleLogicalName.FunctionLogicalName</li>
+	 * </ul>
+	 *
+	 * This function does not require that the generic sensor is online at the time
+	 * it is invoked. The returned object is nevertheless valid.
+	 * Use the method YGenericSensor.isOnline() to test if the generic sensor is
+	 * indeed online at a given time. In case of ambiguity when looking for
+	 * a generic sensor by logical name, no error is notified: the first instance
+	 * found is returned. The search is performed first by hardware name,
+	 * then by logical name.
+	 *
+	 * @param func : a string that uniquely characterizes the generic sensor
+	 *
+	 * @return a YGenericSensor object allowing you to drive the generic sensor.
+	 */
+	static YGenericSensor* FindGenericSensor(string func);
+
+	/**
+	 * Registers the callback function that is invoked on every change of advertised value.
+	 * The callback is invoked only during the execution of ySleep or yHandleEvents.
+	 * This provides control over the time when the callback is triggered. For good responsiveness, remember to call
+	 * one of these two functions periodically. To unregister a callback, pass a NULL pointer as argument.
+	 *
+	 * @param callback : the callback function to call, or a NULL pointer. The callback function should take two
+	 *         arguments: the function object of which the value has changed, and the character string describing
+	 *         the new advertised value.
+	 * @noreturn
+	 */
+	virtual int registerValueCallback(YGenericSensorValueCallback callback);
+	using YSensor::registerValueCallback;
+
+	virtual int _invokeValueCallback(string value);
+
+	/**
+	 * Registers the callback function that is invoked on every periodic timed notification.
+	 * The callback is invoked only during the execution of ySleep or yHandleEvents.
+	 * This provides control over the time when the callback is triggered. For good responsiveness, remember to call
+	 * one of these two functions periodically. To unregister a callback, pass a NULL pointer as argument.
+	 *
+	 * @param callback : the callback function to call, or a NULL pointer. The callback function should take two
+	 *         arguments: the function object of which the value has changed, and an YMeasure object describing
+	 *         the new advertised value.
+	 * @noreturn
+	 */
+	virtual int registerTimedReportCallback(YGenericSensorTimedReportCallback callback);
+	using YSensor::registerTimedReportCallback;
+
+	virtual int _invokeTimedReportCallback(YMeasure value);
+
+	/**
+	 * Adjusts the signal bias so that the current signal value is need
+	 * precisely as zero.
+	 *
+	 * @return YAPI_SUCCESS if the call succeeds.
+	 *
+	 * On failure, throws an exception or returns a negative error code.
+	 */
+	virtual int zeroAdjust(void);
 
 
-    inline static YGenericSensor* Find(string func)
-    { return YGenericSensor::FindGenericSensor(func); }
+	inline static YGenericSensor* Find(string func)
+	{
+		return YGenericSensor::FindGenericSensor(func);
+	}
 
-    /**
-     * Continues the enumeration of generic sensors started using yFirstGenericSensor().
-     *
-     * @return a pointer to a YGenericSensor object, corresponding to
-     *         a generic sensor currently online, or a NULL pointer
-     *         if there are no more generic sensors to enumerate.
-     */
-           YGenericSensor  *nextGenericSensor(void);
-    inline YGenericSensor  *next(void)
-    { return this->nextGenericSensor();}
+	/**
+	 * Continues the enumeration of generic sensors started using yFirstGenericSensor().
+	 *
+	 * @return a pointer to a YGenericSensor object, corresponding to
+	 *         a generic sensor currently online, or a NULL pointer
+	 *         if there are no more generic sensors to enumerate.
+	 */
+	YGenericSensor* nextGenericSensor(void);
 
-    /**
-     * Starts the enumeration of generic sensors currently accessible.
-     * Use the method YGenericSensor.nextGenericSensor() to iterate on
-     * next generic sensors.
-     *
-     * @return a pointer to a YGenericSensor object, corresponding to
-     *         the first generic sensor currently online, or a NULL pointer
-     *         if there are none.
-     */
-           static YGenericSensor* FirstGenericSensor(void);
-    inline static YGenericSensor* First(void)
-    { return YGenericSensor::FirstGenericSensor();}
+	inline YGenericSensor* next(void)
+	{
+		return this->nextGenericSensor();
+	}
+
+	/**
+	 * Starts the enumeration of generic sensors currently accessible.
+	 * Use the method YGenericSensor.nextGenericSensor() to iterate on
+	 * next generic sensors.
+	 *
+	 * @return a pointer to a YGenericSensor object, corresponding to
+	 *         the first generic sensor currently online, or a NULL pointer
+	 *         if there are none.
+	 */
+	static YGenericSensor* FirstGenericSensor(void);
+
+	inline static YGenericSensor* First(void)
+	{
+		return YGenericSensor::FirstGenericSensor();
+	}
 #ifdef __BORLANDC__
 #pragma option pop
 #endif
-    //--- (end of YGenericSensor accessors declaration)
+	//--- (end of YGenericSensor accessors declaration)
 };
 
 //--- (GenericSensor functions declaration)
@@ -408,7 +447,10 @@ public:
  * @return a YGenericSensor object allowing you to drive the generic sensor.
  */
 inline YGenericSensor* yFindGenericSensor(const string& func)
-{ return YGenericSensor::FindGenericSensor(func);}
+{
+	return YGenericSensor::FindGenericSensor(func);
+}
+
 /**
  * Starts the enumeration of generic sensors currently accessible.
  * Use the method YGenericSensor.nextGenericSensor() to iterate on
@@ -419,7 +461,9 @@ inline YGenericSensor* yFindGenericSensor(const string& func)
  *         if there are none.
  */
 inline YGenericSensor* yFirstGenericSensor(void)
-{ return YGenericSensor::FirstGenericSensor();}
+{
+	return YGenericSensor::FirstGenericSensor();
+}
 
 //--- (end of GenericSensor functions declaration)
 

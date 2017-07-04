@@ -231,7 +231,7 @@ JNIEXPORT void JNICALL Java_com_yoctopuce_YoctoAPI_YJniWrapper_updateDeviceList(
         return;
     }
 
-    // populate white pages
+// populate white pages
     if (yapiGetAllDevices(NULL, 0, &buffsize, errmsg) < 0) {
         throwYAPI_Exception(env, errmsg);
         return;
@@ -266,7 +266,7 @@ JNIEXPORT void JNICALL Java_com_yoctopuce_YoctoAPI_YJniWrapper_updateDeviceList(
     }
     yFree(buffer);
 
-    // populate Yellow pages
+// populate Yellow pages
     categ = yYpListHead;
     for (categ = yYpListHead; categ != INVALID_BLK_HDL; categ = yBlkListSeek(categ, 1)) {
         char categname[YOCTO_FUNCTION_LEN];
@@ -277,7 +277,7 @@ JNIEXPORT void JNICALL Java_com_yoctopuce_YoctoAPI_YJniWrapper_updateDeviceList(
             continue;
         }
 
-        // add all Yellow pages
+// add all Yellow pages
         for (; entry != INVALID_BLK_HDL; entry = yBlkListSeek(entry, 1)) {
             yStrRef serial, funcId, funcName;
             Notification_funydx funcInfo;
@@ -316,14 +316,14 @@ JNIEXPORT jbyteArray JNICALL Java_com_yoctopuce_YoctoAPI_YJniWrapper_devRequestS
     jsize       length;
     jbyteArray  result = NULL;
 
-    // get serial
+// get serial
     serial = (*env)->GetStringUTFChars(env, serial_java, NULL);
     if (NULL == serial) {
         throwYAPI_Exception(env, "Invalid String");
         goto exit;
     }
 
-    // get request
+// get request
     request_bytes = (*env)->GetByteArrayElements(env, request_java, NULL);
     if (NULL == request_bytes) {
         throwYAPI_Exception(env, "Invalid Byte Array");
@@ -339,7 +339,7 @@ JNIEXPORT jbyteArray JNICALL Java_com_yoctopuce_YoctoAPI_YJniWrapper_devRequestS
         replysize = 0;
     }
 
-   // compute return value
+// compute return value
    result = (*env)->NewByteArray(env, replysize);  // allocate
    if (NULL == result) {
         throwYAPI_Exception(env, "Unable to allocate bytes array");
@@ -379,14 +379,14 @@ JNIEXPORT void JNICALL Java_com_yoctopuce_YoctoAPI_YJniWrapper_devRequestAsync(J
     jbyte       *request_bytes = NULL;
     jsize       length;
 
-    // get serial
+// get serial
     serial = (*env)->GetStringUTFChars(env, serial_java, NULL);
     if (NULL == serial) {
         throwYAPI_Exception(env, "Invalid String");
         goto exit;
     }
 
-    // get request
+// get request
     request_bytes = (*env)->GetByteArrayElements(env, request_java, NULL);
     if (NULL == request_bytes) {
         throwYAPI_Exception(env, "Invalid Byte Array");
@@ -399,7 +399,7 @@ JNIEXPORT void JNICALL Java_com_yoctopuce_YoctoAPI_YJniWrapper_devRequestAsync(J
         throwYAPI_Exception(env, errmsg);
         goto exit;
     }
-    //Todo: handle correctly callback
+//Todo: handle correctly callback
 
 exit:
     if (serial != NULL) {
@@ -419,7 +419,7 @@ static jobject jObj;
 static JNIEnv* getThreadEnv()
 {
     JNIEnv *env;
-    // double check it's all ok
+// double check it's all ok
     int getEnvStat = (*jvm)->GetEnv(jvm, (void**)&env, JNI_VERSION_1_6);
     if (getEnvStat == JNI_EDETACHED) {
         dbglog("GetEnv: not attached\n");
@@ -428,7 +428,7 @@ static JNIEnv* getThreadEnv()
              return NULL;
         }
     } else if (getEnvStat == JNI_OK) {
-        //dbglog("attached\n");
+//dbglog("attached\n");
     } else if (getEnvStat == JNI_EVERSION) {
          dbglog("GetEnv: version not supported\n");
          return NULL;
@@ -511,7 +511,7 @@ static void jFunctionTimedReportCallbackFwd(YAPI_FUNCTION fundesc, double timest
     }
 
 
-   // compute return value
+// compute return value
    result = (*env)->NewByteArray(env, len);  // allocate
    if (NULL == result) {
         dbglog("Unable to allocate bytes array");

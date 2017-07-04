@@ -49,68 +49,78 @@
 #define  __FILE_ID__  "voltage"
 
 YVoltage::YVoltage(const string& func): YSensor(func)
-//--- (Voltage initialization)
-    ,_enabled(ENABLED_INVALID)
-    ,_valueCallbackVoltage(NULL)
-    ,_timedReportCallbackVoltage(NULL)
+                                        //--- (Voltage initialization)
+                                        , _enabled(ENABLED_INVALID)
+                                        , _valueCallbackVoltage(NULL)
+                                        , _timedReportCallbackVoltage(NULL)
 //--- (end of Voltage initialization)
 {
-    _className="Voltage";
+	_className = "Voltage";
 }
 
 YVoltage::~YVoltage()
 {
-//--- (YVoltage cleanup)
-//--- (end of YVoltage cleanup)
+	//--- (YVoltage cleanup)
+	//--- (end of YVoltage cleanup)
 }
+
 //--- (YVoltage implementation)
 // static attributes
 
 int YVoltage::_parseAttr(YJSONObject* json_val)
 {
-    if(json_val->has("enabled")) {
-        _enabled =  (Y_ENABLED_enum)json_val->getInt("enabled");
-    }
-    return YSensor::_parseAttr(json_val);
+	if (json_val->has("enabled"))
+	{
+		_enabled = (Y_ENABLED_enum)json_val->getInt("enabled");
+	}
+	return YSensor::_parseAttr(json_val);
 }
 
 
 Y_ENABLED_enum YVoltage::get_enabled(void)
 {
-    Y_ENABLED_enum res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YVoltage::ENABLED_INVALID;
-                }
-            }
-        }
-        res = _enabled;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	Y_ENABLED_enum res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YVoltage::ENABLED_INVALID;
+				}
+			}
+		}
+		res = _enabled;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 int YVoltage::set_enabled(Y_ENABLED_enum newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        rest_val = (newval>0 ? "1" : "0");
-        res = _setAttr("enabled", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		rest_val = (newval > 0 ? "1" : "0");
+		res = _setAttr("enabled", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -138,23 +148,29 @@ int YVoltage::set_enabled(Y_ENABLED_enum newval)
  */
 YVoltage* YVoltage::FindVoltage(string func)
 {
-    YVoltage* obj = NULL;
-    int taken = 0;
-    if (YAPI::_apiInitialized) {
-        yEnterCriticalSection(&YAPI::_global_cs);
-        taken = 1;
-    }try {
-        obj = (YVoltage*) YFunction::_FindFromCache("Voltage", func);
-        if (obj == NULL) {
-            obj = new YVoltage(func);
-            YFunction::_AddToCache("Voltage", func, obj);
-        }
-    } catch (std::exception) {
-        if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
-        throw;
-    }
-    if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
-    return obj;
+	YVoltage* obj = NULL;
+	int taken = 0;
+	if (YAPI::_apiInitialized)
+	{
+		yEnterCriticalSection(&YAPI::_global_cs);
+		taken = 1;
+	}
+	try
+	{
+		obj = (YVoltage*)YFunction::_FindFromCache("Voltage", func);
+		if (obj == NULL)
+		{
+			obj = new YVoltage(func);
+			YFunction::_AddToCache("Voltage", func, obj);
+		}
+	}
+	catch (std::exception)
+	{
+		if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
+		throw;
+	}
+	if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
+	return obj;
 }
 
 /**
@@ -170,31 +186,39 @@ YVoltage* YVoltage::FindVoltage(string func)
  */
 int YVoltage::registerValueCallback(YVoltageValueCallback callback)
 {
-    string val;
-    if (callback != NULL) {
-        YFunction::_UpdateValueCallbackList(this, true);
-    } else {
-        YFunction::_UpdateValueCallbackList(this, false);
-    }
-    _valueCallbackVoltage = callback;
-    // Immediately invoke value callback with current value
-    if (callback != NULL && this->isOnline()) {
-        val = _advertisedValue;
-        if (!(val == "")) {
-            this->_invokeValueCallback(val);
-        }
-    }
-    return 0;
+	string val;
+	if (callback != NULL)
+	{
+		YFunction::_UpdateValueCallbackList(this, true);
+	}
+	else
+	{
+		YFunction::_UpdateValueCallbackList(this, false);
+	}
+	_valueCallbackVoltage = callback;
+	// Immediately invoke value callback with current value
+	if (callback != NULL && this->isOnline())
+	{
+		val = _advertisedValue;
+		if (!(val == ""))
+		{
+			this->_invokeValueCallback(val);
+		}
+	}
+	return 0;
 }
 
 int YVoltage::_invokeValueCallback(string value)
 {
-    if (_valueCallbackVoltage != NULL) {
-        _valueCallbackVoltage(this, value);
-    } else {
-        YSensor::_invokeValueCallback(value);
-    }
-    return 0;
+	if (_valueCallbackVoltage != NULL)
+	{
+		_valueCallbackVoltage(this, value);
+	}
+	else
+	{
+		YSensor::_invokeValueCallback(value);
+	}
+	return 0;
 }
 
 /**
@@ -210,49 +234,57 @@ int YVoltage::_invokeValueCallback(string value)
  */
 int YVoltage::registerTimedReportCallback(YVoltageTimedReportCallback callback)
 {
-    YSensor* sensor = NULL;
-    sensor = this;
-    if (callback != NULL) {
-        YFunction::_UpdateTimedReportCallbackList(sensor, true);
-    } else {
-        YFunction::_UpdateTimedReportCallbackList(sensor, false);
-    }
-    _timedReportCallbackVoltage = callback;
-    return 0;
+	YSensor* sensor = NULL;
+	sensor = this;
+	if (callback != NULL)
+	{
+		YFunction::_UpdateTimedReportCallbackList(sensor, true);
+	}
+	else
+	{
+		YFunction::_UpdateTimedReportCallbackList(sensor, false);
+	}
+	_timedReportCallbackVoltage = callback;
+	return 0;
 }
 
 int YVoltage::_invokeTimedReportCallback(YMeasure value)
 {
-    if (_timedReportCallbackVoltage != NULL) {
-        _timedReportCallbackVoltage(this, value);
-    } else {
-        YSensor::_invokeTimedReportCallback(value);
-    }
-    return 0;
+	if (_timedReportCallbackVoltage != NULL)
+	{
+		_timedReportCallbackVoltage(this, value);
+	}
+	else
+	{
+		YSensor::_invokeTimedReportCallback(value);
+	}
+	return 0;
 }
 
-YVoltage *YVoltage::nextVoltage(void)
+YVoltage* YVoltage::nextVoltage(void)
 {
-    string  hwid;
+	string hwid;
 
-    if(YISERR(_nextFunction(hwid)) || hwid=="") {
-        return NULL;
-    }
-    return YVoltage::FindVoltage(hwid);
+	if (YISERR(_nextFunction(hwid)) || hwid == "")
+	{
+		return NULL;
+	}
+	return YVoltage::FindVoltage(hwid);
 }
 
 YVoltage* YVoltage::FirstVoltage(void)
 {
-    vector<YFUN_DESCR>   v_fundescr;
-    YDEV_DESCR             ydevice;
-    string              serial, funcId, funcName, funcVal, errmsg;
+	vector<YFUN_DESCR> v_fundescr;
+	YDEV_DESCR ydevice;
+	string serial, funcId, funcName, funcVal, errmsg;
 
-    if(YISERR(YapiWrapper::getFunctionsByClass("Voltage", 0, v_fundescr, sizeof(YFUN_DESCR), errmsg)) ||
-       v_fundescr.size() == 0 ||
-       YISERR(YapiWrapper::getFunctionInfo(v_fundescr[0], ydevice, serial, funcId, funcName, funcVal, errmsg))) {
-        return NULL;
-    }
-    return YVoltage::FindVoltage(serial+"."+funcId);
+	if (YISERR(YapiWrapper::getFunctionsByClass("Voltage", 0, v_fundescr, sizeof(YFUN_DESCR), errmsg)) ||
+		v_fundescr.size() == 0 ||
+		YISERR(YapiWrapper::getFunctionInfo(v_fundescr[0], ydevice, serial, funcId, funcName, funcVal, errmsg)))
+	{
+		return NULL;
+	}
+	return YVoltage::FindVoltage(serial + "." + funcId);
 }
 
 //--- (end of YVoltage implementation)

@@ -56,14 +56,14 @@ extern "C" {
 #endif
 
 #ifdef _MSC_VER
-typedef unsigned char           u8;
-typedef signed char             s8;
-typedef unsigned short int      u16;
-typedef signed short int        s16;
-typedef unsigned long int       u32;
-typedef signed long int         s32;
-typedef unsigned long long      u64;
-typedef signed long long        s64;
+typedef unsigned char u8;
+typedef signed char s8;
+typedef unsigned short int u16;
+typedef signed short int s16;
+typedef unsigned long int u32;
+typedef signed long int s32;
+typedef unsigned long long u64;
+typedef signed long long s64;
 #define VARIABLE_SIZE
 #define FMTs64 "lld"
 #define FMTu64 "llu"
@@ -207,14 +207,14 @@ typedef int64_t                 s64;
 // end of LINUX_API
 
 
-typedef u32   yTime;            /* measured in milliseconds */
-typedef u32   u31;              /* shorter unsigned integers */
-typedef s16   yHash;
-typedef u16   yBlkHdl;          /* (yHash << 1) + [0,1] */
+typedef u32 yTime; /* measured in milliseconds */
+typedef u32 u31; /* shorter unsigned integers */
+typedef s16 yHash;
+typedef u16 yBlkHdl; /* (yHash << 1) + [0,1] */
 typedef yHash yStrRef;
 typedef yHash yUrlRef;
-typedef s32   YAPI_DEVICE;      /* yStrRef of serial number */
-typedef s32   YAPI_FUNCTION;    /* yStrRef of serial + (ystrRef of funcId << 16) */
+typedef s32 YAPI_DEVICE; /* yStrRef of serial number */
+typedef s32 YAPI_FUNCTION; /* yStrRef of serial + (ystrRef of funcId << 16) */
 
 #define INVALID_HASH_IDX    -1  /* To use for yHash, yStrRef, yApiRef types */
 #define INVALID_BLK_HDL     0   /* To use for yBlkHdl type */
@@ -230,13 +230,13 @@ typedef s8              YTRNKIO;
 #if defined(__64BITS__)
 typedef u64             YSOCKET;
 #else
-typedef u32             YSOCKET;
+typedef u32 YSOCKET;
 #endif
 #else
 typedef int             YSOCKET;
 #endif
-typedef s32             YUSBIO;
-typedef s32             YUSBDEV;
+typedef s32 YUSBIO;
+typedef s32 YUSBDEV;
 #endif
 
 #define YIO_INVALID      0
@@ -257,7 +257,7 @@ typedef s32             YUSBDEV;
 typedef s16 YIOHDL;
 #else
 // make sure this union is no more than 8 bytes, YIOHDL is allocated used in all foreign APIs
-typedef void *YIOHDL;
+typedef void* YIOHDL;
 #endif
 
 #define YIOHDL_SIZE (sizeof(YIOHDL))
@@ -364,31 +364,32 @@ void yDbgDeleteCriticalSection(const char* fileid, int lineno, yCRITICAL_SECTION
 #else
 
 typedef void* yCRITICAL_SECTION;
-void yInitializeCriticalSection(yCRITICAL_SECTION *cs);
-void yEnterCriticalSection(yCRITICAL_SECTION *cs);
-int yTryEnterCriticalSection(yCRITICAL_SECTION *cs);
-void yLeaveCriticalSection(yCRITICAL_SECTION *cs);
-void yDeleteCriticalSection(yCRITICAL_SECTION *cs);
+void yInitializeCriticalSection(yCRITICAL_SECTION* cs);
+void yEnterCriticalSection(yCRITICAL_SECTION* cs);
+int yTryEnterCriticalSection(yCRITICAL_SECTION* cs);
+void yLeaveCriticalSection(yCRITICAL_SECTION* cs);
+void yDeleteCriticalSection(yCRITICAL_SECTION* cs);
 #endif
 #endif
 
 
-typedef enum {
-    YAPI_SUCCESS          = 0,      // everything worked all right
-    YAPI_NOT_INITIALIZED  = -1,     // call yInitAPI() first !
-    YAPI_INVALID_ARGUMENT = -2,     // one of the arguments passed to the function is invalid
-    YAPI_NOT_SUPPORTED    = -3,     // the operation attempted is (currently) not supported
-    YAPI_DEVICE_NOT_FOUND = -4,     // the requested device is not reachable
-    YAPI_VERSION_MISMATCH = -5,     // the device firmware is incompatible with this API version
-    YAPI_DEVICE_BUSY      = -6,     // the device is busy with another task and cannot answer
-    YAPI_TIMEOUT          = -7,     // the device took too long to provide an answer
-    YAPI_IO_ERROR         = -8,     // there was an I/O problem while talking to the device
-    YAPI_NO_MORE_DATA     = -9,     // there is no more data to read from
-    YAPI_EXHAUSTED        = -10,    // you have run out of a limited resource, check the documentation
-    YAPI_DOUBLE_ACCES     = -11,    // you have two process that try to access to the same device
-    YAPI_UNAUTHORIZED     = -12,    // unauthorized access to password-protected device
-    YAPI_RTC_NOT_READY    = -13,    // real-time clock has not been initialized (or time was lost)
-    YAPI_FILE_NOT_FOUND   = -14     // the file is not found
+typedef enum
+{
+	YAPI_SUCCESS = 0, // everything worked all right
+	YAPI_NOT_INITIALIZED = -1, // call yInitAPI() first !
+	YAPI_INVALID_ARGUMENT = -2, // one of the arguments passed to the function is invalid
+	YAPI_NOT_SUPPORTED = -3, // the operation attempted is (currently) not supported
+	YAPI_DEVICE_NOT_FOUND = -4, // the requested device is not reachable
+	YAPI_VERSION_MISMATCH = -5, // the device firmware is incompatible with this API version
+	YAPI_DEVICE_BUSY = -6, // the device is busy with another task and cannot answer
+	YAPI_TIMEOUT = -7, // the device took too long to provide an answer
+	YAPI_IO_ERROR = -8, // there was an I/O problem while talking to the device
+	YAPI_NO_MORE_DATA = -9, // there is no more data to read from
+	YAPI_EXHAUSTED = -10, // you have run out of a limited resource, check the documentation
+	YAPI_DOUBLE_ACCES = -11, // you have two process that try to access to the same device
+	YAPI_UNAUTHORIZED = -12, // unauthorized access to password-protected device
+	YAPI_RTC_NOT_READY = -13, // real-time clock has not been initialized (or time was lost)
+	YAPI_FILE_NOT_FOUND = -14 // the file is not found
 } YRETCODE;
 
 #define YISERR(retcode)   ((retcode) < 0)
@@ -435,26 +436,30 @@ typedef enum {
 
 
 // firmware description
-typedef union {
-    u8      asBytes[YOCTO_FIRMWARE_LEN];
-    struct {
-        char    buildVersion[YOCTO_FIRMWARE_LEN-2];
-        u16     yfsSignature;
-    } data;
+typedef union
+{
+	u8 asBytes[YOCTO_FIRMWARE_LEN];
+
+	struct
+	{
+		char buildVersion[YOCTO_FIRMWARE_LEN - 2];
+		u16 yfsSignature;
+	} data;
 } yFirmwareSt;
 
 // device description
-typedef struct {
-    u16     vendorid;
-    u16     deviceid;
-    u16     devrelease;
-    u16     nbinbterfaces;
-    char    manufacturer[YOCTO_MANUFACTURER_LEN];
-    char    productname[YOCTO_PRODUCTNAME_LEN];
-    char    serial[YOCTO_SERIAL_LEN];
-    char    logicalname[YOCTO_LOGICAL_LEN];
-    char    firmware[YOCTO_FIRMWARE_LEN];
-    u8      beacon;
+typedef struct
+{
+	u16 vendorid;
+	u16 deviceid;
+	u16 devrelease;
+	u16 nbinbterfaces;
+	char manufacturer[YOCTO_MANUFACTURER_LEN];
+	char productname[YOCTO_PRODUCTNAME_LEN];
+	char serial[YOCTO_SERIAL_LEN];
+	char logicalname[YOCTO_LOGICAL_LEN];
+	char firmware[YOCTO_FIRMWARE_LEN];
+	u8 beacon;
 } yDeviceSt;
 
 // definitions for USB protocl
@@ -470,19 +475,22 @@ typedef struct {
 #define TO_SAFE_U16(safe,unsafe)        {(safe).low = (unsafe)&0xff; (safe).high=(unsafe)>>8;}
 #define FROM_SAFE_U16(safe,unsafe)      {(unsafe) = (safe).low |((u16)((safe).high)<<8);}
 
-typedef struct {
-    u8 low;
-    u8 high;
+typedef struct
+{
+	u8 low;
+	u8 high;
 } SAFE_U16;
 
 #ifndef CPU_BIG_ENDIAN
 
 #define YPKTNOMSK   (0x7)
-typedef struct {
-    u8 pktno    : 3;
-    u8 stream   : 5;
-    u8 pkt      : 2;
-    u8 size     : 6;
+
+typedef struct
+{
+	u8 pktno : 3;
+	u8 stream : 5;
+	u8 pkt : 2;
+	u8 size : 6;
 } YSTREAM_Head;
 #else
 #define YPKTNOMSK   (0x7)
@@ -503,17 +511,21 @@ typedef struct {
 #define USB_CONF_RESET      0
 #define USB_CONF_START      1
 
-typedef union{
-    struct{
-        SAFE_U16  api;
-        u8  ok;
-        u8  ifaceno;
-        u8  nbifaces;
-    } reset;
-    struct{
-        u8  nbifaces;
-        u8  ack_delay;
-    } start;
+typedef union
+{
+	struct
+	{
+		SAFE_U16 api;
+		u8 ok;
+		u8 ifaceno;
+		u8 nbifaces;
+	} reset;
+
+	struct
+	{
+		u8 nbifaces;
+		u8 ack_delay;
+	} start;
 } USB_Conf_Pkt;
 
 //
@@ -564,108 +576,125 @@ typedef union{
 #define PUBVAL_C_FLOAT                      8   // 32-bit C float
 #define PUBVAL_YOCTO_FLOAT_E3               9   // 32-bit Yocto fixed-point format (e-3)
 
-typedef struct{
-    char        serial[YOCTO_SERIAL_LEN];
-    u8          type;
-}Notification_header;
+typedef struct
+{
+	char serial[YOCTO_SERIAL_LEN];
+	u8 type;
+} Notification_header;
 
 #ifdef _MSC_VER
 #pragma warning( push )
 #pragma warning( disable : 4200 )
 #endif
 
-typedef union {
-    // This definition must match packet generated in yoctoPacket.c
-    u8          raw;                    // originally shifted by NOTIFY_1STBYTE_MINSMALL for smallnot
-    struct {
+typedef union
+{
+	// This definition must match packet generated in yoctoPacket.c
+	u8 raw; // originally shifted by NOTIFY_1STBYTE_MINSMALL for smallnot
+	struct
+	{
 #ifndef CPU_BIG_ENDIAN
-        u8      funydx:4;
-        u8      typeV2:3;
-        u8      isSmall:1;
+		u8 funydx:4;
+		u8 typeV2:3;
+		u8 isSmall:1;
 #else
         u8      isSmall:1;
         u8      typeV2:3;
         u8      funydx:4;
 #endif
-    } v2;
-}Notification_funydx;
+	} v2;
+} Notification_funydx;
 
-typedef struct{
-    // This definition must match packet generated in yoctoPacket.c
-    Notification_funydx funInfo;
-    char        pubval[VARIABLE_SIZE]; // deduce actual size from YSTREAM_head
-}Notification_tiny;
+typedef struct
+{
+	// This definition must match packet generated in yoctoPacket.c
+	Notification_funydx funInfo;
+	char pubval[VARIABLE_SIZE]; // deduce actual size from YSTREAM_head
+} Notification_tiny;
 
-typedef struct{
-    // This definition must match packet generated in yoctoPacket.c
-    Notification_funydx funInfo;
-    u8          devydx;
-    char        pubval[VARIABLE_SIZE]; // deduce actual size from YSTREAM_head
-}Notification_small;
+typedef struct
+{
+	// This definition must match packet generated in yoctoPacket.c
+	Notification_funydx funInfo;
+	u8 devydx;
+	char pubval[VARIABLE_SIZE]; // deduce actual size from YSTREAM_head
+} Notification_small;
 
 #ifdef _MSC_VER
 #pragma warning( pop )
 #endif
 
-typedef struct{
-    char        name[YOCTO_LOGICAL_LEN];
-    u8          beacon;
-}Notification_name;
+typedef struct
+{
+	char name[YOCTO_LOGICAL_LEN];
+	u8 beacon;
+} Notification_name;
 
-typedef char    Notification_product[YOCTO_PRODUCTNAME_LEN];
+typedef char Notification_product[YOCTO_PRODUCTNAME_LEN];
 
-typedef struct {
-    char        name[YOCTO_PRODUCTNAME_LEN];
-    SAFE_U16    deviceid;
-}Notification_prodinfo;
+typedef struct
+{
+	char name[YOCTO_PRODUCTNAME_LEN];
+	SAFE_U16 deviceid;
+} Notification_prodinfo;
 
-typedef struct {
-    char        childserial[YOCTO_SERIAL_LEN];
-    u8          onoff;
-    u8          devydx;
-}Notification_child;
+typedef struct
+{
+	char childserial[YOCTO_SERIAL_LEN];
+	u8 onoff;
+	u8 devydx;
+} Notification_child;
 
-typedef struct {
-    char        firmware[YOCTO_FIRMWARE_LEN];
-    SAFE_U16    vendorid;
-    SAFE_U16    deviceid;
-}Notification_firmware;
+typedef struct
+{
+	char firmware[YOCTO_FIRMWARE_LEN];
+	SAFE_U16 vendorid;
+	SAFE_U16 deviceid;
+} Notification_firmware;
 
-typedef struct {
-    char        funcid[YOCTO_FUNCTION_LEN];
-    char        funcname[YOCTO_LOGICAL_LEN];
-}Notification_funcname;
+typedef struct
+{
+	char funcid[YOCTO_FUNCTION_LEN];
+	char funcname[YOCTO_LOGICAL_LEN];
+} Notification_funcname;
 
-typedef struct {
-    char        funcid[YOCTO_FUNCTION_LEN];
-    char        pubval[YOCTO_PUBVAL_SIZE];
-}Notification_funcval;
+typedef struct
+{
+	char funcid[YOCTO_FUNCTION_LEN];
+	char pubval[YOCTO_PUBVAL_SIZE];
+} Notification_funcval;
 
-typedef struct {
-    char        funcidshort[YOCTO_FUNCTION_LEN-1];
-    u8          funclass;       // 0..YOCTO_N_BASECLASSES-1
-    char        funcname[YOCTO_LOGICAL_LEN];
-    u8          funydx;
-}Notification_funcnameydx;
+typedef struct
+{
+	char funcidshort[YOCTO_FUNCTION_LEN - 1];
+	u8 funclass; // 0..YOCTO_N_BASECLASSES-1
+	char funcname[YOCTO_LOGICAL_LEN];
+	u8 funydx;
+} Notification_funcnameydx;
 
-typedef union {
-    u8                  firstByte;
-    Notification_tiny   tinypubvalnot;
-    Notification_small  smallpubvalnot;
-    struct {
-        Notification_header head;
-        union {
-            Notification_name           namenot;
-            Notification_product        productname;
-            Notification_prodinfo       productinfo;
-            Notification_child          childserial;
-            Notification_firmware       firmwarenot;
-            Notification_funcname       funcnamenot;
-            Notification_funcval        pubvalnot;
-            Notification_funcnameydx    funcnameydxnot;
-            u8                          raw;
-        };
-    };
+typedef union
+{
+	u8 firstByte;
+	Notification_tiny tinypubvalnot;
+	Notification_small smallpubvalnot;
+
+	struct
+	{
+		Notification_header head;
+
+		union
+		{
+			Notification_name namenot;
+			Notification_product productname;
+			Notification_prodinfo productinfo;
+			Notification_child childserial;
+			Notification_firmware firmwarenot;
+			Notification_funcname funcnamenot;
+			Notification_funcval pubvalnot;
+			Notification_funcnameydx funcnameydxnot;
+			u8 raw;
+		};
+	};
 } USB_Notify_Pkt;
 
 #define NOTIFY_NETPKT_NAME        '0'
@@ -712,55 +741,68 @@ typedef union {
 // makes it easy to filter packets that contain
 // reports only, and interpret them as fixed offsets
 
-typedef struct {
-    union {
-      struct {
+typedef struct
+{
+	union
+	{
+		struct
+		{
 #ifndef CPU_BIG_ENDIAN
-        u8  funYdx:4;   // (LOWEST NIBBLE) function index on device, 0xf==timestamp
-        u8  extraLen:3; // Number of extra data bytes in addition to first one
-        u8  isAvg:1;    // (HIGHEST BIT) 0:one immediate value (1-4 bytes), 1:min/avg/max (2+4+2 bytes)
+			u8 funYdx:4; // (LOWEST NIBBLE) function index on device, 0xf==timestamp
+			u8 extraLen:3; // Number of extra data bytes in addition to first one
+			u8 isAvg:1; // (HIGHEST BIT) 0:one immediate value (1-4 bytes), 1:min/avg/max (2+4+2 bytes)
 #else
         u8  isAvg:1;    // (HIGHEST BIT) 0:one immediate value (1-4 bytes), 1:min/avg/max (2+4+2 bytes)
         u8  extraLen:3; // Number of extra data bytes in addition to first one
         u8  funYdx:4;   // (LOWEST NIBBLE) function index on device, 0xf==timestamp
 #endif
-      };
-      u8    head;
-    };
-    u8  data[1];        // Payload itself (numbers in little-endian format)
+		};
+
+		u8 head;
+	};
+
+	u8 data[1]; // Payload itself (numbers in little-endian format)
 } USB_Report_Pkt_V1;
 
-typedef struct {
-    union {
-      struct {
+typedef struct
+{
+	union
+	{
+		struct
+		{
 #ifndef CPU_BIG_ENDIAN
-        u8  funYdx:4;   // (LOWEST NIBBLE) function index on device, 0xf==timestamp
-        u8  extraLen:4; // Number of extra data bytes in addition to data[0]
+			u8 funYdx:4; // (LOWEST NIBBLE) function index on device, 0xf==timestamp
+			u8 extraLen:4; // Number of extra data bytes in addition to data[0]
 #else
         u8  extraLen:4; // Number of extra data bytes in addition to data[0]
         u8  funYdx:4;   // (LOWEST NIBBLE) function index on device, 0xf==timestamp
 #endif
-      };
-      u8    head;
-    };
-    union {
-      // When extraLen >= 4 && funYdx != 0xf : first data byte describes the payload
-      struct {
+		};
+
+		u8 head;
+	};
+
+	union
+	{
+		// When extraLen >= 4 && funYdx != 0xf : first data byte describes the payload
+		struct
+		{
 #ifndef CPU_BIG_ENDIAN
-        u8  avgExtraLen:2;      // Number of extra bytes in the first value (average value, signed MeasureVal)
-        u8  minDiffExtraLen:2;  // Number of extra bytes to encode the 2nd value (avg - min, always > 0)
-        u8  maxDiffExtraLen:2;  // Number of extra bytes to encode the 3rd value (max - avg, always > 0)
-        u8  reserved:2;         // unused, currently set to 0
+			u8 avgExtraLen:2; // Number of extra bytes in the first value (average value, signed MeasureVal)
+			u8 minDiffExtraLen:2; // Number of extra bytes to encode the 2nd value (avg - min, always > 0)
+			u8 maxDiffExtraLen:2; // Number of extra bytes to encode the 3rd value (max - avg, always > 0)
+			u8 reserved:2; // unused, currently set to 0
 #else
         u8  reserved:2;         // unused, currently set to 0
         u8  maxDiffExtraLen:2;  // Number of extra bytes to encode the 3rd value (max - avg)
         u8  minDiffExtraLen:2;  // Number of extra bytes to encode the 2nd value (avg - min)
         u8  avgExtraLen:2;      // Number of extra bytes in the first value (average)
 #endif
-      };
-      // When extraLen <= 3 (up to 4 bytes of data): live report value (1-4 bytes)
-      u8  data[1];        // Payload itself (numbers in little-endian format)
-    };
+		};
+
+		// When extraLen <= 3 (up to 4 bytes of data): live report value (1-4 bytes)
+		u8 data[1]; // Payload itself (numbers in little-endian format)
+	};
 } USB_Report_Pkt_V2;
 
 // data format in USB_Report_Pkt_V2:
@@ -794,60 +836,74 @@ typedef struct {
 #define USB_META_WS_AUTH_FLAGS_VALID    1 // set it if the sha1 and nonce are pertinent
 #define USB_META_WS_AUTH_FLAGS_RW       2 // set it if RW acces are granted
 
-typedef union {
-    struct {
-        u8  metaType;      // =USB_META_UTCTIME
-        u8  unixTime[4];   // actually a DWORD in little-endian format
-    } utcTime;
-    struct {
-        u8  metaType;      // =USB_META_DLFLUSH (flush datalogger)
-    } dlFlush;
-    struct {
-        u8  metaType;      // =USB_META_ACK_D2H_PACKET (ack last device to host packet)
-        u8  pktno;         // = last pktno that the host has received
-    } pktAck;
-    struct {
-        u8  metaType;      // =USB_META_WS_ANNOUNCE (ack last device to host packet)
-        u8  version;       // the version of the authentication
-        u16 maxtcpws;      // maximum TCP window size, in multiples of 16 bytes
-        u32 nonce;         // nonce append to password (in capital hex)
-        char serial[YOCTO_SERIAL_LEN];
-    } announce;
-    struct {
-        u8  metaType;      // =USB_META_WS_AUTHENTICATION (authenticate trafic)
-        u8  version;       // the version of the authentication
-        u16 flags;         // reserved bits
-        u32 nonce;         // nonce append to password (in capital hex)
-        u8  sha1[20];      // sha1 signature
-    } auth;
-    struct {
-        u8  metaType;      // =USB_META_WS_ANNOUNCE (ack last device to host packet)
-        u8  reserved;      // reserved (must be 0)
-        u16 htmlcode;      // HTML error code
-    } error;
-    struct {
-        u8  metaType;      // =USB_META_ACK_UPLOAD (ack upload progress every KB)
-        u8  tcpchan;       // TCP channel index (as of proto v2, only available on tcpchan 0)
-        u8 totalBytes[4];  // actually a DWORD in little-endian format, number of bytes received so far
-    } uploadAck;
+typedef union
+{
+	struct
+	{
+		u8 metaType; // =USB_META_UTCTIME
+		u8 unixTime[4]; // actually a DWORD in little-endian format
+	} utcTime;
+
+	struct
+	{
+		u8 metaType; // =USB_META_DLFLUSH (flush datalogger)
+	} dlFlush;
+
+	struct
+	{
+		u8 metaType; // =USB_META_ACK_D2H_PACKET (ack last device to host packet)
+		u8 pktno; // = last pktno that the host has received
+	} pktAck;
+
+	struct
+	{
+		u8 metaType; // =USB_META_WS_ANNOUNCE (ack last device to host packet)
+		u8 version; // the version of the authentication
+		u16 maxtcpws; // maximum TCP window size, in multiples of 16 bytes
+		u32 nonce; // nonce append to password (in capital hex)
+		char serial[YOCTO_SERIAL_LEN];
+	} announce;
+
+	struct
+	{
+		u8 metaType; // =USB_META_WS_AUTHENTICATION (authenticate trafic)
+		u8 version; // the version of the authentication
+		u16 flags; // reserved bits
+		u32 nonce; // nonce append to password (in capital hex)
+		u8 sha1[20]; // sha1 signature
+	} auth;
+
+	struct
+	{
+		u8 metaType; // =USB_META_WS_ANNOUNCE (ack last device to host packet)
+		u8 reserved; // reserved (must be 0)
+		u16 htmlcode; // HTML error code
+	} error;
+
+	struct
+	{
+		u8 metaType; // =USB_META_ACK_UPLOAD (ack upload progress every KB)
+		u8 tcpchan; // TCP channel index (as of proto v2, only available on tcpchan 0)
+		u8 totalBytes[4]; // actually a DWORD in little-endian format, number of bytes received so far
+	} uploadAck;
 } USB_Meta_Pkt;
 
 
-
-typedef union {
-     struct {
+typedef union
+{
+	struct
+	{
 #ifdef CPU_BIG_ENDIAN
         u8      stream : 5;           // Encapsulated protocol
         u8      tcpchan : 3;          // Encapsulated TCP subchannel
 #else
-        u8      tcpchan : 3;          // Encapsulated TCP subchannel
-        u8      stream : 5;           // Encapsulated protocol
+		u8 tcpchan : 3; // Encapsulated TCP subchannel
+		u8 stream : 5; // Encapsulated protocol
 #endif
-    };
-    u8 encaps;
+	};
+
+	u8 encaps;
 } WSStreamHead;
-
-
 
 
 //
@@ -860,10 +916,9 @@ typedef union {
 #define YSSDP_URN_YOCTOPUCE "urn:yoctopuce-com:device:hub:1"
 
 // prototype of the async request completion callback
-typedef void (*yapiRequestAsyncCallback)(void *context, const u8 *result, u32 resultlen, int retcode, const char *errmsg);
+typedef void (*yapiRequestAsyncCallback)(void* context, const u8* result, u32 resultlen, int retcode, const char* errmsg);
 // prototype of the request progress callback
-typedef void (*yapiRequestProgressCallback)(void *context, u32 acked, u32 totalbytes);
-
+typedef void (*yapiRequestProgressCallback)(void* context, u32 acked, u32 totalbytes);
 
 
 //
@@ -888,84 +943,94 @@ typedef void (*yapiRequestProgressCallback)(void *context, u32 acked, u32 totalb
 #define PROGRAM_BLOCK_SIZE_BADDR    (PROGRAM_BLOCK_SIZE_INSTR*2)
 
 
-typedef union {
-    u8  raw[64];
-    u16 words[32];
-    struct {
+typedef union
+{
+	u8 raw[64];
+	u16 words[32];
+
+	struct
+	{
 #ifndef CPU_BIG_ENDIAN
-        u8  size : 5;
-        u8  type : 3;
+		u8 size : 5;
+		u8 type : 3;
 #else
         u8  type : 3;
         u8  size : 5;
 #endif
-        u8  addres_high;
-        u16 adress_low;
-        u8  data[MAX_BYTE_IN_PACKET];
-    } pkt;
-    struct {
+		u8 addres_high;
+		u16 adress_low;
+		u8 data[MAX_BYTE_IN_PACKET];
+	} pkt;
+
+	struct
+	{
 #ifndef CPU_BIG_ENDIAN
-        u8   size : 5;
-        u8   type : 3;
+		u8 size : 5;
+		u8 type : 3;
 #else
         u8   type : 3;
         u8   size : 5;
 #endif
-        u8   pad;
-        u16  pr_blk_size;
-        u16  devidl;
-        u16  devidh;
-        u32  settings_addr;
-        u32  last_addr;
-        u32  config_start;
-        u32  config_stop;
-        u16  er_blk_size;
-    } pktinfo;
-    struct {
+		u8 pad;
+		u16 pr_blk_size;
+		u16 devidl;
+		u16 devidh;
+		u32 settings_addr;
+		u32 last_addr;
+		u32 config_start;
+		u32 config_stop;
+		u16 er_blk_size;
+	} pktinfo;
+
+	struct
+	{
 #ifndef CPU_BIG_ENDIAN
-        u8   size : 5;
-        u8   type : 3;
+		u8 size : 5;
+		u8 type : 3;
 #else
         u8   type : 3;
         u8   size : 5;
 #endif
-        u8   dwordpos_lo;
+		u8 dwordpos_lo;
 #ifndef CPU_BIG_ENDIAN
-        u16  pageno : 14;
-        u16  dwordpos_hi : 2;
+		u16 pageno : 14;
+		u16 dwordpos_hi : 2;
 #else
         u8  pageno_lo;
         u8  misc_hi;
 #endif
-        union {
-            u16  npages;    // for PROG_ERASE
-            u16  btsign;    // for PROG_REBOOT
-            u8   data[MAX_BYTE_IN_PACKET]; // for PROG_PROG
-        } opt;
-    } pkt_ext;
-    struct {
+		union
+		{
+			u16 npages; // for PROG_ERASE
+			u16 btsign; // for PROG_REBOOT
+			u8 data[MAX_BYTE_IN_PACKET]; // for PROG_PROG
+		} opt;
+	} pkt_ext;
+
+	struct
+	{
 #ifndef CPU_BIG_ENDIAN
-        u8   size : 5;
-        u8   type : 3;
+		u8 size : 5;
+		u8 type : 3;
 #else
         u8   type : 3;
         u8   size : 5;
 #endif
-        u8   version;
-        u16  pr_blk_size;
-        u16  devidl;
-        u16  devidh;
-        u32  settings_addr;
-        u32  last_addr;
-        u32  config_start;
-        u32  config_stop;
-        u16  er_blk_size;
-        u16  ext_jedec_id;
-        u16  ext_page_size;
-        u16  ext_total_pages;
-        u16  first_code_page;
-        u16  first_yfs3_page;
-    } pktinfo_ext;
+		u8 version;
+		u16 pr_blk_size;
+		u16 devidl;
+		u16 devidh;
+		u32 settings_addr;
+		u32 last_addr;
+		u32 config_start;
+		u32 config_stop;
+		u16 er_blk_size;
+		u16 ext_jedec_id;
+		u16 ext_page_size;
+		u16 ext_total_pages;
+		u16 first_code_page;
+		u16 first_yfs3_page;
+	} pktinfo_ext;
 } USB_Prog_Packet;
 
 #ifndef CPU_BIG_ENDIAN
@@ -993,22 +1058,24 @@ typedef union {
 #endif
 
 
-
 #define START_APPLICATION_SIGN   0
 #define START_BOOTLOADER_SIGN   ('b'| ('T'<<8))
 #define START_AUTOFLASHER_SIGN  ('b'| ('F'<<8))
 
 
-typedef union {
-    u8              data[USB_PKT_SIZE];
-    u16             data16[USB_PKT_SIZE/2];
-    u32             data32[USB_PKT_SIZE/4];
-    YSTREAM_Head    first_stream;
-    USB_Prog_Packet prog;
-    struct{
-        YSTREAM_Head    head;
-        USB_Conf_Pkt    conf;
-    } confpkt;
+typedef union
+{
+	u8 data[USB_PKT_SIZE];
+	u16 data16[USB_PKT_SIZE / 2];
+	u32 data32[USB_PKT_SIZE / 4];
+	YSTREAM_Head first_stream;
+	USB_Prog_Packet prog;
+
+	struct
+	{
+		YSTREAM_Head head;
+		USB_Conf_Pkt conf;
+	} confpkt;
 } USB_Packet;
 
 #ifndef C30

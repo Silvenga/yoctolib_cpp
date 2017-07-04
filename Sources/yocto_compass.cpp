@@ -49,38 +49,42 @@
 #define  __FILE_ID__  "compass"
 
 YCompass::YCompass(const string& func): YSensor(func)
-//--- (Compass initialization)
-    ,_bandwidth(BANDWIDTH_INVALID)
-    ,_axis(AXIS_INVALID)
-    ,_magneticHeading(MAGNETICHEADING_INVALID)
-    ,_valueCallbackCompass(NULL)
-    ,_timedReportCallbackCompass(NULL)
+                                        //--- (Compass initialization)
+                                        , _bandwidth(BANDWIDTH_INVALID)
+                                        , _axis(AXIS_INVALID)
+                                        , _magneticHeading(MAGNETICHEADING_INVALID)
+                                        , _valueCallbackCompass(NULL)
+                                        , _timedReportCallbackCompass(NULL)
 //--- (end of Compass initialization)
 {
-    _className="Compass";
+	_className = "Compass";
 }
 
 YCompass::~YCompass()
 {
-//--- (YCompass cleanup)
-//--- (end of YCompass cleanup)
+	//--- (YCompass cleanup)
+	//--- (end of YCompass cleanup)
 }
+
 //--- (YCompass implementation)
 // static attributes
 const double YCompass::MAGNETICHEADING_INVALID = YAPI_INVALID_DOUBLE;
 
 int YCompass::_parseAttr(YJSONObject* json_val)
 {
-    if(json_val->has("bandwidth")) {
-        _bandwidth =  json_val->getInt("bandwidth");
-    }
-    if(json_val->has("axis")) {
-        _axis =  (Y_AXIS_enum) json_val->getInt("axis");
-    }
-    if(json_val->has("magneticHeading")) {
-        _magneticHeading =  floor(json_val->getDouble("magneticHeading") * 1000.0 / 65536.0 + 0.5) / 1000.0;
-    }
-    return YSensor::_parseAttr(json_val);
+	if (json_val->has("bandwidth"))
+	{
+		_bandwidth = json_val->getInt("bandwidth");
+	}
+	if (json_val->has("axis"))
+	{
+		_axis = (Y_AXIS_enum)json_val->getInt("axis");
+	}
+	if (json_val->has("magneticHeading"))
+	{
+		_magneticHeading = floor(json_val->getDouble("magneticHeading") * 1000.0 / 65536.0 + 0.5) / 1000.0;
+	}
+	return YSensor::_parseAttr(json_val);
 }
 
 
@@ -93,24 +97,29 @@ int YCompass::_parseAttr(YJSONObject* json_val)
  */
 int YCompass::get_bandwidth(void)
 {
-    int res = 0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YCompass::BANDWIDTH_INVALID;
-                }
-            }
-        }
-        res = _bandwidth;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	int res = 0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YCompass::BANDWIDTH_INVALID;
+				}
+			}
+		}
+		res = _bandwidth;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -125,40 +134,50 @@ int YCompass::get_bandwidth(void)
  */
 int YCompass::set_bandwidth(int newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        char buf[32]; sprintf(buf, "%d", newval); rest_val = string(buf);
-        res = _setAttr("bandwidth", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		char buf[32];
+		sprintf(buf, "%d", newval);
+		rest_val = string(buf);
+		res = _setAttr("bandwidth", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 Y_AXIS_enum YCompass::get_axis(void)
 {
-    Y_AXIS_enum res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YCompass::AXIS_INVALID;
-                }
-            }
-        }
-        res = _axis;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	Y_AXIS_enum res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YCompass::AXIS_INVALID;
+				}
+			}
+		}
+		res = _axis;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -170,24 +189,29 @@ Y_AXIS_enum YCompass::get_axis(void)
  */
 double YCompass::get_magneticHeading(void)
 {
-    double res = 0.0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YCompass::MAGNETICHEADING_INVALID;
-                }
-            }
-        }
-        res = _magneticHeading;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	double res = 0.0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YCompass::MAGNETICHEADING_INVALID;
+				}
+			}
+		}
+		res = _magneticHeading;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -215,23 +239,29 @@ double YCompass::get_magneticHeading(void)
  */
 YCompass* YCompass::FindCompass(string func)
 {
-    YCompass* obj = NULL;
-    int taken = 0;
-    if (YAPI::_apiInitialized) {
-        yEnterCriticalSection(&YAPI::_global_cs);
-        taken = 1;
-    }try {
-        obj = (YCompass*) YFunction::_FindFromCache("Compass", func);
-        if (obj == NULL) {
-            obj = new YCompass(func);
-            YFunction::_AddToCache("Compass", func, obj);
-        }
-    } catch (std::exception) {
-        if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
-        throw;
-    }
-    if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
-    return obj;
+	YCompass* obj = NULL;
+	int taken = 0;
+	if (YAPI::_apiInitialized)
+	{
+		yEnterCriticalSection(&YAPI::_global_cs);
+		taken = 1;
+	}
+	try
+	{
+		obj = (YCompass*)YFunction::_FindFromCache("Compass", func);
+		if (obj == NULL)
+		{
+			obj = new YCompass(func);
+			YFunction::_AddToCache("Compass", func, obj);
+		}
+	}
+	catch (std::exception)
+	{
+		if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
+		throw;
+	}
+	if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
+	return obj;
 }
 
 /**
@@ -247,31 +277,39 @@ YCompass* YCompass::FindCompass(string func)
  */
 int YCompass::registerValueCallback(YCompassValueCallback callback)
 {
-    string val;
-    if (callback != NULL) {
-        YFunction::_UpdateValueCallbackList(this, true);
-    } else {
-        YFunction::_UpdateValueCallbackList(this, false);
-    }
-    _valueCallbackCompass = callback;
-    // Immediately invoke value callback with current value
-    if (callback != NULL && this->isOnline()) {
-        val = _advertisedValue;
-        if (!(val == "")) {
-            this->_invokeValueCallback(val);
-        }
-    }
-    return 0;
+	string val;
+	if (callback != NULL)
+	{
+		YFunction::_UpdateValueCallbackList(this, true);
+	}
+	else
+	{
+		YFunction::_UpdateValueCallbackList(this, false);
+	}
+	_valueCallbackCompass = callback;
+	// Immediately invoke value callback with current value
+	if (callback != NULL && this->isOnline())
+	{
+		val = _advertisedValue;
+		if (!(val == ""))
+		{
+			this->_invokeValueCallback(val);
+		}
+	}
+	return 0;
 }
 
 int YCompass::_invokeValueCallback(string value)
 {
-    if (_valueCallbackCompass != NULL) {
-        _valueCallbackCompass(this, value);
-    } else {
-        YSensor::_invokeValueCallback(value);
-    }
-    return 0;
+	if (_valueCallbackCompass != NULL)
+	{
+		_valueCallbackCompass(this, value);
+	}
+	else
+	{
+		YSensor::_invokeValueCallback(value);
+	}
+	return 0;
 }
 
 /**
@@ -287,49 +325,57 @@ int YCompass::_invokeValueCallback(string value)
  */
 int YCompass::registerTimedReportCallback(YCompassTimedReportCallback callback)
 {
-    YSensor* sensor = NULL;
-    sensor = this;
-    if (callback != NULL) {
-        YFunction::_UpdateTimedReportCallbackList(sensor, true);
-    } else {
-        YFunction::_UpdateTimedReportCallbackList(sensor, false);
-    }
-    _timedReportCallbackCompass = callback;
-    return 0;
+	YSensor* sensor = NULL;
+	sensor = this;
+	if (callback != NULL)
+	{
+		YFunction::_UpdateTimedReportCallbackList(sensor, true);
+	}
+	else
+	{
+		YFunction::_UpdateTimedReportCallbackList(sensor, false);
+	}
+	_timedReportCallbackCompass = callback;
+	return 0;
 }
 
 int YCompass::_invokeTimedReportCallback(YMeasure value)
 {
-    if (_timedReportCallbackCompass != NULL) {
-        _timedReportCallbackCompass(this, value);
-    } else {
-        YSensor::_invokeTimedReportCallback(value);
-    }
-    return 0;
+	if (_timedReportCallbackCompass != NULL)
+	{
+		_timedReportCallbackCompass(this, value);
+	}
+	else
+	{
+		YSensor::_invokeTimedReportCallback(value);
+	}
+	return 0;
 }
 
-YCompass *YCompass::nextCompass(void)
+YCompass* YCompass::nextCompass(void)
 {
-    string  hwid;
+	string hwid;
 
-    if(YISERR(_nextFunction(hwid)) || hwid=="") {
-        return NULL;
-    }
-    return YCompass::FindCompass(hwid);
+	if (YISERR(_nextFunction(hwid)) || hwid == "")
+	{
+		return NULL;
+	}
+	return YCompass::FindCompass(hwid);
 }
 
 YCompass* YCompass::FirstCompass(void)
 {
-    vector<YFUN_DESCR>   v_fundescr;
-    YDEV_DESCR             ydevice;
-    string              serial, funcId, funcName, funcVal, errmsg;
+	vector<YFUN_DESCR> v_fundescr;
+	YDEV_DESCR ydevice;
+	string serial, funcId, funcName, funcVal, errmsg;
 
-    if(YISERR(YapiWrapper::getFunctionsByClass("Compass", 0, v_fundescr, sizeof(YFUN_DESCR), errmsg)) ||
-       v_fundescr.size() == 0 ||
-       YISERR(YapiWrapper::getFunctionInfo(v_fundescr[0], ydevice, serial, funcId, funcName, funcVal, errmsg))) {
-        return NULL;
-    }
-    return YCompass::FindCompass(serial+"."+funcId);
+	if (YISERR(YapiWrapper::getFunctionsByClass("Compass", 0, v_fundescr, sizeof(YFUN_DESCR), errmsg)) ||
+		v_fundescr.size() == 0 ||
+		YISERR(YapiWrapper::getFunctionInfo(v_fundescr[0], ydevice, serial, funcId, funcName, funcVal, errmsg)))
+	{
+		return NULL;
+	}
+	return YCompass::FindCompass(serial + "." + funcId);
 }
 
 //--- (end of YCompass implementation)

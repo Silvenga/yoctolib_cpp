@@ -49,26 +49,27 @@
 #define  __FILE_ID__  "pwmoutput"
 
 YPwmOutput::YPwmOutput(const string& func): YFunction(func)
-//--- (PwmOutput initialization)
-    ,_enabled(ENABLED_INVALID)
-    ,_frequency(FREQUENCY_INVALID)
-    ,_period(PERIOD_INVALID)
-    ,_dutyCycle(DUTYCYCLE_INVALID)
-    ,_pulseDuration(PULSEDURATION_INVALID)
-    ,_pwmTransition(PWMTRANSITION_INVALID)
-    ,_enabledAtPowerOn(ENABLEDATPOWERON_INVALID)
-    ,_dutyCycleAtPowerOn(DUTYCYCLEATPOWERON_INVALID)
-    ,_valueCallbackPwmOutput(NULL)
+                                            //--- (PwmOutput initialization)
+                                            , _enabled(ENABLED_INVALID)
+                                            , _frequency(FREQUENCY_INVALID)
+                                            , _period(PERIOD_INVALID)
+                                            , _dutyCycle(DUTYCYCLE_INVALID)
+                                            , _pulseDuration(PULSEDURATION_INVALID)
+                                            , _pwmTransition(PWMTRANSITION_INVALID)
+                                            , _enabledAtPowerOn(ENABLEDATPOWERON_INVALID)
+                                            , _dutyCycleAtPowerOn(DUTYCYCLEATPOWERON_INVALID)
+                                            , _valueCallbackPwmOutput(NULL)
 //--- (end of PwmOutput initialization)
 {
-    _className="PwmOutput";
+	_className = "PwmOutput";
 }
 
 YPwmOutput::~YPwmOutput()
 {
-//--- (YPwmOutput cleanup)
-//--- (end of YPwmOutput cleanup)
+	//--- (YPwmOutput cleanup)
+	//--- (end of YPwmOutput cleanup)
 }
+
 //--- (YPwmOutput implementation)
 // static attributes
 const double YPwmOutput::FREQUENCY_INVALID = YAPI_INVALID_DOUBLE;
@@ -80,31 +81,39 @@ const double YPwmOutput::DUTYCYCLEATPOWERON_INVALID = YAPI_INVALID_DOUBLE;
 
 int YPwmOutput::_parseAttr(YJSONObject* json_val)
 {
-    if(json_val->has("enabled")) {
-        _enabled =  (Y_ENABLED_enum)json_val->getInt("enabled");
-    }
-    if(json_val->has("frequency")) {
-        _frequency =  floor(json_val->getDouble("frequency") * 1000.0 / 65536.0 + 0.5) / 1000.0;
-    }
-    if(json_val->has("period")) {
-        _period =  floor(json_val->getDouble("period") * 1000.0 / 65536.0 + 0.5) / 1000.0;
-    }
-    if(json_val->has("dutyCycle")) {
-        _dutyCycle =  floor(json_val->getDouble("dutyCycle") * 1000.0 / 65536.0 + 0.5) / 1000.0;
-    }
-    if(json_val->has("pulseDuration")) {
-        _pulseDuration =  floor(json_val->getDouble("pulseDuration") * 1000.0 / 65536.0 + 0.5) / 1000.0;
-    }
-    if(json_val->has("pwmTransition")) {
-        _pwmTransition =  json_val->getString("pwmTransition");
-    }
-    if(json_val->has("enabledAtPowerOn")) {
-        _enabledAtPowerOn =  (Y_ENABLEDATPOWERON_enum)json_val->getInt("enabledAtPowerOn");
-    }
-    if(json_val->has("dutyCycleAtPowerOn")) {
-        _dutyCycleAtPowerOn =  floor(json_val->getDouble("dutyCycleAtPowerOn") * 1000.0 / 65536.0 + 0.5) / 1000.0;
-    }
-    return YFunction::_parseAttr(json_val);
+	if (json_val->has("enabled"))
+	{
+		_enabled = (Y_ENABLED_enum)json_val->getInt("enabled");
+	}
+	if (json_val->has("frequency"))
+	{
+		_frequency = floor(json_val->getDouble("frequency") * 1000.0 / 65536.0 + 0.5) / 1000.0;
+	}
+	if (json_val->has("period"))
+	{
+		_period = floor(json_val->getDouble("period") * 1000.0 / 65536.0 + 0.5) / 1000.0;
+	}
+	if (json_val->has("dutyCycle"))
+	{
+		_dutyCycle = floor(json_val->getDouble("dutyCycle") * 1000.0 / 65536.0 + 0.5) / 1000.0;
+	}
+	if (json_val->has("pulseDuration"))
+	{
+		_pulseDuration = floor(json_val->getDouble("pulseDuration") * 1000.0 / 65536.0 + 0.5) / 1000.0;
+	}
+	if (json_val->has("pwmTransition"))
+	{
+		_pwmTransition = json_val->getString("pwmTransition");
+	}
+	if (json_val->has("enabledAtPowerOn"))
+	{
+		_enabledAtPowerOn = (Y_ENABLEDATPOWERON_enum)json_val->getInt("enabledAtPowerOn");
+	}
+	if (json_val->has("dutyCycleAtPowerOn"))
+	{
+		_dutyCycleAtPowerOn = floor(json_val->getDouble("dutyCycleAtPowerOn") * 1000.0 / 65536.0 + 0.5) / 1000.0;
+	}
+	return YFunction::_parseAttr(json_val);
 }
 
 
@@ -117,24 +126,29 @@ int YPwmOutput::_parseAttr(YJSONObject* json_val)
  */
 Y_ENABLED_enum YPwmOutput::get_enabled(void)
 {
-    Y_ENABLED_enum res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YPwmOutput::ENABLED_INVALID;
-                }
-            }
-        }
-        res = _enabled;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	Y_ENABLED_enum res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YPwmOutput::ENABLED_INVALID;
+				}
+			}
+		}
+		res = _enabled;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -148,18 +162,21 @@ Y_ENABLED_enum YPwmOutput::get_enabled(void)
  */
 int YPwmOutput::set_enabled(Y_ENABLED_enum newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        rest_val = (newval>0 ? "1" : "0");
-        res = _setAttr("enabled", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		rest_val = (newval > 0 ? "1" : "0");
+		res = _setAttr("enabled", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -174,18 +191,23 @@ int YPwmOutput::set_enabled(Y_ENABLED_enum newval)
  */
 int YPwmOutput::set_frequency(double newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        char buf[32]; sprintf(buf,"%d", (int)floor(newval * 65536.0 + 0.5)); rest_val = string(buf);
-        res = _setAttr("frequency", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		char buf[32];
+		sprintf(buf, "%d", (int)floor(newval * 65536.0 + 0.5));
+		rest_val = string(buf);
+		res = _setAttr("frequency", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -197,24 +219,29 @@ int YPwmOutput::set_frequency(double newval)
  */
 double YPwmOutput::get_frequency(void)
 {
-    double res = 0.0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YPwmOutput::FREQUENCY_INVALID;
-                }
-            }
-        }
-        res = _frequency;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	double res = 0.0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YPwmOutput::FREQUENCY_INVALID;
+				}
+			}
+		}
+		res = _frequency;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -228,18 +255,23 @@ double YPwmOutput::get_frequency(void)
  */
 int YPwmOutput::set_period(double newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        char buf[32]; sprintf(buf,"%d", (int)floor(newval * 65536.0 + 0.5)); rest_val = string(buf);
-        res = _setAttr("period", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		char buf[32];
+		sprintf(buf, "%d", (int)floor(newval * 65536.0 + 0.5));
+		rest_val = string(buf);
+		res = _setAttr("period", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -251,24 +283,29 @@ int YPwmOutput::set_period(double newval)
  */
 double YPwmOutput::get_period(void)
 {
-    double res = 0.0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YPwmOutput::PERIOD_INVALID;
-                }
-            }
-        }
-        res = _period;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	double res = 0.0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YPwmOutput::PERIOD_INVALID;
+				}
+			}
+		}
+		res = _period;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -282,18 +319,23 @@ double YPwmOutput::get_period(void)
  */
 int YPwmOutput::set_dutyCycle(double newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        char buf[32]; sprintf(buf,"%d", (int)floor(newval * 65536.0 + 0.5)); rest_val = string(buf);
-        res = _setAttr("dutyCycle", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		char buf[32];
+		sprintf(buf, "%d", (int)floor(newval * 65536.0 + 0.5));
+		rest_val = string(buf);
+		res = _setAttr("dutyCycle", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -305,24 +347,29 @@ int YPwmOutput::set_dutyCycle(double newval)
  */
 double YPwmOutput::get_dutyCycle(void)
 {
-    double res = 0.0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YPwmOutput::DUTYCYCLE_INVALID;
-                }
-            }
-        }
-        res = _dutyCycle;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	double res = 0.0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YPwmOutput::DUTYCYCLE_INVALID;
+				}
+			}
+		}
+		res = _dutyCycle;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -337,18 +384,23 @@ double YPwmOutput::get_dutyCycle(void)
  */
 int YPwmOutput::set_pulseDuration(double newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        char buf[32]; sprintf(buf,"%d", (int)floor(newval * 65536.0 + 0.5)); rest_val = string(buf);
-        res = _setAttr("pulseDuration", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		char buf[32];
+		sprintf(buf, "%d", (int)floor(newval * 65536.0 + 0.5));
+		rest_val = string(buf);
+		res = _setAttr("pulseDuration", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -361,62 +413,75 @@ int YPwmOutput::set_pulseDuration(double newval)
  */
 double YPwmOutput::get_pulseDuration(void)
 {
-    double res = 0.0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YPwmOutput::PULSEDURATION_INVALID;
-                }
-            }
-        }
-        res = _pulseDuration;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	double res = 0.0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YPwmOutput::PULSEDURATION_INVALID;
+				}
+			}
+		}
+		res = _pulseDuration;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 string YPwmOutput::get_pwmTransition(void)
 {
-    string res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YPwmOutput::PWMTRANSITION_INVALID;
-                }
-            }
-        }
-        res = _pwmTransition;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YPwmOutput::PWMTRANSITION_INVALID;
+				}
+			}
+		}
+		res = _pwmTransition;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 int YPwmOutput::set_pwmTransition(const string& newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        rest_val = newval;
-        res = _setAttr("pwmTransition", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		rest_val = newval;
+		res = _setAttr("pwmTransition", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -429,24 +494,29 @@ int YPwmOutput::set_pwmTransition(const string& newval)
  */
 Y_ENABLEDATPOWERON_enum YPwmOutput::get_enabledAtPowerOn(void)
 {
-    Y_ENABLEDATPOWERON_enum res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YPwmOutput::ENABLEDATPOWERON_INVALID;
-                }
-            }
-        }
-        res = _enabledAtPowerOn;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	Y_ENABLEDATPOWERON_enum res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YPwmOutput::ENABLEDATPOWERON_INVALID;
+				}
+			}
+		}
+		res = _enabledAtPowerOn;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -462,18 +532,21 @@ Y_ENABLEDATPOWERON_enum YPwmOutput::get_enabledAtPowerOn(void)
  */
 int YPwmOutput::set_enabledAtPowerOn(Y_ENABLEDATPOWERON_enum newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        rest_val = (newval>0 ? "1" : "0");
-        res = _setAttr("enabledAtPowerOn", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		rest_val = (newval > 0 ? "1" : "0");
+		res = _setAttr("enabledAtPowerOn", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -488,18 +561,23 @@ int YPwmOutput::set_enabledAtPowerOn(Y_ENABLEDATPOWERON_enum newval)
  */
 int YPwmOutput::set_dutyCycleAtPowerOn(double newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        char buf[32]; sprintf(buf,"%d", (int)floor(newval * 65536.0 + 0.5)); rest_val = string(buf);
-        res = _setAttr("dutyCycleAtPowerOn", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		char buf[32];
+		sprintf(buf, "%d", (int)floor(newval * 65536.0 + 0.5));
+		rest_val = string(buf);
+		res = _setAttr("dutyCycleAtPowerOn", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -512,24 +590,29 @@ int YPwmOutput::set_dutyCycleAtPowerOn(double newval)
  */
 double YPwmOutput::get_dutyCycleAtPowerOn(void)
 {
-    double res = 0.0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YPwmOutput::DUTYCYCLEATPOWERON_INVALID;
-                }
-            }
-        }
-        res = _dutyCycleAtPowerOn;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	double res = 0.0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YPwmOutput::DUTYCYCLEATPOWERON_INVALID;
+				}
+			}
+		}
+		res = _dutyCycleAtPowerOn;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -557,23 +640,29 @@ double YPwmOutput::get_dutyCycleAtPowerOn(void)
  */
 YPwmOutput* YPwmOutput::FindPwmOutput(string func)
 {
-    YPwmOutput* obj = NULL;
-    int taken = 0;
-    if (YAPI::_apiInitialized) {
-        yEnterCriticalSection(&YAPI::_global_cs);
-        taken = 1;
-    }try {
-        obj = (YPwmOutput*) YFunction::_FindFromCache("PwmOutput", func);
-        if (obj == NULL) {
-            obj = new YPwmOutput(func);
-            YFunction::_AddToCache("PwmOutput", func, obj);
-        }
-    } catch (std::exception) {
-        if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
-        throw;
-    }
-    if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
-    return obj;
+	YPwmOutput* obj = NULL;
+	int taken = 0;
+	if (YAPI::_apiInitialized)
+	{
+		yEnterCriticalSection(&YAPI::_global_cs);
+		taken = 1;
+	}
+	try
+	{
+		obj = (YPwmOutput*)YFunction::_FindFromCache("PwmOutput", func);
+		if (obj == NULL)
+		{
+			obj = new YPwmOutput(func);
+			YFunction::_AddToCache("PwmOutput", func, obj);
+		}
+	}
+	catch (std::exception)
+	{
+		if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
+		throw;
+	}
+	if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
+	return obj;
 }
 
 /**
@@ -589,31 +678,39 @@ YPwmOutput* YPwmOutput::FindPwmOutput(string func)
  */
 int YPwmOutput::registerValueCallback(YPwmOutputValueCallback callback)
 {
-    string val;
-    if (callback != NULL) {
-        YFunction::_UpdateValueCallbackList(this, true);
-    } else {
-        YFunction::_UpdateValueCallbackList(this, false);
-    }
-    _valueCallbackPwmOutput = callback;
-    // Immediately invoke value callback with current value
-    if (callback != NULL && this->isOnline()) {
-        val = _advertisedValue;
-        if (!(val == "")) {
-            this->_invokeValueCallback(val);
-        }
-    }
-    return 0;
+	string val;
+	if (callback != NULL)
+	{
+		YFunction::_UpdateValueCallbackList(this, true);
+	}
+	else
+	{
+		YFunction::_UpdateValueCallbackList(this, false);
+	}
+	_valueCallbackPwmOutput = callback;
+	// Immediately invoke value callback with current value
+	if (callback != NULL && this->isOnline())
+	{
+		val = _advertisedValue;
+		if (!(val == ""))
+		{
+			this->_invokeValueCallback(val);
+		}
+	}
+	return 0;
 }
 
 int YPwmOutput::_invokeValueCallback(string value)
 {
-    if (_valueCallbackPwmOutput != NULL) {
-        _valueCallbackPwmOutput(this, value);
-    } else {
-        YFunction::_invokeValueCallback(value);
-    }
-    return 0;
+	if (_valueCallbackPwmOutput != NULL)
+	{
+		_valueCallbackPwmOutput(this, value);
+	}
+	else
+	{
+		YFunction::_invokeValueCallback(value);
+	}
+	return 0;
 }
 
 /**
@@ -628,14 +725,15 @@ int YPwmOutput::_invokeValueCallback(string value)
  *
  * On failure, throws an exception or returns a negative error code.
  */
-int YPwmOutput::pulseDurationMove(double ms_target,int ms_duration)
+int YPwmOutput::pulseDurationMove(double ms_target, int ms_duration)
 {
-    string newval;
-    if (ms_target < 0.0) {
-        ms_target = 0.0;
-    }
-    newval = YapiWrapper::ysprintf("%dms:%d", (int) floor(ms_target*65536+0.5),ms_duration);
-    return this->set_pwmTransition(newval);
+	string newval;
+	if (ms_target < 0.0)
+	{
+		ms_target = 0.0;
+	}
+	newval = YapiWrapper::ysprintf("%dms:%d", (int)floor(ms_target * 65536 + 0.5), ms_duration);
+	return this->set_pwmTransition(newval);
 }
 
 /**
@@ -649,41 +747,45 @@ int YPwmOutput::pulseDurationMove(double ms_target,int ms_duration)
  *
  * On failure, throws an exception or returns a negative error code.
  */
-int YPwmOutput::dutyCycleMove(double target,int ms_duration)
+int YPwmOutput::dutyCycleMove(double target, int ms_duration)
 {
-    string newval;
-    if (target < 0.0) {
-        target = 0.0;
-    }
-    if (target > 100.0) {
-        target = 100.0;
-    }
-    newval = YapiWrapper::ysprintf("%d:%d", (int) floor(target*65536+0.5),ms_duration);
-    return this->set_pwmTransition(newval);
+	string newval;
+	if (target < 0.0)
+	{
+		target = 0.0;
+	}
+	if (target > 100.0)
+	{
+		target = 100.0;
+	}
+	newval = YapiWrapper::ysprintf("%d:%d", (int)floor(target * 65536 + 0.5), ms_duration);
+	return this->set_pwmTransition(newval);
 }
 
-YPwmOutput *YPwmOutput::nextPwmOutput(void)
+YPwmOutput* YPwmOutput::nextPwmOutput(void)
 {
-    string  hwid;
+	string hwid;
 
-    if(YISERR(_nextFunction(hwid)) || hwid=="") {
-        return NULL;
-    }
-    return YPwmOutput::FindPwmOutput(hwid);
+	if (YISERR(_nextFunction(hwid)) || hwid == "")
+	{
+		return NULL;
+	}
+	return YPwmOutput::FindPwmOutput(hwid);
 }
 
 YPwmOutput* YPwmOutput::FirstPwmOutput(void)
 {
-    vector<YFUN_DESCR>   v_fundescr;
-    YDEV_DESCR             ydevice;
-    string              serial, funcId, funcName, funcVal, errmsg;
+	vector<YFUN_DESCR> v_fundescr;
+	YDEV_DESCR ydevice;
+	string serial, funcId, funcName, funcVal, errmsg;
 
-    if(YISERR(YapiWrapper::getFunctionsByClass("PwmOutput", 0, v_fundescr, sizeof(YFUN_DESCR), errmsg)) ||
-       v_fundescr.size() == 0 ||
-       YISERR(YapiWrapper::getFunctionInfo(v_fundescr[0], ydevice, serial, funcId, funcName, funcVal, errmsg))) {
-        return NULL;
-    }
-    return YPwmOutput::FindPwmOutput(serial+"."+funcId);
+	if (YISERR(YapiWrapper::getFunctionsByClass("PwmOutput", 0, v_fundescr, sizeof(YFUN_DESCR), errmsg)) ||
+		v_fundescr.size() == 0 ||
+		YISERR(YapiWrapper::getFunctionInfo(v_fundescr[0], ydevice, serial, funcId, funcName, funcVal, errmsg)))
+	{
+		return NULL;
+	}
+	return YPwmOutput::FindPwmOutput(serial + "." + funcId);
 }
 
 //--- (end of YPwmOutput implementation)

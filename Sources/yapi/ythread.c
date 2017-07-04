@@ -46,100 +46,107 @@
 static DWORD yTlsBucket = TLS_OUT_OF_INDEXES;
 static DWORD yNextThreadIdx = 1;
 
-void yCreateEvent(yEvent *event)
+void yCreateEvent(yEvent* event)
 {
-    *event = CreateEvent(0, 0, 0, 0);
+	*event = CreateEvent(0, 0, 0, 0);
 }
 
-void yCreateManualEvent(yEvent *event, int initialState)
+void yCreateManualEvent(yEvent* event, int initialState)
 {
-    *event = CreateEvent(0, TRUE, initialState != 0, 0);
-}
-
-
-void ySetEvent(yEvent *ev)
-{
-    SetEvent(*ev);
-}
-
-void yResetEvent(yEvent *ev)
-{
-    ResetEvent(*ev);
+	*event = CreateEvent(0, TRUE, initialState != 0, 0);
 }
 
 
-
-int    yWaitForEvent(yEvent *ev, int time)
+void ySetEvent(yEvent* ev)
 {
-    DWORD usec;
-    DWORD res;
-    if (time < 0) {
-        usec = INFINITE;
-    } else {
-        usec = time;
-    }
-    res = WaitForSingleObject(*ev, usec);
-    return res == WAIT_OBJECT_0;
+	SetEvent(*ev);
 }
 
-void   yCloseEvent(yEvent *ev)
+void yResetEvent(yEvent* ev)
 {
-    CloseHandle(*ev);
+	ResetEvent(*ev);
 }
 
 
-static int    yCreateDetachedThreadEx(osThread *th_hdl, void* (*fun)(void *), void *arg)
+int yWaitForEvent(yEvent* ev, int time)
 {
-    *th_hdl = CreateThread(
-        NULL,                   // default security attibutes
-        0,                      // use default stack size
-        (LPTHREAD_START_ROUTINE)fun,   // thread function name
-        arg,                    // argument to thread function
-        0,                      // use default creation flags
-        NULL);
-    if (*th_hdl == NULL) {
-        return -1;
-    }
-    return 0;
+	DWORD usec;
+	DWORD res;
+	if (time < 0)
+	{
+		usec = INFINITE;
+	}
+	else
+	{
+		usec = time;
+	}
+	res = WaitForSingleObject(*ev, usec);
+	return res == WAIT_OBJECT_0;
+}
+
+void yCloseEvent(yEvent* ev)
+{
+	CloseHandle(*ev);
 }
 
 
-static void    yReleaseDetachedThreadEx(osThread *th_hdl)
+static int yCreateDetachedThreadEx(osThread* th_hdl, void* (*fun)(void*), void* arg)
 {
-    CloseHandle(*th_hdl);
+	*th_hdl = CreateThread(
+		NULL, // default security attibutes
+		0, // use default stack size
+		(LPTHREAD_START_ROUTINE)fun, // thread function name
+		arg, // argument to thread function
+		0, // use default creation flags
+		NULL);
+	if (*th_hdl == NULL)
+	{
+		return -1;
+	}
+	return 0;
 }
 
 
-static int    yWaitEndThread(osThread *th)
+static void yReleaseDetachedThreadEx(osThread* th_hdl)
 {
-    DWORD result = WaitForSingleObject(*th, INFINITE);
-    return result == WAIT_OBJECT_0 ? 0 : -1;
-}
-
-static void yKillThread(osThread *th)
-{
-    TerminateThread(*th, 0);
+	CloseHandle(*th_hdl);
 }
 
 
-int    yThreadIndex(void)
+static int yWaitEndThread(osThread* th)
 {
-    u8*  tls_ptr;
+	DWORD result = WaitForSingleObject(*th, INFINITE);
+	return result == WAIT_OBJECT_0 ? 0 : -1;
+}
 
-    if (yTlsBucket == TLS_OUT_OF_INDEXES) {
-        // Only happens the very first time, from main thread
-        yTlsBucket = TlsAlloc();
-    }
-    tls_ptr = TlsGetValue(yTlsBucket);
-    if (tls_ptr == 0) {
-        // tiny risk of race condition, but thread idx is only
-        // used for debug log purposes and is not sensitive
-        DWORD res = yNextThreadIdx++;
-        TlsSetValue(yTlsBucket, ((u8*)NULL) + res);
-        return res;
-    } else {
-        return  (int)(tls_ptr - ((u8*)NULL));
-    }
+static void yKillThread(osThread* th)
+{
+	TerminateThread(*th, 0);
+}
+
+
+int yThreadIndex(void)
+{
+	u8* tls_ptr;
+
+	if (yTlsBucket == TLS_OUT_OF_INDEXES)
+	{
+		// Only happens the very first time, from main thread
+		yTlsBucket = TlsAlloc();
+	}
+	tls_ptr = TlsGetValue(yTlsBucket);
+	if (tls_ptr == 0)
+	{
+		// tiny risk of race condition, but thread idx is only
+		// used for debug log purposes and is not sensitive
+		DWORD res = yNextThreadIdx++;
+		TlsSetValue(yTlsBucket, ((u8*)NULL) + res);
+		return res;
+	}
+	else
+	{
+		return (int)(tls_ptr - ((u8*)NULL));
+	}
 }
 
 #else
@@ -176,9 +183,9 @@ void    ySetEvent(yEvent *ev)
 {
     pthread_mutex_lock(&ev->mtx);
     ev->verif = 1;
-    // set verif to 1 because pthread condition seems
-    // to allow conditional wait to exit event if nobody
-    // has set the alarm (see google or linux books of seb)
+// set verif to 1 because pthread condition seems
+// to allow conditional wait to exit event if nobody
+// has set the alarm (see google or linux books of seb)
     pthread_cond_signal(&ev->cond);
     pthread_mutex_unlock(&ev->mtx);
 
@@ -268,8 +275,8 @@ int    yThreadIndex(void)
     pthread_once(&yInitKeyOnce, initTsdKey);
     res = (int)((u8 *)pthread_getspecific(yTsdKey) - (u8 *)NULL);
     if (!res) {
-        // tiny risk of race condition, but thread idx is only
-        // used for debug log purposes and is not sensitive
+// tiny risk of race condition, but thread idx is only
+// used for debug log purposes and is not sensitive
         res = yNextThreadIdx++;
         pthread_setspecific(yTsdKey, (void*)((u8 *)NULL + res));
     }
@@ -279,82 +286,90 @@ int    yThreadIndex(void)
 #endif
 
 
-int    yCreateDetachedThread(void* (*fun)(void *), void *arg)
+int yCreateDetachedThread(void* (*fun)(void*), void* arg)
 {
-    osThread th_hdl;
-    if (yCreateDetachedThreadEx(&th_hdl, fun, arg) < 0) {
-        return -1;
-    }
-    yReleaseDetachedThreadEx(&th_hdl);
-    return 0;
+	osThread th_hdl;
+	if (yCreateDetachedThreadEx(&th_hdl, fun, arg) < 0)
+	{
+		return -1;
+	}
+	yReleaseDetachedThreadEx(&th_hdl);
+	return 0;
 }
 
 
-int    yThreadCreate(yThread *yth, void* (*fun)(void *), void *arg)
+int yThreadCreate(yThread* yth, void* (*fun)(void*), void* arg)
 {
-    if (yth->st == YTHREAD_RUNNING)
-        return 0; // allready started nothing to do
-    if (yth->st == YTHREAD_NOT_STARTED) {
-        yth->ctx = arg;
-        yCreateEvent(&yth->ev);
-        if (yCreateDetachedThreadEx(&yth->th, fun, yth) < 0) {
-            yCloseEvent(&yth->ev);
-            return-1;
-        }
-        yWaitForEvent(&yth->ev, -1);
-        yCloseEvent(&yth->ev);
-        return 1;
-    }
-    return -1;
+	if (yth->st == YTHREAD_RUNNING)
+		return 0; // allready started nothing to do
+	if (yth->st == YTHREAD_NOT_STARTED)
+	{
+		yth->ctx = arg;
+		yCreateEvent(&yth->ev);
+		if (yCreateDetachedThreadEx(&yth->th, fun, yth) < 0)
+		{
+			yCloseEvent(&yth->ev);
+			return -1;
+		}
+		yWaitForEvent(&yth->ev, -1);
+		yCloseEvent(&yth->ev);
+		return 1;
+	}
+	return -1;
 }
 
-int yThreadIsRunning(yThread *yth)
+int yThreadIsRunning(yThread* yth)
 {
-    if (yth->st == YTHREAD_RUNNING || yth->st == YTHREAD_MUST_STOP)
-        return 1;
-    return 0;
+	if (yth->st == YTHREAD_RUNNING || yth->st == YTHREAD_MUST_STOP)
+		return 1;
+	return 0;
 }
 
-void   yThreadSignalStart(yThread *yth)
+void yThreadSignalStart(yThread* yth)
 {
-    //send ok to parent thread
-    yth->st = YTHREAD_RUNNING;
-    ySetEvent(&yth->ev);
+	//send ok to parent thread
+	yth->st = YTHREAD_RUNNING;
+	ySetEvent(&yth->ev);
 }
 
 
-void   yThreadSignalEnd(yThread *yth)
+void yThreadSignalEnd(yThread* yth)
 {
-    yth->st = YTHREAD_STOPED;
+	yth->st = YTHREAD_STOPED;
 }
 
-void   yThreadRequestEnd(yThread *yth)
+void yThreadRequestEnd(yThread* yth)
 {
-    if (yth->st == YTHREAD_RUNNING) {
-        yth->st = YTHREAD_MUST_STOP;
-    }
+	if (yth->st == YTHREAD_RUNNING)
+	{
+		yth->st = YTHREAD_MUST_STOP;
+	}
 }
 
-int    yThreadMustEnd(yThread *yth)
+int yThreadMustEnd(yThread* yth)
 {
-    return yth->st != YTHREAD_RUNNING;
+	return yth->st != YTHREAD_RUNNING;
 }
 
-void yThreadKill(yThread *yth)
+void yThreadKill(yThread* yth)
 {
-    if (yThreadIsRunning(yth)) {
+	if (yThreadIsRunning(yth))
+	{
 #ifdef WINDOWS_API
-        //means thread still running lets give it some time
-        if (!yWaitForEvent(&yth->th, 1000)) {
-            yKillThread(&yth->th);
-        }
+		//means thread still running lets give it some time
+		if (!yWaitForEvent(&yth->th, 1000))
+		{
+			yKillThread(&yth->th);
+		}
 #else
         yKillThread(&yth->th);
 #endif
-    } else {
-        yWaitEndThread(&yth->th);
-        yReleaseDetachedThreadEx(&yth->th);
-    }
+	}
+	else
+	{
+		yWaitEndThread(&yth->th);
+		yReleaseDetachedThreadEx(&yth->th);
+	}
 }
 
 
@@ -617,22 +632,23 @@ void yDbgDeleteCriticalSection(const char* fileid, int lineno, yCRITICAL_SECTION
 #include <string.h>
 
 
-typedef struct {
+typedef struct
+{
 #if defined(WINDOWS_API)
-    CRITICAL_SECTION             cs;
+	CRITICAL_SECTION cs;
 #else
     pthread_mutex_t              cs;
 #endif
 } yCRITICAL_SECTION_ST;
 
 
-void yInitializeCriticalSection(yCRITICAL_SECTION *cs)
+void yInitializeCriticalSection(yCRITICAL_SECTION* cs)
 {
-    yCRITICAL_SECTION_ST *ycsptr;
-    ycsptr = (yCRITICAL_SECTION_ST*)malloc(sizeof(yCRITICAL_SECTION_ST));
-    memset(ycsptr, 0, sizeof(yCRITICAL_SECTION_ST));
+	yCRITICAL_SECTION_ST* ycsptr;
+	ycsptr = (yCRITICAL_SECTION_ST*)malloc(sizeof(yCRITICAL_SECTION_ST));
+	memset(ycsptr, 0, sizeof(yCRITICAL_SECTION_ST));
 #if defined(WINDOWS_API)
-    InitializeCriticalSection(&(ycsptr->cs));
+	InitializeCriticalSection(&(ycsptr->cs));
 #else
     {
         pthread_mutexattr_t attr;
@@ -641,24 +657,24 @@ void yInitializeCriticalSection(yCRITICAL_SECTION *cs)
         pthread_mutex_init(&(ycsptr->cs), &attr);
     }
 #endif
-    *cs = ycsptr;
+	*cs = ycsptr;
 }
 
-void yEnterCriticalSection(yCRITICAL_SECTION *cs)
+void yEnterCriticalSection(yCRITICAL_SECTION* cs)
 {
-    yCRITICAL_SECTION_ST *ycsptr = (yCRITICAL_SECTION_ST*)(*cs);
+	yCRITICAL_SECTION_ST* ycsptr = (yCRITICAL_SECTION_ST*)(*cs);
 #if defined(WINDOWS_API)
-    EnterCriticalSection(&(ycsptr->cs));
+	EnterCriticalSection(&(ycsptr->cs));
 #else
     pthread_mutex_lock(&(ycsptr->cs));
 #endif
 }
 
-int yTryEnterCriticalSection(yCRITICAL_SECTION *cs)
+int yTryEnterCriticalSection(yCRITICAL_SECTION* cs)
 {
-    yCRITICAL_SECTION_ST *ycsptr = (yCRITICAL_SECTION_ST*)(*cs);
+	yCRITICAL_SECTION_ST* ycsptr = (yCRITICAL_SECTION_ST*)(*cs);
 #if defined(WINDOWS_API)
-    return TryEnterCriticalSection(&(ycsptr->cs));
+	return TryEnterCriticalSection(&(ycsptr->cs));
 #else
     {
         int res = pthread_mutex_trylock(&(ycsptr->cs));
@@ -669,28 +685,26 @@ int yTryEnterCriticalSection(yCRITICAL_SECTION *cs)
 #endif
 }
 
-void yLeaveCriticalSection(yCRITICAL_SECTION *cs)
+void yLeaveCriticalSection(yCRITICAL_SECTION* cs)
 {
-    yCRITICAL_SECTION_ST *ycsptr = (yCRITICAL_SECTION_ST*)(*cs);
+	yCRITICAL_SECTION_ST* ycsptr = (yCRITICAL_SECTION_ST*)(*cs);
 #if defined(WINDOWS_API)
-    LeaveCriticalSection(&(ycsptr->cs));
+	LeaveCriticalSection(&(ycsptr->cs));
 #else
     pthread_mutex_unlock(&(ycsptr->cs));
 #endif
 }
 
-void yDeleteCriticalSection(yCRITICAL_SECTION *cs)
+void yDeleteCriticalSection(yCRITICAL_SECTION* cs)
 {
-    yCRITICAL_SECTION_ST *ycsptr = (yCRITICAL_SECTION_ST*)(*cs);
+	yCRITICAL_SECTION_ST* ycsptr = (yCRITICAL_SECTION_ST*)(*cs);
 #if defined(WINDOWS_API)
-    DeleteCriticalSection(&(ycsptr->cs));
+	DeleteCriticalSection(&(ycsptr->cs));
 #else
     pthread_mutex_destroy(&(ycsptr->cs));
 #endif
-    free(*cs);
-    *cs = NULL;
+	free(*cs);
+	*cs = NULL;
 }
 
 #endif
-
-

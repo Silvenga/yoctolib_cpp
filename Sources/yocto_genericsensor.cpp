@@ -49,25 +49,26 @@
 #define  __FILE_ID__  "genericsensor"
 
 YGenericSensor::YGenericSensor(const string& func): YSensor(func)
-//--- (GenericSensor initialization)
-    ,_signalValue(SIGNALVALUE_INVALID)
-    ,_signalUnit(SIGNALUNIT_INVALID)
-    ,_signalRange(SIGNALRANGE_INVALID)
-    ,_valueRange(VALUERANGE_INVALID)
-    ,_signalBias(SIGNALBIAS_INVALID)
-    ,_signalSampling(SIGNALSAMPLING_INVALID)
-    ,_valueCallbackGenericSensor(NULL)
-    ,_timedReportCallbackGenericSensor(NULL)
+                                                    //--- (GenericSensor initialization)
+                                                    , _signalValue(SIGNALVALUE_INVALID)
+                                                    , _signalUnit(SIGNALUNIT_INVALID)
+                                                    , _signalRange(SIGNALRANGE_INVALID)
+                                                    , _valueRange(VALUERANGE_INVALID)
+                                                    , _signalBias(SIGNALBIAS_INVALID)
+                                                    , _signalSampling(SIGNALSAMPLING_INVALID)
+                                                    , _valueCallbackGenericSensor(NULL)
+                                                    , _timedReportCallbackGenericSensor(NULL)
 //--- (end of GenericSensor initialization)
 {
-    _className="GenericSensor";
+	_className = "GenericSensor";
 }
 
 YGenericSensor::~YGenericSensor()
 {
-//--- (YGenericSensor cleanup)
-//--- (end of YGenericSensor cleanup)
+	//--- (YGenericSensor cleanup)
+	//--- (end of YGenericSensor cleanup)
 }
+
 //--- (YGenericSensor implementation)
 // static attributes
 const double YGenericSensor::SIGNALVALUE_INVALID = YAPI_INVALID_DOUBLE;
@@ -78,25 +79,31 @@ const double YGenericSensor::SIGNALBIAS_INVALID = YAPI_INVALID_DOUBLE;
 
 int YGenericSensor::_parseAttr(YJSONObject* json_val)
 {
-    if(json_val->has("signalValue")) {
-        _signalValue =  floor(json_val->getDouble("signalValue") * 1000.0 / 65536.0 + 0.5) / 1000.0;
-    }
-    if(json_val->has("signalUnit")) {
-        _signalUnit =  json_val->getString("signalUnit");
-    }
-    if(json_val->has("signalRange")) {
-        _signalRange =  json_val->getString("signalRange");
-    }
-    if(json_val->has("valueRange")) {
-        _valueRange =  json_val->getString("valueRange");
-    }
-    if(json_val->has("signalBias")) {
-        _signalBias =  floor(json_val->getDouble("signalBias") * 1000.0 / 65536.0 + 0.5) / 1000.0;
-    }
-    if(json_val->has("signalSampling")) {
-        _signalSampling =  (Y_SIGNALSAMPLING_enum)json_val->getInt("signalSampling");
-    }
-    return YSensor::_parseAttr(json_val);
+	if (json_val->has("signalValue"))
+	{
+		_signalValue = floor(json_val->getDouble("signalValue") * 1000.0 / 65536.0 + 0.5) / 1000.0;
+	}
+	if (json_val->has("signalUnit"))
+	{
+		_signalUnit = json_val->getString("signalUnit");
+	}
+	if (json_val->has("signalRange"))
+	{
+		_signalRange = json_val->getString("signalRange");
+	}
+	if (json_val->has("valueRange"))
+	{
+		_valueRange = json_val->getString("valueRange");
+	}
+	if (json_val->has("signalBias"))
+	{
+		_signalBias = floor(json_val->getDouble("signalBias") * 1000.0 / 65536.0 + 0.5) / 1000.0;
+	}
+	if (json_val->has("signalSampling"))
+	{
+		_signalSampling = (Y_SIGNALSAMPLING_enum)json_val->getInt("signalSampling");
+	}
+	return YSensor::_parseAttr(json_val);
 }
 
 
@@ -113,18 +120,21 @@ int YGenericSensor::_parseAttr(YJSONObject* json_val)
  */
 int YGenericSensor::set_unit(const string& newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        rest_val = newval;
-        res = _setAttr("unit", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		rest_val = newval;
+		res = _setAttr("unit", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -137,24 +147,29 @@ int YGenericSensor::set_unit(const string& newval)
  */
 double YGenericSensor::get_signalValue(void)
 {
-    double res = 0.0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YGenericSensor::SIGNALVALUE_INVALID;
-                }
-            }
-        }
-        res = floor(_signalValue * 1000+0.5) / 1000;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	double res = 0.0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YGenericSensor::SIGNALVALUE_INVALID;
+				}
+			}
+		}
+		res = floor(_signalValue * 1000 + 0.5) / 1000;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -166,24 +181,29 @@ double YGenericSensor::get_signalValue(void)
  */
 string YGenericSensor::get_signalUnit(void)
 {
-    string res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration == 0) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YGenericSensor::SIGNALUNIT_INVALID;
-                }
-            }
-        }
-        res = _signalUnit;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration == 0)
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YGenericSensor::SIGNALUNIT_INVALID;
+				}
+			}
+		}
+		res = _signalUnit;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -195,24 +215,29 @@ string YGenericSensor::get_signalUnit(void)
  */
 string YGenericSensor::get_signalRange(void)
 {
-    string res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YGenericSensor::SIGNALRANGE_INVALID;
-                }
-            }
-        }
-        res = _signalRange;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YGenericSensor::SIGNALRANGE_INVALID;
+				}
+			}
+		}
+		res = _signalRange;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -226,18 +251,21 @@ string YGenericSensor::get_signalRange(void)
  */
 int YGenericSensor::set_signalRange(const string& newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        rest_val = newval;
-        res = _setAttr("signalRange", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		rest_val = newval;
+		res = _setAttr("signalRange", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -249,24 +277,29 @@ int YGenericSensor::set_signalRange(const string& newval)
  */
 string YGenericSensor::get_valueRange(void)
 {
-    string res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YGenericSensor::VALUERANGE_INVALID;
-                }
-            }
-        }
-        res = _valueRange;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YGenericSensor::VALUERANGE_INVALID;
+				}
+			}
+		}
+		res = _valueRange;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -281,18 +314,21 @@ string YGenericSensor::get_valueRange(void)
  */
 int YGenericSensor::set_valueRange(const string& newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        rest_val = newval;
-        res = _setAttr("valueRange", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		rest_val = newval;
+		res = _setAttr("valueRange", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -308,18 +344,23 @@ int YGenericSensor::set_valueRange(const string& newval)
  */
 int YGenericSensor::set_signalBias(double newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        char buf[32]; sprintf(buf,"%d", (int)floor(newval * 65536.0 + 0.5)); rest_val = string(buf);
-        res = _setAttr("signalBias", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		char buf[32];
+		sprintf(buf, "%d", (int)floor(newval * 65536.0 + 0.5));
+		rest_val = string(buf);
+		res = _setAttr("signalBias", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -333,24 +374,29 @@ int YGenericSensor::set_signalBias(double newval)
  */
 double YGenericSensor::get_signalBias(void)
 {
-    double res = 0.0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YGenericSensor::SIGNALBIAS_INVALID;
-                }
-            }
-        }
-        res = _signalBias;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	double res = 0.0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YGenericSensor::SIGNALBIAS_INVALID;
+				}
+			}
+		}
+		res = _signalBias;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -369,24 +415,29 @@ double YGenericSensor::get_signalBias(void)
  */
 Y_SIGNALSAMPLING_enum YGenericSensor::get_signalSampling(void)
 {
-    Y_SIGNALSAMPLING_enum res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YGenericSensor::SIGNALSAMPLING_INVALID;
-                }
-            }
-        }
-        res = _signalSampling;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	Y_SIGNALSAMPLING_enum res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YGenericSensor::SIGNALSAMPLING_INVALID;
+				}
+			}
+		}
+		res = _signalSampling;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -407,18 +458,23 @@ Y_SIGNALSAMPLING_enum YGenericSensor::get_signalSampling(void)
  */
 int YGenericSensor::set_signalSampling(Y_SIGNALSAMPLING_enum newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        char buf[32]; sprintf(buf, "%d", newval); rest_val = string(buf);
-        res = _setAttr("signalSampling", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		char buf[32];
+		sprintf(buf, "%d", newval);
+		rest_val = string(buf);
+		res = _setAttr("signalSampling", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -446,23 +502,29 @@ int YGenericSensor::set_signalSampling(Y_SIGNALSAMPLING_enum newval)
  */
 YGenericSensor* YGenericSensor::FindGenericSensor(string func)
 {
-    YGenericSensor* obj = NULL;
-    int taken = 0;
-    if (YAPI::_apiInitialized) {
-        yEnterCriticalSection(&YAPI::_global_cs);
-        taken = 1;
-    }try {
-        obj = (YGenericSensor*) YFunction::_FindFromCache("GenericSensor", func);
-        if (obj == NULL) {
-            obj = new YGenericSensor(func);
-            YFunction::_AddToCache("GenericSensor", func, obj);
-        }
-    } catch (std::exception) {
-        if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
-        throw;
-    }
-    if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
-    return obj;
+	YGenericSensor* obj = NULL;
+	int taken = 0;
+	if (YAPI::_apiInitialized)
+	{
+		yEnterCriticalSection(&YAPI::_global_cs);
+		taken = 1;
+	}
+	try
+	{
+		obj = (YGenericSensor*)YFunction::_FindFromCache("GenericSensor", func);
+		if (obj == NULL)
+		{
+			obj = new YGenericSensor(func);
+			YFunction::_AddToCache("GenericSensor", func, obj);
+		}
+	}
+	catch (std::exception)
+	{
+		if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
+		throw;
+	}
+	if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
+	return obj;
 }
 
 /**
@@ -478,31 +540,39 @@ YGenericSensor* YGenericSensor::FindGenericSensor(string func)
  */
 int YGenericSensor::registerValueCallback(YGenericSensorValueCallback callback)
 {
-    string val;
-    if (callback != NULL) {
-        YFunction::_UpdateValueCallbackList(this, true);
-    } else {
-        YFunction::_UpdateValueCallbackList(this, false);
-    }
-    _valueCallbackGenericSensor = callback;
-    // Immediately invoke value callback with current value
-    if (callback != NULL && this->isOnline()) {
-        val = _advertisedValue;
-        if (!(val == "")) {
-            this->_invokeValueCallback(val);
-        }
-    }
-    return 0;
+	string val;
+	if (callback != NULL)
+	{
+		YFunction::_UpdateValueCallbackList(this, true);
+	}
+	else
+	{
+		YFunction::_UpdateValueCallbackList(this, false);
+	}
+	_valueCallbackGenericSensor = callback;
+	// Immediately invoke value callback with current value
+	if (callback != NULL && this->isOnline())
+	{
+		val = _advertisedValue;
+		if (!(val == ""))
+		{
+			this->_invokeValueCallback(val);
+		}
+	}
+	return 0;
 }
 
 int YGenericSensor::_invokeValueCallback(string value)
 {
-    if (_valueCallbackGenericSensor != NULL) {
-        _valueCallbackGenericSensor(this, value);
-    } else {
-        YSensor::_invokeValueCallback(value);
-    }
-    return 0;
+	if (_valueCallbackGenericSensor != NULL)
+	{
+		_valueCallbackGenericSensor(this, value);
+	}
+	else
+	{
+		YSensor::_invokeValueCallback(value);
+	}
+	return 0;
 }
 
 /**
@@ -518,25 +588,31 @@ int YGenericSensor::_invokeValueCallback(string value)
  */
 int YGenericSensor::registerTimedReportCallback(YGenericSensorTimedReportCallback callback)
 {
-    YSensor* sensor = NULL;
-    sensor = this;
-    if (callback != NULL) {
-        YFunction::_UpdateTimedReportCallbackList(sensor, true);
-    } else {
-        YFunction::_UpdateTimedReportCallbackList(sensor, false);
-    }
-    _timedReportCallbackGenericSensor = callback;
-    return 0;
+	YSensor* sensor = NULL;
+	sensor = this;
+	if (callback != NULL)
+	{
+		YFunction::_UpdateTimedReportCallbackList(sensor, true);
+	}
+	else
+	{
+		YFunction::_UpdateTimedReportCallbackList(sensor, false);
+	}
+	_timedReportCallbackGenericSensor = callback;
+	return 0;
 }
 
 int YGenericSensor::_invokeTimedReportCallback(YMeasure value)
 {
-    if (_timedReportCallbackGenericSensor != NULL) {
-        _timedReportCallbackGenericSensor(this, value);
-    } else {
-        YSensor::_invokeTimedReportCallback(value);
-    }
-    return 0;
+	if (_timedReportCallbackGenericSensor != NULL)
+	{
+		_timedReportCallbackGenericSensor(this, value);
+	}
+	else
+	{
+		YSensor::_invokeTimedReportCallback(value);
+	}
+	return 0;
 }
 
 /**
@@ -549,35 +625,37 @@ int YGenericSensor::_invokeTimedReportCallback(YMeasure value)
  */
 int YGenericSensor::zeroAdjust(void)
 {
-    double currSignal = 0.0;
-    double currBias = 0.0;
-    currSignal = this->get_signalValue();
-    currBias = this->get_signalBias();
-    return this->set_signalBias(currSignal + currBias);
+	double currSignal = 0.0;
+	double currBias = 0.0;
+	currSignal = this->get_signalValue();
+	currBias = this->get_signalBias();
+	return this->set_signalBias(currSignal + currBias);
 }
 
-YGenericSensor *YGenericSensor::nextGenericSensor(void)
+YGenericSensor* YGenericSensor::nextGenericSensor(void)
 {
-    string  hwid;
+	string hwid;
 
-    if(YISERR(_nextFunction(hwid)) || hwid=="") {
-        return NULL;
-    }
-    return YGenericSensor::FindGenericSensor(hwid);
+	if (YISERR(_nextFunction(hwid)) || hwid == "")
+	{
+		return NULL;
+	}
+	return YGenericSensor::FindGenericSensor(hwid);
 }
 
 YGenericSensor* YGenericSensor::FirstGenericSensor(void)
 {
-    vector<YFUN_DESCR>   v_fundescr;
-    YDEV_DESCR             ydevice;
-    string              serial, funcId, funcName, funcVal, errmsg;
+	vector<YFUN_DESCR> v_fundescr;
+	YDEV_DESCR ydevice;
+	string serial, funcId, funcName, funcVal, errmsg;
 
-    if(YISERR(YapiWrapper::getFunctionsByClass("GenericSensor", 0, v_fundescr, sizeof(YFUN_DESCR), errmsg)) ||
-       v_fundescr.size() == 0 ||
-       YISERR(YapiWrapper::getFunctionInfo(v_fundescr[0], ydevice, serial, funcId, funcName, funcVal, errmsg))) {
-        return NULL;
-    }
-    return YGenericSensor::FindGenericSensor(serial+"."+funcId);
+	if (YISERR(YapiWrapper::getFunctionsByClass("GenericSensor", 0, v_fundescr, sizeof(YFUN_DESCR), errmsg)) ||
+		v_fundescr.size() == 0 ||
+		YISERR(YapiWrapper::getFunctionInfo(v_fundescr[0], ydevice, serial, funcId, funcName, funcVal, errmsg)))
+	{
+		return NULL;
+	}
+	return YGenericSensor::FindGenericSensor(serial + "." + funcId);
 }
 
 //--- (end of YGenericSensor implementation)

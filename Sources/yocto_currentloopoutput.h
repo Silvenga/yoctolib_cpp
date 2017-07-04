@@ -51,19 +51,22 @@
 //--- (YCurrentLoopOutput definitions)
 class YCurrentLoopOutput; // forward declaration
 
-typedef void (*YCurrentLoopOutputValueCallback)(YCurrentLoopOutput *func, const string& functionValue);
+typedef void (*YCurrentLoopOutputValueCallback)(YCurrentLoopOutput* func, const string& functionValue);
 #ifndef _Y_LOOPPOWER_ENUM
 #define _Y_LOOPPOWER_ENUM
-typedef enum {
-    Y_LOOPPOWER_NOPWR = 0,
-    Y_LOOPPOWER_LOWPWR = 1,
-    Y_LOOPPOWER_POWEROK = 2,
-    Y_LOOPPOWER_INVALID = -1,
+
+typedef enum
+{
+	Y_LOOPPOWER_NOPWR = 0,
+	Y_LOOPPOWER_LOWPWR = 1,
+	Y_LOOPPOWER_POWEROK = 2,
+	Y_LOOPPOWER_INVALID = -1,
 } Y_LOOPPOWER_enum;
 #endif
 #define Y_CURRENT_INVALID               (YAPI_INVALID_DOUBLE)
 #define Y_CURRENTTRANSITION_INVALID     (YAPI_INVALID_STRING)
 #define Y_CURRENTATSTARTUP_INVALID      (YAPI_INVALID_DOUBLE)
+
 //--- (end of YCurrentLoopOutput definitions)
 
 //--- (YCurrentLoopOutput declaration)
@@ -73,203 +76,229 @@ typedef enum {
  * The Yoctopuce application programming interface allows you to change the value of the 4-20mA
  * output as well as to know the current loop state.
  */
-class YOCTO_CLASS_EXPORT YCurrentLoopOutput: public YFunction {
+class YOCTO_CLASS_EXPORT YCurrentLoopOutput: public YFunction
+{
 #ifdef __BORLANDC__
 #pragma option push -w-8022
 #endif
-//--- (end of YCurrentLoopOutput declaration)
+	//--- (end of YCurrentLoopOutput declaration)
 protected:
-    //--- (YCurrentLoopOutput attributes)
-    // Attributes (function value cache)
-    double          _current;
-    string          _currentTransition;
-    double          _currentAtStartUp;
-    Y_LOOPPOWER_enum _loopPower;
-    YCurrentLoopOutputValueCallback _valueCallbackCurrentLoopOutput;
+	//--- (YCurrentLoopOutput attributes)
+	// Attributes (function value cache)
+	double _current;
+	string _currentTransition;
+	double _currentAtStartUp;
+	Y_LOOPPOWER_enum _loopPower;
+	YCurrentLoopOutputValueCallback _valueCallbackCurrentLoopOutput;
 
-    friend YCurrentLoopOutput *yFindCurrentLoopOutput(const string& func);
-    friend YCurrentLoopOutput *yFirstCurrentLoopOutput(void);
+	friend YCurrentLoopOutput* yFindCurrentLoopOutput(const string& func);
+	friend YCurrentLoopOutput* yFirstCurrentLoopOutput(void);
 
-    // Function-specific method for parsing of JSON output and caching result
-    virtual int     _parseAttr(YJSONObject* json_val);
+	// Function-specific method for parsing of JSON output and caching result
+	virtual int _parseAttr(YJSONObject* json_val);
 
-    // Constructor is protected, use yFindCurrentLoopOutput factory function to instantiate
-    YCurrentLoopOutput(const string& func);
-    //--- (end of YCurrentLoopOutput attributes)
+	// Constructor is protected, use yFindCurrentLoopOutput factory function to instantiate
+	YCurrentLoopOutput(const string& func);
+	//--- (end of YCurrentLoopOutput attributes)
 
 public:
-    ~YCurrentLoopOutput();
-    //--- (YCurrentLoopOutput accessors declaration)
+	~YCurrentLoopOutput();
+	//--- (YCurrentLoopOutput accessors declaration)
 
-    static const double CURRENT_INVALID;
-    static const string CURRENTTRANSITION_INVALID;
-    static const double CURRENTATSTARTUP_INVALID;
-    static const Y_LOOPPOWER_enum LOOPPOWER_NOPWR = Y_LOOPPOWER_NOPWR;
-    static const Y_LOOPPOWER_enum LOOPPOWER_LOWPWR = Y_LOOPPOWER_LOWPWR;
-    static const Y_LOOPPOWER_enum LOOPPOWER_POWEROK = Y_LOOPPOWER_POWEROK;
-    static const Y_LOOPPOWER_enum LOOPPOWER_INVALID = Y_LOOPPOWER_INVALID;
+	static const double CURRENT_INVALID;
+	static const string CURRENTTRANSITION_INVALID;
+	static const double CURRENTATSTARTUP_INVALID;
+	static const Y_LOOPPOWER_enum LOOPPOWER_NOPWR = Y_LOOPPOWER_NOPWR;
+	static const Y_LOOPPOWER_enum LOOPPOWER_LOWPWR = Y_LOOPPOWER_LOWPWR;
+	static const Y_LOOPPOWER_enum LOOPPOWER_POWEROK = Y_LOOPPOWER_POWEROK;
+	static const Y_LOOPPOWER_enum LOOPPOWER_INVALID = Y_LOOPPOWER_INVALID;
 
-    /**
-     * Changes the current loop, the valid range is from 3 to 21mA. If the loop is
-     * not propely powered, the  target current is not reached and
-     * loopPower is set to LOWPWR.
-     *
-     * @param newval : a floating point number corresponding to the current loop, the valid range is from 3 to 21mA
-     *
-     * @return YAPI_SUCCESS if the call succeeds.
-     *
-     * On failure, throws an exception or returns a negative error code.
-     */
-    int             set_current(double newval);
-    inline int      setCurrent(double newval)
-    { return this->set_current(newval); }
+	/**
+	 * Changes the current loop, the valid range is from 3 to 21mA. If the loop is
+	 * not propely powered, the  target current is not reached and
+	 * loopPower is set to LOWPWR.
+	 *
+	 * @param newval : a floating point number corresponding to the current loop, the valid range is from 3 to 21mA
+	 *
+	 * @return YAPI_SUCCESS if the call succeeds.
+	 *
+	 * On failure, throws an exception or returns a negative error code.
+	 */
+	int set_current(double newval);
 
-    /**
-     * Returns the loop current set point in mA.
-     *
-     * @return a floating point number corresponding to the loop current set point in mA
-     *
-     * On failure, throws an exception or returns Y_CURRENT_INVALID.
-     */
-    double              get_current(void);
+	inline int setCurrent(double newval)
+	{
+		return this->set_current(newval);
+	}
 
-    inline double       current(void)
-    { return this->get_current(); }
+	/**
+	 * Returns the loop current set point in mA.
+	 *
+	 * @return a floating point number corresponding to the loop current set point in mA
+	 *
+	 * On failure, throws an exception or returns Y_CURRENT_INVALID.
+	 */
+	double get_current(void);
 
-    string              get_currentTransition(void);
+	inline double current(void)
+	{
+		return this->get_current();
+	}
 
-    inline string       currentTransition(void)
-    { return this->get_currentTransition(); }
+	string get_currentTransition(void);
 
-    int             set_currentTransition(const string& newval);
-    inline int      setCurrentTransition(const string& newval)
-    { return this->set_currentTransition(newval); }
+	inline string currentTransition(void)
+	{
+		return this->get_currentTransition();
+	}
 
-    /**
-     * Changes the loop current at device start up. Remember to call the matching
-     * module saveToFlash() method, otherwise this call has no effect.
-     *
-     * @param newval : a floating point number corresponding to the loop current at device start up
-     *
-     * @return YAPI_SUCCESS if the call succeeds.
-     *
-     * On failure, throws an exception or returns a negative error code.
-     */
-    int             set_currentAtStartUp(double newval);
-    inline int      setCurrentAtStartUp(double newval)
-    { return this->set_currentAtStartUp(newval); }
+	int set_currentTransition(const string& newval);
 
-    /**
-     * Returns the current in the loop at device startup, in mA.
-     *
-     * @return a floating point number corresponding to the current in the loop at device startup, in mA
-     *
-     * On failure, throws an exception or returns Y_CURRENTATSTARTUP_INVALID.
-     */
-    double              get_currentAtStartUp(void);
+	inline int setCurrentTransition(const string& newval)
+	{
+		return this->set_currentTransition(newval);
+	}
 
-    inline double       currentAtStartUp(void)
-    { return this->get_currentAtStartUp(); }
+	/**
+	 * Changes the loop current at device start up. Remember to call the matching
+	 * module saveToFlash() method, otherwise this call has no effect.
+	 *
+	 * @param newval : a floating point number corresponding to the loop current at device start up
+	 *
+	 * @return YAPI_SUCCESS if the call succeeds.
+	 *
+	 * On failure, throws an exception or returns a negative error code.
+	 */
+	int set_currentAtStartUp(double newval);
 
-    /**
-     * Returns the loop powerstate.  POWEROK: the loop
-     * is powered. NOPWR: the loop in not powered. LOWPWR: the loop is not
-     * powered enough to maintain the current required (insufficient voltage).
-     *
-     * @return a value among Y_LOOPPOWER_NOPWR, Y_LOOPPOWER_LOWPWR and Y_LOOPPOWER_POWEROK corresponding
-     * to the loop powerstate
-     *
-     * On failure, throws an exception or returns Y_LOOPPOWER_INVALID.
-     */
-    Y_LOOPPOWER_enum    get_loopPower(void);
+	inline int setCurrentAtStartUp(double newval)
+	{
+		return this->set_currentAtStartUp(newval);
+	}
 
-    inline Y_LOOPPOWER_enum loopPower(void)
-    { return this->get_loopPower(); }
+	/**
+	 * Returns the current in the loop at device startup, in mA.
+	 *
+	 * @return a floating point number corresponding to the current in the loop at device startup, in mA
+	 *
+	 * On failure, throws an exception or returns Y_CURRENTATSTARTUP_INVALID.
+	 */
+	double get_currentAtStartUp(void);
 
-    /**
-     * Retrieves a 4-20mA output for a given identifier.
-     * The identifier can be specified using several formats:
-     * <ul>
-     * <li>FunctionLogicalName</li>
-     * <li>ModuleSerialNumber.FunctionIdentifier</li>
-     * <li>ModuleSerialNumber.FunctionLogicalName</li>
-     * <li>ModuleLogicalName.FunctionIdentifier</li>
-     * <li>ModuleLogicalName.FunctionLogicalName</li>
-     * </ul>
-     *
-     * This function does not require that the 4-20mA output is online at the time
-     * it is invoked. The returned object is nevertheless valid.
-     * Use the method YCurrentLoopOutput.isOnline() to test if the 4-20mA output is
-     * indeed online at a given time. In case of ambiguity when looking for
-     * a 4-20mA output by logical name, no error is notified: the first instance
-     * found is returned. The search is performed first by hardware name,
-     * then by logical name.
-     *
-     * @param func : a string that uniquely characterizes the 4-20mA output
-     *
-     * @return a YCurrentLoopOutput object allowing you to drive the 4-20mA output.
-     */
-    static YCurrentLoopOutput* FindCurrentLoopOutput(string func);
+	inline double currentAtStartUp(void)
+	{
+		return this->get_currentAtStartUp();
+	}
 
-    /**
-     * Registers the callback function that is invoked on every change of advertised value.
-     * The callback is invoked only during the execution of ySleep or yHandleEvents.
-     * This provides control over the time when the callback is triggered. For good responsiveness, remember to call
-     * one of these two functions periodically. To unregister a callback, pass a NULL pointer as argument.
-     *
-     * @param callback : the callback function to call, or a NULL pointer. The callback function should take two
-     *         arguments: the function object of which the value has changed, and the character string describing
-     *         the new advertised value.
-     * @noreturn
-     */
-    virtual int         registerValueCallback(YCurrentLoopOutputValueCallback callback);
-    using YFunction::registerValueCallback;
+	/**
+	 * Returns the loop powerstate.  POWEROK: the loop
+	 * is powered. NOPWR: the loop in not powered. LOWPWR: the loop is not
+	 * powered enough to maintain the current required (insufficient voltage).
+	 *
+	 * @return a value among Y_LOOPPOWER_NOPWR, Y_LOOPPOWER_LOWPWR and Y_LOOPPOWER_POWEROK corresponding
+	 * to the loop powerstate
+	 *
+	 * On failure, throws an exception or returns Y_LOOPPOWER_INVALID.
+	 */
+	Y_LOOPPOWER_enum get_loopPower(void);
 
-    virtual int         _invokeValueCallback(string value);
+	inline Y_LOOPPOWER_enum loopPower(void)
+	{
+		return this->get_loopPower();
+	}
 
-    /**
-     * Performs a smooth transistion of current flowing in the loop. Any current explicit
-     * change cancels any ongoing transition process.
-     *
-     * @param mA_target   : new current value at the end of the transition
-     *         (floating-point number, representing the transition duration in mA)
-     * @param ms_duration : total duration of the transition, in milliseconds
-     *
-     * @return YAPI_SUCCESS when the call succeeds.
-     */
-    virtual int         currentMove(double mA_target,int ms_duration);
+	/**
+	 * Retrieves a 4-20mA output for a given identifier.
+	 * The identifier can be specified using several formats:
+	 * <ul>
+	 * <li>FunctionLogicalName</li>
+	 * <li>ModuleSerialNumber.FunctionIdentifier</li>
+	 * <li>ModuleSerialNumber.FunctionLogicalName</li>
+	 * <li>ModuleLogicalName.FunctionIdentifier</li>
+	 * <li>ModuleLogicalName.FunctionLogicalName</li>
+	 * </ul>
+	 *
+	 * This function does not require that the 4-20mA output is online at the time
+	 * it is invoked. The returned object is nevertheless valid.
+	 * Use the method YCurrentLoopOutput.isOnline() to test if the 4-20mA output is
+	 * indeed online at a given time. In case of ambiguity when looking for
+	 * a 4-20mA output by logical name, no error is notified: the first instance
+	 * found is returned. The search is performed first by hardware name,
+	 * then by logical name.
+	 *
+	 * @param func : a string that uniquely characterizes the 4-20mA output
+	 *
+	 * @return a YCurrentLoopOutput object allowing you to drive the 4-20mA output.
+	 */
+	static YCurrentLoopOutput* FindCurrentLoopOutput(string func);
+
+	/**
+	 * Registers the callback function that is invoked on every change of advertised value.
+	 * The callback is invoked only during the execution of ySleep or yHandleEvents.
+	 * This provides control over the time when the callback is triggered. For good responsiveness, remember to call
+	 * one of these two functions periodically. To unregister a callback, pass a NULL pointer as argument.
+	 *
+	 * @param callback : the callback function to call, or a NULL pointer. The callback function should take two
+	 *         arguments: the function object of which the value has changed, and the character string describing
+	 *         the new advertised value.
+	 * @noreturn
+	 */
+	virtual int registerValueCallback(YCurrentLoopOutputValueCallback callback);
+	using YFunction::registerValueCallback;
+
+	virtual int _invokeValueCallback(string value);
+
+	/**
+	 * Performs a smooth transistion of current flowing in the loop. Any current explicit
+	 * change cancels any ongoing transition process.
+	 *
+	 * @param mA_target   : new current value at the end of the transition
+	 *         (floating-point number, representing the transition duration in mA)
+	 * @param ms_duration : total duration of the transition, in milliseconds
+	 *
+	 * @return YAPI_SUCCESS when the call succeeds.
+	 */
+	virtual int currentMove(double mA_target, int ms_duration);
 
 
-    inline static YCurrentLoopOutput* Find(string func)
-    { return YCurrentLoopOutput::FindCurrentLoopOutput(func); }
+	inline static YCurrentLoopOutput* Find(string func)
+	{
+		return YCurrentLoopOutput::FindCurrentLoopOutput(func);
+	}
 
-    /**
-     * Continues the enumeration of 4-20mA outputs started using yFirstCurrentLoopOutput().
-     *
-     * @return a pointer to a YCurrentLoopOutput object, corresponding to
-     *         a 4-20mA output currently online, or a NULL pointer
-     *         if there are no more 4-20mA outputs to enumerate.
-     */
-           YCurrentLoopOutput *nextCurrentLoopOutput(void);
-    inline YCurrentLoopOutput *next(void)
-    { return this->nextCurrentLoopOutput();}
+	/**
+	 * Continues the enumeration of 4-20mA outputs started using yFirstCurrentLoopOutput().
+	 *
+	 * @return a pointer to a YCurrentLoopOutput object, corresponding to
+	 *         a 4-20mA output currently online, or a NULL pointer
+	 *         if there are no more 4-20mA outputs to enumerate.
+	 */
+	YCurrentLoopOutput* nextCurrentLoopOutput(void);
 
-    /**
-     * Starts the enumeration of 4-20mA outputs currently accessible.
-     * Use the method YCurrentLoopOutput.nextCurrentLoopOutput() to iterate on
-     * next 4-20mA outputs.
-     *
-     * @return a pointer to a YCurrentLoopOutput object, corresponding to
-     *         the first 4-20mA output currently online, or a NULL pointer
-     *         if there are none.
-     */
-           static YCurrentLoopOutput* FirstCurrentLoopOutput(void);
-    inline static YCurrentLoopOutput* First(void)
-    { return YCurrentLoopOutput::FirstCurrentLoopOutput();}
+	inline YCurrentLoopOutput* next(void)
+	{
+		return this->nextCurrentLoopOutput();
+	}
+
+	/**
+	 * Starts the enumeration of 4-20mA outputs currently accessible.
+	 * Use the method YCurrentLoopOutput.nextCurrentLoopOutput() to iterate on
+	 * next 4-20mA outputs.
+	 *
+	 * @return a pointer to a YCurrentLoopOutput object, corresponding to
+	 *         the first 4-20mA output currently online, or a NULL pointer
+	 *         if there are none.
+	 */
+	static YCurrentLoopOutput* FirstCurrentLoopOutput(void);
+
+	inline static YCurrentLoopOutput* First(void)
+	{
+		return YCurrentLoopOutput::FirstCurrentLoopOutput();
+	}
 #ifdef __BORLANDC__
 #pragma option pop
 #endif
-    //--- (end of YCurrentLoopOutput accessors declaration)
+	//--- (end of YCurrentLoopOutput accessors declaration)
 };
 
 //--- (CurrentLoopOutput functions declaration)
@@ -298,7 +327,10 @@ public:
  * @return a YCurrentLoopOutput object allowing you to drive the 4-20mA output.
  */
 inline YCurrentLoopOutput* yFindCurrentLoopOutput(const string& func)
-{ return YCurrentLoopOutput::FindCurrentLoopOutput(func);}
+{
+	return YCurrentLoopOutput::FindCurrentLoopOutput(func);
+}
+
 /**
  * Starts the enumeration of 4-20mA outputs currently accessible.
  * Use the method YCurrentLoopOutput.nextCurrentLoopOutput() to iterate on
@@ -309,7 +341,9 @@ inline YCurrentLoopOutput* yFindCurrentLoopOutput(const string& func)
  *         if there are none.
  */
 inline YCurrentLoopOutput* yFirstCurrentLoopOutput(void)
-{ return YCurrentLoopOutput::FirstCurrentLoopOutput();}
+{
+	return YCurrentLoopOutput::FirstCurrentLoopOutput();
+}
 
 //--- (end of CurrentLoopOutput functions declaration)
 

@@ -49,19 +49,20 @@
 #define  __FILE_ID__  "pressure"
 
 YPressure::YPressure(const string& func): YSensor(func)
-//--- (Pressure initialization)
-    ,_valueCallbackPressure(NULL)
-    ,_timedReportCallbackPressure(NULL)
+                                          //--- (Pressure initialization)
+                                          , _valueCallbackPressure(NULL)
+                                          , _timedReportCallbackPressure(NULL)
 //--- (end of Pressure initialization)
 {
-    _className="Pressure";
+	_className = "Pressure";
 }
 
 YPressure::~YPressure()
 {
-//--- (YPressure cleanup)
-//--- (end of YPressure cleanup)
+	//--- (YPressure cleanup)
+	//--- (end of YPressure cleanup)
 }
+
 //--- (YPressure implementation)
 // static attributes
 
@@ -91,23 +92,29 @@ YPressure::~YPressure()
  */
 YPressure* YPressure::FindPressure(string func)
 {
-    YPressure* obj = NULL;
-    int taken = 0;
-    if (YAPI::_apiInitialized) {
-        yEnterCriticalSection(&YAPI::_global_cs);
-        taken = 1;
-    }try {
-        obj = (YPressure*) YFunction::_FindFromCache("Pressure", func);
-        if (obj == NULL) {
-            obj = new YPressure(func);
-            YFunction::_AddToCache("Pressure", func, obj);
-        }
-    } catch (std::exception) {
-        if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
-        throw;
-    }
-    if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
-    return obj;
+	YPressure* obj = NULL;
+	int taken = 0;
+	if (YAPI::_apiInitialized)
+	{
+		yEnterCriticalSection(&YAPI::_global_cs);
+		taken = 1;
+	}
+	try
+	{
+		obj = (YPressure*)YFunction::_FindFromCache("Pressure", func);
+		if (obj == NULL)
+		{
+			obj = new YPressure(func);
+			YFunction::_AddToCache("Pressure", func, obj);
+		}
+	}
+	catch (std::exception)
+	{
+		if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
+		throw;
+	}
+	if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
+	return obj;
 }
 
 /**
@@ -123,31 +130,39 @@ YPressure* YPressure::FindPressure(string func)
  */
 int YPressure::registerValueCallback(YPressureValueCallback callback)
 {
-    string val;
-    if (callback != NULL) {
-        YFunction::_UpdateValueCallbackList(this, true);
-    } else {
-        YFunction::_UpdateValueCallbackList(this, false);
-    }
-    _valueCallbackPressure = callback;
-    // Immediately invoke value callback with current value
-    if (callback != NULL && this->isOnline()) {
-        val = _advertisedValue;
-        if (!(val == "")) {
-            this->_invokeValueCallback(val);
-        }
-    }
-    return 0;
+	string val;
+	if (callback != NULL)
+	{
+		YFunction::_UpdateValueCallbackList(this, true);
+	}
+	else
+	{
+		YFunction::_UpdateValueCallbackList(this, false);
+	}
+	_valueCallbackPressure = callback;
+	// Immediately invoke value callback with current value
+	if (callback != NULL && this->isOnline())
+	{
+		val = _advertisedValue;
+		if (!(val == ""))
+		{
+			this->_invokeValueCallback(val);
+		}
+	}
+	return 0;
 }
 
 int YPressure::_invokeValueCallback(string value)
 {
-    if (_valueCallbackPressure != NULL) {
-        _valueCallbackPressure(this, value);
-    } else {
-        YSensor::_invokeValueCallback(value);
-    }
-    return 0;
+	if (_valueCallbackPressure != NULL)
+	{
+		_valueCallbackPressure(this, value);
+	}
+	else
+	{
+		YSensor::_invokeValueCallback(value);
+	}
+	return 0;
 }
 
 /**
@@ -163,49 +178,57 @@ int YPressure::_invokeValueCallback(string value)
  */
 int YPressure::registerTimedReportCallback(YPressureTimedReportCallback callback)
 {
-    YSensor* sensor = NULL;
-    sensor = this;
-    if (callback != NULL) {
-        YFunction::_UpdateTimedReportCallbackList(sensor, true);
-    } else {
-        YFunction::_UpdateTimedReportCallbackList(sensor, false);
-    }
-    _timedReportCallbackPressure = callback;
-    return 0;
+	YSensor* sensor = NULL;
+	sensor = this;
+	if (callback != NULL)
+	{
+		YFunction::_UpdateTimedReportCallbackList(sensor, true);
+	}
+	else
+	{
+		YFunction::_UpdateTimedReportCallbackList(sensor, false);
+	}
+	_timedReportCallbackPressure = callback;
+	return 0;
 }
 
 int YPressure::_invokeTimedReportCallback(YMeasure value)
 {
-    if (_timedReportCallbackPressure != NULL) {
-        _timedReportCallbackPressure(this, value);
-    } else {
-        YSensor::_invokeTimedReportCallback(value);
-    }
-    return 0;
+	if (_timedReportCallbackPressure != NULL)
+	{
+		_timedReportCallbackPressure(this, value);
+	}
+	else
+	{
+		YSensor::_invokeTimedReportCallback(value);
+	}
+	return 0;
 }
 
-YPressure *YPressure::nextPressure(void)
+YPressure* YPressure::nextPressure(void)
 {
-    string  hwid;
+	string hwid;
 
-    if(YISERR(_nextFunction(hwid)) || hwid=="") {
-        return NULL;
-    }
-    return YPressure::FindPressure(hwid);
+	if (YISERR(_nextFunction(hwid)) || hwid == "")
+	{
+		return NULL;
+	}
+	return YPressure::FindPressure(hwid);
 }
 
 YPressure* YPressure::FirstPressure(void)
 {
-    vector<YFUN_DESCR>   v_fundescr;
-    YDEV_DESCR             ydevice;
-    string              serial, funcId, funcName, funcVal, errmsg;
+	vector<YFUN_DESCR> v_fundescr;
+	YDEV_DESCR ydevice;
+	string serial, funcId, funcName, funcVal, errmsg;
 
-    if(YISERR(YapiWrapper::getFunctionsByClass("Pressure", 0, v_fundescr, sizeof(YFUN_DESCR), errmsg)) ||
-       v_fundescr.size() == 0 ||
-       YISERR(YapiWrapper::getFunctionInfo(v_fundescr[0], ydevice, serial, funcId, funcName, funcVal, errmsg))) {
-        return NULL;
-    }
-    return YPressure::FindPressure(serial+"."+funcId);
+	if (YISERR(YapiWrapper::getFunctionsByClass("Pressure", 0, v_fundescr, sizeof(YFUN_DESCR), errmsg)) ||
+		v_fundescr.size() == 0 ||
+		YISERR(YapiWrapper::getFunctionInfo(v_fundescr[0], ydevice, serial, funcId, funcName, funcVal, errmsg)))
+	{
+		return NULL;
+	}
+	return YPressure::FindPressure(serial + "." + funcId);
 }
 
 //--- (end of YPressure implementation)

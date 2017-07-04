@@ -49,22 +49,23 @@
 #define  __FILE_ID__  "currentloopoutput"
 
 YCurrentLoopOutput::YCurrentLoopOutput(const string& func): YFunction(func)
-//--- (CurrentLoopOutput initialization)
-    ,_current(CURRENT_INVALID)
-    ,_currentTransition(CURRENTTRANSITION_INVALID)
-    ,_currentAtStartUp(CURRENTATSTARTUP_INVALID)
-    ,_loopPower(LOOPPOWER_INVALID)
-    ,_valueCallbackCurrentLoopOutput(NULL)
+                                                            //--- (CurrentLoopOutput initialization)
+                                                            , _current(CURRENT_INVALID)
+                                                            , _currentTransition(CURRENTTRANSITION_INVALID)
+                                                            , _currentAtStartUp(CURRENTATSTARTUP_INVALID)
+                                                            , _loopPower(LOOPPOWER_INVALID)
+                                                            , _valueCallbackCurrentLoopOutput(NULL)
 //--- (end of CurrentLoopOutput initialization)
 {
-    _className="CurrentLoopOutput";
+	_className = "CurrentLoopOutput";
 }
 
 YCurrentLoopOutput::~YCurrentLoopOutput()
 {
-//--- (YCurrentLoopOutput cleanup)
-//--- (end of YCurrentLoopOutput cleanup)
+	//--- (YCurrentLoopOutput cleanup)
+	//--- (end of YCurrentLoopOutput cleanup)
 }
+
 //--- (YCurrentLoopOutput implementation)
 // static attributes
 const double YCurrentLoopOutput::CURRENT_INVALID = YAPI_INVALID_DOUBLE;
@@ -73,19 +74,23 @@ const double YCurrentLoopOutput::CURRENTATSTARTUP_INVALID = YAPI_INVALID_DOUBLE;
 
 int YCurrentLoopOutput::_parseAttr(YJSONObject* json_val)
 {
-    if(json_val->has("current")) {
-        _current =  floor(json_val->getDouble("current") * 1000.0 / 65536.0 + 0.5) / 1000.0;
-    }
-    if(json_val->has("currentTransition")) {
-        _currentTransition =  json_val->getString("currentTransition");
-    }
-    if(json_val->has("currentAtStartUp")) {
-        _currentAtStartUp =  floor(json_val->getDouble("currentAtStartUp") * 1000.0 / 65536.0 + 0.5) / 1000.0;
-    }
-    if(json_val->has("loopPower")) {
-        _loopPower =  (Y_LOOPPOWER_enum)json_val->getInt("loopPower");
-    }
-    return YFunction::_parseAttr(json_val);
+	if (json_val->has("current"))
+	{
+		_current = floor(json_val->getDouble("current") * 1000.0 / 65536.0 + 0.5) / 1000.0;
+	}
+	if (json_val->has("currentTransition"))
+	{
+		_currentTransition = json_val->getString("currentTransition");
+	}
+	if (json_val->has("currentAtStartUp"))
+	{
+		_currentAtStartUp = floor(json_val->getDouble("currentAtStartUp") * 1000.0 / 65536.0 + 0.5) / 1000.0;
+	}
+	if (json_val->has("loopPower"))
+	{
+		_loopPower = (Y_LOOPPOWER_enum)json_val->getInt("loopPower");
+	}
+	return YFunction::_parseAttr(json_val);
 }
 
 
@@ -102,18 +107,23 @@ int YCurrentLoopOutput::_parseAttr(YJSONObject* json_val)
  */
 int YCurrentLoopOutput::set_current(double newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        char buf[32]; sprintf(buf,"%d", (int)floor(newval * 65536.0 + 0.5)); rest_val = string(buf);
-        res = _setAttr("current", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		char buf[32];
+		sprintf(buf, "%d", (int)floor(newval * 65536.0 + 0.5));
+		rest_val = string(buf);
+		res = _setAttr("current", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -125,62 +135,75 @@ int YCurrentLoopOutput::set_current(double newval)
  */
 double YCurrentLoopOutput::get_current(void)
 {
-    double res = 0.0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YCurrentLoopOutput::CURRENT_INVALID;
-                }
-            }
-        }
-        res = _current;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	double res = 0.0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YCurrentLoopOutput::CURRENT_INVALID;
+				}
+			}
+		}
+		res = _current;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 string YCurrentLoopOutput::get_currentTransition(void)
 {
-    string res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YCurrentLoopOutput::CURRENTTRANSITION_INVALID;
-                }
-            }
-        }
-        res = _currentTransition;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YCurrentLoopOutput::CURRENTTRANSITION_INVALID;
+				}
+			}
+		}
+		res = _currentTransition;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 int YCurrentLoopOutput::set_currentTransition(const string& newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        rest_val = newval;
-        res = _setAttr("currentTransition", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		rest_val = newval;
+		res = _setAttr("currentTransition", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -195,18 +218,23 @@ int YCurrentLoopOutput::set_currentTransition(const string& newval)
  */
 int YCurrentLoopOutput::set_currentAtStartUp(double newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        char buf[32]; sprintf(buf,"%d", (int)floor(newval * 65536.0 + 0.5)); rest_val = string(buf);
-        res = _setAttr("currentAtStartUp", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		char buf[32];
+		sprintf(buf, "%d", (int)floor(newval * 65536.0 + 0.5));
+		rest_val = string(buf);
+		res = _setAttr("currentAtStartUp", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -218,24 +246,29 @@ int YCurrentLoopOutput::set_currentAtStartUp(double newval)
  */
 double YCurrentLoopOutput::get_currentAtStartUp(void)
 {
-    double res = 0.0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YCurrentLoopOutput::CURRENTATSTARTUP_INVALID;
-                }
-            }
-        }
-        res = _currentAtStartUp;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	double res = 0.0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YCurrentLoopOutput::CURRENTATSTARTUP_INVALID;
+				}
+			}
+		}
+		res = _currentAtStartUp;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -250,24 +283,29 @@ double YCurrentLoopOutput::get_currentAtStartUp(void)
  */
 Y_LOOPPOWER_enum YCurrentLoopOutput::get_loopPower(void)
 {
-    Y_LOOPPOWER_enum res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YCurrentLoopOutput::LOOPPOWER_INVALID;
-                }
-            }
-        }
-        res = _loopPower;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	Y_LOOPPOWER_enum res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YCurrentLoopOutput::LOOPPOWER_INVALID;
+				}
+			}
+		}
+		res = _loopPower;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -295,23 +333,29 @@ Y_LOOPPOWER_enum YCurrentLoopOutput::get_loopPower(void)
  */
 YCurrentLoopOutput* YCurrentLoopOutput::FindCurrentLoopOutput(string func)
 {
-    YCurrentLoopOutput* obj = NULL;
-    int taken = 0;
-    if (YAPI::_apiInitialized) {
-        yEnterCriticalSection(&YAPI::_global_cs);
-        taken = 1;
-    }try {
-        obj = (YCurrentLoopOutput*) YFunction::_FindFromCache("CurrentLoopOutput", func);
-        if (obj == NULL) {
-            obj = new YCurrentLoopOutput(func);
-            YFunction::_AddToCache("CurrentLoopOutput", func, obj);
-        }
-    } catch (std::exception) {
-        if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
-        throw;
-    }
-    if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
-    return obj;
+	YCurrentLoopOutput* obj = NULL;
+	int taken = 0;
+	if (YAPI::_apiInitialized)
+	{
+		yEnterCriticalSection(&YAPI::_global_cs);
+		taken = 1;
+	}
+	try
+	{
+		obj = (YCurrentLoopOutput*)YFunction::_FindFromCache("CurrentLoopOutput", func);
+		if (obj == NULL)
+		{
+			obj = new YCurrentLoopOutput(func);
+			YFunction::_AddToCache("CurrentLoopOutput", func, obj);
+		}
+	}
+	catch (std::exception)
+	{
+		if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
+		throw;
+	}
+	if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
+	return obj;
 }
 
 /**
@@ -327,31 +371,39 @@ YCurrentLoopOutput* YCurrentLoopOutput::FindCurrentLoopOutput(string func)
  */
 int YCurrentLoopOutput::registerValueCallback(YCurrentLoopOutputValueCallback callback)
 {
-    string val;
-    if (callback != NULL) {
-        YFunction::_UpdateValueCallbackList(this, true);
-    } else {
-        YFunction::_UpdateValueCallbackList(this, false);
-    }
-    _valueCallbackCurrentLoopOutput = callback;
-    // Immediately invoke value callback with current value
-    if (callback != NULL && this->isOnline()) {
-        val = _advertisedValue;
-        if (!(val == "")) {
-            this->_invokeValueCallback(val);
-        }
-    }
-    return 0;
+	string val;
+	if (callback != NULL)
+	{
+		YFunction::_UpdateValueCallbackList(this, true);
+	}
+	else
+	{
+		YFunction::_UpdateValueCallbackList(this, false);
+	}
+	_valueCallbackCurrentLoopOutput = callback;
+	// Immediately invoke value callback with current value
+	if (callback != NULL && this->isOnline())
+	{
+		val = _advertisedValue;
+		if (!(val == ""))
+		{
+			this->_invokeValueCallback(val);
+		}
+	}
+	return 0;
 }
 
 int YCurrentLoopOutput::_invokeValueCallback(string value)
 {
-    if (_valueCallbackCurrentLoopOutput != NULL) {
-        _valueCallbackCurrentLoopOutput(this, value);
-    } else {
-        YFunction::_invokeValueCallback(value);
-    }
-    return 0;
+	if (_valueCallbackCurrentLoopOutput != NULL)
+	{
+		_valueCallbackCurrentLoopOutput(this, value);
+	}
+	else
+	{
+		YFunction::_invokeValueCallback(value);
+	}
+	return 0;
 }
 
 /**
@@ -364,42 +416,46 @@ int YCurrentLoopOutput::_invokeValueCallback(string value)
  *
  * @return YAPI_SUCCESS when the call succeeds.
  */
-int YCurrentLoopOutput::currentMove(double mA_target,int ms_duration)
+int YCurrentLoopOutput::currentMove(double mA_target, int ms_duration)
 {
-    string newval;
-    if (mA_target < 3.0) {
-        mA_target  = 3.0;
-    }
-    if (mA_target > 21.0) {
-        mA_target = 21.0;
-    }
-    newval = YapiWrapper::ysprintf("%d:%d", (int) floor(mA_target*1000+0.5),ms_duration);
+	string newval;
+	if (mA_target < 3.0)
+	{
+		mA_target = 3.0;
+	}
+	if (mA_target > 21.0)
+	{
+		mA_target = 21.0;
+	}
+	newval = YapiWrapper::ysprintf("%d:%d", (int)floor(mA_target * 1000 + 0.5), ms_duration);
 
-    return this->set_currentTransition(newval);
+	return this->set_currentTransition(newval);
 }
 
-YCurrentLoopOutput *YCurrentLoopOutput::nextCurrentLoopOutput(void)
+YCurrentLoopOutput* YCurrentLoopOutput::nextCurrentLoopOutput(void)
 {
-    string  hwid;
+	string hwid;
 
-    if(YISERR(_nextFunction(hwid)) || hwid=="") {
-        return NULL;
-    }
-    return YCurrentLoopOutput::FindCurrentLoopOutput(hwid);
+	if (YISERR(_nextFunction(hwid)) || hwid == "")
+	{
+		return NULL;
+	}
+	return YCurrentLoopOutput::FindCurrentLoopOutput(hwid);
 }
 
 YCurrentLoopOutput* YCurrentLoopOutput::FirstCurrentLoopOutput(void)
 {
-    vector<YFUN_DESCR>   v_fundescr;
-    YDEV_DESCR             ydevice;
-    string              serial, funcId, funcName, funcVal, errmsg;
+	vector<YFUN_DESCR> v_fundescr;
+	YDEV_DESCR ydevice;
+	string serial, funcId, funcName, funcVal, errmsg;
 
-    if(YISERR(YapiWrapper::getFunctionsByClass("CurrentLoopOutput", 0, v_fundescr, sizeof(YFUN_DESCR), errmsg)) ||
-       v_fundescr.size() == 0 ||
-       YISERR(YapiWrapper::getFunctionInfo(v_fundescr[0], ydevice, serial, funcId, funcName, funcVal, errmsg))) {
-        return NULL;
-    }
-    return YCurrentLoopOutput::FindCurrentLoopOutput(serial+"."+funcId);
+	if (YISERR(YapiWrapper::getFunctionsByClass("CurrentLoopOutput", 0, v_fundescr, sizeof(YFUN_DESCR), errmsg)) ||
+		v_fundescr.size() == 0 ||
+		YISERR(YapiWrapper::getFunctionInfo(v_fundescr[0], ydevice, serial, funcId, funcName, funcVal, errmsg)))
+	{
+		return NULL;
+	}
+	return YCurrentLoopOutput::FindCurrentLoopOutput(serial + "." + funcId);
 }
 
 //--- (end of YCurrentLoopOutput implementation)

@@ -49,28 +49,30 @@
 #define  __FILE_ID__  "poweroutput"
 
 YPowerOutput::YPowerOutput(const string& func): YFunction(func)
-//--- (PowerOutput initialization)
-    ,_voltage(VOLTAGE_INVALID)
-    ,_valueCallbackPowerOutput(NULL)
+                                                //--- (PowerOutput initialization)
+                                                , _voltage(VOLTAGE_INVALID)
+                                                , _valueCallbackPowerOutput(NULL)
 //--- (end of PowerOutput initialization)
 {
-    _className="PowerOutput";
+	_className = "PowerOutput";
 }
 
 YPowerOutput::~YPowerOutput()
 {
-//--- (YPowerOutput cleanup)
-//--- (end of YPowerOutput cleanup)
+	//--- (YPowerOutput cleanup)
+	//--- (end of YPowerOutput cleanup)
 }
+
 //--- (YPowerOutput implementation)
 // static attributes
 
 int YPowerOutput::_parseAttr(YJSONObject* json_val)
 {
-    if(json_val->has("voltage")) {
-        _voltage =  (Y_VOLTAGE_enum)json_val->getInt("voltage");
-    }
-    return YFunction::_parseAttr(json_val);
+	if (json_val->has("voltage"))
+	{
+		_voltage = (Y_VOLTAGE_enum)json_val->getInt("voltage");
+	}
+	return YFunction::_parseAttr(json_val);
 }
 
 
@@ -86,24 +88,29 @@ int YPowerOutput::_parseAttr(YJSONObject* json_val)
  */
 Y_VOLTAGE_enum YPowerOutput::get_voltage(void)
 {
-    Y_VOLTAGE_enum res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YPowerOutput::VOLTAGE_INVALID;
-                }
-            }
-        }
-        res = _voltage;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	Y_VOLTAGE_enum res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YPowerOutput::VOLTAGE_INVALID;
+				}
+			}
+		}
+		res = _voltage;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -121,18 +128,23 @@ Y_VOLTAGE_enum YPowerOutput::get_voltage(void)
  */
 int YPowerOutput::set_voltage(Y_VOLTAGE_enum newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        char buf[32]; sprintf(buf, "%d", newval); rest_val = string(buf);
-        res = _setAttr("voltage", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		char buf[32];
+		sprintf(buf, "%d", newval);
+		rest_val = string(buf);
+		res = _setAttr("voltage", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -160,23 +172,29 @@ int YPowerOutput::set_voltage(Y_VOLTAGE_enum newval)
  */
 YPowerOutput* YPowerOutput::FindPowerOutput(string func)
 {
-    YPowerOutput* obj = NULL;
-    int taken = 0;
-    if (YAPI::_apiInitialized) {
-        yEnterCriticalSection(&YAPI::_global_cs);
-        taken = 1;
-    }try {
-        obj = (YPowerOutput*) YFunction::_FindFromCache("PowerOutput", func);
-        if (obj == NULL) {
-            obj = new YPowerOutput(func);
-            YFunction::_AddToCache("PowerOutput", func, obj);
-        }
-    } catch (std::exception) {
-        if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
-        throw;
-    }
-    if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
-    return obj;
+	YPowerOutput* obj = NULL;
+	int taken = 0;
+	if (YAPI::_apiInitialized)
+	{
+		yEnterCriticalSection(&YAPI::_global_cs);
+		taken = 1;
+	}
+	try
+	{
+		obj = (YPowerOutput*)YFunction::_FindFromCache("PowerOutput", func);
+		if (obj == NULL)
+		{
+			obj = new YPowerOutput(func);
+			YFunction::_AddToCache("PowerOutput", func, obj);
+		}
+	}
+	catch (std::exception)
+	{
+		if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
+		throw;
+	}
+	if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
+	return obj;
 }
 
 /**
@@ -192,55 +210,65 @@ YPowerOutput* YPowerOutput::FindPowerOutput(string func)
  */
 int YPowerOutput::registerValueCallback(YPowerOutputValueCallback callback)
 {
-    string val;
-    if (callback != NULL) {
-        YFunction::_UpdateValueCallbackList(this, true);
-    } else {
-        YFunction::_UpdateValueCallbackList(this, false);
-    }
-    _valueCallbackPowerOutput = callback;
-    // Immediately invoke value callback with current value
-    if (callback != NULL && this->isOnline()) {
-        val = _advertisedValue;
-        if (!(val == "")) {
-            this->_invokeValueCallback(val);
-        }
-    }
-    return 0;
+	string val;
+	if (callback != NULL)
+	{
+		YFunction::_UpdateValueCallbackList(this, true);
+	}
+	else
+	{
+		YFunction::_UpdateValueCallbackList(this, false);
+	}
+	_valueCallbackPowerOutput = callback;
+	// Immediately invoke value callback with current value
+	if (callback != NULL && this->isOnline())
+	{
+		val = _advertisedValue;
+		if (!(val == ""))
+		{
+			this->_invokeValueCallback(val);
+		}
+	}
+	return 0;
 }
 
 int YPowerOutput::_invokeValueCallback(string value)
 {
-    if (_valueCallbackPowerOutput != NULL) {
-        _valueCallbackPowerOutput(this, value);
-    } else {
-        YFunction::_invokeValueCallback(value);
-    }
-    return 0;
+	if (_valueCallbackPowerOutput != NULL)
+	{
+		_valueCallbackPowerOutput(this, value);
+	}
+	else
+	{
+		YFunction::_invokeValueCallback(value);
+	}
+	return 0;
 }
 
-YPowerOutput *YPowerOutput::nextPowerOutput(void)
+YPowerOutput* YPowerOutput::nextPowerOutput(void)
 {
-    string  hwid;
+	string hwid;
 
-    if(YISERR(_nextFunction(hwid)) || hwid=="") {
-        return NULL;
-    }
-    return YPowerOutput::FindPowerOutput(hwid);
+	if (YISERR(_nextFunction(hwid)) || hwid == "")
+	{
+		return NULL;
+	}
+	return YPowerOutput::FindPowerOutput(hwid);
 }
 
 YPowerOutput* YPowerOutput::FirstPowerOutput(void)
 {
-    vector<YFUN_DESCR>   v_fundescr;
-    YDEV_DESCR             ydevice;
-    string              serial, funcId, funcName, funcVal, errmsg;
+	vector<YFUN_DESCR> v_fundescr;
+	YDEV_DESCR ydevice;
+	string serial, funcId, funcName, funcVal, errmsg;
 
-    if(YISERR(YapiWrapper::getFunctionsByClass("PowerOutput", 0, v_fundescr, sizeof(YFUN_DESCR), errmsg)) ||
-       v_fundescr.size() == 0 ||
-       YISERR(YapiWrapper::getFunctionInfo(v_fundescr[0], ydevice, serial, funcId, funcName, funcVal, errmsg))) {
-        return NULL;
-    }
-    return YPowerOutput::FindPowerOutput(serial+"."+funcId);
+	if (YISERR(YapiWrapper::getFunctionsByClass("PowerOutput", 0, v_fundescr, sizeof(YFUN_DESCR), errmsg)) ||
+		v_fundescr.size() == 0 ||
+		YISERR(YapiWrapper::getFunctionInfo(v_fundescr[0], ydevice, serial, funcId, funcName, funcVal, errmsg)))
+	{
+		return NULL;
+	}
+	return YPowerOutput::FindPowerOutput(serial + "." + funcId);
 }
 
 //--- (end of YPowerOutput implementation)

@@ -51,9 +51,10 @@
 //--- (YVoc definitions)
 class YVoc; // forward declaration
 
-typedef void (*YVocValueCallback)(YVoc *func, const string& functionValue);
+typedef void (*YVocValueCallback)(YVoc* func, const string& functionValue);
 class YMeasure; // forward declaration
-typedef void (*YVocTimedReportCallback)(YVoc *func, YMeasure measure);
+typedef void (*YVocTimedReportCallback)(YVoc* func, YMeasure measure);
+
 //--- (end of YVoc definitions)
 
 //--- (YVoc declaration)
@@ -64,117 +65,126 @@ typedef void (*YVocTimedReportCallback)(YVoc *func, YMeasure measure);
  * Compound sensors. It inherits from YSensor class the core functions to read measurements,
  * to register callback functions, to access the autonomous datalogger.
  */
-class YOCTO_CLASS_EXPORT YVoc: public YSensor {
+class YOCTO_CLASS_EXPORT YVoc: public YSensor
+{
 #ifdef __BORLANDC__
 #pragma option push -w-8022
 #endif
-//--- (end of YVoc declaration)
+	//--- (end of YVoc declaration)
 protected:
-    //--- (YVoc attributes)
-    // Attributes (function value cache)
-    YVocValueCallback _valueCallbackVoc;
-    YVocTimedReportCallback _timedReportCallbackVoc;
+	//--- (YVoc attributes)
+	// Attributes (function value cache)
+	YVocValueCallback _valueCallbackVoc;
+	YVocTimedReportCallback _timedReportCallbackVoc;
 
-    friend YVoc *yFindVoc(const string& func);
-    friend YVoc *yFirstVoc(void);
+	friend YVoc* yFindVoc(const string& func);
+	friend YVoc* yFirstVoc(void);
 
-    // Constructor is protected, use yFindVoc factory function to instantiate
-    YVoc(const string& func);
-    //--- (end of YVoc attributes)
+	// Constructor is protected, use yFindVoc factory function to instantiate
+	YVoc(const string& func);
+	//--- (end of YVoc attributes)
 
 public:
-    ~YVoc();
-    //--- (YVoc accessors declaration)
+	~YVoc();
+	//--- (YVoc accessors declaration)
 
 
-    /**
-     * Retrieves a Volatile Organic Compound sensor for a given identifier.
-     * The identifier can be specified using several formats:
-     * <ul>
-     * <li>FunctionLogicalName</li>
-     * <li>ModuleSerialNumber.FunctionIdentifier</li>
-     * <li>ModuleSerialNumber.FunctionLogicalName</li>
-     * <li>ModuleLogicalName.FunctionIdentifier</li>
-     * <li>ModuleLogicalName.FunctionLogicalName</li>
-     * </ul>
-     *
-     * This function does not require that the Volatile Organic Compound sensor is online at the time
-     * it is invoked. The returned object is nevertheless valid.
-     * Use the method YVoc.isOnline() to test if the Volatile Organic Compound sensor is
-     * indeed online at a given time. In case of ambiguity when looking for
-     * a Volatile Organic Compound sensor by logical name, no error is notified: the first instance
-     * found is returned. The search is performed first by hardware name,
-     * then by logical name.
-     *
-     * @param func : a string that uniquely characterizes the Volatile Organic Compound sensor
-     *
-     * @return a YVoc object allowing you to drive the Volatile Organic Compound sensor.
-     */
-    static YVoc*        FindVoc(string func);
+	/**
+	 * Retrieves a Volatile Organic Compound sensor for a given identifier.
+	 * The identifier can be specified using several formats:
+	 * <ul>
+	 * <li>FunctionLogicalName</li>
+	 * <li>ModuleSerialNumber.FunctionIdentifier</li>
+	 * <li>ModuleSerialNumber.FunctionLogicalName</li>
+	 * <li>ModuleLogicalName.FunctionIdentifier</li>
+	 * <li>ModuleLogicalName.FunctionLogicalName</li>
+	 * </ul>
+	 *
+	 * This function does not require that the Volatile Organic Compound sensor is online at the time
+	 * it is invoked. The returned object is nevertheless valid.
+	 * Use the method YVoc.isOnline() to test if the Volatile Organic Compound sensor is
+	 * indeed online at a given time. In case of ambiguity when looking for
+	 * a Volatile Organic Compound sensor by logical name, no error is notified: the first instance
+	 * found is returned. The search is performed first by hardware name,
+	 * then by logical name.
+	 *
+	 * @param func : a string that uniquely characterizes the Volatile Organic Compound sensor
+	 *
+	 * @return a YVoc object allowing you to drive the Volatile Organic Compound sensor.
+	 */
+	static YVoc* FindVoc(string func);
 
-    /**
-     * Registers the callback function that is invoked on every change of advertised value.
-     * The callback is invoked only during the execution of ySleep or yHandleEvents.
-     * This provides control over the time when the callback is triggered. For good responsiveness, remember to call
-     * one of these two functions periodically. To unregister a callback, pass a NULL pointer as argument.
-     *
-     * @param callback : the callback function to call, or a NULL pointer. The callback function should take two
-     *         arguments: the function object of which the value has changed, and the character string describing
-     *         the new advertised value.
-     * @noreturn
-     */
-    virtual int         registerValueCallback(YVocValueCallback callback);
-    using YSensor::registerValueCallback;
+	/**
+	 * Registers the callback function that is invoked on every change of advertised value.
+	 * The callback is invoked only during the execution of ySleep or yHandleEvents.
+	 * This provides control over the time when the callback is triggered. For good responsiveness, remember to call
+	 * one of these two functions periodically. To unregister a callback, pass a NULL pointer as argument.
+	 *
+	 * @param callback : the callback function to call, or a NULL pointer. The callback function should take two
+	 *         arguments: the function object of which the value has changed, and the character string describing
+	 *         the new advertised value.
+	 * @noreturn
+	 */
+	virtual int registerValueCallback(YVocValueCallback callback);
+	using YSensor::registerValueCallback;
 
-    virtual int         _invokeValueCallback(string value);
+	virtual int _invokeValueCallback(string value);
 
-    /**
-     * Registers the callback function that is invoked on every periodic timed notification.
-     * The callback is invoked only during the execution of ySleep or yHandleEvents.
-     * This provides control over the time when the callback is triggered. For good responsiveness, remember to call
-     * one of these two functions periodically. To unregister a callback, pass a NULL pointer as argument.
-     *
-     * @param callback : the callback function to call, or a NULL pointer. The callback function should take two
-     *         arguments: the function object of which the value has changed, and an YMeasure object describing
-     *         the new advertised value.
-     * @noreturn
-     */
-    virtual int         registerTimedReportCallback(YVocTimedReportCallback callback);
-    using YSensor::registerTimedReportCallback;
+	/**
+	 * Registers the callback function that is invoked on every periodic timed notification.
+	 * The callback is invoked only during the execution of ySleep or yHandleEvents.
+	 * This provides control over the time when the callback is triggered. For good responsiveness, remember to call
+	 * one of these two functions periodically. To unregister a callback, pass a NULL pointer as argument.
+	 *
+	 * @param callback : the callback function to call, or a NULL pointer. The callback function should take two
+	 *         arguments: the function object of which the value has changed, and an YMeasure object describing
+	 *         the new advertised value.
+	 * @noreturn
+	 */
+	virtual int registerTimedReportCallback(YVocTimedReportCallback callback);
+	using YSensor::registerTimedReportCallback;
 
-    virtual int         _invokeTimedReportCallback(YMeasure value);
+	virtual int _invokeTimedReportCallback(YMeasure value);
 
 
-    inline static YVoc* Find(string func)
-    { return YVoc::FindVoc(func); }
+	inline static YVoc* Find(string func)
+	{
+		return YVoc::FindVoc(func);
+	}
 
-    /**
-     * Continues the enumeration of Volatile Organic Compound sensors started using yFirstVoc().
-     *
-     * @return a pointer to a YVoc object, corresponding to
-     *         a Volatile Organic Compound sensor currently online, or a NULL pointer
-     *         if there are no more Volatile Organic Compound sensors to enumerate.
-     */
-           YVoc            *nextVoc(void);
-    inline YVoc            *next(void)
-    { return this->nextVoc();}
+	/**
+	 * Continues the enumeration of Volatile Organic Compound sensors started using yFirstVoc().
+	 *
+	 * @return a pointer to a YVoc object, corresponding to
+	 *         a Volatile Organic Compound sensor currently online, or a NULL pointer
+	 *         if there are no more Volatile Organic Compound sensors to enumerate.
+	 */
+	YVoc* nextVoc(void);
 
-    /**
-     * Starts the enumeration of Volatile Organic Compound sensors currently accessible.
-     * Use the method YVoc.nextVoc() to iterate on
-     * next Volatile Organic Compound sensors.
-     *
-     * @return a pointer to a YVoc object, corresponding to
-     *         the first Volatile Organic Compound sensor currently online, or a NULL pointer
-     *         if there are none.
-     */
-           static YVoc* FirstVoc(void);
-    inline static YVoc* First(void)
-    { return YVoc::FirstVoc();}
+	inline YVoc* next(void)
+	{
+		return this->nextVoc();
+	}
+
+	/**
+	 * Starts the enumeration of Volatile Organic Compound sensors currently accessible.
+	 * Use the method YVoc.nextVoc() to iterate on
+	 * next Volatile Organic Compound sensors.
+	 *
+	 * @return a pointer to a YVoc object, corresponding to
+	 *         the first Volatile Organic Compound sensor currently online, or a NULL pointer
+	 *         if there are none.
+	 */
+	static YVoc* FirstVoc(void);
+
+	inline static YVoc* First(void)
+	{
+		return YVoc::FirstVoc();
+	}
 #ifdef __BORLANDC__
 #pragma option pop
 #endif
-    //--- (end of YVoc accessors declaration)
+	//--- (end of YVoc accessors declaration)
 };
 
 //--- (Voc functions declaration)
@@ -203,7 +213,10 @@ public:
  * @return a YVoc object allowing you to drive the Volatile Organic Compound sensor.
  */
 inline YVoc* yFindVoc(const string& func)
-{ return YVoc::FindVoc(func);}
+{
+	return YVoc::FindVoc(func);
+}
+
 /**
  * Starts the enumeration of Volatile Organic Compound sensors currently accessible.
  * Use the method YVoc.nextVoc() to iterate on
@@ -214,7 +227,9 @@ inline YVoc* yFindVoc(const string& func)
  *         if there are none.
  */
 inline YVoc* yFirstVoc(void)
-{ return YVoc::FirstVoc();}
+{
+	return YVoc::FirstVoc();
+}
 
 //--- (end of Voc functions declaration)
 

@@ -49,33 +49,34 @@
 #define  __FILE_ID__  "refframe"
 
 YRefFrame::YRefFrame(const string& func): YFunction(func)
-//--- (RefFrame initialization)
-    ,_mountPos(MOUNTPOS_INVALID)
-    ,_bearing(BEARING_INVALID)
-    ,_calibrationParam(CALIBRATIONPARAM_INVALID)
-    ,_valueCallbackRefFrame(NULL)
-    ,_calibStage(0)
-    ,_calibStageProgress(0)
-    ,_calibProgress(0)
-    ,_calibCount(0)
-    ,_calibInternalPos(0)
-    ,_calibPrevTick(0)
-    ,_calibAccXOfs(0.0)
-    ,_calibAccYOfs(0.0)
-    ,_calibAccZOfs(0.0)
-    ,_calibAccXScale(0.0)
-    ,_calibAccYScale(0.0)
-    ,_calibAccZScale(0.0)
+                                          //--- (RefFrame initialization)
+                                          , _mountPos(MOUNTPOS_INVALID)
+                                          , _bearing(BEARING_INVALID)
+                                          , _calibrationParam(CALIBRATIONPARAM_INVALID)
+                                          , _valueCallbackRefFrame(NULL)
+                                          , _calibStage(0)
+                                          , _calibStageProgress(0)
+                                          , _calibProgress(0)
+                                          , _calibCount(0)
+                                          , _calibInternalPos(0)
+                                          , _calibPrevTick(0)
+                                          , _calibAccXOfs(0.0)
+                                          , _calibAccYOfs(0.0)
+                                          , _calibAccZOfs(0.0)
+                                          , _calibAccXScale(0.0)
+                                          , _calibAccYScale(0.0)
+                                          , _calibAccZScale(0.0)
 //--- (end of RefFrame initialization)
 {
-    _className="RefFrame";
+	_className = "RefFrame";
 }
 
 YRefFrame::~YRefFrame()
 {
-//--- (YRefFrame cleanup)
-//--- (end of YRefFrame cleanup)
+	//--- (YRefFrame cleanup)
+	//--- (end of YRefFrame cleanup)
 }
+
 //--- (YRefFrame implementation)
 // static attributes
 const double YRefFrame::BEARING_INVALID = YAPI_INVALID_DOUBLE;
@@ -83,55 +84,68 @@ const string YRefFrame::CALIBRATIONPARAM_INVALID = YAPI_INVALID_STRING;
 
 int YRefFrame::_parseAttr(YJSONObject* json_val)
 {
-    if(json_val->has("mountPos")) {
-        _mountPos =  json_val->getInt("mountPos");
-    }
-    if(json_val->has("bearing")) {
-        _bearing =  floor(json_val->getDouble("bearing") * 1000.0 / 65536.0 + 0.5) / 1000.0;
-    }
-    if(json_val->has("calibrationParam")) {
-        _calibrationParam =  json_val->getString("calibrationParam");
-    }
-    return YFunction::_parseAttr(json_val);
+	if (json_val->has("mountPos"))
+	{
+		_mountPos = json_val->getInt("mountPos");
+	}
+	if (json_val->has("bearing"))
+	{
+		_bearing = floor(json_val->getDouble("bearing") * 1000.0 / 65536.0 + 0.5) / 1000.0;
+	}
+	if (json_val->has("calibrationParam"))
+	{
+		_calibrationParam = json_val->getString("calibrationParam");
+	}
+	return YFunction::_parseAttr(json_val);
 }
 
 
 int YRefFrame::get_mountPos(void)
 {
-    int res = 0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YRefFrame::MOUNTPOS_INVALID;
-                }
-            }
-        }
-        res = _mountPos;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	int res = 0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YRefFrame::MOUNTPOS_INVALID;
+				}
+			}
+		}
+		res = _mountPos;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 int YRefFrame::set_mountPos(int newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        char buf[32]; sprintf(buf, "%d", newval); rest_val = string(buf);
-        res = _setAttr("mountPos", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		char buf[32];
+		sprintf(buf, "%d", newval);
+		rest_val = string(buf);
+		res = _setAttr("mountPos", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -158,18 +172,23 @@ int YRefFrame::set_mountPos(int newval)
  */
 int YRefFrame::set_bearing(double newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        char buf[32]; sprintf(buf,"%d", (int)floor(newval * 65536.0 + 0.5)); rest_val = string(buf);
-        res = _setAttr("bearing", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		char buf[32];
+		sprintf(buf, "%d", (int)floor(newval * 65536.0 + 0.5));
+		rest_val = string(buf);
+		res = _setAttr("bearing", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -183,62 +202,75 @@ int YRefFrame::set_bearing(double newval)
  */
 double YRefFrame::get_bearing(void)
 {
-    double res = 0.0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YRefFrame::BEARING_INVALID;
-                }
-            }
-        }
-        res = _bearing;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	double res = 0.0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YRefFrame::BEARING_INVALID;
+				}
+			}
+		}
+		res = _bearing;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 string YRefFrame::get_calibrationParam(void)
 {
-    string res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YRefFrame::CALIBRATIONPARAM_INVALID;
-                }
-            }
-        }
-        res = _calibrationParam;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YRefFrame::CALIBRATIONPARAM_INVALID;
+				}
+			}
+		}
+		res = _calibrationParam;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 int YRefFrame::set_calibrationParam(const string& newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        rest_val = newval;
-        res = _setAttr("calibrationParam", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		rest_val = newval;
+		res = _setAttr("calibrationParam", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -266,23 +298,29 @@ int YRefFrame::set_calibrationParam(const string& newval)
  */
 YRefFrame* YRefFrame::FindRefFrame(string func)
 {
-    YRefFrame* obj = NULL;
-    int taken = 0;
-    if (YAPI::_apiInitialized) {
-        yEnterCriticalSection(&YAPI::_global_cs);
-        taken = 1;
-    }try {
-        obj = (YRefFrame*) YFunction::_FindFromCache("RefFrame", func);
-        if (obj == NULL) {
-            obj = new YRefFrame(func);
-            YFunction::_AddToCache("RefFrame", func, obj);
-        }
-    } catch (std::exception) {
-        if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
-        throw;
-    }
-    if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
-    return obj;
+	YRefFrame* obj = NULL;
+	int taken = 0;
+	if (YAPI::_apiInitialized)
+	{
+		yEnterCriticalSection(&YAPI::_global_cs);
+		taken = 1;
+	}
+	try
+	{
+		obj = (YRefFrame*)YFunction::_FindFromCache("RefFrame", func);
+		if (obj == NULL)
+		{
+			obj = new YRefFrame(func);
+			YFunction::_AddToCache("RefFrame", func, obj);
+		}
+	}
+	catch (std::exception)
+	{
+		if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
+		throw;
+	}
+	if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
+	return obj;
 }
 
 /**
@@ -298,31 +336,39 @@ YRefFrame* YRefFrame::FindRefFrame(string func)
  */
 int YRefFrame::registerValueCallback(YRefFrameValueCallback callback)
 {
-    string val;
-    if (callback != NULL) {
-        YFunction::_UpdateValueCallbackList(this, true);
-    } else {
-        YFunction::_UpdateValueCallbackList(this, false);
-    }
-    _valueCallbackRefFrame = callback;
-    // Immediately invoke value callback with current value
-    if (callback != NULL && this->isOnline()) {
-        val = _advertisedValue;
-        if (!(val == "")) {
-            this->_invokeValueCallback(val);
-        }
-    }
-    return 0;
+	string val;
+	if (callback != NULL)
+	{
+		YFunction::_UpdateValueCallbackList(this, true);
+	}
+	else
+	{
+		YFunction::_UpdateValueCallbackList(this, false);
+	}
+	_valueCallbackRefFrame = callback;
+	// Immediately invoke value callback with current value
+	if (callback != NULL && this->isOnline())
+	{
+		val = _advertisedValue;
+		if (!(val == ""))
+		{
+			this->_invokeValueCallback(val);
+		}
+	}
+	return 0;
 }
 
 int YRefFrame::_invokeValueCallback(string value)
 {
-    if (_valueCallbackRefFrame != NULL) {
-        _valueCallbackRefFrame(this, value);
-    } else {
-        YFunction::_invokeValueCallback(value);
-    }
-    return 0;
+	if (_valueCallbackRefFrame != NULL)
+	{
+		_valueCallbackRefFrame(this, value);
+	}
+	else
+	{
+		YFunction::_invokeValueCallback(value);
+	}
+	return 0;
 }
 
 /**
@@ -340,12 +386,13 @@ int YRefFrame::_invokeValueCallback(string value)
  */
 Y_MOUNTPOSITION YRefFrame::get_mountPosition(void)
 {
-    int position = 0;
-    position = this->get_mountPos();
-    if (position < 0) {
-        return Y_MOUNTPOSITION_INVALID;
-    }
-    return (Y_MOUNTPOSITION) ((position) >> (2));
+	int position = 0;
+	position = this->get_mountPos();
+	if (position < 0)
+	{
+		return Y_MOUNTPOSITION_INVALID;
+	}
+	return (Y_MOUNTPOSITION)((position) >> (2));
 }
 
 /**
@@ -365,12 +412,13 @@ Y_MOUNTPOSITION YRefFrame::get_mountPosition(void)
  */
 Y_MOUNTORIENTATION YRefFrame::get_mountOrientation(void)
 {
-    int position = 0;
-    position = this->get_mountPos();
-    if (position < 0) {
-        return Y_MOUNTORIENTATION_INVALID;
-    }
-    return (Y_MOUNTORIENTATION) ((position) & (3));
+	int position = 0;
+	position = this->get_mountPos();
+	if (position < 0)
+	{
+		return Y_MOUNTORIENTATION_INVALID;
+	}
+	return (Y_MOUNTORIENTATION)((position) & (3));
 }
 
 /**
@@ -398,11 +446,11 @@ Y_MOUNTORIENTATION YRefFrame::get_mountOrientation(void)
  *
  * On failure, throws an exception or returns a negative error code.
  */
-int YRefFrame::set_mountPosition(Y_MOUNTPOSITION position,Y_MOUNTORIENTATION orientation)
+int YRefFrame::set_mountPosition(Y_MOUNTPOSITION position, Y_MOUNTORIENTATION orientation)
 {
-    int mixedPos = 0;
-    mixedPos = ((position) << (2)) + orientation;
-    return this->set_mountPos(mixedPos);
+	int mixedPos = 0;
+	mixedPos = ((position) << (2)) + orientation;
+	return this->set_mountPos(mixedPos);
 }
 
 /**
@@ -421,19 +469,20 @@ int YRefFrame::set_mountPosition(Y_MOUNTPOSITION position,Y_MOUNTORIENTATION ori
  */
 int YRefFrame::get_calibrationState(void)
 {
-    string calibParam;
-    vector<int> iCalib;
-    int caltyp = 0;
-    int res = 0;
+	string calibParam;
+	vector<int> iCalib;
+	int caltyp = 0;
+	int res = 0;
 
-    calibParam = this->get_calibrationParam();
-    iCalib = YAPI::_decodeFloats(calibParam);
-    caltyp = ((iCalib[0]) / (1000));
-    if (caltyp != 33) {
-        return YAPI_NOT_SUPPORTED;
-    }
-    res = ((iCalib[1]) / (1000));
-    return res;
+	calibParam = this->get_calibrationParam();
+	iCalib = YAPI::_decodeFloats(calibParam);
+	caltyp = ((iCalib[0]) / (1000));
+	if (caltyp != 33)
+	{
+		return YAPI_NOT_SUPPORTED;
+	}
+	res = ((iCalib[1]) / (1000));
+	return res;
 }
 
 /**
@@ -451,60 +500,66 @@ int YRefFrame::get_calibrationState(void)
  */
 int YRefFrame::get_measureQuality(void)
 {
-    string calibParam;
-    vector<int> iCalib;
-    int caltyp = 0;
-    int res = 0;
+	string calibParam;
+	vector<int> iCalib;
+	int caltyp = 0;
+	int res = 0;
 
-    calibParam = this->get_calibrationParam();
-    iCalib = YAPI::_decodeFloats(calibParam);
-    caltyp = ((iCalib[0]) / (1000));
-    if (caltyp != 33) {
-        return YAPI_NOT_SUPPORTED;
-    }
-    res = ((iCalib[2]) / (1000));
-    return res;
+	calibParam = this->get_calibrationParam();
+	iCalib = YAPI::_decodeFloats(calibParam);
+	caltyp = ((iCalib[0]) / (1000));
+	if (caltyp != 33)
+	{
+		return YAPI_NOT_SUPPORTED;
+	}
+	res = ((iCalib[2]) / (1000));
+	return res;
 }
 
-int YRefFrame::_calibSort(int start,int stopidx)
+int YRefFrame::_calibSort(int start, int stopidx)
 {
-    int idx = 0;
-    int changed = 0;
-    double a = 0.0;
-    double b = 0.0;
-    double xa = 0.0;
-    double xb = 0.0;
-    // bubble sort is good since we will re-sort again after offset adjustment
-    changed = 1;
-    while (changed > 0) {
-        changed = 0;
-        a = _calibDataAcc[start];
-        idx = start + 1;
-        while (idx < stopidx) {
-            b = _calibDataAcc[idx];
-            if (a > b) {
-                _calibDataAcc[idx-1] = b;
-                _calibDataAcc[idx] = a;
-                xa = _calibDataAccX[idx-1];
-                xb = _calibDataAccX[idx];
-                _calibDataAccX[idx-1] = xb;
-                _calibDataAccX[idx] = xa;
-                xa = _calibDataAccY[idx-1];
-                xb = _calibDataAccY[idx];
-                _calibDataAccY[idx-1] = xb;
-                _calibDataAccY[idx] = xa;
-                xa = _calibDataAccZ[idx-1];
-                xb = _calibDataAccZ[idx];
-                _calibDataAccZ[idx-1] = xb;
-                _calibDataAccZ[idx] = xa;
-                changed = changed + 1;
-            } else {
-                a = b;
-            }
-            idx = idx + 1;
-        }
-    }
-    return 0;
+	int idx = 0;
+	int changed = 0;
+	double a = 0.0;
+	double b = 0.0;
+	double xa = 0.0;
+	double xb = 0.0;
+	// bubble sort is good since we will re-sort again after offset adjustment
+	changed = 1;
+	while (changed > 0)
+	{
+		changed = 0;
+		a = _calibDataAcc[start];
+		idx = start + 1;
+		while (idx < stopidx)
+		{
+			b = _calibDataAcc[idx];
+			if (a > b)
+			{
+				_calibDataAcc[idx - 1] = b;
+				_calibDataAcc[idx] = a;
+				xa = _calibDataAccX[idx - 1];
+				xb = _calibDataAccX[idx];
+				_calibDataAccX[idx - 1] = xb;
+				_calibDataAccX[idx] = xa;
+				xa = _calibDataAccY[idx - 1];
+				xb = _calibDataAccY[idx];
+				_calibDataAccY[idx - 1] = xb;
+				_calibDataAccY[idx] = xa;
+				xa = _calibDataAccZ[idx - 1];
+				xb = _calibDataAccZ[idx];
+				_calibDataAccZ[idx - 1] = xb;
+				_calibDataAccZ[idx] = xa;
+				changed = changed + 1;
+			}
+			else
+			{
+				a = b;
+			}
+			idx = idx + 1;
+		}
+	}
+	return 0;
 }
 
 /**
@@ -525,28 +580,30 @@ int YRefFrame::_calibSort(int start,int stopidx)
  */
 int YRefFrame::start3DCalibration(void)
 {
-    if (!(this->isOnline())) {
-        return YAPI_DEVICE_NOT_FOUND;
-    }
-    if (_calibStage != 0) {
-        this->cancel3DCalibration();
-    }
-    _calibSavedParams = this->get_calibrationParam();
-    _calibV2 = (atoi((_calibSavedParams).c_str()) == 33);
-    this->set_calibrationParam("0");
-    _calibCount = 50;
-    _calibStage = 1;
-    _calibStageHint = "Set down the device on a steady horizontal surface";
-    _calibStageProgress = 0;
-    _calibProgress = 1;
-    _calibInternalPos = 0;
-    _calibPrevTick = (int) ((YAPI::GetTickCount()) & (0x7FFFFFFF));
-    _calibOrient.clear();
-    _calibDataAccX.clear();
-    _calibDataAccY.clear();
-    _calibDataAccZ.clear();
-    _calibDataAcc.clear();
-    return YAPI_SUCCESS;
+	if (!(this->isOnline()))
+	{
+		return YAPI_DEVICE_NOT_FOUND;
+	}
+	if (_calibStage != 0)
+	{
+		this->cancel3DCalibration();
+	}
+	_calibSavedParams = this->get_calibrationParam();
+	_calibV2 = (atoi((_calibSavedParams).c_str()) == 33);
+	this->set_calibrationParam("0");
+	_calibCount = 50;
+	_calibStage = 1;
+	_calibStageHint = "Set down the device on a steady horizontal surface";
+	_calibStageProgress = 0;
+	_calibProgress = 1;
+	_calibInternalPos = 0;
+	_calibPrevTick = (int)((YAPI::GetTickCount()) & (0x7FFFFFFF));
+	_calibOrient.clear();
+	_calibDataAccX.clear();
+	_calibDataAccY.clear();
+	_calibDataAccZ.clear();
+	_calibDataAcc.clear();
+	return YAPI_SUCCESS;
 }
 
 /**
@@ -561,270 +618,325 @@ int YRefFrame::start3DCalibration(void)
  */
 int YRefFrame::more3DCalibration(void)
 {
-    if (_calibV2) {
-        return this->more3DCalibrationV2();
-    }
-    return this->more3DCalibrationV1();
+	if (_calibV2)
+	{
+		return this->more3DCalibrationV2();
+	}
+	return this->more3DCalibrationV1();
 }
 
 int YRefFrame::more3DCalibrationV1(void)
 {
-    int currTick = 0;
-    string jsonData;
-    double xVal = 0.0;
-    double yVal = 0.0;
-    double zVal = 0.0;
-    double xSq = 0.0;
-    double ySq = 0.0;
-    double zSq = 0.0;
-    double norm = 0.0;
-    int orient = 0;
-    int idx = 0;
-    int intpos = 0;
-    int err = 0;
-    // make sure calibration has been started
-    if (_calibStage == 0) {
-        return YAPI_INVALID_ARGUMENT;
-    }
-    if (_calibProgress == 100) {
-        return YAPI_SUCCESS;
-    }
-    // make sure we leave at least 160ms between samples
-    currTick =  (int) ((YAPI::GetTickCount()) & (0x7FFFFFFF));
-    if (((currTick - _calibPrevTick) & (0x7FFFFFFF)) < 160) {
-        return YAPI_SUCCESS;
-    }
-    // load current accelerometer values, make sure we are on a straight angle
-    // (default timeout to 0,5 sec without reading measure when out of range)
-    _calibStageHint = "Set down the device on a steady horizontal surface";
-    _calibPrevTick = ((currTick + 500) & (0x7FFFFFFF));
-    jsonData = this->_download("api/accelerometer.json");
-    xVal = atoi((this->_json_get_key(jsonData, "xValue")).c_str()) / 65536.0;
-    yVal = atoi((this->_json_get_key(jsonData, "yValue")).c_str()) / 65536.0;
-    zVal = atoi((this->_json_get_key(jsonData, "zValue")).c_str()) / 65536.0;
-    xSq = xVal * xVal;
-    if (xSq >= 0.04 && xSq < 0.64) {
-        return YAPI_SUCCESS;
-    }
-    if (xSq >= 1.44) {
-        return YAPI_SUCCESS;
-    }
-    ySq = yVal * yVal;
-    if (ySq >= 0.04 && ySq < 0.64) {
-        return YAPI_SUCCESS;
-    }
-    if (ySq >= 1.44) {
-        return YAPI_SUCCESS;
-    }
-    zSq = zVal * zVal;
-    if (zSq >= 0.04 && zSq < 0.64) {
-        return YAPI_SUCCESS;
-    }
-    if (zSq >= 1.44) {
-        return YAPI_SUCCESS;
-    }
-    norm = sqrt(xSq + ySq + zSq);
-    if (norm < 0.8 || norm > 1.2) {
-        return YAPI_SUCCESS;
-    }
-    _calibPrevTick = currTick;
-    // Determine the device orientation index
-    orient = 0;
-    if (zSq > 0.5) {
-        if (zVal > 0) {
-            orient = 0;
-        } else {
-            orient = 1;
-        }
-    }
-    if (xSq > 0.5) {
-        if (xVal > 0) {
-            orient = 2;
-        } else {
-            orient = 3;
-        }
-    }
-    if (ySq > 0.5) {
-        if (yVal > 0) {
-            orient = 4;
-        } else {
-            orient = 5;
-        }
-    }
-    // Discard measures that are not in the proper orientation
-    if (_calibStageProgress == 0) {
-        // New stage, check that this orientation is not yet done
-        idx = 0;
-        err = 0;
-        while (idx + 1 < _calibStage) {
-            if (_calibOrient[idx] == orient) {
-                err = 1;
-            }
-            idx = idx + 1;
-        }
-        if (err != 0) {
-            _calibStageHint = "Turn the device on another face";
-            return YAPI_SUCCESS;
-        }
-        _calibOrient.push_back(orient);
-    } else {
-        // Make sure device is not turned before stage is completed
-        if (orient != _calibOrient[_calibStage-1]) {
-            _calibStageHint = "Not yet done, please move back to the previous face";
-            return YAPI_SUCCESS;
-        }
-    }
-    // Save measure
-    _calibStageHint = "calibrating...";
-    _calibDataAccX.push_back(xVal);
-    _calibDataAccY.push_back(yVal);
-    _calibDataAccZ.push_back(zVal);
-    _calibDataAcc.push_back(norm);
-    _calibInternalPos = _calibInternalPos + 1;
-    _calibProgress = 1 + 16 * (_calibStage - 1) + ((16 * _calibInternalPos) / (_calibCount));
-    if (_calibInternalPos < _calibCount) {
-        _calibStageProgress = 1 + ((99 * _calibInternalPos) / (_calibCount));
-        return YAPI_SUCCESS;
-    }
-    // Stage done, compute preliminary result
-    intpos = (_calibStage - 1) * _calibCount;
-    this->_calibSort(intpos, intpos + _calibCount);
-    intpos = intpos + ((_calibCount) / (2));
-    _calibLogMsg = YapiWrapper::ysprintf("Stage %d: median is %d,%d,%d", _calibStage,
-    (int) floor(1000*_calibDataAccX[intpos]+0.5),
-    (int) floor(1000*_calibDataAccY[intpos]+0.5),(int) floor(1000*_calibDataAccZ[intpos]+0.5));
-    // move to next stage
-    _calibStage = _calibStage + 1;
-    if (_calibStage < 7) {
-        _calibStageHint = "Turn the device on another face";
-        _calibPrevTick = ((currTick + 500) & (0x7FFFFFFF));
-        _calibStageProgress = 0;
-        _calibInternalPos = 0;
-        return YAPI_SUCCESS;
-    }
-    // Data collection completed, compute accelerometer shift
-    xVal = 0;
-    yVal = 0;
-    zVal = 0;
-    idx = 0;
-    while (idx < 6) {
-        intpos = idx * _calibCount + ((_calibCount) / (2));
-        orient = _calibOrient[idx];
-        if (orient == 0 || orient == 1) {
-            zVal = zVal + _calibDataAccZ[intpos];
-        }
-        if (orient == 2 || orient == 3) {
-            xVal = xVal + _calibDataAccX[intpos];
-        }
-        if (orient == 4 || orient == 5) {
-            yVal = yVal + _calibDataAccY[intpos];
-        }
-        idx = idx + 1;
-    }
-    _calibAccXOfs = xVal / 2.0;
-    _calibAccYOfs = yVal / 2.0;
-    _calibAccZOfs = zVal / 2.0;
-    // Recompute all norms, taking into account the computed shift, and re-sort
-    intpos = 0;
-    while (intpos < (int)_calibDataAcc.size()) {
-        xVal = _calibDataAccX[intpos] - _calibAccXOfs;
-        yVal = _calibDataAccY[intpos] - _calibAccYOfs;
-        zVal = _calibDataAccZ[intpos] - _calibAccZOfs;
-        norm = sqrt(xVal * xVal + yVal * yVal + zVal * zVal);
-        _calibDataAcc[intpos] = norm;
-        intpos = intpos + 1;
-    }
-    idx = 0;
-    while (idx < 6) {
-        intpos = idx * _calibCount;
-        this->_calibSort(intpos, intpos + _calibCount);
-        idx = idx + 1;
-    }
-    // Compute the scaling factor for each axis
-    xVal = 0;
-    yVal = 0;
-    zVal = 0;
-    idx = 0;
-    while (idx < 6) {
-        intpos = idx * _calibCount + ((_calibCount) / (2));
-        orient = _calibOrient[idx];
-        if (orient == 0 || orient == 1) {
-            zVal = zVal + _calibDataAcc[intpos];
-        }
-        if (orient == 2 || orient == 3) {
-            xVal = xVal + _calibDataAcc[intpos];
-        }
-        if (orient == 4 || orient == 5) {
-            yVal = yVal + _calibDataAcc[intpos];
-        }
-        idx = idx + 1;
-    }
-    _calibAccXScale = xVal / 2.0;
-    _calibAccYScale = yVal / 2.0;
-    _calibAccZScale = zVal / 2.0;
-    // Report completion
-    _calibProgress = 100;
-    _calibStageHint = "Calibration data ready for saving";
-    return YAPI_SUCCESS;
+	int currTick = 0;
+	string jsonData;
+	double xVal = 0.0;
+	double yVal = 0.0;
+	double zVal = 0.0;
+	double xSq = 0.0;
+	double ySq = 0.0;
+	double zSq = 0.0;
+	double norm = 0.0;
+	int orient = 0;
+	int idx = 0;
+	int intpos = 0;
+	int err = 0;
+	// make sure calibration has been started
+	if (_calibStage == 0)
+	{
+		return YAPI_INVALID_ARGUMENT;
+	}
+	if (_calibProgress == 100)
+	{
+		return YAPI_SUCCESS;
+	}
+	// make sure we leave at least 160ms between samples
+	currTick = (int)((YAPI::GetTickCount()) & (0x7FFFFFFF));
+	if (((currTick - _calibPrevTick) & (0x7FFFFFFF)) < 160)
+	{
+		return YAPI_SUCCESS;
+	}
+	// load current accelerometer values, make sure we are on a straight angle
+	// (default timeout to 0,5 sec without reading measure when out of range)
+	_calibStageHint = "Set down the device on a steady horizontal surface";
+	_calibPrevTick = ((currTick + 500) & (0x7FFFFFFF));
+	jsonData = this->_download("api/accelerometer.json");
+	xVal = atoi((this->_json_get_key(jsonData, "xValue")).c_str()) / 65536.0;
+	yVal = atoi((this->_json_get_key(jsonData, "yValue")).c_str()) / 65536.0;
+	zVal = atoi((this->_json_get_key(jsonData, "zValue")).c_str()) / 65536.0;
+	xSq = xVal * xVal;
+	if (xSq >= 0.04 && xSq < 0.64)
+	{
+		return YAPI_SUCCESS;
+	}
+	if (xSq >= 1.44)
+	{
+		return YAPI_SUCCESS;
+	}
+	ySq = yVal * yVal;
+	if (ySq >= 0.04 && ySq < 0.64)
+	{
+		return YAPI_SUCCESS;
+	}
+	if (ySq >= 1.44)
+	{
+		return YAPI_SUCCESS;
+	}
+	zSq = zVal * zVal;
+	if (zSq >= 0.04 && zSq < 0.64)
+	{
+		return YAPI_SUCCESS;
+	}
+	if (zSq >= 1.44)
+	{
+		return YAPI_SUCCESS;
+	}
+	norm = sqrt(xSq + ySq + zSq);
+	if (norm < 0.8 || norm > 1.2)
+	{
+		return YAPI_SUCCESS;
+	}
+	_calibPrevTick = currTick;
+	// Determine the device orientation index
+	orient = 0;
+	if (zSq > 0.5)
+	{
+		if (zVal > 0)
+		{
+			orient = 0;
+		}
+		else
+		{
+			orient = 1;
+		}
+	}
+	if (xSq > 0.5)
+	{
+		if (xVal > 0)
+		{
+			orient = 2;
+		}
+		else
+		{
+			orient = 3;
+		}
+	}
+	if (ySq > 0.5)
+	{
+		if (yVal > 0)
+		{
+			orient = 4;
+		}
+		else
+		{
+			orient = 5;
+		}
+	}
+	// Discard measures that are not in the proper orientation
+	if (_calibStageProgress == 0)
+	{
+		// New stage, check that this orientation is not yet done
+		idx = 0;
+		err = 0;
+		while (idx + 1 < _calibStage)
+		{
+			if (_calibOrient[idx] == orient)
+			{
+				err = 1;
+			}
+			idx = idx + 1;
+		}
+		if (err != 0)
+		{
+			_calibStageHint = "Turn the device on another face";
+			return YAPI_SUCCESS;
+		}
+		_calibOrient.push_back(orient);
+	}
+	else
+	{
+		// Make sure device is not turned before stage is completed
+		if (orient != _calibOrient[_calibStage - 1])
+		{
+			_calibStageHint = "Not yet done, please move back to the previous face";
+			return YAPI_SUCCESS;
+		}
+	}
+	// Save measure
+	_calibStageHint = "calibrating...";
+	_calibDataAccX.push_back(xVal);
+	_calibDataAccY.push_back(yVal);
+	_calibDataAccZ.push_back(zVal);
+	_calibDataAcc.push_back(norm);
+	_calibInternalPos = _calibInternalPos + 1;
+	_calibProgress = 1 + 16 * (_calibStage - 1) + ((16 * _calibInternalPos) / (_calibCount));
+	if (_calibInternalPos < _calibCount)
+	{
+		_calibStageProgress = 1 + ((99 * _calibInternalPos) / (_calibCount));
+		return YAPI_SUCCESS;
+	}
+	// Stage done, compute preliminary result
+	intpos = (_calibStage - 1) * _calibCount;
+	this->_calibSort(intpos, intpos + _calibCount);
+	intpos = intpos + ((_calibCount) / (2));
+	_calibLogMsg = YapiWrapper::ysprintf("Stage %d: median is %d,%d,%d", _calibStage,
+	                                     (int)floor(1000 * _calibDataAccX[intpos] + 0.5),
+	                                     (int)floor(1000 * _calibDataAccY[intpos] + 0.5), (int)floor(1000 * _calibDataAccZ[intpos] + 0.5));
+	// move to next stage
+	_calibStage = _calibStage + 1;
+	if (_calibStage < 7)
+	{
+		_calibStageHint = "Turn the device on another face";
+		_calibPrevTick = ((currTick + 500) & (0x7FFFFFFF));
+		_calibStageProgress = 0;
+		_calibInternalPos = 0;
+		return YAPI_SUCCESS;
+	}
+	// Data collection completed, compute accelerometer shift
+	xVal = 0;
+	yVal = 0;
+	zVal = 0;
+	idx = 0;
+	while (idx < 6)
+	{
+		intpos = idx * _calibCount + ((_calibCount) / (2));
+		orient = _calibOrient[idx];
+		if (orient == 0 || orient == 1)
+		{
+			zVal = zVal + _calibDataAccZ[intpos];
+		}
+		if (orient == 2 || orient == 3)
+		{
+			xVal = xVal + _calibDataAccX[intpos];
+		}
+		if (orient == 4 || orient == 5)
+		{
+			yVal = yVal + _calibDataAccY[intpos];
+		}
+		idx = idx + 1;
+	}
+	_calibAccXOfs = xVal / 2.0;
+	_calibAccYOfs = yVal / 2.0;
+	_calibAccZOfs = zVal / 2.0;
+	// Recompute all norms, taking into account the computed shift, and re-sort
+	intpos = 0;
+	while (intpos < (int)_calibDataAcc.size())
+	{
+		xVal = _calibDataAccX[intpos] - _calibAccXOfs;
+		yVal = _calibDataAccY[intpos] - _calibAccYOfs;
+		zVal = _calibDataAccZ[intpos] - _calibAccZOfs;
+		norm = sqrt(xVal * xVal + yVal * yVal + zVal * zVal);
+		_calibDataAcc[intpos] = norm;
+		intpos = intpos + 1;
+	}
+	idx = 0;
+	while (idx < 6)
+	{
+		intpos = idx * _calibCount;
+		this->_calibSort(intpos, intpos + _calibCount);
+		idx = idx + 1;
+	}
+	// Compute the scaling factor for each axis
+	xVal = 0;
+	yVal = 0;
+	zVal = 0;
+	idx = 0;
+	while (idx < 6)
+	{
+		intpos = idx * _calibCount + ((_calibCount) / (2));
+		orient = _calibOrient[idx];
+		if (orient == 0 || orient == 1)
+		{
+			zVal = zVal + _calibDataAcc[intpos];
+		}
+		if (orient == 2 || orient == 3)
+		{
+			xVal = xVal + _calibDataAcc[intpos];
+		}
+		if (orient == 4 || orient == 5)
+		{
+			yVal = yVal + _calibDataAcc[intpos];
+		}
+		idx = idx + 1;
+	}
+	_calibAccXScale = xVal / 2.0;
+	_calibAccYScale = yVal / 2.0;
+	_calibAccZScale = zVal / 2.0;
+	// Report completion
+	_calibProgress = 100;
+	_calibStageHint = "Calibration data ready for saving";
+	return YAPI_SUCCESS;
 }
 
 int YRefFrame::more3DCalibrationV2(void)
 {
-    int currTick = 0;
-    string calibParam;
-    vector<int> iCalib;
-    int cal3 = 0;
-    int calAcc = 0;
-    int calMag = 0;
-    int calGyr = 0;
-    // make sure calibration has been started
-    if (_calibStage == 0) {
-        return YAPI_INVALID_ARGUMENT;
-    }
-    if (_calibProgress == 100) {
-        return YAPI_SUCCESS;
-    }
-    // make sure we don't start before previous calibration is cleared
-    if (_calibStage == 1) {
-        currTick = (int) ((YAPI::GetTickCount()) & (0x7FFFFFFF));
-        currTick = ((currTick - _calibPrevTick) & (0x7FFFFFFF));
-        if (currTick < 1600) {
-            _calibStageHint = "Set down the device on a steady horizontal surface";
-            _calibStageProgress = ((currTick) / (40));
-            _calibProgress = 1;
-            return YAPI_SUCCESS;
-        }
-    }
+	int currTick = 0;
+	string calibParam;
+	vector<int> iCalib;
+	int cal3 = 0;
+	int calAcc = 0;
+	int calMag = 0;
+	int calGyr = 0;
+	// make sure calibration has been started
+	if (_calibStage == 0)
+	{
+		return YAPI_INVALID_ARGUMENT;
+	}
+	if (_calibProgress == 100)
+	{
+		return YAPI_SUCCESS;
+	}
+	// make sure we don't start before previous calibration is cleared
+	if (_calibStage == 1)
+	{
+		currTick = (int)((YAPI::GetTickCount()) & (0x7FFFFFFF));
+		currTick = ((currTick - _calibPrevTick) & (0x7FFFFFFF));
+		if (currTick < 1600)
+		{
+			_calibStageHint = "Set down the device on a steady horizontal surface";
+			_calibStageProgress = ((currTick) / (40));
+			_calibProgress = 1;
+			return YAPI_SUCCESS;
+		}
+	}
 
-    calibParam = this->_download("api/refFrame/calibrationParam.txt");
-    iCalib = YAPI::_decodeFloats(calibParam);
-    cal3 = ((iCalib[1]) / (1000));
-    calAcc = ((cal3) / (100));
-    calMag = ((cal3) / (10)) - 10*calAcc;
-    calGyr = ((cal3) % (10));
-    if (calGyr < 3) {
-        _calibStageHint = "Set down the device on a steady horizontal surface";
-        _calibStageProgress = 40 + calGyr*20;
-        _calibProgress = 4 + calGyr*2;
-    } else {
-        _calibStage = 2;
-        if (calMag < 3) {
-            _calibStageHint = "Slowly draw '8' shapes along the 3 axis";
-            _calibStageProgress = 1 + calMag*33;
-            _calibProgress = 10 + calMag*5;
-        } else {
-            _calibStage = 3;
-            if (calAcc < 3) {
-                _calibStageHint = "Slowly turn the device, stopping at each 90 degrees";
-                _calibStageProgress = 1 + calAcc*33;
-                _calibProgress = 25 + calAcc*25;
-            } else {
-                _calibStageProgress = 99;
-                _calibProgress = 100;
-            }
-        }
-    }
-    return YAPI_SUCCESS;
+	calibParam = this->_download("api/refFrame/calibrationParam.txt");
+	iCalib = YAPI::_decodeFloats(calibParam);
+	cal3 = ((iCalib[1]) / (1000));
+	calAcc = ((cal3) / (100));
+	calMag = ((cal3) / (10)) - 10 * calAcc;
+	calGyr = ((cal3) % (10));
+	if (calGyr < 3)
+	{
+		_calibStageHint = "Set down the device on a steady horizontal surface";
+		_calibStageProgress = 40 + calGyr * 20;
+		_calibProgress = 4 + calGyr * 2;
+	}
+	else
+	{
+		_calibStage = 2;
+		if (calMag < 3)
+		{
+			_calibStageHint = "Slowly draw '8' shapes along the 3 axis";
+			_calibStageProgress = 1 + calMag * 33;
+			_calibProgress = 10 + calMag * 5;
+		}
+		else
+		{
+			_calibStage = 3;
+			if (calAcc < 3)
+			{
+				_calibStageHint = "Slowly turn the device, stopping at each 90 degrees";
+				_calibStageProgress = 1 + calAcc * 33;
+				_calibProgress = 25 + calAcc * 25;
+			}
+			else
+			{
+				_calibStageProgress = 99;
+				_calibProgress = 100;
+			}
+		}
+	}
+	return YAPI_SUCCESS;
 }
 
 /**
@@ -835,7 +947,7 @@ int YRefFrame::more3DCalibrationV2(void)
  */
 string YRefFrame::get_3DCalibrationHint(void)
 {
-    return _calibStageHint;
+	return _calibStageHint;
 }
 
 /**
@@ -846,7 +958,7 @@ string YRefFrame::get_3DCalibrationHint(void)
  */
 int YRefFrame::get_3DCalibrationProgress(void)
 {
-    return _calibProgress;
+	return _calibProgress;
 }
 
 /**
@@ -857,7 +969,7 @@ int YRefFrame::get_3DCalibrationProgress(void)
  */
 int YRefFrame::get_3DCalibrationStage(void)
 {
-    return _calibStage;
+	return _calibStage;
 }
 
 /**
@@ -868,7 +980,7 @@ int YRefFrame::get_3DCalibrationStage(void)
  */
 int YRefFrame::get_3DCalibrationStageProgress(void)
 {
-    return _calibStageProgress;
+	return _calibStageProgress;
 }
 
 /**
@@ -879,10 +991,10 @@ int YRefFrame::get_3DCalibrationStageProgress(void)
  */
 string YRefFrame::get_3DCalibrationLogMsg(void)
 {
-    string msg;
-    msg = _calibLogMsg;
-    _calibLogMsg = "";
-    return msg;
+	string msg;
+	msg = _calibLogMsg;
+	_calibLogMsg = "";
+	return msg;
 }
 
 /**
@@ -894,81 +1006,99 @@ string YRefFrame::get_3DCalibrationLogMsg(void)
  */
 int YRefFrame::save3DCalibration(void)
 {
-    if (_calibV2) {
-        return this->save3DCalibrationV2();
-    }
-    return this->save3DCalibrationV1();
+	if (_calibV2)
+	{
+		return this->save3DCalibrationV2();
+	}
+	return this->save3DCalibrationV1();
 }
 
 int YRefFrame::save3DCalibrationV1(void)
 {
-    int shiftX = 0;
-    int shiftY = 0;
-    int shiftZ = 0;
-    int scaleExp = 0;
-    int scaleX = 0;
-    int scaleY = 0;
-    int scaleZ = 0;
-    int scaleLo = 0;
-    int scaleHi = 0;
-    string newcalib;
-    if (_calibProgress != 100) {
-        return YAPI_INVALID_ARGUMENT;
-    }
-    // Compute integer values (correction unit is 732ug/count)
-    shiftX = -(int) floor(_calibAccXOfs / 0.000732+0.5);
-    if (shiftX < 0) {
-        shiftX = shiftX + 65536;
-    }
-    shiftY = -(int) floor(_calibAccYOfs / 0.000732+0.5);
-    if (shiftY < 0) {
-        shiftY = shiftY + 65536;
-    }
-    shiftZ = -(int) floor(_calibAccZOfs / 0.000732+0.5);
-    if (shiftZ < 0) {
-        shiftZ = shiftZ + 65536;
-    }
-    scaleX = (int) floor(2048.0 / _calibAccXScale+0.5) - 2048;
-    scaleY = (int) floor(2048.0 / _calibAccYScale+0.5) - 2048;
-    scaleZ = (int) floor(2048.0 / _calibAccZScale+0.5) - 2048;
-    if (scaleX < -2048 || scaleX >= 2048 || scaleY < -2048 || scaleY >= 2048 || scaleZ < -2048 || scaleZ >= 2048) {
-        scaleExp = 3;
-    } else {
-        if (scaleX < -1024 || scaleX >= 1024 || scaleY < -1024 || scaleY >= 1024 || scaleZ < -1024 || scaleZ >= 1024) {
-            scaleExp = 2;
-        } else {
-            if (scaleX < -512 || scaleX >= 512 || scaleY < -512 || scaleY >= 512 || scaleZ < -512 || scaleZ >= 512) {
-                scaleExp = 1;
-            } else {
-                scaleExp = 0;
-            }
-        }
-    }
-    if (scaleExp > 0) {
-        scaleX = ((scaleX) >> (scaleExp));
-        scaleY = ((scaleY) >> (scaleExp));
-        scaleZ = ((scaleZ) >> (scaleExp));
-    }
-    if (scaleX < 0) {
-        scaleX = scaleX + 1024;
-    }
-    if (scaleY < 0) {
-        scaleY = scaleY + 1024;
-    }
-    if (scaleZ < 0) {
-        scaleZ = scaleZ + 1024;
-    }
-    scaleLo = ((((scaleY) & (15))) << (12)) + ((scaleX) << (2)) + scaleExp;
-    scaleHi = ((scaleZ) << (6)) + ((scaleY) >> (4));
-    // Save calibration parameters
-    newcalib = YapiWrapper::ysprintf("5,%d,%d,%d,%d,%d", shiftX, shiftY, shiftZ, scaleLo,scaleHi);
-    _calibStage = 0;
-    return this->set_calibrationParam(newcalib);
+	int shiftX = 0;
+	int shiftY = 0;
+	int shiftZ = 0;
+	int scaleExp = 0;
+	int scaleX = 0;
+	int scaleY = 0;
+	int scaleZ = 0;
+	int scaleLo = 0;
+	int scaleHi = 0;
+	string newcalib;
+	if (_calibProgress != 100)
+	{
+		return YAPI_INVALID_ARGUMENT;
+	}
+	// Compute integer values (correction unit is 732ug/count)
+	shiftX = -(int)floor(_calibAccXOfs / 0.000732 + 0.5);
+	if (shiftX < 0)
+	{
+		shiftX = shiftX + 65536;
+	}
+	shiftY = -(int)floor(_calibAccYOfs / 0.000732 + 0.5);
+	if (shiftY < 0)
+	{
+		shiftY = shiftY + 65536;
+	}
+	shiftZ = -(int)floor(_calibAccZOfs / 0.000732 + 0.5);
+	if (shiftZ < 0)
+	{
+		shiftZ = shiftZ + 65536;
+	}
+	scaleX = (int)floor(2048.0 / _calibAccXScale + 0.5) - 2048;
+	scaleY = (int)floor(2048.0 / _calibAccYScale + 0.5) - 2048;
+	scaleZ = (int)floor(2048.0 / _calibAccZScale + 0.5) - 2048;
+	if (scaleX < -2048 || scaleX >= 2048 || scaleY < -2048 || scaleY >= 2048 || scaleZ < -2048 || scaleZ >= 2048)
+	{
+		scaleExp = 3;
+	}
+	else
+	{
+		if (scaleX < -1024 || scaleX >= 1024 || scaleY < -1024 || scaleY >= 1024 || scaleZ < -1024 || scaleZ >= 1024)
+		{
+			scaleExp = 2;
+		}
+		else
+		{
+			if (scaleX < -512 || scaleX >= 512 || scaleY < -512 || scaleY >= 512 || scaleZ < -512 || scaleZ >= 512)
+			{
+				scaleExp = 1;
+			}
+			else
+			{
+				scaleExp = 0;
+			}
+		}
+	}
+	if (scaleExp > 0)
+	{
+		scaleX = ((scaleX) >> (scaleExp));
+		scaleY = ((scaleY) >> (scaleExp));
+		scaleZ = ((scaleZ) >> (scaleExp));
+	}
+	if (scaleX < 0)
+	{
+		scaleX = scaleX + 1024;
+	}
+	if (scaleY < 0)
+	{
+		scaleY = scaleY + 1024;
+	}
+	if (scaleZ < 0)
+	{
+		scaleZ = scaleZ + 1024;
+	}
+	scaleLo = ((((scaleY) & (15))) << (12)) + ((scaleX) << (2)) + scaleExp;
+	scaleHi = ((scaleZ) << (6)) + ((scaleY) >> (4));
+	// Save calibration parameters
+	newcalib = YapiWrapper::ysprintf("5,%d,%d,%d,%d,%d", shiftX, shiftY, shiftZ, scaleLo, scaleHi);
+	_calibStage = 0;
+	return this->set_calibrationParam(newcalib);
 }
 
 int YRefFrame::save3DCalibrationV2(void)
 {
-    return this->set_calibrationParam("5,5,5,5,5,5");
+	return this->set_calibrationParam("5,5,5,5,5,5");
 }
 
 /**
@@ -978,36 +1108,39 @@ int YRefFrame::save3DCalibrationV2(void)
  */
 int YRefFrame::cancel3DCalibration(void)
 {
-    if (_calibStage == 0) {
-        return YAPI_SUCCESS;
-    }
+	if (_calibStage == 0)
+	{
+		return YAPI_SUCCESS;
+	}
 
-    _calibStage = 0;
-    return this->set_calibrationParam(_calibSavedParams);
+	_calibStage = 0;
+	return this->set_calibrationParam(_calibSavedParams);
 }
 
-YRefFrame *YRefFrame::nextRefFrame(void)
+YRefFrame* YRefFrame::nextRefFrame(void)
 {
-    string  hwid;
+	string hwid;
 
-    if(YISERR(_nextFunction(hwid)) || hwid=="") {
-        return NULL;
-    }
-    return YRefFrame::FindRefFrame(hwid);
+	if (YISERR(_nextFunction(hwid)) || hwid == "")
+	{
+		return NULL;
+	}
+	return YRefFrame::FindRefFrame(hwid);
 }
 
 YRefFrame* YRefFrame::FirstRefFrame(void)
 {
-    vector<YFUN_DESCR>   v_fundescr;
-    YDEV_DESCR             ydevice;
-    string              serial, funcId, funcName, funcVal, errmsg;
+	vector<YFUN_DESCR> v_fundescr;
+	YDEV_DESCR ydevice;
+	string serial, funcId, funcName, funcVal, errmsg;
 
-    if(YISERR(YapiWrapper::getFunctionsByClass("RefFrame", 0, v_fundescr, sizeof(YFUN_DESCR), errmsg)) ||
-       v_fundescr.size() == 0 ||
-       YISERR(YapiWrapper::getFunctionInfo(v_fundescr[0], ydevice, serial, funcId, funcName, funcVal, errmsg))) {
-        return NULL;
-    }
-    return YRefFrame::FindRefFrame(serial+"."+funcId);
+	if (YISERR(YapiWrapper::getFunctionsByClass("RefFrame", 0, v_fundescr, sizeof(YFUN_DESCR), errmsg)) ||
+		v_fundescr.size() == 0 ||
+		YISERR(YapiWrapper::getFunctionInfo(v_fundescr[0], ydevice, serial, funcId, funcName, funcVal, errmsg)))
+	{
+		return NULL;
+	}
+	return YRefFrame::FindRefFrame(serial + "." + funcId);
 }
 
 //--- (end of YRefFrame implementation)

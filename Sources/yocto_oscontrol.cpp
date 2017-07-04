@@ -49,28 +49,30 @@
 #define  __FILE_ID__  "oscontrol"
 
 YOsControl::YOsControl(const string& func): YFunction(func)
-//--- (OsControl initialization)
-    ,_shutdownCountdown(SHUTDOWNCOUNTDOWN_INVALID)
-    ,_valueCallbackOsControl(NULL)
+                                            //--- (OsControl initialization)
+                                            , _shutdownCountdown(SHUTDOWNCOUNTDOWN_INVALID)
+                                            , _valueCallbackOsControl(NULL)
 //--- (end of OsControl initialization)
 {
-    _className="OsControl";
+	_className = "OsControl";
 }
 
 YOsControl::~YOsControl()
 {
-//--- (YOsControl cleanup)
-//--- (end of YOsControl cleanup)
+	//--- (YOsControl cleanup)
+	//--- (end of YOsControl cleanup)
 }
+
 //--- (YOsControl implementation)
 // static attributes
 
 int YOsControl::_parseAttr(YJSONObject* json_val)
 {
-    if(json_val->has("shutdownCountdown")) {
-        _shutdownCountdown =  json_val->getInt("shutdownCountdown");
-    }
-    return YFunction::_parseAttr(json_val);
+	if (json_val->has("shutdownCountdown"))
+	{
+		_shutdownCountdown = json_val->getInt("shutdownCountdown");
+	}
+	return YFunction::_parseAttr(json_val);
 }
 
 
@@ -85,40 +87,50 @@ int YOsControl::_parseAttr(YJSONObject* json_val)
  */
 int YOsControl::get_shutdownCountdown(void)
 {
-    int res = 0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YOsControl::SHUTDOWNCOUNTDOWN_INVALID;
-                }
-            }
-        }
-        res = _shutdownCountdown;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	int res = 0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YOsControl::SHUTDOWNCOUNTDOWN_INVALID;
+				}
+			}
+		}
+		res = _shutdownCountdown;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 int YOsControl::set_shutdownCountdown(int newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        char buf[32]; sprintf(buf, "%d", newval); rest_val = string(buf);
-        res = _setAttr("shutdownCountdown", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		char buf[32];
+		sprintf(buf, "%d", newval);
+		rest_val = string(buf);
+		res = _setAttr("shutdownCountdown", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -146,23 +158,29 @@ int YOsControl::set_shutdownCountdown(int newval)
  */
 YOsControl* YOsControl::FindOsControl(string func)
 {
-    YOsControl* obj = NULL;
-    int taken = 0;
-    if (YAPI::_apiInitialized) {
-        yEnterCriticalSection(&YAPI::_global_cs);
-        taken = 1;
-    }try {
-        obj = (YOsControl*) YFunction::_FindFromCache("OsControl", func);
-        if (obj == NULL) {
-            obj = new YOsControl(func);
-            YFunction::_AddToCache("OsControl", func, obj);
-        }
-    } catch (std::exception) {
-        if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
-        throw;
-    }
-    if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
-    return obj;
+	YOsControl* obj = NULL;
+	int taken = 0;
+	if (YAPI::_apiInitialized)
+	{
+		yEnterCriticalSection(&YAPI::_global_cs);
+		taken = 1;
+	}
+	try
+	{
+		obj = (YOsControl*)YFunction::_FindFromCache("OsControl", func);
+		if (obj == NULL)
+		{
+			obj = new YOsControl(func);
+			YFunction::_AddToCache("OsControl", func, obj);
+		}
+	}
+	catch (std::exception)
+	{
+		if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
+		throw;
+	}
+	if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
+	return obj;
 }
 
 /**
@@ -178,31 +196,39 @@ YOsControl* YOsControl::FindOsControl(string func)
  */
 int YOsControl::registerValueCallback(YOsControlValueCallback callback)
 {
-    string val;
-    if (callback != NULL) {
-        YFunction::_UpdateValueCallbackList(this, true);
-    } else {
-        YFunction::_UpdateValueCallbackList(this, false);
-    }
-    _valueCallbackOsControl = callback;
-    // Immediately invoke value callback with current value
-    if (callback != NULL && this->isOnline()) {
-        val = _advertisedValue;
-        if (!(val == "")) {
-            this->_invokeValueCallback(val);
-        }
-    }
-    return 0;
+	string val;
+	if (callback != NULL)
+	{
+		YFunction::_UpdateValueCallbackList(this, true);
+	}
+	else
+	{
+		YFunction::_UpdateValueCallbackList(this, false);
+	}
+	_valueCallbackOsControl = callback;
+	// Immediately invoke value callback with current value
+	if (callback != NULL && this->isOnline())
+	{
+		val = _advertisedValue;
+		if (!(val == ""))
+		{
+			this->_invokeValueCallback(val);
+		}
+	}
+	return 0;
 }
 
 int YOsControl::_invokeValueCallback(string value)
 {
-    if (_valueCallbackOsControl != NULL) {
-        _valueCallbackOsControl(this, value);
-    } else {
-        YFunction::_invokeValueCallback(value);
-    }
-    return 0;
+	if (_valueCallbackOsControl != NULL)
+	{
+		_valueCallbackOsControl(this, value);
+	}
+	else
+	{
+		YFunction::_invokeValueCallback(value);
+	}
+	return 0;
 }
 
 /**
@@ -216,31 +242,33 @@ int YOsControl::_invokeValueCallback(string value)
  */
 int YOsControl::shutdown(int secBeforeShutDown)
 {
-    return this->set_shutdownCountdown(secBeforeShutDown);
+	return this->set_shutdownCountdown(secBeforeShutDown);
 }
 
-YOsControl *YOsControl::nextOsControl(void)
+YOsControl* YOsControl::nextOsControl(void)
 {
-    string  hwid;
+	string hwid;
 
-    if(YISERR(_nextFunction(hwid)) || hwid=="") {
-        return NULL;
-    }
-    return YOsControl::FindOsControl(hwid);
+	if (YISERR(_nextFunction(hwid)) || hwid == "")
+	{
+		return NULL;
+	}
+	return YOsControl::FindOsControl(hwid);
 }
 
 YOsControl* YOsControl::FirstOsControl(void)
 {
-    vector<YFUN_DESCR>   v_fundescr;
-    YDEV_DESCR             ydevice;
-    string              serial, funcId, funcName, funcVal, errmsg;
+	vector<YFUN_DESCR> v_fundescr;
+	YDEV_DESCR ydevice;
+	string serial, funcId, funcName, funcVal, errmsg;
 
-    if(YISERR(YapiWrapper::getFunctionsByClass("OsControl", 0, v_fundescr, sizeof(YFUN_DESCR), errmsg)) ||
-       v_fundescr.size() == 0 ||
-       YISERR(YapiWrapper::getFunctionInfo(v_fundescr[0], ydevice, serial, funcId, funcName, funcVal, errmsg))) {
-        return NULL;
-    }
-    return YOsControl::FindOsControl(serial+"."+funcId);
+	if (YISERR(YapiWrapper::getFunctionsByClass("OsControl", 0, v_fundescr, sizeof(YFUN_DESCR), errmsg)) ||
+		v_fundescr.size() == 0 ||
+		YISERR(YapiWrapper::getFunctionInfo(v_fundescr[0], ydevice, serial, funcId, funcName, funcVal, errmsg)))
+	{
+		return NULL;
+	}
+	return YOsControl::FindOsControl(serial + "." + funcId);
 }
 
 //--- (end of YOsControl implementation)

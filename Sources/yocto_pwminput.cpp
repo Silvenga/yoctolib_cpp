@@ -49,26 +49,27 @@
 #define  __FILE_ID__  "pwminput"
 
 YPwmInput::YPwmInput(const string& func): YSensor(func)
-//--- (PwmInput initialization)
-    ,_dutyCycle(DUTYCYCLE_INVALID)
-    ,_pulseDuration(PULSEDURATION_INVALID)
-    ,_frequency(FREQUENCY_INVALID)
-    ,_period(PERIOD_INVALID)
-    ,_pulseCounter(PULSECOUNTER_INVALID)
-    ,_pulseTimer(PULSETIMER_INVALID)
-    ,_pwmReportMode(PWMREPORTMODE_INVALID)
-    ,_valueCallbackPwmInput(NULL)
-    ,_timedReportCallbackPwmInput(NULL)
+                                          //--- (PwmInput initialization)
+                                          , _dutyCycle(DUTYCYCLE_INVALID)
+                                          , _pulseDuration(PULSEDURATION_INVALID)
+                                          , _frequency(FREQUENCY_INVALID)
+                                          , _period(PERIOD_INVALID)
+                                          , _pulseCounter(PULSECOUNTER_INVALID)
+                                          , _pulseTimer(PULSETIMER_INVALID)
+                                          , _pwmReportMode(PWMREPORTMODE_INVALID)
+                                          , _valueCallbackPwmInput(NULL)
+                                          , _timedReportCallbackPwmInput(NULL)
 //--- (end of PwmInput initialization)
 {
-    _className="PwmInput";
+	_className = "PwmInput";
 }
 
 YPwmInput::~YPwmInput()
 {
-//--- (YPwmInput cleanup)
-//--- (end of YPwmInput cleanup)
+	//--- (YPwmInput cleanup)
+	//--- (end of YPwmInput cleanup)
 }
+
 //--- (YPwmInput implementation)
 // static attributes
 const double YPwmInput::DUTYCYCLE_INVALID = YAPI_INVALID_DOUBLE;
@@ -78,28 +79,35 @@ const double YPwmInput::PERIOD_INVALID = YAPI_INVALID_DOUBLE;
 
 int YPwmInput::_parseAttr(YJSONObject* json_val)
 {
-    if(json_val->has("dutyCycle")) {
-        _dutyCycle =  floor(json_val->getDouble("dutyCycle") * 1000.0 / 65536.0 + 0.5) / 1000.0;
-    }
-    if(json_val->has("pulseDuration")) {
-        _pulseDuration =  floor(json_val->getDouble("pulseDuration") * 1000.0 / 65536.0 + 0.5) / 1000.0;
-    }
-    if(json_val->has("frequency")) {
-        _frequency =  floor(json_val->getDouble("frequency") * 1000.0 / 65536.0 + 0.5) / 1000.0;
-    }
-    if(json_val->has("period")) {
-        _period =  floor(json_val->getDouble("period") * 1000.0 / 65536.0 + 0.5) / 1000.0;
-    }
-    if(json_val->has("pulseCounter")) {
-        _pulseCounter =  json_val->getLong("pulseCounter");
-    }
-    if(json_val->has("pulseTimer")) {
-        _pulseTimer =  json_val->getLong("pulseTimer");
-    }
-    if(json_val->has("pwmReportMode")) {
-        _pwmReportMode =  (Y_PWMREPORTMODE_enum)json_val->getInt("pwmReportMode");
-    }
-    return YSensor::_parseAttr(json_val);
+	if (json_val->has("dutyCycle"))
+	{
+		_dutyCycle = floor(json_val->getDouble("dutyCycle") * 1000.0 / 65536.0 + 0.5) / 1000.0;
+	}
+	if (json_val->has("pulseDuration"))
+	{
+		_pulseDuration = floor(json_val->getDouble("pulseDuration") * 1000.0 / 65536.0 + 0.5) / 1000.0;
+	}
+	if (json_val->has("frequency"))
+	{
+		_frequency = floor(json_val->getDouble("frequency") * 1000.0 / 65536.0 + 0.5) / 1000.0;
+	}
+	if (json_val->has("period"))
+	{
+		_period = floor(json_val->getDouble("period") * 1000.0 / 65536.0 + 0.5) / 1000.0;
+	}
+	if (json_val->has("pulseCounter"))
+	{
+		_pulseCounter = json_val->getLong("pulseCounter");
+	}
+	if (json_val->has("pulseTimer"))
+	{
+		_pulseTimer = json_val->getLong("pulseTimer");
+	}
+	if (json_val->has("pwmReportMode"))
+	{
+		_pwmReportMode = (Y_PWMREPORTMODE_enum)json_val->getInt("pwmReportMode");
+	}
+	return YSensor::_parseAttr(json_val);
 }
 
 
@@ -112,24 +120,29 @@ int YPwmInput::_parseAttr(YJSONObject* json_val)
  */
 double YPwmInput::get_dutyCycle(void)
 {
-    double res = 0.0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YPwmInput::DUTYCYCLE_INVALID;
-                }
-            }
-        }
-        res = _dutyCycle;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	double res = 0.0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YPwmInput::DUTYCYCLE_INVALID;
+				}
+			}
+		}
+		res = _dutyCycle;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -142,24 +155,29 @@ double YPwmInput::get_dutyCycle(void)
  */
 double YPwmInput::get_pulseDuration(void)
 {
-    double res = 0.0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YPwmInput::PULSEDURATION_INVALID;
-                }
-            }
-        }
-        res = _pulseDuration;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	double res = 0.0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YPwmInput::PULSEDURATION_INVALID;
+				}
+			}
+		}
+		res = _pulseDuration;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -171,24 +189,29 @@ double YPwmInput::get_pulseDuration(void)
  */
 double YPwmInput::get_frequency(void)
 {
-    double res = 0.0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YPwmInput::FREQUENCY_INVALID;
-                }
-            }
-        }
-        res = _frequency;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	double res = 0.0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YPwmInput::FREQUENCY_INVALID;
+				}
+			}
+		}
+		res = _frequency;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -200,24 +223,29 @@ double YPwmInput::get_frequency(void)
  */
 double YPwmInput::get_period(void)
 {
-    double res = 0.0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YPwmInput::PERIOD_INVALID;
-                }
-            }
-        }
-        res = _period;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	double res = 0.0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YPwmInput::PERIOD_INVALID;
+				}
+			}
+		}
+		res = _period;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -231,40 +259,50 @@ double YPwmInput::get_period(void)
  */
 s64 YPwmInput::get_pulseCounter(void)
 {
-    s64 res = 0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YPwmInput::PULSECOUNTER_INVALID;
-                }
-            }
-        }
-        res = _pulseCounter;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	s64 res = 0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YPwmInput::PULSECOUNTER_INVALID;
+				}
+			}
+		}
+		res = _pulseCounter;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 int YPwmInput::set_pulseCounter(s64 newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        char buf[32]; sprintf(buf, "%u", (u32)newval); rest_val = string(buf);
-        res = _setAttr("pulseCounter", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		char buf[32];
+		sprintf(buf, "%u", (u32)newval);
+		rest_val = string(buf);
+		res = _setAttr("pulseCounter", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -276,24 +314,29 @@ int YPwmInput::set_pulseCounter(s64 newval)
  */
 s64 YPwmInput::get_pulseTimer(void)
 {
-    s64 res = 0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YPwmInput::PULSETIMER_INVALID;
-                }
-            }
-        }
-        res = _pulseTimer;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	s64 res = 0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YPwmInput::PULSETIMER_INVALID;
+				}
+			}
+		}
+		res = _pulseTimer;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -308,24 +351,29 @@ s64 YPwmInput::get_pulseTimer(void)
  */
 Y_PWMREPORTMODE_enum YPwmInput::get_pwmReportMode(void)
 {
-    Y_PWMREPORTMODE_enum res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YPwmInput::PWMREPORTMODE_INVALID;
-                }
-            }
-        }
-        res = _pwmReportMode;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	Y_PWMREPORTMODE_enum res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YPwmInput::PWMREPORTMODE_INVALID;
+				}
+			}
+		}
+		res = _pwmReportMode;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -343,18 +391,23 @@ Y_PWMREPORTMODE_enum YPwmInput::get_pwmReportMode(void)
  */
 int YPwmInput::set_pwmReportMode(Y_PWMREPORTMODE_enum newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        char buf[32]; sprintf(buf, "%d", newval); rest_val = string(buf);
-        res = _setAttr("pwmReportMode", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		char buf[32];
+		sprintf(buf, "%d", newval);
+		rest_val = string(buf);
+		res = _setAttr("pwmReportMode", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -382,23 +435,29 @@ int YPwmInput::set_pwmReportMode(Y_PWMREPORTMODE_enum newval)
  */
 YPwmInput* YPwmInput::FindPwmInput(string func)
 {
-    YPwmInput* obj = NULL;
-    int taken = 0;
-    if (YAPI::_apiInitialized) {
-        yEnterCriticalSection(&YAPI::_global_cs);
-        taken = 1;
-    }try {
-        obj = (YPwmInput*) YFunction::_FindFromCache("PwmInput", func);
-        if (obj == NULL) {
-            obj = new YPwmInput(func);
-            YFunction::_AddToCache("PwmInput", func, obj);
-        }
-    } catch (std::exception) {
-        if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
-        throw;
-    }
-    if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
-    return obj;
+	YPwmInput* obj = NULL;
+	int taken = 0;
+	if (YAPI::_apiInitialized)
+	{
+		yEnterCriticalSection(&YAPI::_global_cs);
+		taken = 1;
+	}
+	try
+	{
+		obj = (YPwmInput*)YFunction::_FindFromCache("PwmInput", func);
+		if (obj == NULL)
+		{
+			obj = new YPwmInput(func);
+			YFunction::_AddToCache("PwmInput", func, obj);
+		}
+	}
+	catch (std::exception)
+	{
+		if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
+		throw;
+	}
+	if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
+	return obj;
 }
 
 /**
@@ -414,31 +473,39 @@ YPwmInput* YPwmInput::FindPwmInput(string func)
  */
 int YPwmInput::registerValueCallback(YPwmInputValueCallback callback)
 {
-    string val;
-    if (callback != NULL) {
-        YFunction::_UpdateValueCallbackList(this, true);
-    } else {
-        YFunction::_UpdateValueCallbackList(this, false);
-    }
-    _valueCallbackPwmInput = callback;
-    // Immediately invoke value callback with current value
-    if (callback != NULL && this->isOnline()) {
-        val = _advertisedValue;
-        if (!(val == "")) {
-            this->_invokeValueCallback(val);
-        }
-    }
-    return 0;
+	string val;
+	if (callback != NULL)
+	{
+		YFunction::_UpdateValueCallbackList(this, true);
+	}
+	else
+	{
+		YFunction::_UpdateValueCallbackList(this, false);
+	}
+	_valueCallbackPwmInput = callback;
+	// Immediately invoke value callback with current value
+	if (callback != NULL && this->isOnline())
+	{
+		val = _advertisedValue;
+		if (!(val == ""))
+		{
+			this->_invokeValueCallback(val);
+		}
+	}
+	return 0;
 }
 
 int YPwmInput::_invokeValueCallback(string value)
 {
-    if (_valueCallbackPwmInput != NULL) {
-        _valueCallbackPwmInput(this, value);
-    } else {
-        YSensor::_invokeValueCallback(value);
-    }
-    return 0;
+	if (_valueCallbackPwmInput != NULL)
+	{
+		_valueCallbackPwmInput(this, value);
+	}
+	else
+	{
+		YSensor::_invokeValueCallback(value);
+	}
+	return 0;
 }
 
 /**
@@ -454,25 +521,31 @@ int YPwmInput::_invokeValueCallback(string value)
  */
 int YPwmInput::registerTimedReportCallback(YPwmInputTimedReportCallback callback)
 {
-    YSensor* sensor = NULL;
-    sensor = this;
-    if (callback != NULL) {
-        YFunction::_UpdateTimedReportCallbackList(sensor, true);
-    } else {
-        YFunction::_UpdateTimedReportCallbackList(sensor, false);
-    }
-    _timedReportCallbackPwmInput = callback;
-    return 0;
+	YSensor* sensor = NULL;
+	sensor = this;
+	if (callback != NULL)
+	{
+		YFunction::_UpdateTimedReportCallbackList(sensor, true);
+	}
+	else
+	{
+		YFunction::_UpdateTimedReportCallbackList(sensor, false);
+	}
+	_timedReportCallbackPwmInput = callback;
+	return 0;
 }
 
 int YPwmInput::_invokeTimedReportCallback(YMeasure value)
 {
-    if (_timedReportCallbackPwmInput != NULL) {
-        _timedReportCallbackPwmInput(this, value);
-    } else {
-        YSensor::_invokeTimedReportCallback(value);
-    }
-    return 0;
+	if (_timedReportCallbackPwmInput != NULL)
+	{
+		_timedReportCallbackPwmInput(this, value);
+	}
+	else
+	{
+		YSensor::_invokeTimedReportCallback(value);
+	}
+	return 0;
 }
 
 /**
@@ -484,31 +557,33 @@ int YPwmInput::_invokeTimedReportCallback(YMeasure value)
  */
 int YPwmInput::resetCounter(void)
 {
-    return this->set_pulseCounter(0);
+	return this->set_pulseCounter(0);
 }
 
-YPwmInput *YPwmInput::nextPwmInput(void)
+YPwmInput* YPwmInput::nextPwmInput(void)
 {
-    string  hwid;
+	string hwid;
 
-    if(YISERR(_nextFunction(hwid)) || hwid=="") {
-        return NULL;
-    }
-    return YPwmInput::FindPwmInput(hwid);
+	if (YISERR(_nextFunction(hwid)) || hwid == "")
+	{
+		return NULL;
+	}
+	return YPwmInput::FindPwmInput(hwid);
 }
 
 YPwmInput* YPwmInput::FirstPwmInput(void)
 {
-    vector<YFUN_DESCR>   v_fundescr;
-    YDEV_DESCR             ydevice;
-    string              serial, funcId, funcName, funcVal, errmsg;
+	vector<YFUN_DESCR> v_fundescr;
+	YDEV_DESCR ydevice;
+	string serial, funcId, funcName, funcVal, errmsg;
 
-    if(YISERR(YapiWrapper::getFunctionsByClass("PwmInput", 0, v_fundescr, sizeof(YFUN_DESCR), errmsg)) ||
-       v_fundescr.size() == 0 ||
-       YISERR(YapiWrapper::getFunctionInfo(v_fundescr[0], ydevice, serial, funcId, funcName, funcVal, errmsg))) {
-        return NULL;
-    }
-    return YPwmInput::FindPwmInput(serial+"."+funcId);
+	if (YISERR(YapiWrapper::getFunctionsByClass("PwmInput", 0, v_fundescr, sizeof(YFUN_DESCR), errmsg)) ||
+		v_fundescr.size() == 0 ||
+		YISERR(YapiWrapper::getFunctionInfo(v_fundescr[0], ydevice, serial, funcId, funcName, funcVal, errmsg)))
+	{
+		return NULL;
+	}
+	return YPwmInput::FindPwmInput(serial + "." + funcId);
 }
 
 //--- (end of YPwmInput implementation)

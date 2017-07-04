@@ -49,19 +49,20 @@
 #define  __FILE_ID__  "groundspeed"
 
 YGroundSpeed::YGroundSpeed(const string& func): YSensor(func)
-//--- (GroundSpeed initialization)
-    ,_valueCallbackGroundSpeed(NULL)
-    ,_timedReportCallbackGroundSpeed(NULL)
+                                                //--- (GroundSpeed initialization)
+                                                , _valueCallbackGroundSpeed(NULL)
+                                                , _timedReportCallbackGroundSpeed(NULL)
 //--- (end of GroundSpeed initialization)
 {
-    _className="GroundSpeed";
+	_className = "GroundSpeed";
 }
 
 YGroundSpeed::~YGroundSpeed()
 {
-//--- (YGroundSpeed cleanup)
-//--- (end of YGroundSpeed cleanup)
+	//--- (YGroundSpeed cleanup)
+	//--- (end of YGroundSpeed cleanup)
 }
+
 //--- (YGroundSpeed implementation)
 // static attributes
 
@@ -91,23 +92,29 @@ YGroundSpeed::~YGroundSpeed()
  */
 YGroundSpeed* YGroundSpeed::FindGroundSpeed(string func)
 {
-    YGroundSpeed* obj = NULL;
-    int taken = 0;
-    if (YAPI::_apiInitialized) {
-        yEnterCriticalSection(&YAPI::_global_cs);
-        taken = 1;
-    }try {
-        obj = (YGroundSpeed*) YFunction::_FindFromCache("GroundSpeed", func);
-        if (obj == NULL) {
-            obj = new YGroundSpeed(func);
-            YFunction::_AddToCache("GroundSpeed", func, obj);
-        }
-    } catch (std::exception) {
-        if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
-        throw;
-    }
-    if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
-    return obj;
+	YGroundSpeed* obj = NULL;
+	int taken = 0;
+	if (YAPI::_apiInitialized)
+	{
+		yEnterCriticalSection(&YAPI::_global_cs);
+		taken = 1;
+	}
+	try
+	{
+		obj = (YGroundSpeed*)YFunction::_FindFromCache("GroundSpeed", func);
+		if (obj == NULL)
+		{
+			obj = new YGroundSpeed(func);
+			YFunction::_AddToCache("GroundSpeed", func, obj);
+		}
+	}
+	catch (std::exception)
+	{
+		if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
+		throw;
+	}
+	if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
+	return obj;
 }
 
 /**
@@ -123,31 +130,39 @@ YGroundSpeed* YGroundSpeed::FindGroundSpeed(string func)
  */
 int YGroundSpeed::registerValueCallback(YGroundSpeedValueCallback callback)
 {
-    string val;
-    if (callback != NULL) {
-        YFunction::_UpdateValueCallbackList(this, true);
-    } else {
-        YFunction::_UpdateValueCallbackList(this, false);
-    }
-    _valueCallbackGroundSpeed = callback;
-    // Immediately invoke value callback with current value
-    if (callback != NULL && this->isOnline()) {
-        val = _advertisedValue;
-        if (!(val == "")) {
-            this->_invokeValueCallback(val);
-        }
-    }
-    return 0;
+	string val;
+	if (callback != NULL)
+	{
+		YFunction::_UpdateValueCallbackList(this, true);
+	}
+	else
+	{
+		YFunction::_UpdateValueCallbackList(this, false);
+	}
+	_valueCallbackGroundSpeed = callback;
+	// Immediately invoke value callback with current value
+	if (callback != NULL && this->isOnline())
+	{
+		val = _advertisedValue;
+		if (!(val == ""))
+		{
+			this->_invokeValueCallback(val);
+		}
+	}
+	return 0;
 }
 
 int YGroundSpeed::_invokeValueCallback(string value)
 {
-    if (_valueCallbackGroundSpeed != NULL) {
-        _valueCallbackGroundSpeed(this, value);
-    } else {
-        YSensor::_invokeValueCallback(value);
-    }
-    return 0;
+	if (_valueCallbackGroundSpeed != NULL)
+	{
+		_valueCallbackGroundSpeed(this, value);
+	}
+	else
+	{
+		YSensor::_invokeValueCallback(value);
+	}
+	return 0;
 }
 
 /**
@@ -163,49 +178,57 @@ int YGroundSpeed::_invokeValueCallback(string value)
  */
 int YGroundSpeed::registerTimedReportCallback(YGroundSpeedTimedReportCallback callback)
 {
-    YSensor* sensor = NULL;
-    sensor = this;
-    if (callback != NULL) {
-        YFunction::_UpdateTimedReportCallbackList(sensor, true);
-    } else {
-        YFunction::_UpdateTimedReportCallbackList(sensor, false);
-    }
-    _timedReportCallbackGroundSpeed = callback;
-    return 0;
+	YSensor* sensor = NULL;
+	sensor = this;
+	if (callback != NULL)
+	{
+		YFunction::_UpdateTimedReportCallbackList(sensor, true);
+	}
+	else
+	{
+		YFunction::_UpdateTimedReportCallbackList(sensor, false);
+	}
+	_timedReportCallbackGroundSpeed = callback;
+	return 0;
 }
 
 int YGroundSpeed::_invokeTimedReportCallback(YMeasure value)
 {
-    if (_timedReportCallbackGroundSpeed != NULL) {
-        _timedReportCallbackGroundSpeed(this, value);
-    } else {
-        YSensor::_invokeTimedReportCallback(value);
-    }
-    return 0;
+	if (_timedReportCallbackGroundSpeed != NULL)
+	{
+		_timedReportCallbackGroundSpeed(this, value);
+	}
+	else
+	{
+		YSensor::_invokeTimedReportCallback(value);
+	}
+	return 0;
 }
 
-YGroundSpeed *YGroundSpeed::nextGroundSpeed(void)
+YGroundSpeed* YGroundSpeed::nextGroundSpeed(void)
 {
-    string  hwid;
+	string hwid;
 
-    if(YISERR(_nextFunction(hwid)) || hwid=="") {
-        return NULL;
-    }
-    return YGroundSpeed::FindGroundSpeed(hwid);
+	if (YISERR(_nextFunction(hwid)) || hwid == "")
+	{
+		return NULL;
+	}
+	return YGroundSpeed::FindGroundSpeed(hwid);
 }
 
 YGroundSpeed* YGroundSpeed::FirstGroundSpeed(void)
 {
-    vector<YFUN_DESCR>   v_fundescr;
-    YDEV_DESCR             ydevice;
-    string              serial, funcId, funcName, funcVal, errmsg;
+	vector<YFUN_DESCR> v_fundescr;
+	YDEV_DESCR ydevice;
+	string serial, funcId, funcName, funcVal, errmsg;
 
-    if(YISERR(YapiWrapper::getFunctionsByClass("GroundSpeed", 0, v_fundescr, sizeof(YFUN_DESCR), errmsg)) ||
-       v_fundescr.size() == 0 ||
-       YISERR(YapiWrapper::getFunctionInfo(v_fundescr[0], ydevice, serial, funcId, funcName, funcVal, errmsg))) {
-        return NULL;
-    }
-    return YGroundSpeed::FindGroundSpeed(serial+"."+funcId);
+	if (YISERR(YapiWrapper::getFunctionsByClass("GroundSpeed", 0, v_fundescr, sizeof(YFUN_DESCR), errmsg)) ||
+		v_fundescr.size() == 0 ||
+		YISERR(YapiWrapper::getFunctionInfo(v_fundescr[0], ydevice, serial, funcId, funcName, funcVal, errmsg)))
+	{
+		return NULL;
+	}
+	return YGroundSpeed::FindGroundSpeed(serial + "." + funcId);
 }
 
 //--- (end of YGroundSpeed implementation)

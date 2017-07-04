@@ -49,58 +49,67 @@
 #define  __FILE_ID__  "proximity"
 
 YProximity::YProximity(const string& func): YSensor(func)
-//--- (Proximity initialization)
-    ,_signalValue(SIGNALVALUE_INVALID)
-    ,_detectionThreshold(DETECTIONTHRESHOLD_INVALID)
-    ,_isPresent(ISPRESENT_INVALID)
-    ,_lastTimeApproached(LASTTIMEAPPROACHED_INVALID)
-    ,_lastTimeRemoved(LASTTIMEREMOVED_INVALID)
-    ,_pulseCounter(PULSECOUNTER_INVALID)
-    ,_pulseTimer(PULSETIMER_INVALID)
-    ,_proximityReportMode(PROXIMITYREPORTMODE_INVALID)
-    ,_valueCallbackProximity(NULL)
-    ,_timedReportCallbackProximity(NULL)
+                                            //--- (Proximity initialization)
+                                            , _signalValue(SIGNALVALUE_INVALID)
+                                            , _detectionThreshold(DETECTIONTHRESHOLD_INVALID)
+                                            , _isPresent(ISPRESENT_INVALID)
+                                            , _lastTimeApproached(LASTTIMEAPPROACHED_INVALID)
+                                            , _lastTimeRemoved(LASTTIMEREMOVED_INVALID)
+                                            , _pulseCounter(PULSECOUNTER_INVALID)
+                                            , _pulseTimer(PULSETIMER_INVALID)
+                                            , _proximityReportMode(PROXIMITYREPORTMODE_INVALID)
+                                            , _valueCallbackProximity(NULL)
+                                            , _timedReportCallbackProximity(NULL)
 //--- (end of Proximity initialization)
 {
-    _className="Proximity";
+	_className = "Proximity";
 }
 
 YProximity::~YProximity()
 {
-//--- (YProximity cleanup)
-//--- (end of YProximity cleanup)
+	//--- (YProximity cleanup)
+	//--- (end of YProximity cleanup)
 }
+
 //--- (YProximity implementation)
 // static attributes
 const double YProximity::SIGNALVALUE_INVALID = YAPI_INVALID_DOUBLE;
 
 int YProximity::_parseAttr(YJSONObject* json_val)
 {
-    if(json_val->has("signalValue")) {
-        _signalValue =  floor(json_val->getDouble("signalValue") * 1000.0 / 65536.0 + 0.5) / 1000.0;
-    }
-    if(json_val->has("detectionThreshold")) {
-        _detectionThreshold =  json_val->getInt("detectionThreshold");
-    }
-    if(json_val->has("isPresent")) {
-        _isPresent =  (Y_ISPRESENT_enum)json_val->getInt("isPresent");
-    }
-    if(json_val->has("lastTimeApproached")) {
-        _lastTimeApproached =  json_val->getLong("lastTimeApproached");
-    }
-    if(json_val->has("lastTimeRemoved")) {
-        _lastTimeRemoved =  json_val->getLong("lastTimeRemoved");
-    }
-    if(json_val->has("pulseCounter")) {
-        _pulseCounter =  json_val->getLong("pulseCounter");
-    }
-    if(json_val->has("pulseTimer")) {
-        _pulseTimer =  json_val->getLong("pulseTimer");
-    }
-    if(json_val->has("proximityReportMode")) {
-        _proximityReportMode =  (Y_PROXIMITYREPORTMODE_enum)json_val->getInt("proximityReportMode");
-    }
-    return YSensor::_parseAttr(json_val);
+	if (json_val->has("signalValue"))
+	{
+		_signalValue = floor(json_val->getDouble("signalValue") * 1000.0 / 65536.0 + 0.5) / 1000.0;
+	}
+	if (json_val->has("detectionThreshold"))
+	{
+		_detectionThreshold = json_val->getInt("detectionThreshold");
+	}
+	if (json_val->has("isPresent"))
+	{
+		_isPresent = (Y_ISPRESENT_enum)json_val->getInt("isPresent");
+	}
+	if (json_val->has("lastTimeApproached"))
+	{
+		_lastTimeApproached = json_val->getLong("lastTimeApproached");
+	}
+	if (json_val->has("lastTimeRemoved"))
+	{
+		_lastTimeRemoved = json_val->getLong("lastTimeRemoved");
+	}
+	if (json_val->has("pulseCounter"))
+	{
+		_pulseCounter = json_val->getLong("pulseCounter");
+	}
+	if (json_val->has("pulseTimer"))
+	{
+		_pulseTimer = json_val->getLong("pulseTimer");
+	}
+	if (json_val->has("proximityReportMode"))
+	{
+		_proximityReportMode = (Y_PROXIMITYREPORTMODE_enum)json_val->getInt("proximityReportMode");
+	}
+	return YSensor::_parseAttr(json_val);
 }
 
 
@@ -113,24 +122,29 @@ int YProximity::_parseAttr(YJSONObject* json_val)
  */
 double YProximity::get_signalValue(void)
 {
-    double res = 0.0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YProximity::SIGNALVALUE_INVALID;
-                }
-            }
-        }
-        res = floor(_signalValue * 1000+0.5) / 1000;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	double res = 0.0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YProximity::SIGNALVALUE_INVALID;
+				}
+			}
+		}
+		res = floor(_signalValue * 1000 + 0.5) / 1000;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -145,24 +159,29 @@ double YProximity::get_signalValue(void)
  */
 int YProximity::get_detectionThreshold(void)
 {
-    int res = 0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YProximity::DETECTIONTHRESHOLD_INVALID;
-                }
-            }
-        }
-        res = _detectionThreshold;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	int res = 0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YProximity::DETECTIONTHRESHOLD_INVALID;
+				}
+			}
+		}
+		res = _detectionThreshold;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -179,18 +198,23 @@ int YProximity::get_detectionThreshold(void)
  */
 int YProximity::set_detectionThreshold(int newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        char buf[32]; sprintf(buf, "%d", newval); rest_val = string(buf);
-        res = _setAttr("detectionThreshold", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		char buf[32];
+		sprintf(buf, "%d", newval);
+		rest_val = string(buf);
+		res = _setAttr("detectionThreshold", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -204,24 +228,29 @@ int YProximity::set_detectionThreshold(int newval)
  */
 Y_ISPRESENT_enum YProximity::get_isPresent(void)
 {
-    Y_ISPRESENT_enum res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YProximity::ISPRESENT_INVALID;
-                }
-            }
-        }
-        res = _isPresent;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	Y_ISPRESENT_enum res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YProximity::ISPRESENT_INVALID;
+				}
+			}
+		}
+		res = _isPresent;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -236,24 +265,29 @@ Y_ISPRESENT_enum YProximity::get_isPresent(void)
  */
 s64 YProximity::get_lastTimeApproached(void)
 {
-    s64 res = 0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YProximity::LASTTIMEAPPROACHED_INVALID;
-                }
-            }
-        }
-        res = _lastTimeApproached;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	s64 res = 0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YProximity::LASTTIMEAPPROACHED_INVALID;
+				}
+			}
+		}
+		res = _lastTimeApproached;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -268,24 +302,29 @@ s64 YProximity::get_lastTimeApproached(void)
  */
 s64 YProximity::get_lastTimeRemoved(void)
 {
-    s64 res = 0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YProximity::LASTTIMEREMOVED_INVALID;
-                }
-            }
-        }
-        res = _lastTimeRemoved;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	s64 res = 0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YProximity::LASTTIMEREMOVED_INVALID;
+				}
+			}
+		}
+		res = _lastTimeRemoved;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -299,40 +338,50 @@ s64 YProximity::get_lastTimeRemoved(void)
  */
 s64 YProximity::get_pulseCounter(void)
 {
-    s64 res = 0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YProximity::PULSECOUNTER_INVALID;
-                }
-            }
-        }
-        res = _pulseCounter;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	s64 res = 0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YProximity::PULSECOUNTER_INVALID;
+				}
+			}
+		}
+		res = _pulseCounter;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 int YProximity::set_pulseCounter(s64 newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        char buf[32]; sprintf(buf, "%u", (u32)newval); rest_val = string(buf);
-        res = _setAttr("pulseCounter", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		char buf[32];
+		sprintf(buf, "%u", (u32)newval);
+		rest_val = string(buf);
+		res = _setAttr("pulseCounter", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -344,24 +393,29 @@ int YProximity::set_pulseCounter(s64 newval)
  */
 s64 YProximity::get_pulseTimer(void)
 {
-    s64 res = 0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YProximity::PULSETIMER_INVALID;
-                }
-            }
-        }
-        res = _pulseTimer;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	s64 res = 0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YProximity::PULSETIMER_INVALID;
+				}
+			}
+		}
+		res = _pulseTimer;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -376,24 +430,29 @@ s64 YProximity::get_pulseTimer(void)
  */
 Y_PROXIMITYREPORTMODE_enum YProximity::get_proximityReportMode(void)
 {
-    Y_PROXIMITYREPORTMODE_enum res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YProximity::PROXIMITYREPORTMODE_INVALID;
-                }
-            }
-        }
-        res = _proximityReportMode;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	Y_PROXIMITYREPORTMODE_enum res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YProximity::PROXIMITYREPORTMODE_INVALID;
+				}
+			}
+		}
+		res = _proximityReportMode;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -411,18 +470,23 @@ Y_PROXIMITYREPORTMODE_enum YProximity::get_proximityReportMode(void)
  */
 int YProximity::set_proximityReportMode(Y_PROXIMITYREPORTMODE_enum newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        char buf[32]; sprintf(buf, "%d", newval); rest_val = string(buf);
-        res = _setAttr("proximityReportMode", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		char buf[32];
+		sprintf(buf, "%d", newval);
+		rest_val = string(buf);
+		res = _setAttr("proximityReportMode", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -450,23 +514,29 @@ int YProximity::set_proximityReportMode(Y_PROXIMITYREPORTMODE_enum newval)
  */
 YProximity* YProximity::FindProximity(string func)
 {
-    YProximity* obj = NULL;
-    int taken = 0;
-    if (YAPI::_apiInitialized) {
-        yEnterCriticalSection(&YAPI::_global_cs);
-        taken = 1;
-    }try {
-        obj = (YProximity*) YFunction::_FindFromCache("Proximity", func);
-        if (obj == NULL) {
-            obj = new YProximity(func);
-            YFunction::_AddToCache("Proximity", func, obj);
-        }
-    } catch (std::exception) {
-        if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
-        throw;
-    }
-    if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
-    return obj;
+	YProximity* obj = NULL;
+	int taken = 0;
+	if (YAPI::_apiInitialized)
+	{
+		yEnterCriticalSection(&YAPI::_global_cs);
+		taken = 1;
+	}
+	try
+	{
+		obj = (YProximity*)YFunction::_FindFromCache("Proximity", func);
+		if (obj == NULL)
+		{
+			obj = new YProximity(func);
+			YFunction::_AddToCache("Proximity", func, obj);
+		}
+	}
+	catch (std::exception)
+	{
+		if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
+		throw;
+	}
+	if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
+	return obj;
 }
 
 /**
@@ -482,31 +552,39 @@ YProximity* YProximity::FindProximity(string func)
  */
 int YProximity::registerValueCallback(YProximityValueCallback callback)
 {
-    string val;
-    if (callback != NULL) {
-        YFunction::_UpdateValueCallbackList(this, true);
-    } else {
-        YFunction::_UpdateValueCallbackList(this, false);
-    }
-    _valueCallbackProximity = callback;
-    // Immediately invoke value callback with current value
-    if (callback != NULL && this->isOnline()) {
-        val = _advertisedValue;
-        if (!(val == "")) {
-            this->_invokeValueCallback(val);
-        }
-    }
-    return 0;
+	string val;
+	if (callback != NULL)
+	{
+		YFunction::_UpdateValueCallbackList(this, true);
+	}
+	else
+	{
+		YFunction::_UpdateValueCallbackList(this, false);
+	}
+	_valueCallbackProximity = callback;
+	// Immediately invoke value callback with current value
+	if (callback != NULL && this->isOnline())
+	{
+		val = _advertisedValue;
+		if (!(val == ""))
+		{
+			this->_invokeValueCallback(val);
+		}
+	}
+	return 0;
 }
 
 int YProximity::_invokeValueCallback(string value)
 {
-    if (_valueCallbackProximity != NULL) {
-        _valueCallbackProximity(this, value);
-    } else {
-        YSensor::_invokeValueCallback(value);
-    }
-    return 0;
+	if (_valueCallbackProximity != NULL)
+	{
+		_valueCallbackProximity(this, value);
+	}
+	else
+	{
+		YSensor::_invokeValueCallback(value);
+	}
+	return 0;
 }
 
 /**
@@ -522,25 +600,31 @@ int YProximity::_invokeValueCallback(string value)
  */
 int YProximity::registerTimedReportCallback(YProximityTimedReportCallback callback)
 {
-    YSensor* sensor = NULL;
-    sensor = this;
-    if (callback != NULL) {
-        YFunction::_UpdateTimedReportCallbackList(sensor, true);
-    } else {
-        YFunction::_UpdateTimedReportCallbackList(sensor, false);
-    }
-    _timedReportCallbackProximity = callback;
-    return 0;
+	YSensor* sensor = NULL;
+	sensor = this;
+	if (callback != NULL)
+	{
+		YFunction::_UpdateTimedReportCallbackList(sensor, true);
+	}
+	else
+	{
+		YFunction::_UpdateTimedReportCallbackList(sensor, false);
+	}
+	_timedReportCallbackProximity = callback;
+	return 0;
 }
 
 int YProximity::_invokeTimedReportCallback(YMeasure value)
 {
-    if (_timedReportCallbackProximity != NULL) {
-        _timedReportCallbackProximity(this, value);
-    } else {
-        YSensor::_invokeTimedReportCallback(value);
-    }
-    return 0;
+	if (_timedReportCallbackProximity != NULL)
+	{
+		_timedReportCallbackProximity(this, value);
+	}
+	else
+	{
+		YSensor::_invokeTimedReportCallback(value);
+	}
+	return 0;
 }
 
 /**
@@ -552,31 +636,33 @@ int YProximity::_invokeTimedReportCallback(YMeasure value)
  */
 int YProximity::resetCounter(void)
 {
-    return this->set_pulseCounter(0);
+	return this->set_pulseCounter(0);
 }
 
-YProximity *YProximity::nextProximity(void)
+YProximity* YProximity::nextProximity(void)
 {
-    string  hwid;
+	string hwid;
 
-    if(YISERR(_nextFunction(hwid)) || hwid=="") {
-        return NULL;
-    }
-    return YProximity::FindProximity(hwid);
+	if (YISERR(_nextFunction(hwid)) || hwid == "")
+	{
+		return NULL;
+	}
+	return YProximity::FindProximity(hwid);
 }
 
 YProximity* YProximity::FirstProximity(void)
 {
-    vector<YFUN_DESCR>   v_fundescr;
-    YDEV_DESCR             ydevice;
-    string              serial, funcId, funcName, funcVal, errmsg;
+	vector<YFUN_DESCR> v_fundescr;
+	YDEV_DESCR ydevice;
+	string serial, funcId, funcName, funcVal, errmsg;
 
-    if(YISERR(YapiWrapper::getFunctionsByClass("Proximity", 0, v_fundescr, sizeof(YFUN_DESCR), errmsg)) ||
-       v_fundescr.size() == 0 ||
-       YISERR(YapiWrapper::getFunctionInfo(v_fundescr[0], ydevice, serial, funcId, funcName, funcVal, errmsg))) {
-        return NULL;
-    }
-    return YProximity::FindProximity(serial+"."+funcId);
+	if (YISERR(YapiWrapper::getFunctionsByClass("Proximity", 0, v_fundescr, sizeof(YFUN_DESCR), errmsg)) ||
+		v_fundescr.size() == 0 ||
+		YISERR(YapiWrapper::getFunctionInfo(v_fundescr[0], ydevice, serial, funcId, funcName, funcVal, errmsg)))
+	{
+		return NULL;
+	}
+	return YProximity::FindProximity(serial + "." + funcId);
 }
 
 //--- (end of YProximity implementation)

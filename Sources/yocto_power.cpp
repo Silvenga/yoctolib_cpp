@@ -49,22 +49,23 @@
 #define  __FILE_ID__  "power"
 
 YPower::YPower(const string& func): YSensor(func)
-//--- (Power initialization)
-    ,_cosPhi(COSPHI_INVALID)
-    ,_meter(METER_INVALID)
-    ,_meterTimer(METERTIMER_INVALID)
-    ,_valueCallbackPower(NULL)
-    ,_timedReportCallbackPower(NULL)
+                                    //--- (Power initialization)
+                                    , _cosPhi(COSPHI_INVALID)
+                                    , _meter(METER_INVALID)
+                                    , _meterTimer(METERTIMER_INVALID)
+                                    , _valueCallbackPower(NULL)
+                                    , _timedReportCallbackPower(NULL)
 //--- (end of Power initialization)
 {
-    _className="Power";
+	_className = "Power";
 }
 
 YPower::~YPower()
 {
-//--- (YPower cleanup)
-//--- (end of YPower cleanup)
+	//--- (YPower cleanup)
+	//--- (end of YPower cleanup)
 }
+
 //--- (YPower implementation)
 // static attributes
 const double YPower::COSPHI_INVALID = YAPI_INVALID_DOUBLE;
@@ -72,16 +73,19 @@ const double YPower::METER_INVALID = YAPI_INVALID_DOUBLE;
 
 int YPower::_parseAttr(YJSONObject* json_val)
 {
-    if(json_val->has("cosPhi")) {
-        _cosPhi =  floor(json_val->getDouble("cosPhi") * 1000.0 / 65536.0 + 0.5) / 1000.0;
-    }
-    if(json_val->has("meter")) {
-        _meter =  floor(json_val->getDouble("meter") * 1000.0 / 65536.0 + 0.5) / 1000.0;
-    }
-    if(json_val->has("meterTimer")) {
-        _meterTimer =  json_val->getInt("meterTimer");
-    }
-    return YSensor::_parseAttr(json_val);
+	if (json_val->has("cosPhi"))
+	{
+		_cosPhi = floor(json_val->getDouble("cosPhi") * 1000.0 / 65536.0 + 0.5) / 1000.0;
+	}
+	if (json_val->has("meter"))
+	{
+		_meter = floor(json_val->getDouble("meter") * 1000.0 / 65536.0 + 0.5) / 1000.0;
+	}
+	if (json_val->has("meterTimer"))
+	{
+		_meterTimer = json_val->getInt("meterTimer");
+	}
+	return YSensor::_parseAttr(json_val);
 }
 
 
@@ -96,40 +100,50 @@ int YPower::_parseAttr(YJSONObject* json_val)
  */
 double YPower::get_cosPhi(void)
 {
-    double res = 0.0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YPower::COSPHI_INVALID;
-                }
-            }
-        }
-        res = _cosPhi;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	double res = 0.0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YPower::COSPHI_INVALID;
+				}
+			}
+		}
+		res = _cosPhi;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 int YPower::set_meter(double newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        char buf[32]; sprintf(buf,"%d", (int)floor(newval * 65536.0 + 0.5)); rest_val = string(buf);
-        res = _setAttr("meter", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		char buf[32];
+		sprintf(buf, "%d", (int)floor(newval * 65536.0 + 0.5));
+		rest_val = string(buf);
+		res = _setAttr("meter", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -143,24 +157,29 @@ int YPower::set_meter(double newval)
  */
 double YPower::get_meter(void)
 {
-    double res = 0.0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YPower::METER_INVALID;
-                }
-            }
-        }
-        res = _meter;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	double res = 0.0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YPower::METER_INVALID;
+				}
+			}
+		}
+		res = _meter;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -172,24 +191,29 @@ double YPower::get_meter(void)
  */
 int YPower::get_meterTimer(void)
 {
-    int res = 0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YPower::METERTIMER_INVALID;
-                }
-            }
-        }
-        res = _meterTimer;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	int res = 0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YPower::METERTIMER_INVALID;
+				}
+			}
+		}
+		res = _meterTimer;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -217,23 +241,29 @@ int YPower::get_meterTimer(void)
  */
 YPower* YPower::FindPower(string func)
 {
-    YPower* obj = NULL;
-    int taken = 0;
-    if (YAPI::_apiInitialized) {
-        yEnterCriticalSection(&YAPI::_global_cs);
-        taken = 1;
-    }try {
-        obj = (YPower*) YFunction::_FindFromCache("Power", func);
-        if (obj == NULL) {
-            obj = new YPower(func);
-            YFunction::_AddToCache("Power", func, obj);
-        }
-    } catch (std::exception) {
-        if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
-        throw;
-    }
-    if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
-    return obj;
+	YPower* obj = NULL;
+	int taken = 0;
+	if (YAPI::_apiInitialized)
+	{
+		yEnterCriticalSection(&YAPI::_global_cs);
+		taken = 1;
+	}
+	try
+	{
+		obj = (YPower*)YFunction::_FindFromCache("Power", func);
+		if (obj == NULL)
+		{
+			obj = new YPower(func);
+			YFunction::_AddToCache("Power", func, obj);
+		}
+	}
+	catch (std::exception)
+	{
+		if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
+		throw;
+	}
+	if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
+	return obj;
 }
 
 /**
@@ -249,31 +279,39 @@ YPower* YPower::FindPower(string func)
  */
 int YPower::registerValueCallback(YPowerValueCallback callback)
 {
-    string val;
-    if (callback != NULL) {
-        YFunction::_UpdateValueCallbackList(this, true);
-    } else {
-        YFunction::_UpdateValueCallbackList(this, false);
-    }
-    _valueCallbackPower = callback;
-    // Immediately invoke value callback with current value
-    if (callback != NULL && this->isOnline()) {
-        val = _advertisedValue;
-        if (!(val == "")) {
-            this->_invokeValueCallback(val);
-        }
-    }
-    return 0;
+	string val;
+	if (callback != NULL)
+	{
+		YFunction::_UpdateValueCallbackList(this, true);
+	}
+	else
+	{
+		YFunction::_UpdateValueCallbackList(this, false);
+	}
+	_valueCallbackPower = callback;
+	// Immediately invoke value callback with current value
+	if (callback != NULL && this->isOnline())
+	{
+		val = _advertisedValue;
+		if (!(val == ""))
+		{
+			this->_invokeValueCallback(val);
+		}
+	}
+	return 0;
 }
 
 int YPower::_invokeValueCallback(string value)
 {
-    if (_valueCallbackPower != NULL) {
-        _valueCallbackPower(this, value);
-    } else {
-        YSensor::_invokeValueCallback(value);
-    }
-    return 0;
+	if (_valueCallbackPower != NULL)
+	{
+		_valueCallbackPower(this, value);
+	}
+	else
+	{
+		YSensor::_invokeValueCallback(value);
+	}
+	return 0;
 }
 
 /**
@@ -289,25 +327,31 @@ int YPower::_invokeValueCallback(string value)
  */
 int YPower::registerTimedReportCallback(YPowerTimedReportCallback callback)
 {
-    YSensor* sensor = NULL;
-    sensor = this;
-    if (callback != NULL) {
-        YFunction::_UpdateTimedReportCallbackList(sensor, true);
-    } else {
-        YFunction::_UpdateTimedReportCallbackList(sensor, false);
-    }
-    _timedReportCallbackPower = callback;
-    return 0;
+	YSensor* sensor = NULL;
+	sensor = this;
+	if (callback != NULL)
+	{
+		YFunction::_UpdateTimedReportCallbackList(sensor, true);
+	}
+	else
+	{
+		YFunction::_UpdateTimedReportCallbackList(sensor, false);
+	}
+	_timedReportCallbackPower = callback;
+	return 0;
 }
 
 int YPower::_invokeTimedReportCallback(YMeasure value)
 {
-    if (_timedReportCallbackPower != NULL) {
-        _timedReportCallbackPower(this, value);
-    } else {
-        YSensor::_invokeTimedReportCallback(value);
-    }
-    return 0;
+	if (_timedReportCallbackPower != NULL)
+	{
+		_timedReportCallbackPower(this, value);
+	}
+	else
+	{
+		YSensor::_invokeTimedReportCallback(value);
+	}
+	return 0;
 }
 
 /**
@@ -319,31 +363,33 @@ int YPower::_invokeTimedReportCallback(YMeasure value)
  */
 int YPower::reset(void)
 {
-    return this->set_meter(0);
+	return this->set_meter(0);
 }
 
-YPower *YPower::nextPower(void)
+YPower* YPower::nextPower(void)
 {
-    string  hwid;
+	string hwid;
 
-    if(YISERR(_nextFunction(hwid)) || hwid=="") {
-        return NULL;
-    }
-    return YPower::FindPower(hwid);
+	if (YISERR(_nextFunction(hwid)) || hwid == "")
+	{
+		return NULL;
+	}
+	return YPower::FindPower(hwid);
 }
 
 YPower* YPower::FirstPower(void)
 {
-    vector<YFUN_DESCR>   v_fundescr;
-    YDEV_DESCR             ydevice;
-    string              serial, funcId, funcName, funcVal, errmsg;
+	vector<YFUN_DESCR> v_fundescr;
+	YDEV_DESCR ydevice;
+	string serial, funcId, funcName, funcVal, errmsg;
 
-    if(YISERR(YapiWrapper::getFunctionsByClass("Power", 0, v_fundescr, sizeof(YFUN_DESCR), errmsg)) ||
-       v_fundescr.size() == 0 ||
-       YISERR(YapiWrapper::getFunctionInfo(v_fundescr[0], ydevice, serial, funcId, funcName, funcVal, errmsg))) {
-        return NULL;
-    }
-    return YPower::FindPower(serial+"."+funcId);
+	if (YISERR(YapiWrapper::getFunctionsByClass("Power", 0, v_fundescr, sizeof(YFUN_DESCR), errmsg)) ||
+		v_fundescr.size() == 0 ||
+		YISERR(YapiWrapper::getFunctionInfo(v_fundescr[0], ydevice, serial, funcId, funcName, funcVal, errmsg)))
+	{
+		return NULL;
+	}
+	return YPower::FindPower(serial + "." + funcId);
 }
 
 //--- (end of YPower implementation)

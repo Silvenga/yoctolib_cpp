@@ -49,21 +49,21 @@
 #define  __FILE_ID__  "gyro"
 
 
-
 YQt::YQt(const string& func): YSensor(func)
-//--- (generated code: Qt initialization)
-    ,_valueCallbackQt(NULL)
-    ,_timedReportCallbackQt(NULL)
+                              //--- (generated code: Qt initialization)
+                              , _valueCallbackQt(NULL)
+                              , _timedReportCallbackQt(NULL)
 //--- (end of generated code: Qt initialization)
 {
-    _className="Qt";
+	_className = "Qt";
 }
 
-YQt::~YQt() 
+YQt::~YQt()
 {
-//--- (generated code: YQt cleanup)
-//--- (end of generated code: YQt cleanup)
+	//--- (generated code: YQt cleanup)
+	//--- (end of generated code: YQt cleanup)
 }
+
 //--- (generated code: YQt implementation)
 // static attributes
 
@@ -93,23 +93,29 @@ YQt::~YQt()
  */
 YQt* YQt::FindQt(string func)
 {
-    YQt* obj = NULL;
-    int taken = 0;
-    if (YAPI::_apiInitialized) {
-        yEnterCriticalSection(&YAPI::_global_cs);
-        taken = 1;
-    }try {
-        obj = (YQt*) YFunction::_FindFromCache("Qt", func);
-        if (obj == NULL) {
-            obj = new YQt(func);
-            YFunction::_AddToCache("Qt", func, obj);
-        }
-    } catch (std::exception) {
-        if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
-        throw;
-    }
-    if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
-    return obj;
+	YQt* obj = NULL;
+	int taken = 0;
+	if (YAPI::_apiInitialized)
+	{
+		yEnterCriticalSection(&YAPI::_global_cs);
+		taken = 1;
+	}
+	try
+	{
+		obj = (YQt*)YFunction::_FindFromCache("Qt", func);
+		if (obj == NULL)
+		{
+			obj = new YQt(func);
+			YFunction::_AddToCache("Qt", func, obj);
+		}
+	}
+	catch (std::exception)
+	{
+		if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
+		throw;
+	}
+	if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
+	return obj;
 }
 
 /**
@@ -125,31 +131,39 @@ YQt* YQt::FindQt(string func)
  */
 int YQt::registerValueCallback(YQtValueCallback callback)
 {
-    string val;
-    if (callback != NULL) {
-        YFunction::_UpdateValueCallbackList(this, true);
-    } else {
-        YFunction::_UpdateValueCallbackList(this, false);
-    }
-    _valueCallbackQt = callback;
-    // Immediately invoke value callback with current value
-    if (callback != NULL && this->isOnline()) {
-        val = _advertisedValue;
-        if (!(val == "")) {
-            this->_invokeValueCallback(val);
-        }
-    }
-    return 0;
+	string val;
+	if (callback != NULL)
+	{
+		YFunction::_UpdateValueCallbackList(this, true);
+	}
+	else
+	{
+		YFunction::_UpdateValueCallbackList(this, false);
+	}
+	_valueCallbackQt = callback;
+	// Immediately invoke value callback with current value
+	if (callback != NULL && this->isOnline())
+	{
+		val = _advertisedValue;
+		if (!(val == ""))
+		{
+			this->_invokeValueCallback(val);
+		}
+	}
+	return 0;
 }
 
 int YQt::_invokeValueCallback(string value)
 {
-    if (_valueCallbackQt != NULL) {
-        _valueCallbackQt(this, value);
-    } else {
-        YSensor::_invokeValueCallback(value);
-    }
-    return 0;
+	if (_valueCallbackQt != NULL)
+	{
+		_valueCallbackQt(this, value);
+	}
+	else
+	{
+		YSensor::_invokeValueCallback(value);
+	}
+	return 0;
 }
 
 /**
@@ -165,49 +179,57 @@ int YQt::_invokeValueCallback(string value)
  */
 int YQt::registerTimedReportCallback(YQtTimedReportCallback callback)
 {
-    YSensor* sensor = NULL;
-    sensor = this;
-    if (callback != NULL) {
-        YFunction::_UpdateTimedReportCallbackList(sensor, true);
-    } else {
-        YFunction::_UpdateTimedReportCallbackList(sensor, false);
-    }
-    _timedReportCallbackQt = callback;
-    return 0;
+	YSensor* sensor = NULL;
+	sensor = this;
+	if (callback != NULL)
+	{
+		YFunction::_UpdateTimedReportCallbackList(sensor, true);
+	}
+	else
+	{
+		YFunction::_UpdateTimedReportCallbackList(sensor, false);
+	}
+	_timedReportCallbackQt = callback;
+	return 0;
 }
 
 int YQt::_invokeTimedReportCallback(YMeasure value)
 {
-    if (_timedReportCallbackQt != NULL) {
-        _timedReportCallbackQt(this, value);
-    } else {
-        YSensor::_invokeTimedReportCallback(value);
-    }
-    return 0;
+	if (_timedReportCallbackQt != NULL)
+	{
+		_timedReportCallbackQt(this, value);
+	}
+	else
+	{
+		YSensor::_invokeTimedReportCallback(value);
+	}
+	return 0;
 }
 
-YQt *YQt::nextQt(void)
+YQt* YQt::nextQt(void)
 {
-    string  hwid;
+	string hwid;
 
-    if(YISERR(_nextFunction(hwid)) || hwid=="") {
-        return NULL;
-    }
-    return YQt::FindQt(hwid);
+	if (YISERR(_nextFunction(hwid)) || hwid == "")
+	{
+		return NULL;
+	}
+	return YQt::FindQt(hwid);
 }
 
 YQt* YQt::FirstQt(void)
 {
-    vector<YFUN_DESCR>   v_fundescr;
-    YDEV_DESCR             ydevice;
-    string              serial, funcId, funcName, funcVal, errmsg;
+	vector<YFUN_DESCR> v_fundescr;
+	YDEV_DESCR ydevice;
+	string serial, funcId, funcName, funcVal, errmsg;
 
-    if(YISERR(YapiWrapper::getFunctionsByClass("Qt", 0, v_fundescr, sizeof(YFUN_DESCR), errmsg)) ||
-       v_fundescr.size() == 0 ||
-       YISERR(YapiWrapper::getFunctionInfo(v_fundescr[0], ydevice, serial, funcId, funcName, funcVal, errmsg))) {
-        return NULL;
-    }
-    return YQt::FindQt(serial+"."+funcId);
+	if (YISERR(YapiWrapper::getFunctionsByClass("Qt", 0, v_fundescr, sizeof(YFUN_DESCR), errmsg)) ||
+		v_fundescr.size() == 0 ||
+		YISERR(YapiWrapper::getFunctionInfo(v_fundescr[0], ydevice, serial, funcId, funcName, funcVal, errmsg)))
+	{
+		return NULL;
+	}
+	return YQt::FindQt(serial + "." + funcId);
 }
 
 //--- (end of generated code: YQt implementation)
@@ -216,54 +238,54 @@ YQt* YQt::FirstQt(void)
 //--- (end of generated code: Qt functions)
 
 
-static void yInternalGyroCallback(YQt *obj, const string& value)
+static void yInternalGyroCallback(YQt* obj, const string& value)
 {
-    YGyro *gyro = (YGyro*) obj->get_userData();
-    if (gyro == NULL) {
-        return;
-    }
-    string tmp = obj->get_functionId().substr(2);
-    int idx = atoi(tmp.c_str());
-    double dbl_value = atof(value.c_str());
-    gyro->_invokeGyroCallbacks(idx, dbl_value);
+	YGyro* gyro = (YGyro*)obj->get_userData();
+	if (gyro == NULL)
+	{
+		return;
+	}
+	string tmp = obj->get_functionId().substr(2);
+	int idx = atoi(tmp.c_str());
+	double dbl_value = atof(value.c_str());
+	gyro->_invokeGyroCallbacks(idx, dbl_value);
 }
-
-
 
 
 YGyro::YGyro(const string& func): YSensor(func)
-//--- (generated code: Gyro initialization)
-    ,_bandwidth(BANDWIDTH_INVALID)
-    ,_xValue(XVALUE_INVALID)
-    ,_yValue(YVALUE_INVALID)
-    ,_zValue(ZVALUE_INVALID)
-    ,_valueCallbackGyro(NULL)
-    ,_timedReportCallbackGyro(NULL)
-    ,_qt_stamp(0)
-    ,_qt_w(NULL)
-    ,_qt_x(NULL)
-    ,_qt_y(NULL)
-    ,_qt_z(NULL)
-    ,_w(0.0)
-    ,_x(0.0)
-    ,_y(0.0)
-    ,_z(0.0)
-    ,_angles_stamp(0)
-    ,_head(0.0)
-    ,_pitch(0.0)
-    ,_roll(0.0)
-    ,_quatCallback(NULL)
-    ,_anglesCallback(NULL)
+                                  //--- (generated code: Gyro initialization)
+                                  , _bandwidth(BANDWIDTH_INVALID)
+                                  , _xValue(XVALUE_INVALID)
+                                  , _yValue(YVALUE_INVALID)
+                                  , _zValue(ZVALUE_INVALID)
+                                  , _valueCallbackGyro(NULL)
+                                  , _timedReportCallbackGyro(NULL)
+                                  , _qt_stamp(0)
+                                  , _qt_w(NULL)
+                                  , _qt_x(NULL)
+                                  , _qt_y(NULL)
+                                  , _qt_z(NULL)
+                                  , _w(0.0)
+                                  , _x(0.0)
+                                  , _y(0.0)
+                                  , _z(0.0)
+                                  , _angles_stamp(0)
+                                  , _head(0.0)
+                                  , _pitch(0.0)
+                                  , _roll(0.0)
+                                  , _quatCallback(NULL)
+                                  , _anglesCallback(NULL)
 //--- (end of generated code: Gyro initialization)
 {
-    _className="Gyro";
+	_className = "Gyro";
 }
 
-YGyro::~YGyro() 
+YGyro::~YGyro()
 {
-//--- (generated code: YGyro cleanup)
-//--- (end of generated code: YGyro cleanup)
+	//--- (generated code: YGyro cleanup)
+	//--- (end of generated code: YGyro cleanup)
 }
+
 //--- (generated code: YGyro implementation)
 // static attributes
 const double YGyro::XVALUE_INVALID = YAPI_INVALID_DOUBLE;
@@ -272,19 +294,23 @@ const double YGyro::ZVALUE_INVALID = YAPI_INVALID_DOUBLE;
 
 int YGyro::_parseAttr(YJSONObject* json_val)
 {
-    if(json_val->has("bandwidth")) {
-        _bandwidth =  json_val->getInt("bandwidth");
-    }
-    if(json_val->has("xValue")) {
-        _xValue =  floor(json_val->getDouble("xValue") * 1000.0 / 65536.0 + 0.5) / 1000.0;
-    }
-    if(json_val->has("yValue")) {
-        _yValue =  floor(json_val->getDouble("yValue") * 1000.0 / 65536.0 + 0.5) / 1000.0;
-    }
-    if(json_val->has("zValue")) {
-        _zValue =  floor(json_val->getDouble("zValue") * 1000.0 / 65536.0 + 0.5) / 1000.0;
-    }
-    return YSensor::_parseAttr(json_val);
+	if (json_val->has("bandwidth"))
+	{
+		_bandwidth = json_val->getInt("bandwidth");
+	}
+	if (json_val->has("xValue"))
+	{
+		_xValue = floor(json_val->getDouble("xValue") * 1000.0 / 65536.0 + 0.5) / 1000.0;
+	}
+	if (json_val->has("yValue"))
+	{
+		_yValue = floor(json_val->getDouble("yValue") * 1000.0 / 65536.0 + 0.5) / 1000.0;
+	}
+	if (json_val->has("zValue"))
+	{
+		_zValue = floor(json_val->getDouble("zValue") * 1000.0 / 65536.0 + 0.5) / 1000.0;
+	}
+	return YSensor::_parseAttr(json_val);
 }
 
 
@@ -297,24 +323,29 @@ int YGyro::_parseAttr(YJSONObject* json_val)
  */
 int YGyro::get_bandwidth(void)
 {
-    int res = 0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YGyro::BANDWIDTH_INVALID;
-                }
-            }
-        }
-        res = _bandwidth;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	int res = 0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YGyro::BANDWIDTH_INVALID;
+				}
+			}
+		}
+		res = _bandwidth;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -329,18 +360,23 @@ int YGyro::get_bandwidth(void)
  */
 int YGyro::set_bandwidth(int newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        char buf[32]; sprintf(buf, "%d", newval); rest_val = string(buf);
-        res = _setAttr("bandwidth", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		char buf[32];
+		sprintf(buf, "%d", newval);
+		rest_val = string(buf);
+		res = _setAttr("bandwidth", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -353,24 +389,29 @@ int YGyro::set_bandwidth(int newval)
  */
 double YGyro::get_xValue(void)
 {
-    double res = 0.0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YGyro::XVALUE_INVALID;
-                }
-            }
-        }
-        res = _xValue;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	double res = 0.0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YGyro::XVALUE_INVALID;
+				}
+			}
+		}
+		res = _xValue;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -383,24 +424,29 @@ double YGyro::get_xValue(void)
  */
 double YGyro::get_yValue(void)
 {
-    double res = 0.0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YGyro::YVALUE_INVALID;
-                }
-            }
-        }
-        res = _yValue;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	double res = 0.0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YGyro::YVALUE_INVALID;
+				}
+			}
+		}
+		res = _yValue;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -413,24 +459,29 @@ double YGyro::get_yValue(void)
  */
 double YGyro::get_zValue(void)
 {
-    double res = 0.0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YGyro::ZVALUE_INVALID;
-                }
-            }
-        }
-        res = _zValue;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	double res = 0.0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YGyro::ZVALUE_INVALID;
+				}
+			}
+		}
+		res = _zValue;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -458,23 +509,29 @@ double YGyro::get_zValue(void)
  */
 YGyro* YGyro::FindGyro(string func)
 {
-    YGyro* obj = NULL;
-    int taken = 0;
-    if (YAPI::_apiInitialized) {
-        yEnterCriticalSection(&YAPI::_global_cs);
-        taken = 1;
-    }try {
-        obj = (YGyro*) YFunction::_FindFromCache("Gyro", func);
-        if (obj == NULL) {
-            obj = new YGyro(func);
-            YFunction::_AddToCache("Gyro", func, obj);
-        }
-    } catch (std::exception) {
-        if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
-        throw;
-    }
-    if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
-    return obj;
+	YGyro* obj = NULL;
+	int taken = 0;
+	if (YAPI::_apiInitialized)
+	{
+		yEnterCriticalSection(&YAPI::_global_cs);
+		taken = 1;
+	}
+	try
+	{
+		obj = (YGyro*)YFunction::_FindFromCache("Gyro", func);
+		if (obj == NULL)
+		{
+			obj = new YGyro(func);
+			YFunction::_AddToCache("Gyro", func, obj);
+		}
+	}
+	catch (std::exception)
+	{
+		if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
+		throw;
+	}
+	if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
+	return obj;
 }
 
 /**
@@ -490,31 +547,39 @@ YGyro* YGyro::FindGyro(string func)
  */
 int YGyro::registerValueCallback(YGyroValueCallback callback)
 {
-    string val;
-    if (callback != NULL) {
-        YFunction::_UpdateValueCallbackList(this, true);
-    } else {
-        YFunction::_UpdateValueCallbackList(this, false);
-    }
-    _valueCallbackGyro = callback;
-    // Immediately invoke value callback with current value
-    if (callback != NULL && this->isOnline()) {
-        val = _advertisedValue;
-        if (!(val == "")) {
-            this->_invokeValueCallback(val);
-        }
-    }
-    return 0;
+	string val;
+	if (callback != NULL)
+	{
+		YFunction::_UpdateValueCallbackList(this, true);
+	}
+	else
+	{
+		YFunction::_UpdateValueCallbackList(this, false);
+	}
+	_valueCallbackGyro = callback;
+	// Immediately invoke value callback with current value
+	if (callback != NULL && this->isOnline())
+	{
+		val = _advertisedValue;
+		if (!(val == ""))
+		{
+			this->_invokeValueCallback(val);
+		}
+	}
+	return 0;
 }
 
 int YGyro::_invokeValueCallback(string value)
 {
-    if (_valueCallbackGyro != NULL) {
-        _valueCallbackGyro(this, value);
-    } else {
-        YSensor::_invokeValueCallback(value);
-    }
-    return 0;
+	if (_valueCallbackGyro != NULL)
+	{
+		_valueCallbackGyro(this, value);
+	}
+	else
+	{
+		YSensor::_invokeValueCallback(value);
+	}
+	return 0;
 }
 
 /**
@@ -530,101 +595,122 @@ int YGyro::_invokeValueCallback(string value)
  */
 int YGyro::registerTimedReportCallback(YGyroTimedReportCallback callback)
 {
-    YSensor* sensor = NULL;
-    sensor = this;
-    if (callback != NULL) {
-        YFunction::_UpdateTimedReportCallbackList(sensor, true);
-    } else {
-        YFunction::_UpdateTimedReportCallbackList(sensor, false);
-    }
-    _timedReportCallbackGyro = callback;
-    return 0;
+	YSensor* sensor = NULL;
+	sensor = this;
+	if (callback != NULL)
+	{
+		YFunction::_UpdateTimedReportCallbackList(sensor, true);
+	}
+	else
+	{
+		YFunction::_UpdateTimedReportCallbackList(sensor, false);
+	}
+	_timedReportCallbackGyro = callback;
+	return 0;
 }
 
 int YGyro::_invokeTimedReportCallback(YMeasure value)
 {
-    if (_timedReportCallbackGyro != NULL) {
-        _timedReportCallbackGyro(this, value);
-    } else {
-        YSensor::_invokeTimedReportCallback(value);
-    }
-    return 0;
+	if (_timedReportCallbackGyro != NULL)
+	{
+		_timedReportCallbackGyro(this, value);
+	}
+	else
+	{
+		YSensor::_invokeTimedReportCallback(value);
+	}
+	return 0;
 }
 
 int YGyro::_loadQuaternion(void)
 {
-    int now_stamp = 0;
-    int age_ms = 0;
-    now_stamp = (int) ((YAPI::GetTickCount()) & (0x7FFFFFFF));
-    age_ms = (((now_stamp - _qt_stamp)) & (0x7FFFFFFF));
-    if ((age_ms >= 10) || (_qt_stamp == 0)) {
-        if (this->_load_unsafe(10) != YAPI_SUCCESS) {
-            return YAPI_DEVICE_NOT_FOUND;
-        }
-        if (_qt_stamp == 0) {
-            _qt_w = YQt::FindQt(YapiWrapper::ysprintf("%s.qt1",_serial.c_str()));
-            _qt_x = YQt::FindQt(YapiWrapper::ysprintf("%s.qt2",_serial.c_str()));
-            _qt_y = YQt::FindQt(YapiWrapper::ysprintf("%s.qt3",_serial.c_str()));
-            _qt_z = YQt::FindQt(YapiWrapper::ysprintf("%s.qt4",_serial.c_str()));
-        }
-        if (_qt_w->load(9) != YAPI_SUCCESS) {
-            return YAPI_DEVICE_NOT_FOUND;
-        }
-        if (_qt_x->load(9) != YAPI_SUCCESS) {
-            return YAPI_DEVICE_NOT_FOUND;
-        }
-        if (_qt_y->load(9) != YAPI_SUCCESS) {
-            return YAPI_DEVICE_NOT_FOUND;
-        }
-        if (_qt_z->load(9) != YAPI_SUCCESS) {
-            return YAPI_DEVICE_NOT_FOUND;
-        }
-        _w = _qt_w->get_currentValue();
-        _x = _qt_x->get_currentValue();
-        _y = _qt_y->get_currentValue();
-        _z = _qt_z->get_currentValue();
-        _qt_stamp = now_stamp;
-    }
-    return YAPI_SUCCESS;
+	int now_stamp = 0;
+	int age_ms = 0;
+	now_stamp = (int)((YAPI::GetTickCount()) & (0x7FFFFFFF));
+	age_ms = (((now_stamp - _qt_stamp)) & (0x7FFFFFFF));
+	if ((age_ms >= 10) || (_qt_stamp == 0))
+	{
+		if (this->_load_unsafe(10) != YAPI_SUCCESS)
+		{
+			return YAPI_DEVICE_NOT_FOUND;
+		}
+		if (_qt_stamp == 0)
+		{
+			_qt_w = YQt::FindQt(YapiWrapper::ysprintf("%s.qt1", _serial.c_str()));
+			_qt_x = YQt::FindQt(YapiWrapper::ysprintf("%s.qt2", _serial.c_str()));
+			_qt_y = YQt::FindQt(YapiWrapper::ysprintf("%s.qt3", _serial.c_str()));
+			_qt_z = YQt::FindQt(YapiWrapper::ysprintf("%s.qt4", _serial.c_str()));
+		}
+		if (_qt_w->load(9) != YAPI_SUCCESS)
+		{
+			return YAPI_DEVICE_NOT_FOUND;
+		}
+		if (_qt_x->load(9) != YAPI_SUCCESS)
+		{
+			return YAPI_DEVICE_NOT_FOUND;
+		}
+		if (_qt_y->load(9) != YAPI_SUCCESS)
+		{
+			return YAPI_DEVICE_NOT_FOUND;
+		}
+		if (_qt_z->load(9) != YAPI_SUCCESS)
+		{
+			return YAPI_DEVICE_NOT_FOUND;
+		}
+		_w = _qt_w->get_currentValue();
+		_x = _qt_x->get_currentValue();
+		_y = _qt_y->get_currentValue();
+		_z = _qt_z->get_currentValue();
+		_qt_stamp = now_stamp;
+	}
+	return YAPI_SUCCESS;
 }
 
 int YGyro::_loadAngles(void)
 {
-    double sqw = 0.0;
-    double sqx = 0.0;
-    double sqy = 0.0;
-    double sqz = 0.0;
-    double norm = 0.0;
-    double delta = 0.0;
+	double sqw = 0.0;
+	double sqx = 0.0;
+	double sqy = 0.0;
+	double sqz = 0.0;
+	double norm = 0.0;
+	double delta = 0.0;
 
-    if (this->_loadQuaternion() != YAPI_SUCCESS) {
-        return YAPI_DEVICE_NOT_FOUND;
-    }
-    if (_angles_stamp != _qt_stamp) {
-        sqw = _w * _w;
-        sqx = _x * _x;
-        sqy = _y * _y;
-        sqz = _z * _z;
-        norm = sqx + sqy + sqz + sqw;
-        delta = _y * _w - _x * _z;
-        if (delta > 0.499 * norm) {
-            // singularity at north pole
-            _pitch = 90.0;
-            _head  = floor(2.0 * 1800.0/3.141592653589793238463 * atan2(_x,-_w)+0.5) / 10.0;
-        } else {
-            if (delta < -0.499 * norm) {
-                // singularity at south pole
-                _pitch = -90.0;
-                _head  = floor(-2.0 * 1800.0/3.141592653589793238463 * atan2(_x,-_w)+0.5) / 10.0;
-            } else {
-                _roll  = floor(1800.0/3.141592653589793238463 * atan2(2.0 * (_w * _x + _y * _z),sqw - sqx - sqy + sqz)+0.5) / 10.0;
-                _pitch = floor(1800.0/3.141592653589793238463 * asin(2.0 * delta / norm)+0.5) / 10.0;
-                _head  = floor(1800.0/3.141592653589793238463 * atan2(2.0 * (_x * _y + _z * _w),sqw + sqx - sqy - sqz)+0.5) / 10.0;
-            }
-        }
-        _angles_stamp = _qt_stamp;
-    }
-    return YAPI_SUCCESS;
+	if (this->_loadQuaternion() != YAPI_SUCCESS)
+	{
+		return YAPI_DEVICE_NOT_FOUND;
+	}
+	if (_angles_stamp != _qt_stamp)
+	{
+		sqw = _w * _w;
+		sqx = _x * _x;
+		sqy = _y * _y;
+		sqz = _z * _z;
+		norm = sqx + sqy + sqz + sqw;
+		delta = _y * _w - _x * _z;
+		if (delta > 0.499 * norm)
+		{
+			// singularity at north pole
+			_pitch = 90.0;
+			_head = floor(2.0 * 1800.0 / 3.141592653589793238463 * atan2(_x, -_w) + 0.5) / 10.0;
+		}
+		else
+		{
+			if (delta < -0.499 * norm)
+			{
+				// singularity at south pole
+				_pitch = -90.0;
+				_head = floor(-2.0 * 1800.0 / 3.141592653589793238463 * atan2(_x, -_w) + 0.5) / 10.0;
+			}
+			else
+			{
+				_roll = floor(1800.0 / 3.141592653589793238463 * atan2(2.0 * (_w * _x + _y * _z), sqw - sqx - sqy + sqz) + 0.5) / 10.0;
+				_pitch = floor(1800.0 / 3.141592653589793238463 * asin(2.0 * delta / norm) + 0.5) / 10.0;
+				_head = floor(1800.0 / 3.141592653589793238463 * atan2(2.0 * (_x * _y + _z * _w), sqw + sqx - sqy - sqz) + 0.5) / 10.0;
+			}
+		}
+		_angles_stamp = _qt_stamp;
+	}
+	return YAPI_SUCCESS;
 }
 
 /**
@@ -640,8 +726,8 @@ int YGyro::_loadAngles(void)
  */
 double YGyro::get_roll(void)
 {
-    this->_loadAngles();
-    return _roll;
+	this->_loadAngles();
+	return _roll;
 }
 
 /**
@@ -657,8 +743,8 @@ double YGyro::get_roll(void)
  */
 double YGyro::get_pitch(void)
 {
-    this->_loadAngles();
-    return _pitch;
+	this->_loadAngles();
+	return _pitch;
 }
 
 /**
@@ -674,8 +760,8 @@ double YGyro::get_pitch(void)
  */
 double YGyro::get_heading(void)
 {
-    this->_loadAngles();
-    return _head;
+	this->_loadAngles();
+	return _head;
 }
 
 /**
@@ -689,8 +775,8 @@ double YGyro::get_heading(void)
  */
 double YGyro::get_quaternionW(void)
 {
-    this->_loadQuaternion();
-    return _w;
+	this->_loadQuaternion();
+	return _w;
 }
 
 /**
@@ -705,8 +791,8 @@ double YGyro::get_quaternionW(void)
  */
 double YGyro::get_quaternionX(void)
 {
-    this->_loadQuaternion();
-    return _x;
+	this->_loadQuaternion();
+	return _x;
 }
 
 /**
@@ -721,8 +807,8 @@ double YGyro::get_quaternionX(void)
  */
 double YGyro::get_quaternionY(void)
 {
-    this->_loadQuaternion();
-    return _y;
+	this->_loadQuaternion();
+	return _y;
 }
 
 /**
@@ -737,8 +823,8 @@ double YGyro::get_quaternionY(void)
  */
 double YGyro::get_quaternionZ(void)
 {
-    this->_loadQuaternion();
-    return _z;
+	this->_loadQuaternion();
+	return _z;
 }
 
 /**
@@ -758,28 +844,33 @@ double YGyro::get_quaternionZ(void)
  */
 int YGyro::registerQuaternionCallback(YQuatCallback callback)
 {
-    _quatCallback = callback;
-    if (callback != NULL) {
-        if (this->_loadQuaternion() != YAPI_SUCCESS) {
-            return YAPI_DEVICE_NOT_FOUND;
-        }
-        _qt_w->set_userData(this);
-        _qt_x->set_userData(this);
-        _qt_y->set_userData(this);
-        _qt_z->set_userData(this);
-        _qt_w->registerValueCallback(yInternalGyroCallback);
-        _qt_x->registerValueCallback(yInternalGyroCallback);
-        _qt_y->registerValueCallback(yInternalGyroCallback);
-        _qt_z->registerValueCallback(yInternalGyroCallback);
-    } else {
-        if (!(_anglesCallback != NULL)) {
-            _qt_w->registerValueCallback((YQtValueCallback) NULL);
-            _qt_x->registerValueCallback((YQtValueCallback) NULL);
-            _qt_y->registerValueCallback((YQtValueCallback) NULL);
-            _qt_z->registerValueCallback((YQtValueCallback) NULL);
-        }
-    }
-    return 0;
+	_quatCallback = callback;
+	if (callback != NULL)
+	{
+		if (this->_loadQuaternion() != YAPI_SUCCESS)
+		{
+			return YAPI_DEVICE_NOT_FOUND;
+		}
+		_qt_w->set_userData(this);
+		_qt_x->set_userData(this);
+		_qt_y->set_userData(this);
+		_qt_z->set_userData(this);
+		_qt_w->registerValueCallback(yInternalGyroCallback);
+		_qt_x->registerValueCallback(yInternalGyroCallback);
+		_qt_y->registerValueCallback(yInternalGyroCallback);
+		_qt_z->registerValueCallback(yInternalGyroCallback);
+	}
+	else
+	{
+		if (!(_anglesCallback != NULL))
+		{
+			_qt_w->registerValueCallback((YQtValueCallback)NULL);
+			_qt_x->registerValueCallback((YQtValueCallback)NULL);
+			_qt_y->registerValueCallback((YQtValueCallback)NULL);
+			_qt_z->registerValueCallback((YQtValueCallback)NULL);
+		}
+	}
+	return 0;
 }
 
 /**
@@ -799,82 +890,93 @@ int YGyro::registerQuaternionCallback(YQuatCallback callback)
  */
 int YGyro::registerAnglesCallback(YAnglesCallback callback)
 {
-    _anglesCallback = callback;
-    if (callback != NULL) {
-        if (this->_loadQuaternion() != YAPI_SUCCESS) {
-            return YAPI_DEVICE_NOT_FOUND;
-        }
-        _qt_w->set_userData(this);
-        _qt_x->set_userData(this);
-        _qt_y->set_userData(this);
-        _qt_z->set_userData(this);
-        _qt_w->registerValueCallback(yInternalGyroCallback);
-        _qt_x->registerValueCallback(yInternalGyroCallback);
-        _qt_y->registerValueCallback(yInternalGyroCallback);
-        _qt_z->registerValueCallback(yInternalGyroCallback);
-    } else {
-        if (!(_quatCallback != NULL)) {
-            _qt_w->registerValueCallback((YQtValueCallback) NULL);
-            _qt_x->registerValueCallback((YQtValueCallback) NULL);
-            _qt_y->registerValueCallback((YQtValueCallback) NULL);
-            _qt_z->registerValueCallback((YQtValueCallback) NULL);
-        }
-    }
-    return 0;
+	_anglesCallback = callback;
+	if (callback != NULL)
+	{
+		if (this->_loadQuaternion() != YAPI_SUCCESS)
+		{
+			return YAPI_DEVICE_NOT_FOUND;
+		}
+		_qt_w->set_userData(this);
+		_qt_x->set_userData(this);
+		_qt_y->set_userData(this);
+		_qt_z->set_userData(this);
+		_qt_w->registerValueCallback(yInternalGyroCallback);
+		_qt_x->registerValueCallback(yInternalGyroCallback);
+		_qt_y->registerValueCallback(yInternalGyroCallback);
+		_qt_z->registerValueCallback(yInternalGyroCallback);
+	}
+	else
+	{
+		if (!(_quatCallback != NULL))
+		{
+			_qt_w->registerValueCallback((YQtValueCallback)NULL);
+			_qt_x->registerValueCallback((YQtValueCallback)NULL);
+			_qt_y->registerValueCallback((YQtValueCallback)NULL);
+			_qt_z->registerValueCallback((YQtValueCallback)NULL);
+		}
+	}
+	return 0;
 }
 
-int YGyro::_invokeGyroCallbacks(int qtIndex,double qtValue)
+int YGyro::_invokeGyroCallbacks(int qtIndex, double qtValue)
 {
-    switch(qtIndex - 1) {
-    case 0:
-        _w = qtValue;
-        break;
-    case 1:
-        _x = qtValue;
-        break;
-    case 2:
-        _y = qtValue;
-        break;
-    case 3:
-        _z = qtValue;
-        break;
-    }
-    if (qtIndex < 4) {
-        return 0;
-    }
-    _qt_stamp = (int) ((YAPI::GetTickCount()) & (0x7FFFFFFF));
-    if (_quatCallback != NULL) {
-        _quatCallback(this, _w, _x, _y, _z);
-    }
-    if (_anglesCallback != NULL) {
-        this->_loadAngles();
-        _anglesCallback(this, _roll, _pitch, _head);
-    }
-    return 0;
+	switch (qtIndex - 1)
+	{
+	case 0:
+		_w = qtValue;
+		break;
+	case 1:
+		_x = qtValue;
+		break;
+	case 2:
+		_y = qtValue;
+		break;
+	case 3:
+		_z = qtValue;
+		break;
+	}
+	if (qtIndex < 4)
+	{
+		return 0;
+	}
+	_qt_stamp = (int)((YAPI::GetTickCount()) & (0x7FFFFFFF));
+	if (_quatCallback != NULL)
+	{
+		_quatCallback(this, _w, _x, _y, _z);
+	}
+	if (_anglesCallback != NULL)
+	{
+		this->_loadAngles();
+		_anglesCallback(this, _roll, _pitch, _head);
+	}
+	return 0;
 }
 
-YGyro *YGyro::nextGyro(void)
+YGyro* YGyro::nextGyro(void)
 {
-    string  hwid;
+	string hwid;
 
-    if(YISERR(_nextFunction(hwid)) || hwid=="") {
-        return NULL;
-    }
-    return YGyro::FindGyro(hwid);
+	if (YISERR(_nextFunction(hwid)) || hwid == "")
+	{
+		return NULL;
+	}
+	return YGyro::FindGyro(hwid);
 }
 
 YGyro* YGyro::FirstGyro(void)
 {
-    vector<YFUN_DESCR>   v_fundescr;
-    YDEV_DESCR             ydevice;
-    string              serial, funcId, funcName, funcVal, errmsg;
+	vector<YFUN_DESCR> v_fundescr;
+	YDEV_DESCR ydevice;
+	string serial, funcId, funcName, funcVal, errmsg;
 
-    if(YISERR(YapiWrapper::getFunctionsByClass("Gyro", 0, v_fundescr, sizeof(YFUN_DESCR), errmsg)) ||
-       v_fundescr.size() == 0 ||
-       YISERR(YapiWrapper::getFunctionInfo(v_fundescr[0], ydevice, serial, funcId, funcName, funcVal, errmsg))) {
-        return NULL;
-    }
-    return YGyro::FindGyro(serial+"."+funcId);
+	if (YISERR(YapiWrapper::getFunctionsByClass("Gyro", 0, v_fundescr, sizeof(YFUN_DESCR), errmsg)) ||
+		v_fundescr.size() == 0 ||
+		YISERR(YapiWrapper::getFunctionInfo(v_fundescr[0], ydevice, serial, funcId, funcName, funcVal, errmsg)))
+	{
+		return NULL;
+	}
+	return YGyro::FindGyro(serial + "." + funcId);
 }
 
 //--- (end of generated code: YGyro implementation)

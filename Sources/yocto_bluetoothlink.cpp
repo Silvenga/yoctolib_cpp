@@ -49,28 +49,29 @@
 #define  __FILE_ID__  "bluetoothlink"
 
 YBluetoothLink::YBluetoothLink(const string& func): YFunction(func)
-//--- (BluetoothLink initialization)
-    ,_ownAddress(OWNADDRESS_INVALID)
-    ,_pairingPin(PAIRINGPIN_INVALID)
-    ,_remoteAddress(REMOTEADDRESS_INVALID)
-    ,_remoteName(REMOTENAME_INVALID)
-    ,_mute(MUTE_INVALID)
-    ,_preAmplifier(PREAMPLIFIER_INVALID)
-    ,_volume(VOLUME_INVALID)
-    ,_linkState(LINKSTATE_INVALID)
-    ,_linkQuality(LINKQUALITY_INVALID)
-    ,_command(COMMAND_INVALID)
-    ,_valueCallbackBluetoothLink(NULL)
+                                                    //--- (BluetoothLink initialization)
+                                                    , _ownAddress(OWNADDRESS_INVALID)
+                                                    , _pairingPin(PAIRINGPIN_INVALID)
+                                                    , _remoteAddress(REMOTEADDRESS_INVALID)
+                                                    , _remoteName(REMOTENAME_INVALID)
+                                                    , _mute(MUTE_INVALID)
+                                                    , _preAmplifier(PREAMPLIFIER_INVALID)
+                                                    , _volume(VOLUME_INVALID)
+                                                    , _linkState(LINKSTATE_INVALID)
+                                                    , _linkQuality(LINKQUALITY_INVALID)
+                                                    , _command(COMMAND_INVALID)
+                                                    , _valueCallbackBluetoothLink(NULL)
 //--- (end of BluetoothLink initialization)
 {
-    _className="BluetoothLink";
+	_className = "BluetoothLink";
 }
 
 YBluetoothLink::~YBluetoothLink()
 {
-//--- (YBluetoothLink cleanup)
-//--- (end of YBluetoothLink cleanup)
+	//--- (YBluetoothLink cleanup)
+	//--- (end of YBluetoothLink cleanup)
 }
+
 //--- (YBluetoothLink implementation)
 // static attributes
 const string YBluetoothLink::OWNADDRESS_INVALID = YAPI_INVALID_STRING;
@@ -81,37 +82,47 @@ const string YBluetoothLink::COMMAND_INVALID = YAPI_INVALID_STRING;
 
 int YBluetoothLink::_parseAttr(YJSONObject* json_val)
 {
-    if(json_val->has("ownAddress")) {
-        _ownAddress =  json_val->getString("ownAddress");
-    }
-    if(json_val->has("pairingPin")) {
-        _pairingPin =  json_val->getString("pairingPin");
-    }
-    if(json_val->has("remoteAddress")) {
-        _remoteAddress =  json_val->getString("remoteAddress");
-    }
-    if(json_val->has("remoteName")) {
-        _remoteName =  json_val->getString("remoteName");
-    }
-    if(json_val->has("mute")) {
-        _mute =  (Y_MUTE_enum)json_val->getInt("mute");
-    }
-    if(json_val->has("preAmplifier")) {
-        _preAmplifier =  json_val->getInt("preAmplifier");
-    }
-    if(json_val->has("volume")) {
-        _volume =  json_val->getInt("volume");
-    }
-    if(json_val->has("linkState")) {
-        _linkState =  (Y_LINKSTATE_enum)json_val->getInt("linkState");
-    }
-    if(json_val->has("linkQuality")) {
-        _linkQuality =  json_val->getInt("linkQuality");
-    }
-    if(json_val->has("command")) {
-        _command =  json_val->getString("command");
-    }
-    return YFunction::_parseAttr(json_val);
+	if (json_val->has("ownAddress"))
+	{
+		_ownAddress = json_val->getString("ownAddress");
+	}
+	if (json_val->has("pairingPin"))
+	{
+		_pairingPin = json_val->getString("pairingPin");
+	}
+	if (json_val->has("remoteAddress"))
+	{
+		_remoteAddress = json_val->getString("remoteAddress");
+	}
+	if (json_val->has("remoteName"))
+	{
+		_remoteName = json_val->getString("remoteName");
+	}
+	if (json_val->has("mute"))
+	{
+		_mute = (Y_MUTE_enum)json_val->getInt("mute");
+	}
+	if (json_val->has("preAmplifier"))
+	{
+		_preAmplifier = json_val->getInt("preAmplifier");
+	}
+	if (json_val->has("volume"))
+	{
+		_volume = json_val->getInt("volume");
+	}
+	if (json_val->has("linkState"))
+	{
+		_linkState = (Y_LINKSTATE_enum)json_val->getInt("linkState");
+	}
+	if (json_val->has("linkQuality"))
+	{
+		_linkQuality = json_val->getInt("linkQuality");
+	}
+	if (json_val->has("command"))
+	{
+		_command = json_val->getString("command");
+	}
+	return YFunction::_parseAttr(json_val);
 }
 
 
@@ -125,24 +136,29 @@ int YBluetoothLink::_parseAttr(YJSONObject* json_val)
  */
 string YBluetoothLink::get_ownAddress(void)
 {
-    string res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YBluetoothLink::OWNADDRESS_INVALID;
-                }
-            }
-        }
-        res = _ownAddress;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YBluetoothLink::OWNADDRESS_INVALID;
+				}
+			}
+		}
+		res = _ownAddress;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -158,24 +174,29 @@ string YBluetoothLink::get_ownAddress(void)
  */
 string YBluetoothLink::get_pairingPin(void)
 {
-    string res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YBluetoothLink::PAIRINGPIN_INVALID;
-                }
-            }
-        }
-        res = _pairingPin;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YBluetoothLink::PAIRINGPIN_INVALID;
+				}
+			}
+		}
+		res = _pairingPin;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -191,18 +212,21 @@ string YBluetoothLink::get_pairingPin(void)
  */
 int YBluetoothLink::set_pairingPin(const string& newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        rest_val = newval;
-        res = _setAttr("pairingPin", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		rest_val = newval;
+		res = _setAttr("pairingPin", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -214,24 +238,29 @@ int YBluetoothLink::set_pairingPin(const string& newval)
  */
 string YBluetoothLink::get_remoteAddress(void)
 {
-    string res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YBluetoothLink::REMOTEADDRESS_INVALID;
-                }
-            }
-        }
-        res = _remoteAddress;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YBluetoothLink::REMOTEADDRESS_INVALID;
+				}
+			}
+		}
+		res = _remoteAddress;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -245,18 +274,21 @@ string YBluetoothLink::get_remoteAddress(void)
  */
 int YBluetoothLink::set_remoteAddress(const string& newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        rest_val = newval;
-        res = _setAttr("remoteAddress", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		rest_val = newval;
+		res = _setAttr("remoteAddress", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -268,24 +300,29 @@ int YBluetoothLink::set_remoteAddress(const string& newval)
  */
 string YBluetoothLink::get_remoteName(void)
 {
-    string res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YBluetoothLink::REMOTENAME_INVALID;
-                }
-            }
-        }
-        res = _remoteName;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YBluetoothLink::REMOTENAME_INVALID;
+				}
+			}
+		}
+		res = _remoteName;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -297,24 +334,29 @@ string YBluetoothLink::get_remoteName(void)
  */
 Y_MUTE_enum YBluetoothLink::get_mute(void)
 {
-    Y_MUTE_enum res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YBluetoothLink::MUTE_INVALID;
-                }
-            }
-        }
-        res = _mute;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	Y_MUTE_enum res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YBluetoothLink::MUTE_INVALID;
+				}
+			}
+		}
+		res = _mute;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -329,18 +371,21 @@ Y_MUTE_enum YBluetoothLink::get_mute(void)
  */
 int YBluetoothLink::set_mute(Y_MUTE_enum newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        rest_val = (newval>0 ? "1" : "0");
-        res = _setAttr("mute", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		rest_val = (newval > 0 ? "1" : "0");
+		res = _setAttr("mute", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -352,24 +397,29 @@ int YBluetoothLink::set_mute(Y_MUTE_enum newval)
  */
 int YBluetoothLink::get_preAmplifier(void)
 {
-    int res = 0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YBluetoothLink::PREAMPLIFIER_INVALID;
-                }
-            }
-        }
-        res = _preAmplifier;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	int res = 0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YBluetoothLink::PREAMPLIFIER_INVALID;
+				}
+			}
+		}
+		res = _preAmplifier;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -383,18 +433,23 @@ int YBluetoothLink::get_preAmplifier(void)
  */
 int YBluetoothLink::set_preAmplifier(int newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        char buf[32]; sprintf(buf, "%d", newval); rest_val = string(buf);
-        res = _setAttr("preAmplifier", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		char buf[32];
+		sprintf(buf, "%d", newval);
+		rest_val = string(buf);
+		res = _setAttr("preAmplifier", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -406,24 +461,29 @@ int YBluetoothLink::set_preAmplifier(int newval)
  */
 int YBluetoothLink::get_volume(void)
 {
-    int res = 0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YBluetoothLink::VOLUME_INVALID;
-                }
-            }
-        }
-        res = _volume;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	int res = 0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YBluetoothLink::VOLUME_INVALID;
+				}
+			}
+		}
+		res = _volume;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -437,18 +497,23 @@ int YBluetoothLink::get_volume(void)
  */
 int YBluetoothLink::set_volume(int newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        char buf[32]; sprintf(buf, "%d", newval); rest_val = string(buf);
-        res = _setAttr("volume", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		char buf[32];
+		sprintf(buf, "%d", newval);
+		rest_val = string(buf);
+		res = _setAttr("volume", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -461,24 +526,29 @@ int YBluetoothLink::set_volume(int newval)
  */
 Y_LINKSTATE_enum YBluetoothLink::get_linkState(void)
 {
-    Y_LINKSTATE_enum res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YBluetoothLink::LINKSTATE_INVALID;
-                }
-            }
-        }
-        res = _linkState;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	Y_LINKSTATE_enum res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YBluetoothLink::LINKSTATE_INVALID;
+				}
+			}
+		}
+		res = _linkState;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -491,62 +561,75 @@ Y_LINKSTATE_enum YBluetoothLink::get_linkState(void)
  */
 int YBluetoothLink::get_linkQuality(void)
 {
-    int res = 0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YBluetoothLink::LINKQUALITY_INVALID;
-                }
-            }
-        }
-        res = _linkQuality;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	int res = 0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YBluetoothLink::LINKQUALITY_INVALID;
+				}
+			}
+		}
+		res = _linkQuality;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 string YBluetoothLink::get_command(void)
 {
-    string res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YBluetoothLink::COMMAND_INVALID;
-                }
-            }
-        }
-        res = _command;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YBluetoothLink::COMMAND_INVALID;
+				}
+			}
+		}
+		res = _command;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 int YBluetoothLink::set_command(const string& newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        rest_val = newval;
-        res = _setAttr("command", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		rest_val = newval;
+		res = _setAttr("command", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -574,23 +657,29 @@ int YBluetoothLink::set_command(const string& newval)
  */
 YBluetoothLink* YBluetoothLink::FindBluetoothLink(string func)
 {
-    YBluetoothLink* obj = NULL;
-    int taken = 0;
-    if (YAPI::_apiInitialized) {
-        yEnterCriticalSection(&YAPI::_global_cs);
-        taken = 1;
-    }try {
-        obj = (YBluetoothLink*) YFunction::_FindFromCache("BluetoothLink", func);
-        if (obj == NULL) {
-            obj = new YBluetoothLink(func);
-            YFunction::_AddToCache("BluetoothLink", func, obj);
-        }
-    } catch (std::exception) {
-        if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
-        throw;
-    }
-    if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
-    return obj;
+	YBluetoothLink* obj = NULL;
+	int taken = 0;
+	if (YAPI::_apiInitialized)
+	{
+		yEnterCriticalSection(&YAPI::_global_cs);
+		taken = 1;
+	}
+	try
+	{
+		obj = (YBluetoothLink*)YFunction::_FindFromCache("BluetoothLink", func);
+		if (obj == NULL)
+		{
+			obj = new YBluetoothLink(func);
+			YFunction::_AddToCache("BluetoothLink", func, obj);
+		}
+	}
+	catch (std::exception)
+	{
+		if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
+		throw;
+	}
+	if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
+	return obj;
 }
 
 /**
@@ -606,31 +695,39 @@ YBluetoothLink* YBluetoothLink::FindBluetoothLink(string func)
  */
 int YBluetoothLink::registerValueCallback(YBluetoothLinkValueCallback callback)
 {
-    string val;
-    if (callback != NULL) {
-        YFunction::_UpdateValueCallbackList(this, true);
-    } else {
-        YFunction::_UpdateValueCallbackList(this, false);
-    }
-    _valueCallbackBluetoothLink = callback;
-    // Immediately invoke value callback with current value
-    if (callback != NULL && this->isOnline()) {
-        val = _advertisedValue;
-        if (!(val == "")) {
-            this->_invokeValueCallback(val);
-        }
-    }
-    return 0;
+	string val;
+	if (callback != NULL)
+	{
+		YFunction::_UpdateValueCallbackList(this, true);
+	}
+	else
+	{
+		YFunction::_UpdateValueCallbackList(this, false);
+	}
+	_valueCallbackBluetoothLink = callback;
+	// Immediately invoke value callback with current value
+	if (callback != NULL && this->isOnline())
+	{
+		val = _advertisedValue;
+		if (!(val == ""))
+		{
+			this->_invokeValueCallback(val);
+		}
+	}
+	return 0;
 }
 
 int YBluetoothLink::_invokeValueCallback(string value)
 {
-    if (_valueCallbackBluetoothLink != NULL) {
-        _valueCallbackBluetoothLink(this, value);
-    } else {
-        YFunction::_invokeValueCallback(value);
-    }
-    return 0;
+	if (_valueCallbackBluetoothLink != NULL)
+	{
+		_valueCallbackBluetoothLink(this, value);
+	}
+	else
+	{
+		YFunction::_invokeValueCallback(value);
+	}
+	return 0;
 }
 
 /**
@@ -642,7 +739,7 @@ int YBluetoothLink::_invokeValueCallback(string value)
  */
 int YBluetoothLink::connect(void)
 {
-    return this->set_command("C");
+	return this->set_command("C");
 }
 
 /**
@@ -654,31 +751,33 @@ int YBluetoothLink::connect(void)
  */
 int YBluetoothLink::disconnect(void)
 {
-    return this->set_command("D");
+	return this->set_command("D");
 }
 
-YBluetoothLink *YBluetoothLink::nextBluetoothLink(void)
+YBluetoothLink* YBluetoothLink::nextBluetoothLink(void)
 {
-    string  hwid;
+	string hwid;
 
-    if(YISERR(_nextFunction(hwid)) || hwid=="") {
-        return NULL;
-    }
-    return YBluetoothLink::FindBluetoothLink(hwid);
+	if (YISERR(_nextFunction(hwid)) || hwid == "")
+	{
+		return NULL;
+	}
+	return YBluetoothLink::FindBluetoothLink(hwid);
 }
 
 YBluetoothLink* YBluetoothLink::FirstBluetoothLink(void)
 {
-    vector<YFUN_DESCR>   v_fundescr;
-    YDEV_DESCR             ydevice;
-    string              serial, funcId, funcName, funcVal, errmsg;
+	vector<YFUN_DESCR> v_fundescr;
+	YDEV_DESCR ydevice;
+	string serial, funcId, funcName, funcVal, errmsg;
 
-    if(YISERR(YapiWrapper::getFunctionsByClass("BluetoothLink", 0, v_fundescr, sizeof(YFUN_DESCR), errmsg)) ||
-       v_fundescr.size() == 0 ||
-       YISERR(YapiWrapper::getFunctionInfo(v_fundescr[0], ydevice, serial, funcId, funcName, funcVal, errmsg))) {
-        return NULL;
-    }
-    return YBluetoothLink::FindBluetoothLink(serial+"."+funcId);
+	if (YISERR(YapiWrapper::getFunctionsByClass("BluetoothLink", 0, v_fundescr, sizeof(YFUN_DESCR), errmsg)) ||
+		v_fundescr.size() == 0 ||
+		YISERR(YapiWrapper::getFunctionInfo(v_fundescr[0], ydevice, serial, funcId, funcName, funcVal, errmsg)))
+	{
+		return NULL;
+	}
+	return YBluetoothLink::FindBluetoothLink(serial + "." + funcId);
 }
 
 //--- (end of YBluetoothLink implementation)

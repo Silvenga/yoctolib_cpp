@@ -48,49 +48,65 @@
 #define  __FILE_ID__  "wireless"
 
 
-
-YWlanRecord::YWlanRecord(const string& json):_ssid(""),_channel(-1),_sec(""),_rssi(-1)
+YWlanRecord::YWlanRecord(const string& json): _ssid(""), _channel(-1), _sec(""), _rssi(-1)
 {
-    yJsonStateMachine j;
-    
-    // Parse JSON data 
-    j.src = json.c_str();
-    j.end = j.src + strlen(j.src);
-    j.st = YJSON_START;
-    if(yJsonParse(&j) != YJSON_PARSE_AVAIL || j.st != YJSON_PARSE_STRUCT) {
-        return ;
-    }
-    while(yJsonParse(&j) == YJSON_PARSE_AVAIL && j.st == YJSON_PARSE_MEMBNAME) {
-        if (!strcmp(j.token, "ssid")) {
-            if (yJsonParse(&j) != YJSON_PARSE_AVAIL) {
-                return ;
-            }
-            _ssid = (string)j.token;
-            while(j.next == YJSON_PARSE_STRINGCONT && yJsonParse(&j) == YJSON_PARSE_AVAIL) {
-                _ssid +=(string)j.token;
-            }
-        }else if (!strcmp(j.token, "sec")) {
-            if (yJsonParse(&j) != YJSON_PARSE_AVAIL) {
-                return ;
-            }
-            _sec = (string)j.token;
-            while(j.next == YJSON_PARSE_STRINGCONT && yJsonParse(&j) == YJSON_PARSE_AVAIL) {
-                _sec +=(string)j.token;
-            }
-        } else if(!strcmp(j.token, "channel")) {
-            if (yJsonParse(&j) != YJSON_PARSE_AVAIL) {
-                return;
-            }
-            _channel = atoi(j.token);;
-        } else if(!strcmp(j.token, "rssi")) {
-            if (yJsonParse(&j) != YJSON_PARSE_AVAIL) {
-                return;
-            }
-            _rssi = atoi(j.token);;
-        } else {
-            yJsonSkip(&j, 1);
-        }
-    }
+	yJsonStateMachine j;
+
+	// Parse JSON data 
+	j.src = json.c_str();
+	j.end = j.src + strlen(j.src);
+	j.st = YJSON_START;
+	if (yJsonParse(&j) != YJSON_PARSE_AVAIL || j.st != YJSON_PARSE_STRUCT)
+	{
+		return;
+	}
+	while (yJsonParse(&j) == YJSON_PARSE_AVAIL && j.st == YJSON_PARSE_MEMBNAME)
+	{
+		if (!strcmp(j.token, "ssid"))
+		{
+			if (yJsonParse(&j) != YJSON_PARSE_AVAIL)
+			{
+				return;
+			}
+			_ssid = (string)j.token;
+			while (j.next == YJSON_PARSE_STRINGCONT && yJsonParse(&j) == YJSON_PARSE_AVAIL)
+			{
+				_ssid += (string)j.token;
+			}
+		}
+		else if (!strcmp(j.token, "sec"))
+		{
+			if (yJsonParse(&j) != YJSON_PARSE_AVAIL)
+			{
+				return;
+			}
+			_sec = (string)j.token;
+			while (j.next == YJSON_PARSE_STRINGCONT && yJsonParse(&j) == YJSON_PARSE_AVAIL)
+			{
+				_sec += (string)j.token;
+			}
+		}
+		else if (!strcmp(j.token, "channel"))
+		{
+			if (yJsonParse(&j) != YJSON_PARSE_AVAIL)
+			{
+				return;
+			}
+			_channel = atoi(j.token);;
+		}
+		else if (!strcmp(j.token, "rssi"))
+		{
+			if (yJsonParse(&j) != YJSON_PARSE_AVAIL)
+			{
+				return;
+			}
+			_rssi = atoi(j.token);;
+		}
+		else
+		{
+			yJsonSkip(&j, 1);
+		}
+	}
 }
 
 //--- (generated code: YWlanRecord implementation)
@@ -99,46 +115,48 @@ YWlanRecord::YWlanRecord(const string& json):_ssid(""),_channel(-1),_sec(""),_rs
 
 string YWlanRecord::get_ssid(void)
 {
-    return _ssid;
+	return _ssid;
 }
 
 int YWlanRecord::get_channel(void)
 {
-    return _channel;
+	return _channel;
 }
 
 string YWlanRecord::get_security(void)
 {
-    return _sec;
+	return _sec;
 }
 
 int YWlanRecord::get_linkQuality(void)
 {
-    return _rssi;
+	return _rssi;
 }
+
 //--- (end of generated code: YWlanRecord implementation)
 
 
 YWireless::YWireless(const string& func): YFunction(func)
-//--- (generated code: Wireless initialization)
-    ,_linkQuality(LINKQUALITY_INVALID)
-    ,_ssid(SSID_INVALID)
-    ,_channel(CHANNEL_INVALID)
-    ,_security(SECURITY_INVALID)
-    ,_message(MESSAGE_INVALID)
-    ,_wlanConfig(WLANCONFIG_INVALID)
-    ,_wlanState(WLANSTATE_INVALID)
-    ,_valueCallbackWireless(NULL)
+                                          //--- (generated code: Wireless initialization)
+                                          , _linkQuality(LINKQUALITY_INVALID)
+                                          , _ssid(SSID_INVALID)
+                                          , _channel(CHANNEL_INVALID)
+                                          , _security(SECURITY_INVALID)
+                                          , _message(MESSAGE_INVALID)
+                                          , _wlanConfig(WLANCONFIG_INVALID)
+                                          , _wlanState(WLANSTATE_INVALID)
+                                          , _valueCallbackWireless(NULL)
 //--- (end of generated code: Wireless initialization)
 {
-    _className = "Wireless";
+	_className = "Wireless";
 }
 
-YWireless::~YWireless() 
+YWireless::~YWireless()
 {
-//--- (generated code: YWireless cleanup)
-//--- (end of generated code: YWireless cleanup)
+	//--- (generated code: YWireless cleanup)
+	//--- (end of generated code: YWireless cleanup)
 }
+
 //--- (generated code: YWireless implementation)
 // static attributes
 const string YWireless::SSID_INVALID = YAPI_INVALID_STRING;
@@ -147,28 +165,35 @@ const string YWireless::WLANCONFIG_INVALID = YAPI_INVALID_STRING;
 
 int YWireless::_parseAttr(YJSONObject* json_val)
 {
-    if(json_val->has("linkQuality")) {
-        _linkQuality =  json_val->getInt("linkQuality");
-    }
-    if(json_val->has("ssid")) {
-        _ssid =  json_val->getString("ssid");
-    }
-    if(json_val->has("channel")) {
-        _channel =  json_val->getInt("channel");
-    }
-    if(json_val->has("security")) {
-        _security =  (Y_SECURITY_enum)json_val->getInt("security");
-    }
-    if(json_val->has("message")) {
-        _message =  json_val->getString("message");
-    }
-    if(json_val->has("wlanConfig")) {
-        _wlanConfig =  json_val->getString("wlanConfig");
-    }
-    if(json_val->has("wlanState")) {
-        _wlanState =  (Y_WLANSTATE_enum)json_val->getInt("wlanState");
-    }
-    return YFunction::_parseAttr(json_val);
+	if (json_val->has("linkQuality"))
+	{
+		_linkQuality = json_val->getInt("linkQuality");
+	}
+	if (json_val->has("ssid"))
+	{
+		_ssid = json_val->getString("ssid");
+	}
+	if (json_val->has("channel"))
+	{
+		_channel = json_val->getInt("channel");
+	}
+	if (json_val->has("security"))
+	{
+		_security = (Y_SECURITY_enum)json_val->getInt("security");
+	}
+	if (json_val->has("message"))
+	{
+		_message = json_val->getString("message");
+	}
+	if (json_val->has("wlanConfig"))
+	{
+		_wlanConfig = json_val->getString("wlanConfig");
+	}
+	if (json_val->has("wlanState"))
+	{
+		_wlanState = (Y_WLANSTATE_enum)json_val->getInt("wlanState");
+	}
+	return YFunction::_parseAttr(json_val);
 }
 
 
@@ -181,24 +206,29 @@ int YWireless::_parseAttr(YJSONObject* json_val)
  */
 int YWireless::get_linkQuality(void)
 {
-    int res = 0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YWireless::LINKQUALITY_INVALID;
-                }
-            }
-        }
-        res = _linkQuality;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	int res = 0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YWireless::LINKQUALITY_INVALID;
+				}
+			}
+		}
+		res = _linkQuality;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -210,24 +240,29 @@ int YWireless::get_linkQuality(void)
  */
 string YWireless::get_ssid(void)
 {
-    string res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YWireless::SSID_INVALID;
-                }
-            }
-        }
-        res = _ssid;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YWireless::SSID_INVALID;
+				}
+			}
+		}
+		res = _ssid;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -240,24 +275,29 @@ string YWireless::get_ssid(void)
  */
 int YWireless::get_channel(void)
 {
-    int res = 0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YWireless::CHANNEL_INVALID;
-                }
-            }
-        }
-        res = _channel;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	int res = 0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YWireless::CHANNEL_INVALID;
+				}
+			}
+		}
+		res = _channel;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -270,24 +310,29 @@ int YWireless::get_channel(void)
  */
 Y_SECURITY_enum YWireless::get_security(void)
 {
-    Y_SECURITY_enum res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YWireless::SECURITY_INVALID;
-                }
-            }
-        }
-        res = _security;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	Y_SECURITY_enum res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YWireless::SECURITY_INVALID;
+				}
+			}
+		}
+		res = _security;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -299,62 +344,75 @@ Y_SECURITY_enum YWireless::get_security(void)
  */
 string YWireless::get_message(void)
 {
-    string res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YWireless::MESSAGE_INVALID;
-                }
-            }
-        }
-        res = _message;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YWireless::MESSAGE_INVALID;
+				}
+			}
+		}
+		res = _message;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 string YWireless::get_wlanConfig(void)
 {
-    string res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YWireless::WLANCONFIG_INVALID;
-                }
-            }
-        }
-        res = _wlanConfig;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YWireless::WLANCONFIG_INVALID;
+				}
+			}
+		}
+		res = _wlanConfig;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 int YWireless::set_wlanConfig(const string& newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        rest_val = newval;
-        res = _setAttr("wlanConfig", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		rest_val = newval;
+		res = _setAttr("wlanConfig", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -380,24 +438,29 @@ int YWireless::set_wlanConfig(const string& newval)
  */
 Y_WLANSTATE_enum YWireless::get_wlanState(void)
 {
-    Y_WLANSTATE_enum res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YWireless::WLANSTATE_INVALID;
-                }
-            }
-        }
-        res = _wlanState;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	Y_WLANSTATE_enum res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YWireless::WLANSTATE_INVALID;
+				}
+			}
+		}
+		res = _wlanState;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -425,23 +488,29 @@ Y_WLANSTATE_enum YWireless::get_wlanState(void)
  */
 YWireless* YWireless::FindWireless(string func)
 {
-    YWireless* obj = NULL;
-    int taken = 0;
-    if (YAPI::_apiInitialized) {
-        yEnterCriticalSection(&YAPI::_global_cs);
-        taken = 1;
-    }try {
-        obj = (YWireless*) YFunction::_FindFromCache("Wireless", func);
-        if (obj == NULL) {
-            obj = new YWireless(func);
-            YFunction::_AddToCache("Wireless", func, obj);
-        }
-    } catch (std::exception) {
-        if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
-        throw;
-    }
-    if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
-    return obj;
+	YWireless* obj = NULL;
+	int taken = 0;
+	if (YAPI::_apiInitialized)
+	{
+		yEnterCriticalSection(&YAPI::_global_cs);
+		taken = 1;
+	}
+	try
+	{
+		obj = (YWireless*)YFunction::_FindFromCache("Wireless", func);
+		if (obj == NULL)
+		{
+			obj = new YWireless(func);
+			YFunction::_AddToCache("Wireless", func, obj);
+		}
+	}
+	catch (std::exception)
+	{
+		if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
+		throw;
+	}
+	if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
+	return obj;
 }
 
 /**
@@ -457,31 +526,39 @@ YWireless* YWireless::FindWireless(string func)
  */
 int YWireless::registerValueCallback(YWirelessValueCallback callback)
 {
-    string val;
-    if (callback != NULL) {
-        YFunction::_UpdateValueCallbackList(this, true);
-    } else {
-        YFunction::_UpdateValueCallbackList(this, false);
-    }
-    _valueCallbackWireless = callback;
-    // Immediately invoke value callback with current value
-    if (callback != NULL && this->isOnline()) {
-        val = _advertisedValue;
-        if (!(val == "")) {
-            this->_invokeValueCallback(val);
-        }
-    }
-    return 0;
+	string val;
+	if (callback != NULL)
+	{
+		YFunction::_UpdateValueCallbackList(this, true);
+	}
+	else
+	{
+		YFunction::_UpdateValueCallbackList(this, false);
+	}
+	_valueCallbackWireless = callback;
+	// Immediately invoke value callback with current value
+	if (callback != NULL && this->isOnline())
+	{
+		val = _advertisedValue;
+		if (!(val == ""))
+		{
+			this->_invokeValueCallback(val);
+		}
+	}
+	return 0;
 }
 
 int YWireless::_invokeValueCallback(string value)
 {
-    if (_valueCallbackWireless != NULL) {
-        _valueCallbackWireless(this, value);
-    } else {
-        YFunction::_invokeValueCallback(value);
-    }
-    return 0;
+	if (_valueCallbackWireless != NULL)
+	{
+		_valueCallbackWireless(this, value);
+	}
+	else
+	{
+		YFunction::_invokeValueCallback(value);
+	}
+	return 0;
 }
 
 /**
@@ -496,10 +573,10 @@ int YWireless::_invokeValueCallback(string value)
  */
 int YWireless::startWlanScan(void)
 {
-    string config;
-    config = this->get_wlanConfig();
-    // a full scan is triggered when a config is applied
-    return this->set_wlanConfig(config);
+	string config;
+	config = this->get_wlanConfig();
+	// a full scan is triggered when a config is applied
+	return this->set_wlanConfig(config);
 }
 
 /**
@@ -514,9 +591,9 @@ int YWireless::startWlanScan(void)
  *
  * On failure, throws an exception or returns a negative error code.
  */
-int YWireless::joinNetwork(string ssid,string securityKey)
+int YWireless::joinNetwork(string ssid, string securityKey)
 {
-    return this->set_wlanConfig(YapiWrapper::ysprintf("INFRA:%s\\%s", ssid.c_str(),securityKey.c_str()));
+	return this->set_wlanConfig(YapiWrapper::ysprintf("INFRA:%s\\%s", ssid.c_str(), securityKey.c_str()));
 }
 
 /**
@@ -539,9 +616,9 @@ int YWireless::joinNetwork(string ssid,string securityKey)
  *
  * On failure, throws an exception or returns a negative error code.
  */
-int YWireless::adhocNetwork(string ssid,string securityKey)
+int YWireless::adhocNetwork(string ssid, string securityKey)
 {
-    return this->set_wlanConfig(YapiWrapper::ysprintf("ADHOC:%s\\%s", ssid.c_str(),securityKey.c_str()));
+	return this->set_wlanConfig(YapiWrapper::ysprintf("ADHOC:%s\\%s", ssid.c_str(), securityKey.c_str()));
 }
 
 /**
@@ -562,9 +639,9 @@ int YWireless::adhocNetwork(string ssid,string securityKey)
  *
  * On failure, throws an exception or returns a negative error code.
  */
-int YWireless::softAPNetwork(string ssid,string securityKey)
+int YWireless::softAPNetwork(string ssid, string securityKey)
 {
-    return this->set_wlanConfig(YapiWrapper::ysprintf("SOFTAP:%s\\%s", ssid.c_str(),securityKey.c_str()));
+	return this->set_wlanConfig(YapiWrapper::ysprintf("SOFTAP:%s\\%s", ssid.c_str(), securityKey.c_str()));
 }
 
 /**
@@ -580,41 +657,44 @@ int YWireless::softAPNetwork(string ssid,string securityKey)
  */
 vector<YWlanRecord> YWireless::get_detectedWlans(void)
 {
-    string json;
-    vector<string> wlanlist;
-    vector<YWlanRecord> res;
+	string json;
+	vector<string> wlanlist;
+	vector<YWlanRecord> res;
 
-    json = this->_download("wlan.json?by=name");
-    wlanlist = this->_json_get_array(json);
-    res.clear();
-    for (unsigned ii = 0; ii < wlanlist.size(); ii++) {
-        res.push_back(YWlanRecord(wlanlist[ii]));
-    }
-    return res;
+	json = this->_download("wlan.json?by=name");
+	wlanlist = this->_json_get_array(json);
+	res.clear();
+	for (unsigned ii = 0; ii < wlanlist.size(); ii++)
+	{
+		res.push_back(YWlanRecord(wlanlist[ii]));
+	}
+	return res;
 }
 
-YWireless *YWireless::nextWireless(void)
+YWireless* YWireless::nextWireless(void)
 {
-    string  hwid;
+	string hwid;
 
-    if(YISERR(_nextFunction(hwid)) || hwid=="") {
-        return NULL;
-    }
-    return YWireless::FindWireless(hwid);
+	if (YISERR(_nextFunction(hwid)) || hwid == "")
+	{
+		return NULL;
+	}
+	return YWireless::FindWireless(hwid);
 }
 
 YWireless* YWireless::FirstWireless(void)
 {
-    vector<YFUN_DESCR>   v_fundescr;
-    YDEV_DESCR             ydevice;
-    string              serial, funcId, funcName, funcVal, errmsg;
+	vector<YFUN_DESCR> v_fundescr;
+	YDEV_DESCR ydevice;
+	string serial, funcId, funcName, funcVal, errmsg;
 
-    if(YISERR(YapiWrapper::getFunctionsByClass("Wireless", 0, v_fundescr, sizeof(YFUN_DESCR), errmsg)) ||
-       v_fundescr.size() == 0 ||
-       YISERR(YapiWrapper::getFunctionInfo(v_fundescr[0], ydevice, serial, funcId, funcName, funcVal, errmsg))) {
-        return NULL;
-    }
-    return YWireless::FindWireless(serial+"."+funcId);
+	if (YISERR(YapiWrapper::getFunctionsByClass("Wireless", 0, v_fundescr, sizeof(YFUN_DESCR), errmsg)) ||
+		v_fundescr.size() == 0 ||
+		YISERR(YapiWrapper::getFunctionInfo(v_fundescr[0], ydevice, serial, funcId, funcName, funcVal, errmsg)))
+	{
+		return NULL;
+	}
+	return YWireless::FindWireless(serial + "." + funcId);
 }
 
 //--- (end of generated code: YWireless implementation)

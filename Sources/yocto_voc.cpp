@@ -49,19 +49,20 @@
 #define  __FILE_ID__  "voc"
 
 YVoc::YVoc(const string& func): YSensor(func)
-//--- (Voc initialization)
-    ,_valueCallbackVoc(NULL)
-    ,_timedReportCallbackVoc(NULL)
+                                //--- (Voc initialization)
+                                , _valueCallbackVoc(NULL)
+                                , _timedReportCallbackVoc(NULL)
 //--- (end of Voc initialization)
 {
-    _className="Voc";
+	_className = "Voc";
 }
 
 YVoc::~YVoc()
 {
-//--- (YVoc cleanup)
-//--- (end of YVoc cleanup)
+	//--- (YVoc cleanup)
+	//--- (end of YVoc cleanup)
 }
+
 //--- (YVoc implementation)
 // static attributes
 
@@ -91,23 +92,29 @@ YVoc::~YVoc()
  */
 YVoc* YVoc::FindVoc(string func)
 {
-    YVoc* obj = NULL;
-    int taken = 0;
-    if (YAPI::_apiInitialized) {
-        yEnterCriticalSection(&YAPI::_global_cs);
-        taken = 1;
-    }try {
-        obj = (YVoc*) YFunction::_FindFromCache("Voc", func);
-        if (obj == NULL) {
-            obj = new YVoc(func);
-            YFunction::_AddToCache("Voc", func, obj);
-        }
-    } catch (std::exception) {
-        if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
-        throw;
-    }
-    if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
-    return obj;
+	YVoc* obj = NULL;
+	int taken = 0;
+	if (YAPI::_apiInitialized)
+	{
+		yEnterCriticalSection(&YAPI::_global_cs);
+		taken = 1;
+	}
+	try
+	{
+		obj = (YVoc*)YFunction::_FindFromCache("Voc", func);
+		if (obj == NULL)
+		{
+			obj = new YVoc(func);
+			YFunction::_AddToCache("Voc", func, obj);
+		}
+	}
+	catch (std::exception)
+	{
+		if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
+		throw;
+	}
+	if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
+	return obj;
 }
 
 /**
@@ -123,31 +130,39 @@ YVoc* YVoc::FindVoc(string func)
  */
 int YVoc::registerValueCallback(YVocValueCallback callback)
 {
-    string val;
-    if (callback != NULL) {
-        YFunction::_UpdateValueCallbackList(this, true);
-    } else {
-        YFunction::_UpdateValueCallbackList(this, false);
-    }
-    _valueCallbackVoc = callback;
-    // Immediately invoke value callback with current value
-    if (callback != NULL && this->isOnline()) {
-        val = _advertisedValue;
-        if (!(val == "")) {
-            this->_invokeValueCallback(val);
-        }
-    }
-    return 0;
+	string val;
+	if (callback != NULL)
+	{
+		YFunction::_UpdateValueCallbackList(this, true);
+	}
+	else
+	{
+		YFunction::_UpdateValueCallbackList(this, false);
+	}
+	_valueCallbackVoc = callback;
+	// Immediately invoke value callback with current value
+	if (callback != NULL && this->isOnline())
+	{
+		val = _advertisedValue;
+		if (!(val == ""))
+		{
+			this->_invokeValueCallback(val);
+		}
+	}
+	return 0;
 }
 
 int YVoc::_invokeValueCallback(string value)
 {
-    if (_valueCallbackVoc != NULL) {
-        _valueCallbackVoc(this, value);
-    } else {
-        YSensor::_invokeValueCallback(value);
-    }
-    return 0;
+	if (_valueCallbackVoc != NULL)
+	{
+		_valueCallbackVoc(this, value);
+	}
+	else
+	{
+		YSensor::_invokeValueCallback(value);
+	}
+	return 0;
 }
 
 /**
@@ -163,49 +178,57 @@ int YVoc::_invokeValueCallback(string value)
  */
 int YVoc::registerTimedReportCallback(YVocTimedReportCallback callback)
 {
-    YSensor* sensor = NULL;
-    sensor = this;
-    if (callback != NULL) {
-        YFunction::_UpdateTimedReportCallbackList(sensor, true);
-    } else {
-        YFunction::_UpdateTimedReportCallbackList(sensor, false);
-    }
-    _timedReportCallbackVoc = callback;
-    return 0;
+	YSensor* sensor = NULL;
+	sensor = this;
+	if (callback != NULL)
+	{
+		YFunction::_UpdateTimedReportCallbackList(sensor, true);
+	}
+	else
+	{
+		YFunction::_UpdateTimedReportCallbackList(sensor, false);
+	}
+	_timedReportCallbackVoc = callback;
+	return 0;
 }
 
 int YVoc::_invokeTimedReportCallback(YMeasure value)
 {
-    if (_timedReportCallbackVoc != NULL) {
-        _timedReportCallbackVoc(this, value);
-    } else {
-        YSensor::_invokeTimedReportCallback(value);
-    }
-    return 0;
+	if (_timedReportCallbackVoc != NULL)
+	{
+		_timedReportCallbackVoc(this, value);
+	}
+	else
+	{
+		YSensor::_invokeTimedReportCallback(value);
+	}
+	return 0;
 }
 
-YVoc *YVoc::nextVoc(void)
+YVoc* YVoc::nextVoc(void)
 {
-    string  hwid;
+	string hwid;
 
-    if(YISERR(_nextFunction(hwid)) || hwid=="") {
-        return NULL;
-    }
-    return YVoc::FindVoc(hwid);
+	if (YISERR(_nextFunction(hwid)) || hwid == "")
+	{
+		return NULL;
+	}
+	return YVoc::FindVoc(hwid);
 }
 
 YVoc* YVoc::FirstVoc(void)
 {
-    vector<YFUN_DESCR>   v_fundescr;
-    YDEV_DESCR             ydevice;
-    string              serial, funcId, funcName, funcVal, errmsg;
+	vector<YFUN_DESCR> v_fundescr;
+	YDEV_DESCR ydevice;
+	string serial, funcId, funcName, funcVal, errmsg;
 
-    if(YISERR(YapiWrapper::getFunctionsByClass("Voc", 0, v_fundescr, sizeof(YFUN_DESCR), errmsg)) ||
-       v_fundescr.size() == 0 ||
-       YISERR(YapiWrapper::getFunctionInfo(v_fundescr[0], ydevice, serial, funcId, funcName, funcVal, errmsg))) {
-        return NULL;
-    }
-    return YVoc::FindVoc(serial+"."+funcId);
+	if (YISERR(YapiWrapper::getFunctionsByClass("Voc", 0, v_fundescr, sizeof(YFUN_DESCR), errmsg)) ||
+		v_fundescr.size() == 0 ||
+		YISERR(YapiWrapper::getFunctionInfo(v_fundescr[0], ydevice, serial, funcId, funcName, funcVal, errmsg)))
+	{
+		return NULL;
+	}
+	return YVoc::FindVoc(serial + "." + funcId);
 }
 
 //--- (end of YVoc implementation)

@@ -49,34 +49,37 @@
 #define  __FILE_ID__  "quadraturedecoder"
 
 YQuadratureDecoder::YQuadratureDecoder(const string& func): YSensor(func)
-//--- (QuadratureDecoder initialization)
-    ,_speed(SPEED_INVALID)
-    ,_decoding(DECODING_INVALID)
-    ,_valueCallbackQuadratureDecoder(NULL)
-    ,_timedReportCallbackQuadratureDecoder(NULL)
+                                                            //--- (QuadratureDecoder initialization)
+                                                            , _speed(SPEED_INVALID)
+                                                            , _decoding(DECODING_INVALID)
+                                                            , _valueCallbackQuadratureDecoder(NULL)
+                                                            , _timedReportCallbackQuadratureDecoder(NULL)
 //--- (end of QuadratureDecoder initialization)
 {
-    _className="QuadratureDecoder";
+	_className = "QuadratureDecoder";
 }
 
 YQuadratureDecoder::~YQuadratureDecoder()
 {
-//--- (YQuadratureDecoder cleanup)
-//--- (end of YQuadratureDecoder cleanup)
+	//--- (YQuadratureDecoder cleanup)
+	//--- (end of YQuadratureDecoder cleanup)
 }
+
 //--- (YQuadratureDecoder implementation)
 // static attributes
 const double YQuadratureDecoder::SPEED_INVALID = YAPI_INVALID_DOUBLE;
 
 int YQuadratureDecoder::_parseAttr(YJSONObject* json_val)
 {
-    if(json_val->has("speed")) {
-        _speed =  floor(json_val->getDouble("speed") * 1000.0 / 65536.0 + 0.5) / 1000.0;
-    }
-    if(json_val->has("decoding")) {
-        _decoding =  (Y_DECODING_enum)json_val->getInt("decoding");
-    }
-    return YSensor::_parseAttr(json_val);
+	if (json_val->has("speed"))
+	{
+		_speed = floor(json_val->getDouble("speed") * 1000.0 / 65536.0 + 0.5) / 1000.0;
+	}
+	if (json_val->has("decoding"))
+	{
+		_decoding = (Y_DECODING_enum)json_val->getInt("decoding");
+	}
+	return YSensor::_parseAttr(json_val);
 }
 
 
@@ -92,18 +95,23 @@ int YQuadratureDecoder::_parseAttr(YJSONObject* json_val)
  */
 int YQuadratureDecoder::set_currentValue(double newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        char buf[32]; sprintf(buf,"%d", (int)floor(newval * 65536.0 + 0.5)); rest_val = string(buf);
-        res = _setAttr("currentValue", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		char buf[32];
+		sprintf(buf, "%d", (int)floor(newval * 65536.0 + 0.5));
+		rest_val = string(buf);
+		res = _setAttr("currentValue", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -115,24 +123,29 @@ int YQuadratureDecoder::set_currentValue(double newval)
  */
 double YQuadratureDecoder::get_speed(void)
 {
-    double res = 0.0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YQuadratureDecoder::SPEED_INVALID;
-                }
-            }
-        }
-        res = _speed;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	double res = 0.0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YQuadratureDecoder::SPEED_INVALID;
+				}
+			}
+		}
+		res = _speed;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -145,24 +158,29 @@ double YQuadratureDecoder::get_speed(void)
  */
 Y_DECODING_enum YQuadratureDecoder::get_decoding(void)
 {
-    Y_DECODING_enum res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YQuadratureDecoder::DECODING_INVALID;
-                }
-            }
-        }
-        res = _decoding;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	Y_DECODING_enum res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YQuadratureDecoder::DECODING_INVALID;
+				}
+			}
+		}
+		res = _decoding;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -177,18 +195,21 @@ Y_DECODING_enum YQuadratureDecoder::get_decoding(void)
  */
 int YQuadratureDecoder::set_decoding(Y_DECODING_enum newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        rest_val = (newval>0 ? "1" : "0");
-        res = _setAttr("decoding", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		rest_val = (newval > 0 ? "1" : "0");
+		res = _setAttr("decoding", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -216,23 +237,29 @@ int YQuadratureDecoder::set_decoding(Y_DECODING_enum newval)
  */
 YQuadratureDecoder* YQuadratureDecoder::FindQuadratureDecoder(string func)
 {
-    YQuadratureDecoder* obj = NULL;
-    int taken = 0;
-    if (YAPI::_apiInitialized) {
-        yEnterCriticalSection(&YAPI::_global_cs);
-        taken = 1;
-    }try {
-        obj = (YQuadratureDecoder*) YFunction::_FindFromCache("QuadratureDecoder", func);
-        if (obj == NULL) {
-            obj = new YQuadratureDecoder(func);
-            YFunction::_AddToCache("QuadratureDecoder", func, obj);
-        }
-    } catch (std::exception) {
-        if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
-        throw;
-    }
-    if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
-    return obj;
+	YQuadratureDecoder* obj = NULL;
+	int taken = 0;
+	if (YAPI::_apiInitialized)
+	{
+		yEnterCriticalSection(&YAPI::_global_cs);
+		taken = 1;
+	}
+	try
+	{
+		obj = (YQuadratureDecoder*)YFunction::_FindFromCache("QuadratureDecoder", func);
+		if (obj == NULL)
+		{
+			obj = new YQuadratureDecoder(func);
+			YFunction::_AddToCache("QuadratureDecoder", func, obj);
+		}
+	}
+	catch (std::exception)
+	{
+		if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
+		throw;
+	}
+	if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
+	return obj;
 }
 
 /**
@@ -248,31 +275,39 @@ YQuadratureDecoder* YQuadratureDecoder::FindQuadratureDecoder(string func)
  */
 int YQuadratureDecoder::registerValueCallback(YQuadratureDecoderValueCallback callback)
 {
-    string val;
-    if (callback != NULL) {
-        YFunction::_UpdateValueCallbackList(this, true);
-    } else {
-        YFunction::_UpdateValueCallbackList(this, false);
-    }
-    _valueCallbackQuadratureDecoder = callback;
-    // Immediately invoke value callback with current value
-    if (callback != NULL && this->isOnline()) {
-        val = _advertisedValue;
-        if (!(val == "")) {
-            this->_invokeValueCallback(val);
-        }
-    }
-    return 0;
+	string val;
+	if (callback != NULL)
+	{
+		YFunction::_UpdateValueCallbackList(this, true);
+	}
+	else
+	{
+		YFunction::_UpdateValueCallbackList(this, false);
+	}
+	_valueCallbackQuadratureDecoder = callback;
+	// Immediately invoke value callback with current value
+	if (callback != NULL && this->isOnline())
+	{
+		val = _advertisedValue;
+		if (!(val == ""))
+		{
+			this->_invokeValueCallback(val);
+		}
+	}
+	return 0;
 }
 
 int YQuadratureDecoder::_invokeValueCallback(string value)
 {
-    if (_valueCallbackQuadratureDecoder != NULL) {
-        _valueCallbackQuadratureDecoder(this, value);
-    } else {
-        YSensor::_invokeValueCallback(value);
-    }
-    return 0;
+	if (_valueCallbackQuadratureDecoder != NULL)
+	{
+		_valueCallbackQuadratureDecoder(this, value);
+	}
+	else
+	{
+		YSensor::_invokeValueCallback(value);
+	}
+	return 0;
 }
 
 /**
@@ -288,49 +323,57 @@ int YQuadratureDecoder::_invokeValueCallback(string value)
  */
 int YQuadratureDecoder::registerTimedReportCallback(YQuadratureDecoderTimedReportCallback callback)
 {
-    YSensor* sensor = NULL;
-    sensor = this;
-    if (callback != NULL) {
-        YFunction::_UpdateTimedReportCallbackList(sensor, true);
-    } else {
-        YFunction::_UpdateTimedReportCallbackList(sensor, false);
-    }
-    _timedReportCallbackQuadratureDecoder = callback;
-    return 0;
+	YSensor* sensor = NULL;
+	sensor = this;
+	if (callback != NULL)
+	{
+		YFunction::_UpdateTimedReportCallbackList(sensor, true);
+	}
+	else
+	{
+		YFunction::_UpdateTimedReportCallbackList(sensor, false);
+	}
+	_timedReportCallbackQuadratureDecoder = callback;
+	return 0;
 }
 
 int YQuadratureDecoder::_invokeTimedReportCallback(YMeasure value)
 {
-    if (_timedReportCallbackQuadratureDecoder != NULL) {
-        _timedReportCallbackQuadratureDecoder(this, value);
-    } else {
-        YSensor::_invokeTimedReportCallback(value);
-    }
-    return 0;
+	if (_timedReportCallbackQuadratureDecoder != NULL)
+	{
+		_timedReportCallbackQuadratureDecoder(this, value);
+	}
+	else
+	{
+		YSensor::_invokeTimedReportCallback(value);
+	}
+	return 0;
 }
 
-YQuadratureDecoder *YQuadratureDecoder::nextQuadratureDecoder(void)
+YQuadratureDecoder* YQuadratureDecoder::nextQuadratureDecoder(void)
 {
-    string  hwid;
+	string hwid;
 
-    if(YISERR(_nextFunction(hwid)) || hwid=="") {
-        return NULL;
-    }
-    return YQuadratureDecoder::FindQuadratureDecoder(hwid);
+	if (YISERR(_nextFunction(hwid)) || hwid == "")
+	{
+		return NULL;
+	}
+	return YQuadratureDecoder::FindQuadratureDecoder(hwid);
 }
 
 YQuadratureDecoder* YQuadratureDecoder::FirstQuadratureDecoder(void)
 {
-    vector<YFUN_DESCR>   v_fundescr;
-    YDEV_DESCR             ydevice;
-    string              serial, funcId, funcName, funcVal, errmsg;
+	vector<YFUN_DESCR> v_fundescr;
+	YDEV_DESCR ydevice;
+	string serial, funcId, funcName, funcVal, errmsg;
 
-    if(YISERR(YapiWrapper::getFunctionsByClass("QuadratureDecoder", 0, v_fundescr, sizeof(YFUN_DESCR), errmsg)) ||
-       v_fundescr.size() == 0 ||
-       YISERR(YapiWrapper::getFunctionInfo(v_fundescr[0], ydevice, serial, funcId, funcName, funcVal, errmsg))) {
-        return NULL;
-    }
-    return YQuadratureDecoder::FindQuadratureDecoder(serial+"."+funcId);
+	if (YISERR(YapiWrapper::getFunctionsByClass("QuadratureDecoder", 0, v_fundescr, sizeof(YFUN_DESCR), errmsg)) ||
+		v_fundescr.size() == 0 ||
+		YISERR(YapiWrapper::getFunctionInfo(v_fundescr[0], ydevice, serial, funcId, funcName, funcVal, errmsg)))
+	{
+		return NULL;
+	}
+	return YQuadratureDecoder::FindQuadratureDecoder(serial + "." + funcId);
 }
 
 //--- (end of YQuadratureDecoder implementation)

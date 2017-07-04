@@ -49,40 +49,45 @@
 #define  __FILE_ID__  "bridgecontrol"
 
 YBridgeControl::YBridgeControl(const string& func): YFunction(func)
-//--- (BridgeControl initialization)
-    ,_excitationMode(EXCITATIONMODE_INVALID)
-    ,_bridgeLatency(BRIDGELATENCY_INVALID)
-    ,_adValue(ADVALUE_INVALID)
-    ,_adGain(ADGAIN_INVALID)
-    ,_valueCallbackBridgeControl(NULL)
+                                                    //--- (BridgeControl initialization)
+                                                    , _excitationMode(EXCITATIONMODE_INVALID)
+                                                    , _bridgeLatency(BRIDGELATENCY_INVALID)
+                                                    , _adValue(ADVALUE_INVALID)
+                                                    , _adGain(ADGAIN_INVALID)
+                                                    , _valueCallbackBridgeControl(NULL)
 //--- (end of BridgeControl initialization)
 {
-    _className="BridgeControl";
+	_className = "BridgeControl";
 }
 
 YBridgeControl::~YBridgeControl()
 {
-//--- (YBridgeControl cleanup)
-//--- (end of YBridgeControl cleanup)
+	//--- (YBridgeControl cleanup)
+	//--- (end of YBridgeControl cleanup)
 }
+
 //--- (YBridgeControl implementation)
 // static attributes
 
 int YBridgeControl::_parseAttr(YJSONObject* json_val)
 {
-    if(json_val->has("excitationMode")) {
-        _excitationMode =  (Y_EXCITATIONMODE_enum)json_val->getInt("excitationMode");
-    }
-    if(json_val->has("bridgeLatency")) {
-        _bridgeLatency =  json_val->getInt("bridgeLatency");
-    }
-    if(json_val->has("adValue")) {
-        _adValue =  json_val->getInt("adValue");
-    }
-    if(json_val->has("adGain")) {
-        _adGain =  json_val->getInt("adGain");
-    }
-    return YFunction::_parseAttr(json_val);
+	if (json_val->has("excitationMode"))
+	{
+		_excitationMode = (Y_EXCITATIONMODE_enum)json_val->getInt("excitationMode");
+	}
+	if (json_val->has("bridgeLatency"))
+	{
+		_bridgeLatency = json_val->getInt("bridgeLatency");
+	}
+	if (json_val->has("adValue"))
+	{
+		_adValue = json_val->getInt("adValue");
+	}
+	if (json_val->has("adGain"))
+	{
+		_adGain = json_val->getInt("adGain");
+	}
+	return YFunction::_parseAttr(json_val);
 }
 
 
@@ -96,24 +101,29 @@ int YBridgeControl::_parseAttr(YJSONObject* json_val)
  */
 Y_EXCITATIONMODE_enum YBridgeControl::get_excitationMode(void)
 {
-    Y_EXCITATIONMODE_enum res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YBridgeControl::EXCITATIONMODE_INVALID;
-                }
-            }
-        }
-        res = _excitationMode;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	Y_EXCITATIONMODE_enum res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YBridgeControl::EXCITATIONMODE_INVALID;
+				}
+			}
+		}
+		res = _excitationMode;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -128,18 +138,23 @@ Y_EXCITATIONMODE_enum YBridgeControl::get_excitationMode(void)
  */
 int YBridgeControl::set_excitationMode(Y_EXCITATIONMODE_enum newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        char buf[32]; sprintf(buf, "%d", newval); rest_val = string(buf);
-        res = _setAttr("excitationMode", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		char buf[32];
+		sprintf(buf, "%d", newval);
+		rest_val = string(buf);
+		res = _setAttr("excitationMode", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -151,24 +166,29 @@ int YBridgeControl::set_excitationMode(Y_EXCITATIONMODE_enum newval)
  */
 int YBridgeControl::get_bridgeLatency(void)
 {
-    int res = 0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YBridgeControl::BRIDGELATENCY_INVALID;
-                }
-            }
-        }
-        res = _bridgeLatency;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	int res = 0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YBridgeControl::BRIDGELATENCY_INVALID;
+				}
+			}
+		}
+		res = _bridgeLatency;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -182,18 +202,23 @@ int YBridgeControl::get_bridgeLatency(void)
  */
 int YBridgeControl::set_bridgeLatency(int newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        char buf[32]; sprintf(buf, "%d", newval); rest_val = string(buf);
-        res = _setAttr("bridgeLatency", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		char buf[32];
+		sprintf(buf, "%d", newval);
+		rest_val = string(buf);
+		res = _setAttr("bridgeLatency", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -207,24 +232,29 @@ int YBridgeControl::set_bridgeLatency(int newval)
  */
 int YBridgeControl::get_adValue(void)
 {
-    int res = 0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YBridgeControl::ADVALUE_INVALID;
-                }
-            }
-        }
-        res = _adValue;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	int res = 0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YBridgeControl::ADVALUE_INVALID;
+				}
+			}
+		}
+		res = _adValue;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -237,24 +267,29 @@ int YBridgeControl::get_adValue(void)
  */
 int YBridgeControl::get_adGain(void)
 {
-    int res = 0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YBridgeControl::ADGAIN_INVALID;
-                }
-            }
-        }
-        res = _adGain;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	int res = 0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YBridgeControl::ADGAIN_INVALID;
+				}
+			}
+		}
+		res = _adGain;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -282,23 +317,29 @@ int YBridgeControl::get_adGain(void)
  */
 YBridgeControl* YBridgeControl::FindBridgeControl(string func)
 {
-    YBridgeControl* obj = NULL;
-    int taken = 0;
-    if (YAPI::_apiInitialized) {
-        yEnterCriticalSection(&YAPI::_global_cs);
-        taken = 1;
-    }try {
-        obj = (YBridgeControl*) YFunction::_FindFromCache("BridgeControl", func);
-        if (obj == NULL) {
-            obj = new YBridgeControl(func);
-            YFunction::_AddToCache("BridgeControl", func, obj);
-        }
-    } catch (std::exception) {
-        if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
-        throw;
-    }
-    if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
-    return obj;
+	YBridgeControl* obj = NULL;
+	int taken = 0;
+	if (YAPI::_apiInitialized)
+	{
+		yEnterCriticalSection(&YAPI::_global_cs);
+		taken = 1;
+	}
+	try
+	{
+		obj = (YBridgeControl*)YFunction::_FindFromCache("BridgeControl", func);
+		if (obj == NULL)
+		{
+			obj = new YBridgeControl(func);
+			YFunction::_AddToCache("BridgeControl", func, obj);
+		}
+	}
+	catch (std::exception)
+	{
+		if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
+		throw;
+	}
+	if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
+	return obj;
 }
 
 /**
@@ -314,55 +355,65 @@ YBridgeControl* YBridgeControl::FindBridgeControl(string func)
  */
 int YBridgeControl::registerValueCallback(YBridgeControlValueCallback callback)
 {
-    string val;
-    if (callback != NULL) {
-        YFunction::_UpdateValueCallbackList(this, true);
-    } else {
-        YFunction::_UpdateValueCallbackList(this, false);
-    }
-    _valueCallbackBridgeControl = callback;
-    // Immediately invoke value callback with current value
-    if (callback != NULL && this->isOnline()) {
-        val = _advertisedValue;
-        if (!(val == "")) {
-            this->_invokeValueCallback(val);
-        }
-    }
-    return 0;
+	string val;
+	if (callback != NULL)
+	{
+		YFunction::_UpdateValueCallbackList(this, true);
+	}
+	else
+	{
+		YFunction::_UpdateValueCallbackList(this, false);
+	}
+	_valueCallbackBridgeControl = callback;
+	// Immediately invoke value callback with current value
+	if (callback != NULL && this->isOnline())
+	{
+		val = _advertisedValue;
+		if (!(val == ""))
+		{
+			this->_invokeValueCallback(val);
+		}
+	}
+	return 0;
 }
 
 int YBridgeControl::_invokeValueCallback(string value)
 {
-    if (_valueCallbackBridgeControl != NULL) {
-        _valueCallbackBridgeControl(this, value);
-    } else {
-        YFunction::_invokeValueCallback(value);
-    }
-    return 0;
+	if (_valueCallbackBridgeControl != NULL)
+	{
+		_valueCallbackBridgeControl(this, value);
+	}
+	else
+	{
+		YFunction::_invokeValueCallback(value);
+	}
+	return 0;
 }
 
-YBridgeControl *YBridgeControl::nextBridgeControl(void)
+YBridgeControl* YBridgeControl::nextBridgeControl(void)
 {
-    string  hwid;
+	string hwid;
 
-    if(YISERR(_nextFunction(hwid)) || hwid=="") {
-        return NULL;
-    }
-    return YBridgeControl::FindBridgeControl(hwid);
+	if (YISERR(_nextFunction(hwid)) || hwid == "")
+	{
+		return NULL;
+	}
+	return YBridgeControl::FindBridgeControl(hwid);
 }
 
 YBridgeControl* YBridgeControl::FirstBridgeControl(void)
 {
-    vector<YFUN_DESCR>   v_fundescr;
-    YDEV_DESCR             ydevice;
-    string              serial, funcId, funcName, funcVal, errmsg;
+	vector<YFUN_DESCR> v_fundescr;
+	YDEV_DESCR ydevice;
+	string serial, funcId, funcName, funcVal, errmsg;
 
-    if(YISERR(YapiWrapper::getFunctionsByClass("BridgeControl", 0, v_fundescr, sizeof(YFUN_DESCR), errmsg)) ||
-       v_fundescr.size() == 0 ||
-       YISERR(YapiWrapper::getFunctionInfo(v_fundescr[0], ydevice, serial, funcId, funcName, funcVal, errmsg))) {
-        return NULL;
-    }
-    return YBridgeControl::FindBridgeControl(serial+"."+funcId);
+	if (YISERR(YapiWrapper::getFunctionsByClass("BridgeControl", 0, v_fundescr, sizeof(YFUN_DESCR), errmsg)) ||
+		v_fundescr.size() == 0 ||
+		YISERR(YapiWrapper::getFunctionInfo(v_fundescr[0], ydevice, serial, funcId, funcName, funcVal, errmsg)))
+	{
+		return NULL;
+	}
+	return YBridgeControl::FindBridgeControl(serial + "." + funcId);
 }
 
 //--- (end of YBridgeControl implementation)

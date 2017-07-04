@@ -49,49 +49,56 @@
 #define  __FILE_ID__  "wakeupmonitor"
 
 YWakeUpMonitor::YWakeUpMonitor(const string& func): YFunction(func)
-//--- (WakeUpMonitor initialization)
-    ,_powerDuration(POWERDURATION_INVALID)
-    ,_sleepCountdown(SLEEPCOUNTDOWN_INVALID)
-    ,_nextWakeUp(NEXTWAKEUP_INVALID)
-    ,_wakeUpReason(WAKEUPREASON_INVALID)
-    ,_wakeUpState(WAKEUPSTATE_INVALID)
-    ,_rtcTime(RTCTIME_INVALID)
-    ,_endOfTime(2145960000)
-    ,_valueCallbackWakeUpMonitor(NULL)
+                                                    //--- (WakeUpMonitor initialization)
+                                                    , _powerDuration(POWERDURATION_INVALID)
+                                                    , _sleepCountdown(SLEEPCOUNTDOWN_INVALID)
+                                                    , _nextWakeUp(NEXTWAKEUP_INVALID)
+                                                    , _wakeUpReason(WAKEUPREASON_INVALID)
+                                                    , _wakeUpState(WAKEUPSTATE_INVALID)
+                                                    , _rtcTime(RTCTIME_INVALID)
+                                                    , _endOfTime(2145960000)
+                                                    , _valueCallbackWakeUpMonitor(NULL)
 //--- (end of WakeUpMonitor initialization)
 {
-    _className="WakeUpMonitor";
+	_className = "WakeUpMonitor";
 }
 
 YWakeUpMonitor::~YWakeUpMonitor()
 {
-//--- (YWakeUpMonitor cleanup)
-//--- (end of YWakeUpMonitor cleanup)
+	//--- (YWakeUpMonitor cleanup)
+	//--- (end of YWakeUpMonitor cleanup)
 }
+
 //--- (YWakeUpMonitor implementation)
 // static attributes
 
 int YWakeUpMonitor::_parseAttr(YJSONObject* json_val)
 {
-    if(json_val->has("powerDuration")) {
-        _powerDuration =  json_val->getInt("powerDuration");
-    }
-    if(json_val->has("sleepCountdown")) {
-        _sleepCountdown =  json_val->getInt("sleepCountdown");
-    }
-    if(json_val->has("nextWakeUp")) {
-        _nextWakeUp =  json_val->getLong("nextWakeUp");
-    }
-    if(json_val->has("wakeUpReason")) {
-        _wakeUpReason =  (Y_WAKEUPREASON_enum)json_val->getInt("wakeUpReason");
-    }
-    if(json_val->has("wakeUpState")) {
-        _wakeUpState =  (Y_WAKEUPSTATE_enum)json_val->getInt("wakeUpState");
-    }
-    if(json_val->has("rtcTime")) {
-        _rtcTime =  json_val->getLong("rtcTime");
-    }
-    return YFunction::_parseAttr(json_val);
+	if (json_val->has("powerDuration"))
+	{
+		_powerDuration = json_val->getInt("powerDuration");
+	}
+	if (json_val->has("sleepCountdown"))
+	{
+		_sleepCountdown = json_val->getInt("sleepCountdown");
+	}
+	if (json_val->has("nextWakeUp"))
+	{
+		_nextWakeUp = json_val->getLong("nextWakeUp");
+	}
+	if (json_val->has("wakeUpReason"))
+	{
+		_wakeUpReason = (Y_WAKEUPREASON_enum)json_val->getInt("wakeUpReason");
+	}
+	if (json_val->has("wakeUpState"))
+	{
+		_wakeUpState = (Y_WAKEUPSTATE_enum)json_val->getInt("wakeUpState");
+	}
+	if (json_val->has("rtcTime"))
+	{
+		_rtcTime = json_val->getLong("rtcTime");
+	}
+	return YFunction::_parseAttr(json_val);
 }
 
 
@@ -104,24 +111,29 @@ int YWakeUpMonitor::_parseAttr(YJSONObject* json_val)
  */
 int YWakeUpMonitor::get_powerDuration(void)
 {
-    int res = 0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YWakeUpMonitor::POWERDURATION_INVALID;
-                }
-            }
-        }
-        res = _powerDuration;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	int res = 0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YWakeUpMonitor::POWERDURATION_INVALID;
+				}
+			}
+		}
+		res = _powerDuration;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -136,18 +148,23 @@ int YWakeUpMonitor::get_powerDuration(void)
  */
 int YWakeUpMonitor::set_powerDuration(int newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        char buf[32]; sprintf(buf, "%d", newval); rest_val = string(buf);
-        res = _setAttr("powerDuration", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		char buf[32];
+		sprintf(buf, "%d", newval);
+		rest_val = string(buf);
+		res = _setAttr("powerDuration", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -159,24 +176,29 @@ int YWakeUpMonitor::set_powerDuration(int newval)
  */
 int YWakeUpMonitor::get_sleepCountdown(void)
 {
-    int res = 0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YWakeUpMonitor::SLEEPCOUNTDOWN_INVALID;
-                }
-            }
-        }
-        res = _sleepCountdown;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	int res = 0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YWakeUpMonitor::SLEEPCOUNTDOWN_INVALID;
+				}
+			}
+		}
+		res = _sleepCountdown;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -190,18 +212,23 @@ int YWakeUpMonitor::get_sleepCountdown(void)
  */
 int YWakeUpMonitor::set_sleepCountdown(int newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        char buf[32]; sprintf(buf, "%d", newval); rest_val = string(buf);
-        res = _setAttr("sleepCountdown", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		char buf[32];
+		sprintf(buf, "%d", newval);
+		rest_val = string(buf);
+		res = _setAttr("sleepCountdown", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -213,24 +240,29 @@ int YWakeUpMonitor::set_sleepCountdown(int newval)
  */
 s64 YWakeUpMonitor::get_nextWakeUp(void)
 {
-    s64 res = 0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YWakeUpMonitor::NEXTWAKEUP_INVALID;
-                }
-            }
-        }
-        res = _nextWakeUp;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	s64 res = 0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YWakeUpMonitor::NEXTWAKEUP_INVALID;
+				}
+			}
+		}
+		res = _nextWakeUp;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -244,18 +276,23 @@ s64 YWakeUpMonitor::get_nextWakeUp(void)
  */
 int YWakeUpMonitor::set_nextWakeUp(s64 newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        char buf[32]; sprintf(buf, "%u", (u32)newval); rest_val = string(buf);
-        res = _setAttr("nextWakeUp", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		char buf[32];
+		sprintf(buf, "%u", (u32)newval);
+		rest_val = string(buf);
+		res = _setAttr("nextWakeUp", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -269,24 +306,29 @@ int YWakeUpMonitor::set_nextWakeUp(s64 newval)
  */
 Y_WAKEUPREASON_enum YWakeUpMonitor::get_wakeUpReason(void)
 {
-    Y_WAKEUPREASON_enum res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YWakeUpMonitor::WAKEUPREASON_INVALID;
-                }
-            }
-        }
-        res = _wakeUpReason;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	Y_WAKEUPREASON_enum res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YWakeUpMonitor::WAKEUPREASON_INVALID;
+				}
+			}
+		}
+		res = _wakeUpReason;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -298,62 +340,77 @@ Y_WAKEUPREASON_enum YWakeUpMonitor::get_wakeUpReason(void)
  */
 Y_WAKEUPSTATE_enum YWakeUpMonitor::get_wakeUpState(void)
 {
-    Y_WAKEUPSTATE_enum res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YWakeUpMonitor::WAKEUPSTATE_INVALID;
-                }
-            }
-        }
-        res = _wakeUpState;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	Y_WAKEUPSTATE_enum res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YWakeUpMonitor::WAKEUPSTATE_INVALID;
+				}
+			}
+		}
+		res = _wakeUpState;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 int YWakeUpMonitor::set_wakeUpState(Y_WAKEUPSTATE_enum newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        char buf[32]; sprintf(buf, "%d", newval); rest_val = string(buf);
-        res = _setAttr("wakeUpState", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		char buf[32];
+		sprintf(buf, "%d", newval);
+		rest_val = string(buf);
+		res = _setAttr("wakeUpState", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 s64 YWakeUpMonitor::get_rtcTime(void)
 {
-    s64 res = 0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YWakeUpMonitor::RTCTIME_INVALID;
-                }
-            }
-        }
-        res = _rtcTime;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	s64 res = 0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YWakeUpMonitor::RTCTIME_INVALID;
+				}
+			}
+		}
+		res = _rtcTime;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -381,23 +438,29 @@ s64 YWakeUpMonitor::get_rtcTime(void)
  */
 YWakeUpMonitor* YWakeUpMonitor::FindWakeUpMonitor(string func)
 {
-    YWakeUpMonitor* obj = NULL;
-    int taken = 0;
-    if (YAPI::_apiInitialized) {
-        yEnterCriticalSection(&YAPI::_global_cs);
-        taken = 1;
-    }try {
-        obj = (YWakeUpMonitor*) YFunction::_FindFromCache("WakeUpMonitor", func);
-        if (obj == NULL) {
-            obj = new YWakeUpMonitor(func);
-            YFunction::_AddToCache("WakeUpMonitor", func, obj);
-        }
-    } catch (std::exception) {
-        if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
-        throw;
-    }
-    if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
-    return obj;
+	YWakeUpMonitor* obj = NULL;
+	int taken = 0;
+	if (YAPI::_apiInitialized)
+	{
+		yEnterCriticalSection(&YAPI::_global_cs);
+		taken = 1;
+	}
+	try
+	{
+		obj = (YWakeUpMonitor*)YFunction::_FindFromCache("WakeUpMonitor", func);
+		if (obj == NULL)
+		{
+			obj = new YWakeUpMonitor(func);
+			YFunction::_AddToCache("WakeUpMonitor", func, obj);
+		}
+	}
+	catch (std::exception)
+	{
+		if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
+		throw;
+	}
+	if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
+	return obj;
 }
 
 /**
@@ -413,31 +476,39 @@ YWakeUpMonitor* YWakeUpMonitor::FindWakeUpMonitor(string func)
  */
 int YWakeUpMonitor::registerValueCallback(YWakeUpMonitorValueCallback callback)
 {
-    string val;
-    if (callback != NULL) {
-        YFunction::_UpdateValueCallbackList(this, true);
-    } else {
-        YFunction::_UpdateValueCallbackList(this, false);
-    }
-    _valueCallbackWakeUpMonitor = callback;
-    // Immediately invoke value callback with current value
-    if (callback != NULL && this->isOnline()) {
-        val = _advertisedValue;
-        if (!(val == "")) {
-            this->_invokeValueCallback(val);
-        }
-    }
-    return 0;
+	string val;
+	if (callback != NULL)
+	{
+		YFunction::_UpdateValueCallbackList(this, true);
+	}
+	else
+	{
+		YFunction::_UpdateValueCallbackList(this, false);
+	}
+	_valueCallbackWakeUpMonitor = callback;
+	// Immediately invoke value callback with current value
+	if (callback != NULL && this->isOnline())
+	{
+		val = _advertisedValue;
+		if (!(val == ""))
+		{
+			this->_invokeValueCallback(val);
+		}
+	}
+	return 0;
 }
 
 int YWakeUpMonitor::_invokeValueCallback(string value)
 {
-    if (_valueCallbackWakeUpMonitor != NULL) {
-        _valueCallbackWakeUpMonitor(this, value);
-    } else {
-        YFunction::_invokeValueCallback(value);
-    }
-    return 0;
+	if (_valueCallbackWakeUpMonitor != NULL)
+	{
+		_valueCallbackWakeUpMonitor(this, value);
+	}
+	else
+	{
+		YFunction::_invokeValueCallback(value);
+	}
+	return 0;
 }
 
 /**
@@ -445,7 +516,7 @@ int YWakeUpMonitor::_invokeValueCallback(string value)
  */
 int YWakeUpMonitor::wakeUp(void)
 {
-    return this->set_wakeUpState(Y_WAKEUPSTATE_AWAKE);
+	return this->set_wakeUpState(Y_WAKEUPSTATE_AWAKE);
 }
 
 /**
@@ -460,15 +531,16 @@ int YWakeUpMonitor::wakeUp(void)
  */
 int YWakeUpMonitor::sleep(int secBeforeSleep)
 {
-    int currTime = 0;
-    currTime = (int)(this->get_rtcTime());
-    if (!(currTime != 0)) {
-        _throw(YAPI_RTC_NOT_READY,"RTC time not set");
-        return YAPI_RTC_NOT_READY;
-    }
-    this->set_nextWakeUp(_endOfTime);
-    this->set_sleepCountdown(secBeforeSleep);
-    return YAPI_SUCCESS;
+	int currTime = 0;
+	currTime = (int)(this->get_rtcTime());
+	if (!(currTime != 0))
+	{
+		_throw(YAPI_RTC_NOT_READY, "RTC time not set");
+		return YAPI_RTC_NOT_READY;
+	}
+	this->set_nextWakeUp(_endOfTime);
+	this->set_sleepCountdown(secBeforeSleep);
+	return YAPI_SUCCESS;
 }
 
 /**
@@ -483,17 +555,18 @@ int YWakeUpMonitor::sleep(int secBeforeSleep)
  *
  * On failure, throws an exception or returns a negative error code.
  */
-int YWakeUpMonitor::sleepFor(int secUntilWakeUp,int secBeforeSleep)
+int YWakeUpMonitor::sleepFor(int secUntilWakeUp, int secBeforeSleep)
 {
-    int currTime = 0;
-    currTime = (int)(this->get_rtcTime());
-    if (!(currTime != 0)) {
-        _throw(YAPI_RTC_NOT_READY,"RTC time not set");
-        return YAPI_RTC_NOT_READY;
-    }
-    this->set_nextWakeUp(currTime+secUntilWakeUp);
-    this->set_sleepCountdown(secBeforeSleep);
-    return YAPI_SUCCESS;
+	int currTime = 0;
+	currTime = (int)(this->get_rtcTime());
+	if (!(currTime != 0))
+	{
+		_throw(YAPI_RTC_NOT_READY, "RTC time not set");
+		return YAPI_RTC_NOT_READY;
+	}
+	this->set_nextWakeUp(currTime + secUntilWakeUp);
+	this->set_sleepCountdown(secBeforeSleep);
+	return YAPI_SUCCESS;
 }
 
 /**
@@ -508,17 +581,18 @@ int YWakeUpMonitor::sleepFor(int secUntilWakeUp,int secBeforeSleep)
  *
  * On failure, throws an exception or returns a negative error code.
  */
-int YWakeUpMonitor::sleepUntil(int wakeUpTime,int secBeforeSleep)
+int YWakeUpMonitor::sleepUntil(int wakeUpTime, int secBeforeSleep)
 {
-    int currTime = 0;
-    currTime = (int)(this->get_rtcTime());
-    if (!(currTime != 0)) {
-        _throw(YAPI_RTC_NOT_READY,"RTC time not set");
-        return YAPI_RTC_NOT_READY;
-    }
-    this->set_nextWakeUp(wakeUpTime);
-    this->set_sleepCountdown(secBeforeSleep);
-    return YAPI_SUCCESS;
+	int currTime = 0;
+	currTime = (int)(this->get_rtcTime());
+	if (!(currTime != 0))
+	{
+		_throw(YAPI_RTC_NOT_READY, "RTC time not set");
+		return YAPI_RTC_NOT_READY;
+	}
+	this->set_nextWakeUp(wakeUpTime);
+	this->set_sleepCountdown(secBeforeSleep);
+	return YAPI_SUCCESS;
 }
 
 /**
@@ -529,33 +603,35 @@ int YWakeUpMonitor::sleepUntil(int wakeUpTime,int secBeforeSleep)
  */
 int YWakeUpMonitor::resetSleepCountDown(void)
 {
-    this->set_sleepCountdown(0);
-    this->set_nextWakeUp(0);
-    return YAPI_SUCCESS;
+	this->set_sleepCountdown(0);
+	this->set_nextWakeUp(0);
+	return YAPI_SUCCESS;
 }
 
-YWakeUpMonitor *YWakeUpMonitor::nextWakeUpMonitor(void)
+YWakeUpMonitor* YWakeUpMonitor::nextWakeUpMonitor(void)
 {
-    string  hwid;
+	string hwid;
 
-    if(YISERR(_nextFunction(hwid)) || hwid=="") {
-        return NULL;
-    }
-    return YWakeUpMonitor::FindWakeUpMonitor(hwid);
+	if (YISERR(_nextFunction(hwid)) || hwid == "")
+	{
+		return NULL;
+	}
+	return YWakeUpMonitor::FindWakeUpMonitor(hwid);
 }
 
 YWakeUpMonitor* YWakeUpMonitor::FirstWakeUpMonitor(void)
 {
-    vector<YFUN_DESCR>   v_fundescr;
-    YDEV_DESCR             ydevice;
-    string              serial, funcId, funcName, funcVal, errmsg;
+	vector<YFUN_DESCR> v_fundescr;
+	YDEV_DESCR ydevice;
+	string serial, funcId, funcName, funcVal, errmsg;
 
-    if(YISERR(YapiWrapper::getFunctionsByClass("WakeUpMonitor", 0, v_fundescr, sizeof(YFUN_DESCR), errmsg)) ||
-       v_fundescr.size() == 0 ||
-       YISERR(YapiWrapper::getFunctionInfo(v_fundescr[0], ydevice, serial, funcId, funcName, funcVal, errmsg))) {
-        return NULL;
-    }
-    return YWakeUpMonitor::FindWakeUpMonitor(serial+"."+funcId);
+	if (YISERR(YapiWrapper::getFunctionsByClass("WakeUpMonitor", 0, v_fundescr, sizeof(YFUN_DESCR), errmsg)) ||
+		v_fundescr.size() == 0 ||
+		YISERR(YapiWrapper::getFunctionInfo(v_fundescr[0], ydevice, serial, funcId, funcName, funcVal, errmsg)))
+	{
+		return NULL;
+	}
+	return YWakeUpMonitor::FindWakeUpMonitor(serial + "." + funcId);
 }
 
 //--- (end of YWakeUpMonitor implementation)

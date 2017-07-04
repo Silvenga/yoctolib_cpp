@@ -49,45 +49,51 @@
 #define  __FILE_ID__  "colorledcluster"
 
 YColorLedCluster::YColorLedCluster(const string& func): YFunction(func)
-//--- (ColorLedCluster initialization)
-    ,_activeLedCount(ACTIVELEDCOUNT_INVALID)
-    ,_maxLedCount(MAXLEDCOUNT_INVALID)
-    ,_blinkSeqMaxCount(BLINKSEQMAXCOUNT_INVALID)
-    ,_blinkSeqMaxSize(BLINKSEQMAXSIZE_INVALID)
-    ,_command(COMMAND_INVALID)
-    ,_valueCallbackColorLedCluster(NULL)
+                                                        //--- (ColorLedCluster initialization)
+                                                        , _activeLedCount(ACTIVELEDCOUNT_INVALID)
+                                                        , _maxLedCount(MAXLEDCOUNT_INVALID)
+                                                        , _blinkSeqMaxCount(BLINKSEQMAXCOUNT_INVALID)
+                                                        , _blinkSeqMaxSize(BLINKSEQMAXSIZE_INVALID)
+                                                        , _command(COMMAND_INVALID)
+                                                        , _valueCallbackColorLedCluster(NULL)
 //--- (end of ColorLedCluster initialization)
 {
-    _className="ColorLedCluster";
+	_className = "ColorLedCluster";
 }
 
 YColorLedCluster::~YColorLedCluster()
 {
-//--- (YColorLedCluster cleanup)
-//--- (end of YColorLedCluster cleanup)
+	//--- (YColorLedCluster cleanup)
+	//--- (end of YColorLedCluster cleanup)
 }
+
 //--- (YColorLedCluster implementation)
 // static attributes
 const string YColorLedCluster::COMMAND_INVALID = YAPI_INVALID_STRING;
 
 int YColorLedCluster::_parseAttr(YJSONObject* json_val)
 {
-    if(json_val->has("activeLedCount")) {
-        _activeLedCount =  json_val->getInt("activeLedCount");
-    }
-    if(json_val->has("maxLedCount")) {
-        _maxLedCount =  json_val->getInt("maxLedCount");
-    }
-    if(json_val->has("blinkSeqMaxCount")) {
-        _blinkSeqMaxCount =  json_val->getInt("blinkSeqMaxCount");
-    }
-    if(json_val->has("blinkSeqMaxSize")) {
-        _blinkSeqMaxSize =  json_val->getInt("blinkSeqMaxSize");
-    }
-    if(json_val->has("command")) {
-        _command =  json_val->getString("command");
-    }
-    return YFunction::_parseAttr(json_val);
+	if (json_val->has("activeLedCount"))
+	{
+		_activeLedCount = json_val->getInt("activeLedCount");
+	}
+	if (json_val->has("maxLedCount"))
+	{
+		_maxLedCount = json_val->getInt("maxLedCount");
+	}
+	if (json_val->has("blinkSeqMaxCount"))
+	{
+		_blinkSeqMaxCount = json_val->getInt("blinkSeqMaxCount");
+	}
+	if (json_val->has("blinkSeqMaxSize"))
+	{
+		_blinkSeqMaxSize = json_val->getInt("blinkSeqMaxSize");
+	}
+	if (json_val->has("command"))
+	{
+		_command = json_val->getString("command");
+	}
+	return YFunction::_parseAttr(json_val);
 }
 
 
@@ -100,24 +106,29 @@ int YColorLedCluster::_parseAttr(YJSONObject* json_val)
  */
 int YColorLedCluster::get_activeLedCount(void)
 {
-    int res = 0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YColorLedCluster::ACTIVELEDCOUNT_INVALID;
-                }
-            }
-        }
-        res = _activeLedCount;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	int res = 0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YColorLedCluster::ACTIVELEDCOUNT_INVALID;
+				}
+			}
+		}
+		res = _activeLedCount;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -131,18 +142,23 @@ int YColorLedCluster::get_activeLedCount(void)
  */
 int YColorLedCluster::set_activeLedCount(int newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        char buf[32]; sprintf(buf, "%d", newval); rest_val = string(buf);
-        res = _setAttr("activeLedCount", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		char buf[32];
+		sprintf(buf, "%d", newval);
+		rest_val = string(buf);
+		res = _setAttr("activeLedCount", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -154,24 +170,29 @@ int YColorLedCluster::set_activeLedCount(int newval)
  */
 int YColorLedCluster::get_maxLedCount(void)
 {
-    int res = 0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration == 0) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YColorLedCluster::MAXLEDCOUNT_INVALID;
-                }
-            }
-        }
-        res = _maxLedCount;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	int res = 0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration == 0)
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YColorLedCluster::MAXLEDCOUNT_INVALID;
+				}
+			}
+		}
+		res = _maxLedCount;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -183,24 +204,29 @@ int YColorLedCluster::get_maxLedCount(void)
  */
 int YColorLedCluster::get_blinkSeqMaxCount(void)
 {
-    int res = 0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration == 0) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YColorLedCluster::BLINKSEQMAXCOUNT_INVALID;
-                }
-            }
-        }
-        res = _blinkSeqMaxCount;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	int res = 0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration == 0)
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YColorLedCluster::BLINKSEQMAXCOUNT_INVALID;
+				}
+			}
+		}
+		res = _blinkSeqMaxCount;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -212,62 +238,75 @@ int YColorLedCluster::get_blinkSeqMaxCount(void)
  */
 int YColorLedCluster::get_blinkSeqMaxSize(void)
 {
-    int res = 0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration == 0) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YColorLedCluster::BLINKSEQMAXSIZE_INVALID;
-                }
-            }
-        }
-        res = _blinkSeqMaxSize;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	int res = 0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration == 0)
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YColorLedCluster::BLINKSEQMAXSIZE_INVALID;
+				}
+			}
+		}
+		res = _blinkSeqMaxSize;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 string YColorLedCluster::get_command(void)
 {
-    string res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YColorLedCluster::COMMAND_INVALID;
-                }
-            }
-        }
-        res = _command;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YColorLedCluster::COMMAND_INVALID;
+				}
+			}
+		}
+		res = _command;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 int YColorLedCluster::set_command(const string& newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        rest_val = newval;
-        res = _setAttr("command", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		rest_val = newval;
+		res = _setAttr("command", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -295,23 +334,29 @@ int YColorLedCluster::set_command(const string& newval)
  */
 YColorLedCluster* YColorLedCluster::FindColorLedCluster(string func)
 {
-    YColorLedCluster* obj = NULL;
-    int taken = 0;
-    if (YAPI::_apiInitialized) {
-        yEnterCriticalSection(&YAPI::_global_cs);
-        taken = 1;
-    }try {
-        obj = (YColorLedCluster*) YFunction::_FindFromCache("ColorLedCluster", func);
-        if (obj == NULL) {
-            obj = new YColorLedCluster(func);
-            YFunction::_AddToCache("ColorLedCluster", func, obj);
-        }
-    } catch (std::exception) {
-        if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
-        throw;
-    }
-    if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
-    return obj;
+	YColorLedCluster* obj = NULL;
+	int taken = 0;
+	if (YAPI::_apiInitialized)
+	{
+		yEnterCriticalSection(&YAPI::_global_cs);
+		taken = 1;
+	}
+	try
+	{
+		obj = (YColorLedCluster*)YFunction::_FindFromCache("ColorLedCluster", func);
+		if (obj == NULL)
+		{
+			obj = new YColorLedCluster(func);
+			YFunction::_AddToCache("ColorLedCluster", func, obj);
+		}
+	}
+	catch (std::exception)
+	{
+		if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
+		throw;
+	}
+	if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
+	return obj;
 }
 
 /**
@@ -327,36 +372,44 @@ YColorLedCluster* YColorLedCluster::FindColorLedCluster(string func)
  */
 int YColorLedCluster::registerValueCallback(YColorLedClusterValueCallback callback)
 {
-    string val;
-    if (callback != NULL) {
-        YFunction::_UpdateValueCallbackList(this, true);
-    } else {
-        YFunction::_UpdateValueCallbackList(this, false);
-    }
-    _valueCallbackColorLedCluster = callback;
-    // Immediately invoke value callback with current value
-    if (callback != NULL && this->isOnline()) {
-        val = _advertisedValue;
-        if (!(val == "")) {
-            this->_invokeValueCallback(val);
-        }
-    }
-    return 0;
+	string val;
+	if (callback != NULL)
+	{
+		YFunction::_UpdateValueCallbackList(this, true);
+	}
+	else
+	{
+		YFunction::_UpdateValueCallbackList(this, false);
+	}
+	_valueCallbackColorLedCluster = callback;
+	// Immediately invoke value callback with current value
+	if (callback != NULL && this->isOnline())
+	{
+		val = _advertisedValue;
+		if (!(val == ""))
+		{
+			this->_invokeValueCallback(val);
+		}
+	}
+	return 0;
 }
 
 int YColorLedCluster::_invokeValueCallback(string value)
 {
-    if (_valueCallbackColorLedCluster != NULL) {
-        _valueCallbackColorLedCluster(this, value);
-    } else {
-        YFunction::_invokeValueCallback(value);
-    }
-    return 0;
+	if (_valueCallbackColorLedCluster != NULL)
+	{
+		_valueCallbackColorLedCluster(this, value);
+	}
+	else
+	{
+		YFunction::_invokeValueCallback(value);
+	}
+	return 0;
 }
 
 int YColorLedCluster::sendCommand(string command)
 {
-    return this->set_command(command);
+	return this->set_command(command);
 }
 
 /**
@@ -371,9 +424,9 @@ int YColorLedCluster::sendCommand(string command)
  *
  * On failure, throws an exception or returns a negative error code.
  */
-int YColorLedCluster::set_rgbColor(int ledIndex,int count,int rgbValue)
+int YColorLedCluster::set_rgbColor(int ledIndex, int count, int rgbValue)
 {
-    return this->sendCommand(YapiWrapper::ysprintf("SR%d,%d,%x",ledIndex,count,rgbValue));
+	return this->sendCommand(YapiWrapper::ysprintf("SR%d,%d,%x", ledIndex, count, rgbValue));
 }
 
 /**
@@ -390,9 +443,9 @@ int YColorLedCluster::set_rgbColor(int ledIndex,int count,int rgbValue)
  *
  * On failure, throws an exception or returns a negative error code.
  */
-int YColorLedCluster::set_rgbColorAtPowerOn(int ledIndex,int count,int rgbValue)
+int YColorLedCluster::set_rgbColorAtPowerOn(int ledIndex, int count, int rgbValue)
 {
-    return this->sendCommand(YapiWrapper::ysprintf("SC%d,%d,%x",ledIndex,count,rgbValue));
+	return this->sendCommand(YapiWrapper::ysprintf("SC%d,%d,%x", ledIndex, count, rgbValue));
 }
 
 /**
@@ -407,9 +460,9 @@ int YColorLedCluster::set_rgbColorAtPowerOn(int ledIndex,int count,int rgbValue)
  *
  * On failure, throws an exception or returns a negative error code.
  */
-int YColorLedCluster::set_hslColor(int ledIndex,int count,int hslValue)
+int YColorLedCluster::set_hslColor(int ledIndex, int count, int hslValue)
 {
-    return this->sendCommand(YapiWrapper::ysprintf("SH%d,%d,%x",ledIndex,count,hslValue));
+	return this->sendCommand(YapiWrapper::ysprintf("SH%d,%d,%x", ledIndex, count, hslValue));
 }
 
 /**
@@ -425,9 +478,9 @@ int YColorLedCluster::set_hslColor(int ledIndex,int count,int hslValue)
  *
  * On failure, throws an exception or returns a negative error code.
  */
-int YColorLedCluster::rgb_move(int ledIndex,int count,int rgbValue,int delay)
+int YColorLedCluster::rgb_move(int ledIndex, int count, int rgbValue, int delay)
 {
-    return this->sendCommand(YapiWrapper::ysprintf("MR%d,%d,%x,%d",ledIndex,count,rgbValue,delay));
+	return this->sendCommand(YapiWrapper::ysprintf("MR%d,%d,%x,%d", ledIndex, count, rgbValue, delay));
 }
 
 /**
@@ -447,9 +500,9 @@ int YColorLedCluster::rgb_move(int ledIndex,int count,int rgbValue,int delay)
  *
  * On failure, throws an exception or returns a negative error code.
  */
-int YColorLedCluster::hsl_move(int ledIndex,int count,int hslValue,int delay)
+int YColorLedCluster::hsl_move(int ledIndex, int count, int hslValue, int delay)
 {
-    return this->sendCommand(YapiWrapper::ysprintf("MH%d,%d,%x,%d",ledIndex,count,hslValue,delay));
+	return this->sendCommand(YapiWrapper::ysprintf("MH%d,%d,%x,%d", ledIndex, count, hslValue, delay));
 }
 
 /**
@@ -465,9 +518,9 @@ int YColorLedCluster::hsl_move(int ledIndex,int count,int hslValue,int delay)
  *
  * On failure, throws an exception or returns a negative error code.
  */
-int YColorLedCluster::addRgbMoveToBlinkSeq(int seqIndex,int rgbValue,int delay)
+int YColorLedCluster::addRgbMoveToBlinkSeq(int seqIndex, int rgbValue, int delay)
 {
-    return this->sendCommand(YapiWrapper::ysprintf("AR%d,%x,%d",seqIndex,rgbValue,delay));
+	return this->sendCommand(YapiWrapper::ysprintf("AR%d,%x,%d", seqIndex, rgbValue, delay));
 }
 
 /**
@@ -483,9 +536,9 @@ int YColorLedCluster::addRgbMoveToBlinkSeq(int seqIndex,int rgbValue,int delay)
  *
  * On failure, throws an exception or returns a negative error code.
  */
-int YColorLedCluster::addHslMoveToBlinkSeq(int seqIndex,int hslValue,int delay)
+int YColorLedCluster::addHslMoveToBlinkSeq(int seqIndex, int hslValue, int delay)
 {
-    return this->sendCommand(YapiWrapper::ysprintf("AH%d,%x,%d",seqIndex,hslValue,delay));
+	return this->sendCommand(YapiWrapper::ysprintf("AH%d,%x,%d", seqIndex, hslValue, delay));
 }
 
 /**
@@ -503,7 +556,7 @@ int YColorLedCluster::addHslMoveToBlinkSeq(int seqIndex,int hslValue,int delay)
  */
 int YColorLedCluster::addMirrorToBlinkSeq(int seqIndex)
 {
-    return this->sendCommand(YapiWrapper::ysprintf("AC%d,0,0",seqIndex));
+	return this->sendCommand(YapiWrapper::ysprintf("AC%d,0,0", seqIndex));
 }
 
 /**
@@ -521,9 +574,9 @@ int YColorLedCluster::addMirrorToBlinkSeq(int seqIndex)
  *
  * On failure, throws an exception or returns a negative error code.
  */
-int YColorLedCluster::linkLedToBlinkSeq(int ledIndex,int count,int seqIndex,int offset)
+int YColorLedCluster::linkLedToBlinkSeq(int ledIndex, int count, int seqIndex, int offset)
 {
-    return this->sendCommand(YapiWrapper::ysprintf("LS%d,%d,%d,%d",ledIndex,count,seqIndex,offset));
+	return this->sendCommand(YapiWrapper::ysprintf("LS%d,%d,%d,%d", ledIndex, count, seqIndex, offset));
 }
 
 /**
@@ -541,9 +594,9 @@ int YColorLedCluster::linkLedToBlinkSeq(int ledIndex,int count,int seqIndex,int 
  *
  * On failure, throws an exception or returns a negative error code.
  */
-int YColorLedCluster::linkLedToBlinkSeqAtPowerOn(int ledIndex,int count,int seqIndex,int offset)
+int YColorLedCluster::linkLedToBlinkSeqAtPowerOn(int ledIndex, int count, int seqIndex, int offset)
 {
-    return this->sendCommand(YapiWrapper::ysprintf("LO%d,%d,%d,%d",ledIndex,count,seqIndex,offset));
+	return this->sendCommand(YapiWrapper::ysprintf("LO%d,%d,%d,%d", ledIndex, count, seqIndex, offset));
 }
 
 /**
@@ -561,9 +614,9 @@ int YColorLedCluster::linkLedToBlinkSeqAtPowerOn(int ledIndex,int count,int seqI
  *
  * On failure, throws an exception or returns a negative error code.
  */
-int YColorLedCluster::linkLedToPeriodicBlinkSeq(int ledIndex,int count,int seqIndex,int periods)
+int YColorLedCluster::linkLedToPeriodicBlinkSeq(int ledIndex, int count, int seqIndex, int periods)
 {
-    return this->sendCommand(YapiWrapper::ysprintf("LP%d,%d,%d,%d",ledIndex,count,seqIndex,periods));
+	return this->sendCommand(YapiWrapper::ysprintf("LP%d,%d,%d,%d", ledIndex, count, seqIndex, periods));
 }
 
 /**
@@ -576,9 +629,9 @@ int YColorLedCluster::linkLedToPeriodicBlinkSeq(int ledIndex,int count,int seqIn
  *
  * On failure, throws an exception or returns a negative error code.
  */
-int YColorLedCluster::unlinkLedFromBlinkSeq(int ledIndex,int count)
+int YColorLedCluster::unlinkLedFromBlinkSeq(int ledIndex, int count)
 {
-    return this->sendCommand(YapiWrapper::ysprintf("US%d,%d",ledIndex,count));
+	return this->sendCommand(YapiWrapper::ysprintf("US%d,%d", ledIndex, count));
 }
 
 /**
@@ -593,7 +646,7 @@ int YColorLedCluster::unlinkLedFromBlinkSeq(int ledIndex,int count)
  */
 int YColorLedCluster::startBlinkSeq(int seqIndex)
 {
-    return this->sendCommand(YapiWrapper::ysprintf("SS%d",seqIndex));
+	return this->sendCommand(YapiWrapper::ysprintf("SS%d", seqIndex));
 }
 
 /**
@@ -608,7 +661,7 @@ int YColorLedCluster::startBlinkSeq(int seqIndex)
  */
 int YColorLedCluster::stopBlinkSeq(int seqIndex)
 {
-    return this->sendCommand(YapiWrapper::ysprintf("XS%d",seqIndex));
+	return this->sendCommand(YapiWrapper::ysprintf("XS%d", seqIndex));
 }
 
 /**
@@ -623,7 +676,7 @@ int YColorLedCluster::stopBlinkSeq(int seqIndex)
  */
 int YColorLedCluster::resetBlinkSeq(int seqIndex)
 {
-    return this->sendCommand(YapiWrapper::ysprintf("ZS%d",seqIndex));
+	return this->sendCommand(YapiWrapper::ysprintf("ZS%d", seqIndex));
 }
 
 /**
@@ -638,9 +691,9 @@ int YColorLedCluster::resetBlinkSeq(int seqIndex)
  *
  * On failure, throws an exception or returns a negative error code.
  */
-int YColorLedCluster::set_blinkSeqStateAtPowerOn(int seqIndex,int autostart)
+int YColorLedCluster::set_blinkSeqStateAtPowerOn(int seqIndex, int autostart)
 {
-    return this->sendCommand(YapiWrapper::ysprintf("AS%d,%d",seqIndex,autostart));
+	return this->sendCommand(YapiWrapper::ysprintf("AS%d,%d", seqIndex, autostart));
 }
 
 /**
@@ -655,9 +708,9 @@ int YColorLedCluster::set_blinkSeqStateAtPowerOn(int seqIndex,int autostart)
  *
  * On failure, throws an exception or returns a negative error code.
  */
-int YColorLedCluster::set_blinkSeqSpeed(int seqIndex,int speed)
+int YColorLedCluster::set_blinkSeqSpeed(int seqIndex, int speed)
 {
-    return this->sendCommand(YapiWrapper::ysprintf("CS%d,%d",seqIndex,speed));
+	return this->sendCommand(YapiWrapper::ysprintf("CS%d,%d", seqIndex, speed));
 }
 
 /**
@@ -671,12 +724,12 @@ int YColorLedCluster::set_blinkSeqSpeed(int seqIndex,int speed)
  */
 int YColorLedCluster::saveLedsConfigAtPowerOn(void)
 {
-    return this->sendCommand("WL");
+	return this->sendCommand("WL");
 }
 
 int YColorLedCluster::saveLedsState(void)
 {
-    return this->sendCommand("WL");
+	return this->sendCommand("WL");
 }
 
 /**
@@ -692,7 +745,7 @@ int YColorLedCluster::saveLedsState(void)
  */
 int YColorLedCluster::saveBlinkSeq(int seqIndex)
 {
-    return this->sendCommand(YapiWrapper::ysprintf("WS%d",seqIndex));
+	return this->sendCommand(YapiWrapper::ysprintf("WS%d", seqIndex));
 }
 
 /**
@@ -707,9 +760,9 @@ int YColorLedCluster::saveBlinkSeq(int seqIndex)
  *
  * On failure, throws an exception or returns a negative error code.
  */
-int YColorLedCluster::set_rgbColorBuffer(int ledIndex,string buff)
+int YColorLedCluster::set_rgbColorBuffer(int ledIndex, string buff)
 {
-    return this->_upload(YapiWrapper::ysprintf("rgb:0:%d",ledIndex), buff);
+	return this->_upload(YapiWrapper::ysprintf("rgb:0:%d", ledIndex), buff);
 }
 
 /**
@@ -724,26 +777,27 @@ int YColorLedCluster::set_rgbColorBuffer(int ledIndex,string buff)
  *
  * On failure, throws an exception or returns a negative error code.
  */
-int YColorLedCluster::set_rgbColorArray(int ledIndex,vector<int> rgbList)
+int YColorLedCluster::set_rgbColorArray(int ledIndex, vector<int> rgbList)
 {
-    int listlen = 0;
-    string buff;
-    int idx = 0;
-    int rgb = 0;
-    int res = 0;
-    listlen = (int)rgbList.size();
-    buff = string(3*listlen, (char)0);
-    idx = 0;
-    while (idx < listlen) {
-        rgb = rgbList[idx];
-        buff[3*idx] = (char)(((((rgb) >> (16))) & (255)));
-        buff[3*idx+1] = (char)(((((rgb) >> (8))) & (255)));
-        buff[3*idx+2] = (char)(((rgb) & (255)));
-        idx = idx + 1;
-    }
+	int listlen = 0;
+	string buff;
+	int idx = 0;
+	int rgb = 0;
+	int res = 0;
+	listlen = (int)rgbList.size();
+	buff = string(3 * listlen, (char)0);
+	idx = 0;
+	while (idx < listlen)
+	{
+		rgb = rgbList[idx];
+		buff[3 * idx] = (char)(((((rgb) >> (16))) & (255)));
+		buff[3 * idx + 1] = (char)(((((rgb) >> (8))) & (255)));
+		buff[3 * idx + 2] = (char)(((rgb) & (255)));
+		idx = idx + 1;
+	}
 
-    res = this->_upload(YapiWrapper::ysprintf("rgb:0:%d",ledIndex), buff);
-    return res;
+	res = this->_upload(YapiWrapper::ysprintf("rgb:0:%d", ledIndex), buff);
+	return res;
 }
 
 /**
@@ -758,26 +812,27 @@ int YColorLedCluster::set_rgbColorArray(int ledIndex,vector<int> rgbList)
  *
  * On failure, throws an exception or returns a negative error code.
  */
-int YColorLedCluster::rgbArray_move(vector<int> rgbList,int delay)
+int YColorLedCluster::rgbArray_move(vector<int> rgbList, int delay)
 {
-    int listlen = 0;
-    string buff;
-    int idx = 0;
-    int rgb = 0;
-    int res = 0;
-    listlen = (int)rgbList.size();
-    buff = string(3*listlen, (char)0);
-    idx = 0;
-    while (idx < listlen) {
-        rgb = rgbList[idx];
-        buff[3*idx] = (char)(((((rgb) >> (16))) & (255)));
-        buff[3*idx+1] = (char)(((((rgb) >> (8))) & (255)));
-        buff[3*idx+2] = (char)(((rgb) & (255)));
-        idx = idx + 1;
-    }
+	int listlen = 0;
+	string buff;
+	int idx = 0;
+	int rgb = 0;
+	int res = 0;
+	listlen = (int)rgbList.size();
+	buff = string(3 * listlen, (char)0);
+	idx = 0;
+	while (idx < listlen)
+	{
+		rgb = rgbList[idx];
+		buff[3 * idx] = (char)(((((rgb) >> (16))) & (255)));
+		buff[3 * idx + 1] = (char)(((((rgb) >> (8))) & (255)));
+		buff[3 * idx + 2] = (char)(((rgb) & (255)));
+		idx = idx + 1;
+	}
 
-    res = this->_upload(YapiWrapper::ysprintf("rgb:%d",delay), buff);
-    return res;
+	res = this->_upload(YapiWrapper::ysprintf("rgb:%d", delay), buff);
+	return res;
 }
 
 /**
@@ -792,9 +847,9 @@ int YColorLedCluster::rgbArray_move(vector<int> rgbList,int delay)
  *
  * On failure, throws an exception or returns a negative error code.
  */
-int YColorLedCluster::set_hslColorBuffer(int ledIndex,string buff)
+int YColorLedCluster::set_hslColorBuffer(int ledIndex, string buff)
 {
-    return this->_upload(YapiWrapper::ysprintf("hsl:0:%d",ledIndex), buff);
+	return this->_upload(YapiWrapper::ysprintf("hsl:0:%d", ledIndex), buff);
 }
 
 /**
@@ -809,26 +864,27 @@ int YColorLedCluster::set_hslColorBuffer(int ledIndex,string buff)
  *
  * On failure, throws an exception or returns a negative error code.
  */
-int YColorLedCluster::set_hslColorArray(int ledIndex,vector<int> hslList)
+int YColorLedCluster::set_hslColorArray(int ledIndex, vector<int> hslList)
 {
-    int listlen = 0;
-    string buff;
-    int idx = 0;
-    int hsl = 0;
-    int res = 0;
-    listlen = (int)hslList.size();
-    buff = string(3*listlen, (char)0);
-    idx = 0;
-    while (idx < listlen) {
-        hsl = hslList[idx];
-        buff[3*idx] = (char)(((((hsl) >> (16))) & (255)));
-        buff[3*idx+1] = (char)(((((hsl) >> (8))) & (255)));
-        buff[3*idx+2] = (char)(((hsl) & (255)));
-        idx = idx + 1;
-    }
+	int listlen = 0;
+	string buff;
+	int idx = 0;
+	int hsl = 0;
+	int res = 0;
+	listlen = (int)hslList.size();
+	buff = string(3 * listlen, (char)0);
+	idx = 0;
+	while (idx < listlen)
+	{
+		hsl = hslList[idx];
+		buff[3 * idx] = (char)(((((hsl) >> (16))) & (255)));
+		buff[3 * idx + 1] = (char)(((((hsl) >> (8))) & (255)));
+		buff[3 * idx + 2] = (char)(((hsl) & (255)));
+		idx = idx + 1;
+	}
 
-    res = this->_upload(YapiWrapper::ysprintf("hsl:0:%d",ledIndex), buff);
-    return res;
+	res = this->_upload(YapiWrapper::ysprintf("hsl:0:%d", ledIndex), buff);
+	return res;
 }
 
 /**
@@ -843,26 +899,27 @@ int YColorLedCluster::set_hslColorArray(int ledIndex,vector<int> hslList)
  *
  * On failure, throws an exception or returns a negative error code.
  */
-int YColorLedCluster::hslArray_move(vector<int> hslList,int delay)
+int YColorLedCluster::hslArray_move(vector<int> hslList, int delay)
 {
-    int listlen = 0;
-    string buff;
-    int idx = 0;
-    int hsl = 0;
-    int res = 0;
-    listlen = (int)hslList.size();
-    buff = string(3*listlen, (char)0);
-    idx = 0;
-    while (idx < listlen) {
-        hsl = hslList[idx];
-        buff[3*idx] = (char)(((((hsl) >> (16))) & (255)));
-        buff[3*idx+1] = (char)(((((hsl) >> (8))) & (255)));
-        buff[3*idx+2] = (char)(((hsl) & (255)));
-        idx = idx + 1;
-    }
+	int listlen = 0;
+	string buff;
+	int idx = 0;
+	int hsl = 0;
+	int res = 0;
+	listlen = (int)hslList.size();
+	buff = string(3 * listlen, (char)0);
+	idx = 0;
+	while (idx < listlen)
+	{
+		hsl = hslList[idx];
+		buff[3 * idx] = (char)(((((hsl) >> (16))) & (255)));
+		buff[3 * idx + 1] = (char)(((((hsl) >> (8))) & (255)));
+		buff[3 * idx + 2] = (char)(((hsl) & (255)));
+		idx = idx + 1;
+	}
 
-    res = this->_upload(YapiWrapper::ysprintf("hsl:%d",delay), buff);
-    return res;
+	res = this->_upload(YapiWrapper::ysprintf("hsl:%d", delay), buff);
+	return res;
 }
 
 /**
@@ -877,9 +934,9 @@ int YColorLedCluster::hslArray_move(vector<int> hslList,int delay)
  *
  * On failure, throws an exception or returns an empty binary buffer.
  */
-string YColorLedCluster::get_rgbColorBuffer(int ledIndex,int count)
+string YColorLedCluster::get_rgbColorBuffer(int ledIndex, int count)
 {
-    return this->_download(YapiWrapper::ysprintf("rgb.bin?typ=0&pos=%d&len=%d",3*ledIndex,3*count));
+	return this->_download(YapiWrapper::ysprintf("rgb.bin?typ=0&pos=%d&len=%d", 3 * ledIndex, 3 * count));
 }
 
 /**
@@ -894,26 +951,27 @@ string YColorLedCluster::get_rgbColorBuffer(int ledIndex,int count)
  *
  * On failure, throws an exception or returns an empty array.
  */
-vector<int> YColorLedCluster::get_rgbColorArray(int ledIndex,int count)
+vector<int> YColorLedCluster::get_rgbColorArray(int ledIndex, int count)
 {
-    string buff;
-    vector<int> res;
-    int idx = 0;
-    int r = 0;
-    int g = 0;
-    int b = 0;
+	string buff;
+	vector<int> res;
+	int idx = 0;
+	int r = 0;
+	int g = 0;
+	int b = 0;
 
-    buff = this->_download(YapiWrapper::ysprintf("rgb.bin?typ=0&pos=%d&len=%d",3*ledIndex,3*count));
-    res.clear();
-    idx = 0;
-    while (idx < count) {
-        r = ((u8)buff[3*idx]);
-        g = ((u8)buff[3*idx+1]);
-        b = ((u8)buff[3*idx+2]);
-        res.push_back(r*65536+g*256+b);
-        idx = idx + 1;
-    }
-    return res;
+	buff = this->_download(YapiWrapper::ysprintf("rgb.bin?typ=0&pos=%d&len=%d", 3 * ledIndex, 3 * count));
+	res.clear();
+	idx = 0;
+	while (idx < count)
+	{
+		r = ((u8)buff[3 * idx]);
+		g = ((u8)buff[3 * idx + 1]);
+		b = ((u8)buff[3 * idx + 2]);
+		res.push_back(r * 65536 + g * 256 + b);
+		idx = idx + 1;
+	}
+	return res;
 }
 
 /**
@@ -928,26 +986,27 @@ vector<int> YColorLedCluster::get_rgbColorArray(int ledIndex,int count)
  *
  * On failure, throws an exception or returns an empty array.
  */
-vector<int> YColorLedCluster::get_rgbColorArrayAtPowerOn(int ledIndex,int count)
+vector<int> YColorLedCluster::get_rgbColorArrayAtPowerOn(int ledIndex, int count)
 {
-    string buff;
-    vector<int> res;
-    int idx = 0;
-    int r = 0;
-    int g = 0;
-    int b = 0;
+	string buff;
+	vector<int> res;
+	int idx = 0;
+	int r = 0;
+	int g = 0;
+	int b = 0;
 
-    buff = this->_download(YapiWrapper::ysprintf("rgb.bin?typ=4&pos=%d&len=%d",3*ledIndex,3*count));
-    res.clear();
-    idx = 0;
-    while (idx < count) {
-        r = ((u8)buff[3*idx]);
-        g = ((u8)buff[3*idx+1]);
-        b = ((u8)buff[3*idx+2]);
-        res.push_back(r*65536+g*256+b);
-        idx = idx + 1;
-    }
-    return res;
+	buff = this->_download(YapiWrapper::ysprintf("rgb.bin?typ=4&pos=%d&len=%d", 3 * ledIndex, 3 * count));
+	res.clear();
+	idx = 0;
+	while (idx < count)
+	{
+		r = ((u8)buff[3 * idx]);
+		g = ((u8)buff[3 * idx + 1]);
+		b = ((u8)buff[3 * idx + 2]);
+		res.push_back(r * 65536 + g * 256 + b);
+		idx = idx + 1;
+	}
+	return res;
 }
 
 /**
@@ -962,22 +1021,23 @@ vector<int> YColorLedCluster::get_rgbColorArrayAtPowerOn(int ledIndex,int count)
  *
  * On failure, throws an exception or returns an empty array.
  */
-vector<int> YColorLedCluster::get_linkedSeqArray(int ledIndex,int count)
+vector<int> YColorLedCluster::get_linkedSeqArray(int ledIndex, int count)
 {
-    string buff;
-    vector<int> res;
-    int idx = 0;
-    int seq = 0;
+	string buff;
+	vector<int> res;
+	int idx = 0;
+	int seq = 0;
 
-    buff = this->_download(YapiWrapper::ysprintf("rgb.bin?typ=1&pos=%d&len=%d",ledIndex,count));
-    res.clear();
-    idx = 0;
-    while (idx < count) {
-        seq = ((u8)buff[idx]);
-        res.push_back(seq);
-        idx = idx + 1;
-    }
-    return res;
+	buff = this->_download(YapiWrapper::ysprintf("rgb.bin?typ=1&pos=%d&len=%d", ledIndex, count));
+	res.clear();
+	idx = 0;
+	while (idx < count)
+	{
+		seq = ((u8)buff[idx]);
+		res.push_back(seq);
+		idx = idx + 1;
+	}
+	return res;
 }
 
 /**
@@ -992,28 +1052,29 @@ vector<int> YColorLedCluster::get_linkedSeqArray(int ledIndex,int count)
  *
  * On failure, throws an exception or returns an empty array.
  */
-vector<int> YColorLedCluster::get_blinkSeqSignatures(int seqIndex,int count)
+vector<int> YColorLedCluster::get_blinkSeqSignatures(int seqIndex, int count)
 {
-    string buff;
-    vector<int> res;
-    int idx = 0;
-    int hh = 0;
-    int hl = 0;
-    int lh = 0;
-    int ll = 0;
+	string buff;
+	vector<int> res;
+	int idx = 0;
+	int hh = 0;
+	int hl = 0;
+	int lh = 0;
+	int ll = 0;
 
-    buff = this->_download(YapiWrapper::ysprintf("rgb.bin?typ=2&pos=%d&len=%d",4*seqIndex,4*count));
-    res.clear();
-    idx = 0;
-    while (idx < count) {
-        hh = ((u8)buff[4*idx]);
-        hl = ((u8)buff[4*idx+1]);
-        lh = ((u8)buff[4*idx+2]);
-        ll = ((u8)buff[4*idx+3]);
-        res.push_back(((hh) << (24))+((hl) << (16))+((lh) << (8))+ll);
-        idx = idx + 1;
-    }
-    return res;
+	buff = this->_download(YapiWrapper::ysprintf("rgb.bin?typ=2&pos=%d&len=%d", 4 * seqIndex, 4 * count));
+	res.clear();
+	idx = 0;
+	while (idx < count)
+	{
+		hh = ((u8)buff[4 * idx]);
+		hl = ((u8)buff[4 * idx + 1]);
+		lh = ((u8)buff[4 * idx + 2]);
+		ll = ((u8)buff[4 * idx + 3]);
+		res.push_back(((hh) << (24)) + ((hl) << (16)) + ((lh) << (8)) + ll);
+		idx = idx + 1;
+	}
+	return res;
 }
 
 /**
@@ -1026,24 +1087,25 @@ vector<int> YColorLedCluster::get_blinkSeqSignatures(int seqIndex,int count)
  *
  * On failure, throws an exception or returns an empty array.
  */
-vector<int> YColorLedCluster::get_blinkSeqStateSpeed(int seqIndex,int count)
+vector<int> YColorLedCluster::get_blinkSeqStateSpeed(int seqIndex, int count)
 {
-    string buff;
-    vector<int> res;
-    int idx = 0;
-    int lh = 0;
-    int ll = 0;
+	string buff;
+	vector<int> res;
+	int idx = 0;
+	int lh = 0;
+	int ll = 0;
 
-    buff = this->_download(YapiWrapper::ysprintf("rgb.bin?typ=6&pos=%d&len=%d",seqIndex,count));
-    res.clear();
-    idx = 0;
-    while (idx < count) {
-        lh = ((u8)buff[2*idx]);
-        ll = ((u8)buff[2*idx+1]);
-        res.push_back(((lh) << (8))+ll);
-        idx = idx + 1;
-    }
-    return res;
+	buff = this->_download(YapiWrapper::ysprintf("rgb.bin?typ=6&pos=%d&len=%d", seqIndex, count));
+	res.clear();
+	idx = 0;
+	while (idx < count)
+	{
+		lh = ((u8)buff[2 * idx]);
+		ll = ((u8)buff[2 * idx + 1]);
+		res.push_back(((lh) << (8)) + ll);
+		idx = idx + 1;
+	}
+	return res;
 }
 
 /**
@@ -1056,22 +1118,23 @@ vector<int> YColorLedCluster::get_blinkSeqStateSpeed(int seqIndex,int count)
  *
  * On failure, throws an exception or returns an empty array.
  */
-vector<int> YColorLedCluster::get_blinkSeqStateAtPowerOn(int seqIndex,int count)
+vector<int> YColorLedCluster::get_blinkSeqStateAtPowerOn(int seqIndex, int count)
 {
-    string buff;
-    vector<int> res;
-    int idx = 0;
-    int started = 0;
+	string buff;
+	vector<int> res;
+	int idx = 0;
+	int started = 0;
 
-    buff = this->_download(YapiWrapper::ysprintf("rgb.bin?typ=5&pos=%d&len=%d",seqIndex,count));
-    res.clear();
-    idx = 0;
-    while (idx < count) {
-        started = ((u8)buff[idx]);
-        res.push_back(started);
-        idx = idx + 1;
-    }
-    return res;
+	buff = this->_download(YapiWrapper::ysprintf("rgb.bin?typ=5&pos=%d&len=%d", seqIndex, count));
+	res.clear();
+	idx = 0;
+	while (idx < count)
+	{
+		started = ((u8)buff[idx]);
+		res.push_back(started);
+		idx = idx + 1;
+	}
+	return res;
 }
 
 /**
@@ -1084,46 +1147,49 @@ vector<int> YColorLedCluster::get_blinkSeqStateAtPowerOn(int seqIndex,int count)
  *
  * On failure, throws an exception or returns an empty array.
  */
-vector<int> YColorLedCluster::get_blinkSeqState(int seqIndex,int count)
+vector<int> YColorLedCluster::get_blinkSeqState(int seqIndex, int count)
 {
-    string buff;
-    vector<int> res;
-    int idx = 0;
-    int started = 0;
+	string buff;
+	vector<int> res;
+	int idx = 0;
+	int started = 0;
 
-    buff = this->_download(YapiWrapper::ysprintf("rgb.bin?typ=3&pos=%d&len=%d",seqIndex,count));
-    res.clear();
-    idx = 0;
-    while (idx < count) {
-        started = ((u8)buff[idx]);
-        res.push_back(started);
-        idx = idx + 1;
-    }
-    return res;
+	buff = this->_download(YapiWrapper::ysprintf("rgb.bin?typ=3&pos=%d&len=%d", seqIndex, count));
+	res.clear();
+	idx = 0;
+	while (idx < count)
+	{
+		started = ((u8)buff[idx]);
+		res.push_back(started);
+		idx = idx + 1;
+	}
+	return res;
 }
 
-YColorLedCluster *YColorLedCluster::nextColorLedCluster(void)
+YColorLedCluster* YColorLedCluster::nextColorLedCluster(void)
 {
-    string  hwid;
+	string hwid;
 
-    if(YISERR(_nextFunction(hwid)) || hwid=="") {
-        return NULL;
-    }
-    return YColorLedCluster::FindColorLedCluster(hwid);
+	if (YISERR(_nextFunction(hwid)) || hwid == "")
+	{
+		return NULL;
+	}
+	return YColorLedCluster::FindColorLedCluster(hwid);
 }
 
 YColorLedCluster* YColorLedCluster::FirstColorLedCluster(void)
 {
-    vector<YFUN_DESCR>   v_fundescr;
-    YDEV_DESCR             ydevice;
-    string              serial, funcId, funcName, funcVal, errmsg;
+	vector<YFUN_DESCR> v_fundescr;
+	YDEV_DESCR ydevice;
+	string serial, funcId, funcName, funcVal, errmsg;
 
-    if(YISERR(YapiWrapper::getFunctionsByClass("ColorLedCluster", 0, v_fundescr, sizeof(YFUN_DESCR), errmsg)) ||
-       v_fundescr.size() == 0 ||
-       YISERR(YapiWrapper::getFunctionInfo(v_fundescr[0], ydevice, serial, funcId, funcName, funcVal, errmsg))) {
-        return NULL;
-    }
-    return YColorLedCluster::FindColorLedCluster(serial+"."+funcId);
+	if (YISERR(YapiWrapper::getFunctionsByClass("ColorLedCluster", 0, v_fundescr, sizeof(YFUN_DESCR), errmsg)) ||
+		v_fundescr.size() == 0 ||
+		YISERR(YapiWrapper::getFunctionInfo(v_fundescr[0], ydevice, serial, funcId, funcName, funcVal, errmsg)))
+	{
+		return NULL;
+	}
+	return YColorLedCluster::FindColorLedCluster(serial + "." + funcId);
 }
 
 //--- (end of YColorLedCluster implementation)

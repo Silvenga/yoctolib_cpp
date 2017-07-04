@@ -51,13 +51,14 @@
 //--- (YMagnetometer definitions)
 class YMagnetometer; // forward declaration
 
-typedef void (*YMagnetometerValueCallback)(YMagnetometer *func, const string& functionValue);
+typedef void (*YMagnetometerValueCallback)(YMagnetometer* func, const string& functionValue);
 class YMeasure; // forward declaration
-typedef void (*YMagnetometerTimedReportCallback)(YMagnetometer *func, YMeasure measure);
+typedef void (*YMagnetometerTimedReportCallback)(YMagnetometer* func, YMeasure measure);
 #define Y_BANDWIDTH_INVALID             (YAPI_INVALID_INT)
 #define Y_XVALUE_INVALID                (YAPI_INVALID_DOUBLE)
 #define Y_YVALUE_INVALID                (YAPI_INVALID_DOUBLE)
 #define Y_ZVALUE_INVALID                (YAPI_INVALID_DOUBLE)
+
 //--- (end of YMagnetometer definitions)
 
 //--- (YMagnetometer declaration)
@@ -74,193 +75,213 @@ typedef void (*YMagnetometerTimedReportCallback)(YMagnetometer *func, YMeasure m
  * Note: The YAnButton class is the only analog input which does not inherit
  * from YSensor.
  */
-class YOCTO_CLASS_EXPORT YMagnetometer: public YSensor {
+class YOCTO_CLASS_EXPORT YMagnetometer: public YSensor
+{
 #ifdef __BORLANDC__
 #pragma option push -w-8022
 #endif
-//--- (end of YMagnetometer declaration)
+	//--- (end of YMagnetometer declaration)
 protected:
-    //--- (YMagnetometer attributes)
-    // Attributes (function value cache)
-    int             _bandwidth;
-    double          _xValue;
-    double          _yValue;
-    double          _zValue;
-    YMagnetometerValueCallback _valueCallbackMagnetometer;
-    YMagnetometerTimedReportCallback _timedReportCallbackMagnetometer;
+	//--- (YMagnetometer attributes)
+	// Attributes (function value cache)
+	int _bandwidth;
+	double _xValue;
+	double _yValue;
+	double _zValue;
+	YMagnetometerValueCallback _valueCallbackMagnetometer;
+	YMagnetometerTimedReportCallback _timedReportCallbackMagnetometer;
 
-    friend YMagnetometer *yFindMagnetometer(const string& func);
-    friend YMagnetometer *yFirstMagnetometer(void);
+	friend YMagnetometer* yFindMagnetometer(const string& func);
+	friend YMagnetometer* yFirstMagnetometer(void);
 
-    // Function-specific method for parsing of JSON output and caching result
-    virtual int     _parseAttr(YJSONObject* json_val);
+	// Function-specific method for parsing of JSON output and caching result
+	virtual int _parseAttr(YJSONObject* json_val);
 
-    // Constructor is protected, use yFindMagnetometer factory function to instantiate
-    YMagnetometer(const string& func);
-    //--- (end of YMagnetometer attributes)
+	// Constructor is protected, use yFindMagnetometer factory function to instantiate
+	YMagnetometer(const string& func);
+	//--- (end of YMagnetometer attributes)
 
 public:
-    ~YMagnetometer();
-    //--- (YMagnetometer accessors declaration)
+	~YMagnetometer();
+	//--- (YMagnetometer accessors declaration)
 
-    static const int BANDWIDTH_INVALID = YAPI_INVALID_INT;
-    static const double XVALUE_INVALID;
-    static const double YVALUE_INVALID;
-    static const double ZVALUE_INVALID;
+	static const int BANDWIDTH_INVALID = YAPI_INVALID_INT;
+	static const double XVALUE_INVALID;
+	static const double YVALUE_INVALID;
+	static const double ZVALUE_INVALID;
 
-    /**
-     * Returns the measure update frequency, measured in Hz (Yocto-3D-V2 only).
-     *
-     * @return an integer corresponding to the measure update frequency, measured in Hz (Yocto-3D-V2 only)
-     *
-     * On failure, throws an exception or returns Y_BANDWIDTH_INVALID.
-     */
-    int                 get_bandwidth(void);
+	/**
+	 * Returns the measure update frequency, measured in Hz (Yocto-3D-V2 only).
+	 *
+	 * @return an integer corresponding to the measure update frequency, measured in Hz (Yocto-3D-V2 only)
+	 *
+	 * On failure, throws an exception or returns Y_BANDWIDTH_INVALID.
+	 */
+	int get_bandwidth(void);
 
-    inline int          bandwidth(void)
-    { return this->get_bandwidth(); }
+	inline int bandwidth(void)
+	{
+		return this->get_bandwidth();
+	}
 
-    /**
-     * Changes the measure update frequency, measured in Hz (Yocto-3D-V2 only). When the
-     * frequency is lower, the device performs averaging.
-     *
-     * @param newval : an integer corresponding to the measure update frequency, measured in Hz (Yocto-3D-V2 only)
-     *
-     * @return YAPI_SUCCESS if the call succeeds.
-     *
-     * On failure, throws an exception or returns a negative error code.
-     */
-    int             set_bandwidth(int newval);
-    inline int      setBandwidth(int newval)
-    { return this->set_bandwidth(newval); }
+	/**
+	 * Changes the measure update frequency, measured in Hz (Yocto-3D-V2 only). When the
+	 * frequency is lower, the device performs averaging.
+	 *
+	 * @param newval : an integer corresponding to the measure update frequency, measured in Hz (Yocto-3D-V2 only)
+	 *
+	 * @return YAPI_SUCCESS if the call succeeds.
+	 *
+	 * On failure, throws an exception or returns a negative error code.
+	 */
+	int set_bandwidth(int newval);
 
-    /**
-     * Returns the X component of the magnetic field, as a floating point number.
-     *
-     * @return a floating point number corresponding to the X component of the magnetic field, as a
-     * floating point number
-     *
-     * On failure, throws an exception or returns Y_XVALUE_INVALID.
-     */
-    double              get_xValue(void);
+	inline int setBandwidth(int newval)
+	{
+		return this->set_bandwidth(newval);
+	}
 
-    inline double       xValue(void)
-    { return this->get_xValue(); }
+	/**
+	 * Returns the X component of the magnetic field, as a floating point number.
+	 *
+	 * @return a floating point number corresponding to the X component of the magnetic field, as a
+	 * floating point number
+	 *
+	 * On failure, throws an exception or returns Y_XVALUE_INVALID.
+	 */
+	double get_xValue(void);
 
-    /**
-     * Returns the Y component of the magnetic field, as a floating point number.
-     *
-     * @return a floating point number corresponding to the Y component of the magnetic field, as a
-     * floating point number
-     *
-     * On failure, throws an exception or returns Y_YVALUE_INVALID.
-     */
-    double              get_yValue(void);
+	inline double xValue(void)
+	{
+		return this->get_xValue();
+	}
 
-    inline double       yValue(void)
-    { return this->get_yValue(); }
+	/**
+	 * Returns the Y component of the magnetic field, as a floating point number.
+	 *
+	 * @return a floating point number corresponding to the Y component of the magnetic field, as a
+	 * floating point number
+	 *
+	 * On failure, throws an exception or returns Y_YVALUE_INVALID.
+	 */
+	double get_yValue(void);
 
-    /**
-     * Returns the Z component of the magnetic field, as a floating point number.
-     *
-     * @return a floating point number corresponding to the Z component of the magnetic field, as a
-     * floating point number
-     *
-     * On failure, throws an exception or returns Y_ZVALUE_INVALID.
-     */
-    double              get_zValue(void);
+	inline double yValue(void)
+	{
+		return this->get_yValue();
+	}
 
-    inline double       zValue(void)
-    { return this->get_zValue(); }
+	/**
+	 * Returns the Z component of the magnetic field, as a floating point number.
+	 *
+	 * @return a floating point number corresponding to the Z component of the magnetic field, as a
+	 * floating point number
+	 *
+	 * On failure, throws an exception or returns Y_ZVALUE_INVALID.
+	 */
+	double get_zValue(void);
 
-    /**
-     * Retrieves a magnetometer for a given identifier.
-     * The identifier can be specified using several formats:
-     * <ul>
-     * <li>FunctionLogicalName</li>
-     * <li>ModuleSerialNumber.FunctionIdentifier</li>
-     * <li>ModuleSerialNumber.FunctionLogicalName</li>
-     * <li>ModuleLogicalName.FunctionIdentifier</li>
-     * <li>ModuleLogicalName.FunctionLogicalName</li>
-     * </ul>
-     *
-     * This function does not require that the magnetometer is online at the time
-     * it is invoked. The returned object is nevertheless valid.
-     * Use the method YMagnetometer.isOnline() to test if the magnetometer is
-     * indeed online at a given time. In case of ambiguity when looking for
-     * a magnetometer by logical name, no error is notified: the first instance
-     * found is returned. The search is performed first by hardware name,
-     * then by logical name.
-     *
-     * @param func : a string that uniquely characterizes the magnetometer
-     *
-     * @return a YMagnetometer object allowing you to drive the magnetometer.
-     */
-    static YMagnetometer* FindMagnetometer(string func);
+	inline double zValue(void)
+	{
+		return this->get_zValue();
+	}
 
-    /**
-     * Registers the callback function that is invoked on every change of advertised value.
-     * The callback is invoked only during the execution of ySleep or yHandleEvents.
-     * This provides control over the time when the callback is triggered. For good responsiveness, remember to call
-     * one of these two functions periodically. To unregister a callback, pass a NULL pointer as argument.
-     *
-     * @param callback : the callback function to call, or a NULL pointer. The callback function should take two
-     *         arguments: the function object of which the value has changed, and the character string describing
-     *         the new advertised value.
-     * @noreturn
-     */
-    virtual int         registerValueCallback(YMagnetometerValueCallback callback);
-    using YSensor::registerValueCallback;
+	/**
+	 * Retrieves a magnetometer for a given identifier.
+	 * The identifier can be specified using several formats:
+	 * <ul>
+	 * <li>FunctionLogicalName</li>
+	 * <li>ModuleSerialNumber.FunctionIdentifier</li>
+	 * <li>ModuleSerialNumber.FunctionLogicalName</li>
+	 * <li>ModuleLogicalName.FunctionIdentifier</li>
+	 * <li>ModuleLogicalName.FunctionLogicalName</li>
+	 * </ul>
+	 *
+	 * This function does not require that the magnetometer is online at the time
+	 * it is invoked. The returned object is nevertheless valid.
+	 * Use the method YMagnetometer.isOnline() to test if the magnetometer is
+	 * indeed online at a given time. In case of ambiguity when looking for
+	 * a magnetometer by logical name, no error is notified: the first instance
+	 * found is returned. The search is performed first by hardware name,
+	 * then by logical name.
+	 *
+	 * @param func : a string that uniquely characterizes the magnetometer
+	 *
+	 * @return a YMagnetometer object allowing you to drive the magnetometer.
+	 */
+	static YMagnetometer* FindMagnetometer(string func);
 
-    virtual int         _invokeValueCallback(string value);
+	/**
+	 * Registers the callback function that is invoked on every change of advertised value.
+	 * The callback is invoked only during the execution of ySleep or yHandleEvents.
+	 * This provides control over the time when the callback is triggered. For good responsiveness, remember to call
+	 * one of these two functions periodically. To unregister a callback, pass a NULL pointer as argument.
+	 *
+	 * @param callback : the callback function to call, or a NULL pointer. The callback function should take two
+	 *         arguments: the function object of which the value has changed, and the character string describing
+	 *         the new advertised value.
+	 * @noreturn
+	 */
+	virtual int registerValueCallback(YMagnetometerValueCallback callback);
+	using YSensor::registerValueCallback;
 
-    /**
-     * Registers the callback function that is invoked on every periodic timed notification.
-     * The callback is invoked only during the execution of ySleep or yHandleEvents.
-     * This provides control over the time when the callback is triggered. For good responsiveness, remember to call
-     * one of these two functions periodically. To unregister a callback, pass a NULL pointer as argument.
-     *
-     * @param callback : the callback function to call, or a NULL pointer. The callback function should take two
-     *         arguments: the function object of which the value has changed, and an YMeasure object describing
-     *         the new advertised value.
-     * @noreturn
-     */
-    virtual int         registerTimedReportCallback(YMagnetometerTimedReportCallback callback);
-    using YSensor::registerTimedReportCallback;
+	virtual int _invokeValueCallback(string value);
 
-    virtual int         _invokeTimedReportCallback(YMeasure value);
+	/**
+	 * Registers the callback function that is invoked on every periodic timed notification.
+	 * The callback is invoked only during the execution of ySleep or yHandleEvents.
+	 * This provides control over the time when the callback is triggered. For good responsiveness, remember to call
+	 * one of these two functions periodically. To unregister a callback, pass a NULL pointer as argument.
+	 *
+	 * @param callback : the callback function to call, or a NULL pointer. The callback function should take two
+	 *         arguments: the function object of which the value has changed, and an YMeasure object describing
+	 *         the new advertised value.
+	 * @noreturn
+	 */
+	virtual int registerTimedReportCallback(YMagnetometerTimedReportCallback callback);
+	using YSensor::registerTimedReportCallback;
+
+	virtual int _invokeTimedReportCallback(YMeasure value);
 
 
-    inline static YMagnetometer* Find(string func)
-    { return YMagnetometer::FindMagnetometer(func); }
+	inline static YMagnetometer* Find(string func)
+	{
+		return YMagnetometer::FindMagnetometer(func);
+	}
 
-    /**
-     * Continues the enumeration of magnetometers started using yFirstMagnetometer().
-     *
-     * @return a pointer to a YMagnetometer object, corresponding to
-     *         a magnetometer currently online, or a NULL pointer
-     *         if there are no more magnetometers to enumerate.
-     */
-           YMagnetometer   *nextMagnetometer(void);
-    inline YMagnetometer   *next(void)
-    { return this->nextMagnetometer();}
+	/**
+	 * Continues the enumeration of magnetometers started using yFirstMagnetometer().
+	 *
+	 * @return a pointer to a YMagnetometer object, corresponding to
+	 *         a magnetometer currently online, or a NULL pointer
+	 *         if there are no more magnetometers to enumerate.
+	 */
+	YMagnetometer* nextMagnetometer(void);
 
-    /**
-     * Starts the enumeration of magnetometers currently accessible.
-     * Use the method YMagnetometer.nextMagnetometer() to iterate on
-     * next magnetometers.
-     *
-     * @return a pointer to a YMagnetometer object, corresponding to
-     *         the first magnetometer currently online, or a NULL pointer
-     *         if there are none.
-     */
-           static YMagnetometer* FirstMagnetometer(void);
-    inline static YMagnetometer* First(void)
-    { return YMagnetometer::FirstMagnetometer();}
+	inline YMagnetometer* next(void)
+	{
+		return this->nextMagnetometer();
+	}
+
+	/**
+	 * Starts the enumeration of magnetometers currently accessible.
+	 * Use the method YMagnetometer.nextMagnetometer() to iterate on
+	 * next magnetometers.
+	 *
+	 * @return a pointer to a YMagnetometer object, corresponding to
+	 *         the first magnetometer currently online, or a NULL pointer
+	 *         if there are none.
+	 */
+	static YMagnetometer* FirstMagnetometer(void);
+
+	inline static YMagnetometer* First(void)
+	{
+		return YMagnetometer::FirstMagnetometer();
+	}
 #ifdef __BORLANDC__
 #pragma option pop
 #endif
-    //--- (end of YMagnetometer accessors declaration)
+	//--- (end of YMagnetometer accessors declaration)
 };
 
 //--- (Magnetometer functions declaration)
@@ -289,7 +310,10 @@ public:
  * @return a YMagnetometer object allowing you to drive the magnetometer.
  */
 inline YMagnetometer* yFindMagnetometer(const string& func)
-{ return YMagnetometer::FindMagnetometer(func);}
+{
+	return YMagnetometer::FindMagnetometer(func);
+}
+
 /**
  * Starts the enumeration of magnetometers currently accessible.
  * Use the method YMagnetometer.nextMagnetometer() to iterate on
@@ -300,7 +324,9 @@ inline YMagnetometer* yFindMagnetometer(const string& func)
  *         if there are none.
  */
 inline YMagnetometer* yFirstMagnetometer(void)
-{ return YMagnetometer::FirstMagnetometer();}
+{
+	return YMagnetometer::FirstMagnetometer();
+}
 
 //--- (end of Magnetometer functions declaration)
 

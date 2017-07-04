@@ -49,41 +49,46 @@
 #define  __FILE_ID__  "realtimeclock"
 
 YRealTimeClock::YRealTimeClock(const string& func): YFunction(func)
-//--- (RealTimeClock initialization)
-    ,_unixTime(UNIXTIME_INVALID)
-    ,_dateTime(DATETIME_INVALID)
-    ,_utcOffset(UTCOFFSET_INVALID)
-    ,_timeSet(TIMESET_INVALID)
-    ,_valueCallbackRealTimeClock(NULL)
+                                                    //--- (RealTimeClock initialization)
+                                                    , _unixTime(UNIXTIME_INVALID)
+                                                    , _dateTime(DATETIME_INVALID)
+                                                    , _utcOffset(UTCOFFSET_INVALID)
+                                                    , _timeSet(TIMESET_INVALID)
+                                                    , _valueCallbackRealTimeClock(NULL)
 //--- (end of RealTimeClock initialization)
 {
-    _className="RealTimeClock";
+	_className = "RealTimeClock";
 }
 
 YRealTimeClock::~YRealTimeClock()
 {
-//--- (YRealTimeClock cleanup)
-//--- (end of YRealTimeClock cleanup)
+	//--- (YRealTimeClock cleanup)
+	//--- (end of YRealTimeClock cleanup)
 }
+
 //--- (YRealTimeClock implementation)
 // static attributes
 const string YRealTimeClock::DATETIME_INVALID = YAPI_INVALID_STRING;
 
 int YRealTimeClock::_parseAttr(YJSONObject* json_val)
 {
-    if(json_val->has("unixTime")) {
-        _unixTime =  json_val->getLong("unixTime");
-    }
-    if(json_val->has("dateTime")) {
-        _dateTime =  json_val->getString("dateTime");
-    }
-    if(json_val->has("utcOffset")) {
-        _utcOffset =  json_val->getInt("utcOffset");
-    }
-    if(json_val->has("timeSet")) {
-        _timeSet =  (Y_TIMESET_enum)json_val->getInt("timeSet");
-    }
-    return YFunction::_parseAttr(json_val);
+	if (json_val->has("unixTime"))
+	{
+		_unixTime = json_val->getLong("unixTime");
+	}
+	if (json_val->has("dateTime"))
+	{
+		_dateTime = json_val->getString("dateTime");
+	}
+	if (json_val->has("utcOffset"))
+	{
+		_utcOffset = json_val->getInt("utcOffset");
+	}
+	if (json_val->has("timeSet"))
+	{
+		_timeSet = (Y_TIMESET_enum)json_val->getInt("timeSet");
+	}
+	return YFunction::_parseAttr(json_val);
 }
 
 
@@ -97,24 +102,29 @@ int YRealTimeClock::_parseAttr(YJSONObject* json_val)
  */
 s64 YRealTimeClock::get_unixTime(void)
 {
-    s64 res = 0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YRealTimeClock::UNIXTIME_INVALID;
-                }
-            }
-        }
-        res = _unixTime;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	s64 res = 0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YRealTimeClock::UNIXTIME_INVALID;
+				}
+			}
+		}
+		res = _unixTime;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -128,18 +138,23 @@ s64 YRealTimeClock::get_unixTime(void)
  */
 int YRealTimeClock::set_unixTime(s64 newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        char buf[32]; sprintf(buf, "%u", (u32)newval); rest_val = string(buf);
-        res = _setAttr("unixTime", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		char buf[32];
+		sprintf(buf, "%u", (u32)newval);
+		rest_val = string(buf);
+		res = _setAttr("unixTime", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -151,24 +166,29 @@ int YRealTimeClock::set_unixTime(s64 newval)
  */
 string YRealTimeClock::get_dateTime(void)
 {
-    string res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YRealTimeClock::DATETIME_INVALID;
-                }
-            }
-        }
-        res = _dateTime;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YRealTimeClock::DATETIME_INVALID;
+				}
+			}
+		}
+		res = _dateTime;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -180,24 +200,29 @@ string YRealTimeClock::get_dateTime(void)
  */
 int YRealTimeClock::get_utcOffset(void)
 {
-    int res = 0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YRealTimeClock::UTCOFFSET_INVALID;
-                }
-            }
-        }
-        res = _utcOffset;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	int res = 0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YRealTimeClock::UTCOFFSET_INVALID;
+				}
+			}
+		}
+		res = _utcOffset;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -212,18 +237,23 @@ int YRealTimeClock::get_utcOffset(void)
  */
 int YRealTimeClock::set_utcOffset(int newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        char buf[32]; sprintf(buf, "%d", newval); rest_val = string(buf);
-        res = _setAttr("utcOffset", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		char buf[32];
+		sprintf(buf, "%d", newval);
+		rest_val = string(buf);
+		res = _setAttr("utcOffset", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -236,24 +266,29 @@ int YRealTimeClock::set_utcOffset(int newval)
  */
 Y_TIMESET_enum YRealTimeClock::get_timeSet(void)
 {
-    Y_TIMESET_enum res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YRealTimeClock::TIMESET_INVALID;
-                }
-            }
-        }
-        res = _timeSet;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	Y_TIMESET_enum res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YRealTimeClock::TIMESET_INVALID;
+				}
+			}
+		}
+		res = _timeSet;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -281,23 +316,29 @@ Y_TIMESET_enum YRealTimeClock::get_timeSet(void)
  */
 YRealTimeClock* YRealTimeClock::FindRealTimeClock(string func)
 {
-    YRealTimeClock* obj = NULL;
-    int taken = 0;
-    if (YAPI::_apiInitialized) {
-        yEnterCriticalSection(&YAPI::_global_cs);
-        taken = 1;
-    }try {
-        obj = (YRealTimeClock*) YFunction::_FindFromCache("RealTimeClock", func);
-        if (obj == NULL) {
-            obj = new YRealTimeClock(func);
-            YFunction::_AddToCache("RealTimeClock", func, obj);
-        }
-    } catch (std::exception) {
-        if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
-        throw;
-    }
-    if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
-    return obj;
+	YRealTimeClock* obj = NULL;
+	int taken = 0;
+	if (YAPI::_apiInitialized)
+	{
+		yEnterCriticalSection(&YAPI::_global_cs);
+		taken = 1;
+	}
+	try
+	{
+		obj = (YRealTimeClock*)YFunction::_FindFromCache("RealTimeClock", func);
+		if (obj == NULL)
+		{
+			obj = new YRealTimeClock(func);
+			YFunction::_AddToCache("RealTimeClock", func, obj);
+		}
+	}
+	catch (std::exception)
+	{
+		if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
+		throw;
+	}
+	if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
+	return obj;
 }
 
 /**
@@ -313,55 +354,65 @@ YRealTimeClock* YRealTimeClock::FindRealTimeClock(string func)
  */
 int YRealTimeClock::registerValueCallback(YRealTimeClockValueCallback callback)
 {
-    string val;
-    if (callback != NULL) {
-        YFunction::_UpdateValueCallbackList(this, true);
-    } else {
-        YFunction::_UpdateValueCallbackList(this, false);
-    }
-    _valueCallbackRealTimeClock = callback;
-    // Immediately invoke value callback with current value
-    if (callback != NULL && this->isOnline()) {
-        val = _advertisedValue;
-        if (!(val == "")) {
-            this->_invokeValueCallback(val);
-        }
-    }
-    return 0;
+	string val;
+	if (callback != NULL)
+	{
+		YFunction::_UpdateValueCallbackList(this, true);
+	}
+	else
+	{
+		YFunction::_UpdateValueCallbackList(this, false);
+	}
+	_valueCallbackRealTimeClock = callback;
+	// Immediately invoke value callback with current value
+	if (callback != NULL && this->isOnline())
+	{
+		val = _advertisedValue;
+		if (!(val == ""))
+		{
+			this->_invokeValueCallback(val);
+		}
+	}
+	return 0;
 }
 
 int YRealTimeClock::_invokeValueCallback(string value)
 {
-    if (_valueCallbackRealTimeClock != NULL) {
-        _valueCallbackRealTimeClock(this, value);
-    } else {
-        YFunction::_invokeValueCallback(value);
-    }
-    return 0;
+	if (_valueCallbackRealTimeClock != NULL)
+	{
+		_valueCallbackRealTimeClock(this, value);
+	}
+	else
+	{
+		YFunction::_invokeValueCallback(value);
+	}
+	return 0;
 }
 
-YRealTimeClock *YRealTimeClock::nextRealTimeClock(void)
+YRealTimeClock* YRealTimeClock::nextRealTimeClock(void)
 {
-    string  hwid;
+	string hwid;
 
-    if(YISERR(_nextFunction(hwid)) || hwid=="") {
-        return NULL;
-    }
-    return YRealTimeClock::FindRealTimeClock(hwid);
+	if (YISERR(_nextFunction(hwid)) || hwid == "")
+	{
+		return NULL;
+	}
+	return YRealTimeClock::FindRealTimeClock(hwid);
 }
 
 YRealTimeClock* YRealTimeClock::FirstRealTimeClock(void)
 {
-    vector<YFUN_DESCR>   v_fundescr;
-    YDEV_DESCR             ydevice;
-    string              serial, funcId, funcName, funcVal, errmsg;
+	vector<YFUN_DESCR> v_fundescr;
+	YDEV_DESCR ydevice;
+	string serial, funcId, funcName, funcVal, errmsg;
 
-    if(YISERR(YapiWrapper::getFunctionsByClass("RealTimeClock", 0, v_fundescr, sizeof(YFUN_DESCR), errmsg)) ||
-       v_fundescr.size() == 0 ||
-       YISERR(YapiWrapper::getFunctionInfo(v_fundescr[0], ydevice, serial, funcId, funcName, funcVal, errmsg))) {
-        return NULL;
-    }
-    return YRealTimeClock::FindRealTimeClock(serial+"."+funcId);
+	if (YISERR(YapiWrapper::getFunctionsByClass("RealTimeClock", 0, v_fundescr, sizeof(YFUN_DESCR), errmsg)) ||
+		v_fundescr.size() == 0 ||
+		YISERR(YapiWrapper::getFunctionInfo(v_fundescr[0], ydevice, serial, funcId, funcName, funcVal, errmsg)))
+	{
+		return NULL;
+	}
+	return YRealTimeClock::FindRealTimeClock(serial + "." + funcId);
 }
 
 //--- (end of YRealTimeClock implementation)

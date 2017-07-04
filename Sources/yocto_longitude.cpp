@@ -49,19 +49,20 @@
 #define  __FILE_ID__  "longitude"
 
 YLongitude::YLongitude(const string& func): YSensor(func)
-//--- (Longitude initialization)
-    ,_valueCallbackLongitude(NULL)
-    ,_timedReportCallbackLongitude(NULL)
+                                            //--- (Longitude initialization)
+                                            , _valueCallbackLongitude(NULL)
+                                            , _timedReportCallbackLongitude(NULL)
 //--- (end of Longitude initialization)
 {
-    _className="Longitude";
+	_className = "Longitude";
 }
 
 YLongitude::~YLongitude()
 {
-//--- (YLongitude cleanup)
-//--- (end of YLongitude cleanup)
+	//--- (YLongitude cleanup)
+	//--- (end of YLongitude cleanup)
 }
+
 //--- (YLongitude implementation)
 // static attributes
 
@@ -91,23 +92,29 @@ YLongitude::~YLongitude()
  */
 YLongitude* YLongitude::FindLongitude(string func)
 {
-    YLongitude* obj = NULL;
-    int taken = 0;
-    if (YAPI::_apiInitialized) {
-        yEnterCriticalSection(&YAPI::_global_cs);
-        taken = 1;
-    }try {
-        obj = (YLongitude*) YFunction::_FindFromCache("Longitude", func);
-        if (obj == NULL) {
-            obj = new YLongitude(func);
-            YFunction::_AddToCache("Longitude", func, obj);
-        }
-    } catch (std::exception) {
-        if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
-        throw;
-    }
-    if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
-    return obj;
+	YLongitude* obj = NULL;
+	int taken = 0;
+	if (YAPI::_apiInitialized)
+	{
+		yEnterCriticalSection(&YAPI::_global_cs);
+		taken = 1;
+	}
+	try
+	{
+		obj = (YLongitude*)YFunction::_FindFromCache("Longitude", func);
+		if (obj == NULL)
+		{
+			obj = new YLongitude(func);
+			YFunction::_AddToCache("Longitude", func, obj);
+		}
+	}
+	catch (std::exception)
+	{
+		if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
+		throw;
+	}
+	if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
+	return obj;
 }
 
 /**
@@ -123,31 +130,39 @@ YLongitude* YLongitude::FindLongitude(string func)
  */
 int YLongitude::registerValueCallback(YLongitudeValueCallback callback)
 {
-    string val;
-    if (callback != NULL) {
-        YFunction::_UpdateValueCallbackList(this, true);
-    } else {
-        YFunction::_UpdateValueCallbackList(this, false);
-    }
-    _valueCallbackLongitude = callback;
-    // Immediately invoke value callback with current value
-    if (callback != NULL && this->isOnline()) {
-        val = _advertisedValue;
-        if (!(val == "")) {
-            this->_invokeValueCallback(val);
-        }
-    }
-    return 0;
+	string val;
+	if (callback != NULL)
+	{
+		YFunction::_UpdateValueCallbackList(this, true);
+	}
+	else
+	{
+		YFunction::_UpdateValueCallbackList(this, false);
+	}
+	_valueCallbackLongitude = callback;
+	// Immediately invoke value callback with current value
+	if (callback != NULL && this->isOnline())
+	{
+		val = _advertisedValue;
+		if (!(val == ""))
+		{
+			this->_invokeValueCallback(val);
+		}
+	}
+	return 0;
 }
 
 int YLongitude::_invokeValueCallback(string value)
 {
-    if (_valueCallbackLongitude != NULL) {
-        _valueCallbackLongitude(this, value);
-    } else {
-        YSensor::_invokeValueCallback(value);
-    }
-    return 0;
+	if (_valueCallbackLongitude != NULL)
+	{
+		_valueCallbackLongitude(this, value);
+	}
+	else
+	{
+		YSensor::_invokeValueCallback(value);
+	}
+	return 0;
 }
 
 /**
@@ -163,49 +178,57 @@ int YLongitude::_invokeValueCallback(string value)
  */
 int YLongitude::registerTimedReportCallback(YLongitudeTimedReportCallback callback)
 {
-    YSensor* sensor = NULL;
-    sensor = this;
-    if (callback != NULL) {
-        YFunction::_UpdateTimedReportCallbackList(sensor, true);
-    } else {
-        YFunction::_UpdateTimedReportCallbackList(sensor, false);
-    }
-    _timedReportCallbackLongitude = callback;
-    return 0;
+	YSensor* sensor = NULL;
+	sensor = this;
+	if (callback != NULL)
+	{
+		YFunction::_UpdateTimedReportCallbackList(sensor, true);
+	}
+	else
+	{
+		YFunction::_UpdateTimedReportCallbackList(sensor, false);
+	}
+	_timedReportCallbackLongitude = callback;
+	return 0;
 }
 
 int YLongitude::_invokeTimedReportCallback(YMeasure value)
 {
-    if (_timedReportCallbackLongitude != NULL) {
-        _timedReportCallbackLongitude(this, value);
-    } else {
-        YSensor::_invokeTimedReportCallback(value);
-    }
-    return 0;
+	if (_timedReportCallbackLongitude != NULL)
+	{
+		_timedReportCallbackLongitude(this, value);
+	}
+	else
+	{
+		YSensor::_invokeTimedReportCallback(value);
+	}
+	return 0;
 }
 
-YLongitude *YLongitude::nextLongitude(void)
+YLongitude* YLongitude::nextLongitude(void)
 {
-    string  hwid;
+	string hwid;
 
-    if(YISERR(_nextFunction(hwid)) || hwid=="") {
-        return NULL;
-    }
-    return YLongitude::FindLongitude(hwid);
+	if (YISERR(_nextFunction(hwid)) || hwid == "")
+	{
+		return NULL;
+	}
+	return YLongitude::FindLongitude(hwid);
 }
 
 YLongitude* YLongitude::FirstLongitude(void)
 {
-    vector<YFUN_DESCR>   v_fundescr;
-    YDEV_DESCR             ydevice;
-    string              serial, funcId, funcName, funcVal, errmsg;
+	vector<YFUN_DESCR> v_fundescr;
+	YDEV_DESCR ydevice;
+	string serial, funcId, funcName, funcVal, errmsg;
 
-    if(YISERR(YapiWrapper::getFunctionsByClass("Longitude", 0, v_fundescr, sizeof(YFUN_DESCR), errmsg)) ||
-       v_fundescr.size() == 0 ||
-       YISERR(YapiWrapper::getFunctionInfo(v_fundescr[0], ydevice, serial, funcId, funcName, funcVal, errmsg))) {
-        return NULL;
-    }
-    return YLongitude::FindLongitude(serial+"."+funcId);
+	if (YISERR(YapiWrapper::getFunctionsByClass("Longitude", 0, v_fundescr, sizeof(YFUN_DESCR), errmsg)) ||
+		v_fundescr.size() == 0 ||
+		YISERR(YapiWrapper::getFunctionInfo(v_fundescr[0], ydevice, serial, funcId, funcName, funcVal, errmsg)))
+	{
+		return NULL;
+	}
+	return YLongitude::FindLongitude(serial + "." + funcId);
 }
 
 //--- (end of YLongitude implementation)

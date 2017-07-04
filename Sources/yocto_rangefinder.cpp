@@ -49,23 +49,24 @@
 #define  __FILE_ID__  "rangefinder"
 
 YRangeFinder::YRangeFinder(const string& func): YSensor(func)
-//--- (RangeFinder initialization)
-    ,_rangeFinderMode(RANGEFINDERMODE_INVALID)
-    ,_hardwareCalibration(HARDWARECALIBRATION_INVALID)
-    ,_currentTemperature(CURRENTTEMPERATURE_INVALID)
-    ,_command(COMMAND_INVALID)
-    ,_valueCallbackRangeFinder(NULL)
-    ,_timedReportCallbackRangeFinder(NULL)
+                                                //--- (RangeFinder initialization)
+                                                , _rangeFinderMode(RANGEFINDERMODE_INVALID)
+                                                , _hardwareCalibration(HARDWARECALIBRATION_INVALID)
+                                                , _currentTemperature(CURRENTTEMPERATURE_INVALID)
+                                                , _command(COMMAND_INVALID)
+                                                , _valueCallbackRangeFinder(NULL)
+                                                , _timedReportCallbackRangeFinder(NULL)
 //--- (end of RangeFinder initialization)
 {
-    _className="RangeFinder";
+	_className = "RangeFinder";
 }
 
 YRangeFinder::~YRangeFinder()
 {
-//--- (YRangeFinder cleanup)
-//--- (end of YRangeFinder cleanup)
+	//--- (YRangeFinder cleanup)
+	//--- (end of YRangeFinder cleanup)
 }
+
 //--- (YRangeFinder implementation)
 // static attributes
 const string YRangeFinder::HARDWARECALIBRATION_INVALID = YAPI_INVALID_STRING;
@@ -74,19 +75,23 @@ const string YRangeFinder::COMMAND_INVALID = YAPI_INVALID_STRING;
 
 int YRangeFinder::_parseAttr(YJSONObject* json_val)
 {
-    if(json_val->has("rangeFinderMode")) {
-        _rangeFinderMode =  (Y_RANGEFINDERMODE_enum)json_val->getInt("rangeFinderMode");
-    }
-    if(json_val->has("hardwareCalibration")) {
-        _hardwareCalibration =  json_val->getString("hardwareCalibration");
-    }
-    if(json_val->has("currentTemperature")) {
-        _currentTemperature =  floor(json_val->getDouble("currentTemperature") * 1000.0 / 65536.0 + 0.5) / 1000.0;
-    }
-    if(json_val->has("command")) {
-        _command =  json_val->getString("command");
-    }
-    return YSensor::_parseAttr(json_val);
+	if (json_val->has("rangeFinderMode"))
+	{
+		_rangeFinderMode = (Y_RANGEFINDERMODE_enum)json_val->getInt("rangeFinderMode");
+	}
+	if (json_val->has("hardwareCalibration"))
+	{
+		_hardwareCalibration = json_val->getString("hardwareCalibration");
+	}
+	if (json_val->has("currentTemperature"))
+	{
+		_currentTemperature = floor(json_val->getDouble("currentTemperature") * 1000.0 / 65536.0 + 0.5) / 1000.0;
+	}
+	if (json_val->has("command"))
+	{
+		_command = json_val->getString("command");
+	}
+	return YSensor::_parseAttr(json_val);
 }
 
 
@@ -105,18 +110,21 @@ int YRangeFinder::_parseAttr(YJSONObject* json_val)
  */
 int YRangeFinder::set_unit(const string& newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        rest_val = newval;
-        res = _setAttr("unit", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		rest_val = newval;
+		res = _setAttr("unit", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -130,24 +138,29 @@ int YRangeFinder::set_unit(const string& newval)
  */
 Y_RANGEFINDERMODE_enum YRangeFinder::get_rangeFinderMode(void)
 {
-    Y_RANGEFINDERMODE_enum res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YRangeFinder::RANGEFINDERMODE_INVALID;
-                }
-            }
-        }
-        res = _rangeFinderMode;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	Y_RANGEFINDERMODE_enum res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YRangeFinder::RANGEFINDERMODE_INVALID;
+				}
+			}
+		}
+		res = _rangeFinderMode;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -165,56 +178,69 @@ Y_RANGEFINDERMODE_enum YRangeFinder::get_rangeFinderMode(void)
  */
 int YRangeFinder::set_rangeFinderMode(Y_RANGEFINDERMODE_enum newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        char buf[32]; sprintf(buf, "%d", newval); rest_val = string(buf);
-        res = _setAttr("rangeFinderMode", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		char buf[32];
+		sprintf(buf, "%d", newval);
+		rest_val = string(buf);
+		res = _setAttr("rangeFinderMode", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 string YRangeFinder::get_hardwareCalibration(void)
 {
-    string res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YRangeFinder::HARDWARECALIBRATION_INVALID;
-                }
-            }
-        }
-        res = _hardwareCalibration;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YRangeFinder::HARDWARECALIBRATION_INVALID;
+				}
+			}
+		}
+		res = _hardwareCalibration;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 int YRangeFinder::set_hardwareCalibration(const string& newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        rest_val = newval;
-        res = _setAttr("hardwareCalibration", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		rest_val = newval;
+		res = _setAttr("hardwareCalibration", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -226,62 +252,75 @@ int YRangeFinder::set_hardwareCalibration(const string& newval)
  */
 double YRangeFinder::get_currentTemperature(void)
 {
-    double res = 0.0;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YRangeFinder::CURRENTTEMPERATURE_INVALID;
-                }
-            }
-        }
-        res = _currentTemperature;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	double res = 0.0;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YRangeFinder::CURRENTTEMPERATURE_INVALID;
+				}
+			}
+		}
+		res = _currentTemperature;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 string YRangeFinder::get_command(void)
 {
-    string res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        if (_cacheExpiration <= YAPI::GetTickCount()) {
-            if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS) {
-                {
-                    yLeaveCriticalSection(&_this_cs);
-                    return YRangeFinder::COMMAND_INVALID;
-                }
-            }
-        }
-        res = _command;
-    } catch (std::exception) {
-        yLeaveCriticalSection(&_this_cs);
-        throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		if (_cacheExpiration <= YAPI::GetTickCount())
+		{
+			if (this->_load_unsafe(YAPI::DefaultCacheValidity) != YAPI_SUCCESS)
+			{
+				{
+					yLeaveCriticalSection(&_this_cs);
+					return YRangeFinder::COMMAND_INVALID;
+				}
+			}
+		}
+		res = _command;
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 int YRangeFinder::set_command(const string& newval)
 {
-    string rest_val;
-    int res;
-    yEnterCriticalSection(&_this_cs);
-    try {
-        rest_val = newval;
-        res = _setAttr("command", rest_val);
-    } catch (std::exception) {
-         yLeaveCriticalSection(&_this_cs);
-         throw;
-    }
-    yLeaveCriticalSection(&_this_cs);
-    return res;
+	string rest_val;
+	int res;
+	yEnterCriticalSection(&_this_cs);
+	try
+	{
+		rest_val = newval;
+		res = _setAttr("command", rest_val);
+	}
+	catch (std::exception)
+	{
+		yLeaveCriticalSection(&_this_cs);
+		throw;
+	}
+	yLeaveCriticalSection(&_this_cs);
+	return res;
 }
 
 /**
@@ -309,23 +348,29 @@ int YRangeFinder::set_command(const string& newval)
  */
 YRangeFinder* YRangeFinder::FindRangeFinder(string func)
 {
-    YRangeFinder* obj = NULL;
-    int taken = 0;
-    if (YAPI::_apiInitialized) {
-        yEnterCriticalSection(&YAPI::_global_cs);
-        taken = 1;
-    }try {
-        obj = (YRangeFinder*) YFunction::_FindFromCache("RangeFinder", func);
-        if (obj == NULL) {
-            obj = new YRangeFinder(func);
-            YFunction::_AddToCache("RangeFinder", func, obj);
-        }
-    } catch (std::exception) {
-        if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
-        throw;
-    }
-    if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
-    return obj;
+	YRangeFinder* obj = NULL;
+	int taken = 0;
+	if (YAPI::_apiInitialized)
+	{
+		yEnterCriticalSection(&YAPI::_global_cs);
+		taken = 1;
+	}
+	try
+	{
+		obj = (YRangeFinder*)YFunction::_FindFromCache("RangeFinder", func);
+		if (obj == NULL)
+		{
+			obj = new YRangeFinder(func);
+			YFunction::_AddToCache("RangeFinder", func, obj);
+		}
+	}
+	catch (std::exception)
+	{
+		if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
+		throw;
+	}
+	if (taken) yLeaveCriticalSection(&YAPI::_global_cs);
+	return obj;
 }
 
 /**
@@ -341,31 +386,39 @@ YRangeFinder* YRangeFinder::FindRangeFinder(string func)
  */
 int YRangeFinder::registerValueCallback(YRangeFinderValueCallback callback)
 {
-    string val;
-    if (callback != NULL) {
-        YFunction::_UpdateValueCallbackList(this, true);
-    } else {
-        YFunction::_UpdateValueCallbackList(this, false);
-    }
-    _valueCallbackRangeFinder = callback;
-    // Immediately invoke value callback with current value
-    if (callback != NULL && this->isOnline()) {
-        val = _advertisedValue;
-        if (!(val == "")) {
-            this->_invokeValueCallback(val);
-        }
-    }
-    return 0;
+	string val;
+	if (callback != NULL)
+	{
+		YFunction::_UpdateValueCallbackList(this, true);
+	}
+	else
+	{
+		YFunction::_UpdateValueCallbackList(this, false);
+	}
+	_valueCallbackRangeFinder = callback;
+	// Immediately invoke value callback with current value
+	if (callback != NULL && this->isOnline())
+	{
+		val = _advertisedValue;
+		if (!(val == ""))
+		{
+			this->_invokeValueCallback(val);
+		}
+	}
+	return 0;
 }
 
 int YRangeFinder::_invokeValueCallback(string value)
 {
-    if (_valueCallbackRangeFinder != NULL) {
-        _valueCallbackRangeFinder(this, value);
-    } else {
-        YSensor::_invokeValueCallback(value);
-    }
-    return 0;
+	if (_valueCallbackRangeFinder != NULL)
+	{
+		_valueCallbackRangeFinder(this, value);
+	}
+	else
+	{
+		YSensor::_invokeValueCallback(value);
+	}
+	return 0;
 }
 
 /**
@@ -381,25 +434,31 @@ int YRangeFinder::_invokeValueCallback(string value)
  */
 int YRangeFinder::registerTimedReportCallback(YRangeFinderTimedReportCallback callback)
 {
-    YSensor* sensor = NULL;
-    sensor = this;
-    if (callback != NULL) {
-        YFunction::_UpdateTimedReportCallbackList(sensor, true);
-    } else {
-        YFunction::_UpdateTimedReportCallbackList(sensor, false);
-    }
-    _timedReportCallbackRangeFinder = callback;
-    return 0;
+	YSensor* sensor = NULL;
+	sensor = this;
+	if (callback != NULL)
+	{
+		YFunction::_UpdateTimedReportCallbackList(sensor, true);
+	}
+	else
+	{
+		YFunction::_UpdateTimedReportCallbackList(sensor, false);
+	}
+	_timedReportCallbackRangeFinder = callback;
+	return 0;
 }
 
 int YRangeFinder::_invokeTimedReportCallback(YMeasure value)
 {
-    if (_timedReportCallbackRangeFinder != NULL) {
-        _timedReportCallbackRangeFinder(this, value);
-    } else {
-        YSensor::_invokeTimedReportCallback(value);
-    }
-    return 0;
+	if (_timedReportCallbackRangeFinder != NULL)
+	{
+		_timedReportCallbackRangeFinder(this, value);
+	}
+	else
+	{
+		YSensor::_invokeTimedReportCallback(value);
+	}
+	return 0;
 }
 
 /**
@@ -412,12 +471,13 @@ int YRangeFinder::_invokeTimedReportCallback(YMeasure value)
  */
 double YRangeFinder::get_hardwareCalibrationTemperature(void)
 {
-    string hwcal;
-    hwcal = this->get_hardwareCalibration();
-    if (!((hwcal).substr(0, 1) == "@")) {
-        return YAPI_INVALID_DOUBLE;
-    }
-    return atoi(((hwcal).substr(1, (int)(hwcal).length())).c_str());
+	string hwcal;
+	hwcal = this->get_hardwareCalibration();
+	if (!((hwcal).substr(0, 1) == "@"))
+	{
+		return YAPI_INVALID_DOUBLE;
+	}
+	return atoi(((hwcal).substr(1, (int)(hwcal).length())).c_str());
 }
 
 /**
@@ -431,7 +491,7 @@ double YRangeFinder::get_hardwareCalibrationTemperature(void)
  */
 int YRangeFinder::triggerTemperatureCalibration(void)
 {
-    return this->set_command("T");
+	return this->set_command("T");
 }
 
 /**
@@ -445,7 +505,7 @@ int YRangeFinder::triggerTemperatureCalibration(void)
  */
 int YRangeFinder::triggerSpadCalibration(void)
 {
-    return this->set_command("S");
+	return this->set_command("S");
 }
 
 /**
@@ -462,13 +522,16 @@ int YRangeFinder::triggerSpadCalibration(void)
  */
 int YRangeFinder::triggerOffsetCalibration(double targetDist)
 {
-    int distmm = 0;
-    if (this->get_unit() == "\"") {
-        distmm = (int) floor(targetDist * 25.4+0.5);
-    } else {
-        distmm = (int) floor(targetDist+0.5);
-    }
-    return this->set_command(YapiWrapper::ysprintf("O%d",distmm));
+	int distmm = 0;
+	if (this->get_unit() == "\"")
+	{
+		distmm = (int)floor(targetDist * 25.4 + 0.5);
+	}
+	else
+	{
+		distmm = (int)floor(targetDist + 0.5);
+	}
+	return this->set_command(YapiWrapper::ysprintf("O%d", distmm));
 }
 
 /**
@@ -485,13 +548,16 @@ int YRangeFinder::triggerOffsetCalibration(double targetDist)
  */
 int YRangeFinder::triggerXTalkCalibration(double targetDist)
 {
-    int distmm = 0;
-    if (this->get_unit() == "\"") {
-        distmm = (int) floor(targetDist * 25.4+0.5);
-    } else {
-        distmm = (int) floor(targetDist+0.5);
-    }
-    return this->set_command(YapiWrapper::ysprintf("X%d",distmm));
+	int distmm = 0;
+	if (this->get_unit() == "\"")
+	{
+		distmm = (int)floor(targetDist * 25.4 + 0.5);
+	}
+	else
+	{
+		distmm = (int)floor(targetDist + 0.5);
+	}
+	return this->set_command(YapiWrapper::ysprintf("X%d", distmm));
 }
 
 /**
@@ -504,31 +570,33 @@ int YRangeFinder::triggerXTalkCalibration(double targetDist)
  */
 int YRangeFinder::cancelCoverGlassCalibrations(void)
 {
-    return this->set_hardwareCalibration("");
+	return this->set_hardwareCalibration("");
 }
 
-YRangeFinder *YRangeFinder::nextRangeFinder(void)
+YRangeFinder* YRangeFinder::nextRangeFinder(void)
 {
-    string  hwid;
+	string hwid;
 
-    if(YISERR(_nextFunction(hwid)) || hwid=="") {
-        return NULL;
-    }
-    return YRangeFinder::FindRangeFinder(hwid);
+	if (YISERR(_nextFunction(hwid)) || hwid == "")
+	{
+		return NULL;
+	}
+	return YRangeFinder::FindRangeFinder(hwid);
 }
 
 YRangeFinder* YRangeFinder::FirstRangeFinder(void)
 {
-    vector<YFUN_DESCR>   v_fundescr;
-    YDEV_DESCR             ydevice;
-    string              serial, funcId, funcName, funcVal, errmsg;
+	vector<YFUN_DESCR> v_fundescr;
+	YDEV_DESCR ydevice;
+	string serial, funcId, funcName, funcVal, errmsg;
 
-    if(YISERR(YapiWrapper::getFunctionsByClass("RangeFinder", 0, v_fundescr, sizeof(YFUN_DESCR), errmsg)) ||
-       v_fundescr.size() == 0 ||
-       YISERR(YapiWrapper::getFunctionInfo(v_fundescr[0], ydevice, serial, funcId, funcName, funcVal, errmsg))) {
-        return NULL;
-    }
-    return YRangeFinder::FindRangeFinder(serial+"."+funcId);
+	if (YISERR(YapiWrapper::getFunctionsByClass("RangeFinder", 0, v_fundescr, sizeof(YFUN_DESCR), errmsg)) ||
+		v_fundescr.size() == 0 ||
+		YISERR(YapiWrapper::getFunctionInfo(v_fundescr[0], ydevice, serial, funcId, funcName, funcVal, errmsg)))
+	{
+		return NULL;
+	}
+	return YRangeFinder::FindRangeFinder(serial + "." + funcId);
 }
 
 //--- (end of YRangeFinder implementation)

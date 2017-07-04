@@ -49,9 +49,10 @@
 //--- (generated code: YFiles definitions)
 class YFiles; // forward declaration
 
-typedef void (*YFilesValueCallback)(YFiles *func, const string& functionValue);
+typedef void (*YFilesValueCallback)(YFiles* func, const string& functionValue);
 #define Y_FILESCOUNT_INVALID            (YAPI_INVALID_UINT)
 #define Y_FREESPACE_INVALID             (YAPI_INVALID_UINT)
+
 //--- (end of generated code: YFiles definitions)
 
 
@@ -65,42 +66,40 @@ typedef void (*YFilesValueCallback)(YFiles *func, const string& functionValue);
  *
  *
  */
-class YOCTO_CLASS_EXPORT YFileRecord {
+class YOCTO_CLASS_EXPORT YFileRecord
+{
 #ifdef __BORLANDC__
 #pragma option push -w-8022
 #endif
-//--- (end of generated code: YFileRecord declaration)
-    //--- (generated code: YFileRecord attributes)
-    // Attributes (function value cache)
-    string          _name;
-    int             _size;
-    int             _crc;
-    //--- (end of generated code: YFileRecord attributes)
-    //--- (generated code: YFileRecord constructor)
+	//--- (end of generated code: YFileRecord declaration)
+	//--- (generated code: YFileRecord attributes)
+	// Attributes (function value cache)
+	string _name;
+	int _size;
+	int _crc;
+	//--- (end of generated code: YFileRecord attributes)
+	//--- (generated code: YFileRecord constructor)
 
-    //--- (end of generated code: YFileRecord constructor)
-    //--- (generated code: FileRecord initialization)
-    //--- (end of generated code: FileRecord initialization)
-    
+	//--- (end of generated code: YFileRecord constructor)
+	//--- (generated code: FileRecord initialization)
+	//--- (end of generated code: FileRecord initialization)
+
 public:
-    YFileRecord(const string& json);
-    //--- (generated code: YFileRecord accessors declaration)
+	YFileRecord(const string& json);
+	//--- (generated code: YFileRecord accessors declaration)
 
 
-    virtual string      get_name(void);
+	virtual string get_name(void);
 
-    virtual int         get_size(void);
+	virtual int get_size(void);
 
-    virtual int         get_crc(void);
+	virtual int get_crc(void);
 
 #ifdef __BORLANDC__
 #pragma option pop
 #endif
-    //--- (end of generated code: YFileRecord accessors declaration)
+	//--- (end of generated code: YFileRecord accessors declaration)
 };
-
-
-
 
 
 //--- (generated code: YFiles declaration)
@@ -112,211 +111,224 @@ public:
  * (for networked devices) or to add fonts (on display
  * devices).
  */
-class YOCTO_CLASS_EXPORT YFiles: public YFunction {
+class YOCTO_CLASS_EXPORT YFiles: public YFunction
+{
 #ifdef __BORLANDC__
 #pragma option push -w-8022
 #endif
-//--- (end of generated code: YFiles declaration)
-    //--- (generated code: YFiles attributes)
-    // Attributes (function value cache)
-    int             _filesCount;
-    int             _freeSpace;
-    YFilesValueCallback _valueCallbackFiles;
+	//--- (end of generated code: YFiles declaration)
+	//--- (generated code: YFiles attributes)
+	// Attributes (function value cache)
+	int _filesCount;
+	int _freeSpace;
+	YFilesValueCallback _valueCallbackFiles;
 
-    friend YFiles *yFindFiles(const string& func);
-    friend YFiles *yFirstFiles(void);
+	friend YFiles* yFindFiles(const string& func);
+	friend YFiles* yFirstFiles(void);
 
-    // Function-specific method for parsing of JSON output and caching result
-    virtual int     _parseAttr(YJSONObject* json_val);
+	// Function-specific method for parsing of JSON output and caching result
+	virtual int _parseAttr(YJSONObject* json_val);
 
-    // Constructor is protected, use yFindFiles factory function to instantiate
-    YFiles(const string& func);
-    //--- (end of generated code: YFiles attributes)
+	// Constructor is protected, use yFindFiles factory function to instantiate
+	YFiles(const string& func);
+	//--- (end of generated code: YFiles attributes)
 
-    //--- (generated code: Files initialization)
-    //--- (end of generated code: Files initialization)
+	//--- (generated code: Files initialization)
+	//--- (end of generated code: Files initialization)
 
 public:
-    ~YFiles();
-    //--- (generated code: YFiles accessors declaration)
+	~YFiles();
+	//--- (generated code: YFiles accessors declaration)
 
-    static const int FILESCOUNT_INVALID = YAPI_INVALID_UINT;
-    static const int FREESPACE_INVALID = YAPI_INVALID_UINT;
+	static const int FILESCOUNT_INVALID = YAPI_INVALID_UINT;
+	static const int FREESPACE_INVALID = YAPI_INVALID_UINT;
 
-    /**
-     * Returns the number of files currently loaded in the filesystem.
-     *
-     * @return an integer corresponding to the number of files currently loaded in the filesystem
-     *
-     * On failure, throws an exception or returns Y_FILESCOUNT_INVALID.
-     */
-    int                 get_filesCount(void);
+	/**
+	 * Returns the number of files currently loaded in the filesystem.
+	 *
+	 * @return an integer corresponding to the number of files currently loaded in the filesystem
+	 *
+	 * On failure, throws an exception or returns Y_FILESCOUNT_INVALID.
+	 */
+	int get_filesCount(void);
 
-    inline int          filesCount(void)
-    { return this->get_filesCount(); }
+	inline int filesCount(void)
+	{
+		return this->get_filesCount();
+	}
 
-    /**
-     * Returns the free space for uploading new files to the filesystem, in bytes.
-     *
-     * @return an integer corresponding to the free space for uploading new files to the filesystem, in bytes
-     *
-     * On failure, throws an exception or returns Y_FREESPACE_INVALID.
-     */
-    int                 get_freeSpace(void);
+	/**
+	 * Returns the free space for uploading new files to the filesystem, in bytes.
+	 *
+	 * @return an integer corresponding to the free space for uploading new files to the filesystem, in bytes
+	 *
+	 * On failure, throws an exception or returns Y_FREESPACE_INVALID.
+	 */
+	int get_freeSpace(void);
 
-    inline int          freeSpace(void)
-    { return this->get_freeSpace(); }
+	inline int freeSpace(void)
+	{
+		return this->get_freeSpace();
+	}
 
-    /**
-     * Retrieves a filesystem for a given identifier.
-     * The identifier can be specified using several formats:
-     * <ul>
-     * <li>FunctionLogicalName</li>
-     * <li>ModuleSerialNumber.FunctionIdentifier</li>
-     * <li>ModuleSerialNumber.FunctionLogicalName</li>
-     * <li>ModuleLogicalName.FunctionIdentifier</li>
-     * <li>ModuleLogicalName.FunctionLogicalName</li>
-     * </ul>
-     *
-     * This function does not require that the filesystem is online at the time
-     * it is invoked. The returned object is nevertheless valid.
-     * Use the method YFiles.isOnline() to test if the filesystem is
-     * indeed online at a given time. In case of ambiguity when looking for
-     * a filesystem by logical name, no error is notified: the first instance
-     * found is returned. The search is performed first by hardware name,
-     * then by logical name.
-     *
-     * @param func : a string that uniquely characterizes the filesystem
-     *
-     * @return a YFiles object allowing you to drive the filesystem.
-     */
-    static YFiles*      FindFiles(string func);
+	/**
+	 * Retrieves a filesystem for a given identifier.
+	 * The identifier can be specified using several formats:
+	 * <ul>
+	 * <li>FunctionLogicalName</li>
+	 * <li>ModuleSerialNumber.FunctionIdentifier</li>
+	 * <li>ModuleSerialNumber.FunctionLogicalName</li>
+	 * <li>ModuleLogicalName.FunctionIdentifier</li>
+	 * <li>ModuleLogicalName.FunctionLogicalName</li>
+	 * </ul>
+	 *
+	 * This function does not require that the filesystem is online at the time
+	 * it is invoked. The returned object is nevertheless valid.
+	 * Use the method YFiles.isOnline() to test if the filesystem is
+	 * indeed online at a given time. In case of ambiguity when looking for
+	 * a filesystem by logical name, no error is notified: the first instance
+	 * found is returned. The search is performed first by hardware name,
+	 * then by logical name.
+	 *
+	 * @param func : a string that uniquely characterizes the filesystem
+	 *
+	 * @return a YFiles object allowing you to drive the filesystem.
+	 */
+	static YFiles* FindFiles(string func);
 
-    /**
-     * Registers the callback function that is invoked on every change of advertised value.
-     * The callback is invoked only during the execution of ySleep or yHandleEvents.
-     * This provides control over the time when the callback is triggered. For good responsiveness, remember to call
-     * one of these two functions periodically. To unregister a callback, pass a NULL pointer as argument.
-     *
-     * @param callback : the callback function to call, or a NULL pointer. The callback function should take two
-     *         arguments: the function object of which the value has changed, and the character string describing
-     *         the new advertised value.
-     * @noreturn
-     */
-    virtual int         registerValueCallback(YFilesValueCallback callback);
-    using YFunction::registerValueCallback;
+	/**
+	 * Registers the callback function that is invoked on every change of advertised value.
+	 * The callback is invoked only during the execution of ySleep or yHandleEvents.
+	 * This provides control over the time when the callback is triggered. For good responsiveness, remember to call
+	 * one of these two functions periodically. To unregister a callback, pass a NULL pointer as argument.
+	 *
+	 * @param callback : the callback function to call, or a NULL pointer. The callback function should take two
+	 *         arguments: the function object of which the value has changed, and the character string describing
+	 *         the new advertised value.
+	 * @noreturn
+	 */
+	virtual int registerValueCallback(YFilesValueCallback callback);
+	using YFunction::registerValueCallback;
 
-    virtual int         _invokeValueCallback(string value);
+	virtual int _invokeValueCallback(string value);
 
-    virtual string      sendCommand(string command);
+	virtual string sendCommand(string command);
 
-    /**
-     * Reinitialize the filesystem to its clean, unfragmented, empty state.
-     * All files previously uploaded are permanently lost.
-     *
-     * @return YAPI_SUCCESS if the call succeeds.
-     *
-     * On failure, throws an exception or returns a negative error code.
-     */
-    virtual int         format_fs(void);
+	/**
+	 * Reinitialize the filesystem to its clean, unfragmented, empty state.
+	 * All files previously uploaded are permanently lost.
+	 *
+	 * @return YAPI_SUCCESS if the call succeeds.
+	 *
+	 * On failure, throws an exception or returns a negative error code.
+	 */
+	virtual int format_fs(void);
 
-    /**
-     * Returns a list of YFileRecord objects that describe files currently loaded
-     * in the filesystem.
-     *
-     * @param pattern : an optional filter pattern, using star and question marks
-     *         as wildcards. When an empty pattern is provided, all file records
-     *         are returned.
-     *
-     * @return a list of YFileRecord objects, containing the file path
-     *         and name, byte size and 32-bit CRC of the file content.
-     *
-     * On failure, throws an exception or returns an empty list.
-     */
-    virtual vector<YFileRecord> get_list(string pattern);
+	/**
+	 * Returns a list of YFileRecord objects that describe files currently loaded
+	 * in the filesystem.
+	 *
+	 * @param pattern : an optional filter pattern, using star and question marks
+	 *         as wildcards. When an empty pattern is provided, all file records
+	 *         are returned.
+	 *
+	 * @return a list of YFileRecord objects, containing the file path
+	 *         and name, byte size and 32-bit CRC of the file content.
+	 *
+	 * On failure, throws an exception or returns an empty list.
+	 */
+	virtual vector<YFileRecord> get_list(string pattern);
 
-    /**
-     * Test if a file exist on the filesystem of the module.
-     *
-     * @param filename : the file name to test.
-     *
-     * @return a true if the file existe, false ortherwise.
-     *
-     * On failure, throws an exception.
-     */
-    virtual bool        fileExist(string filename);
+	/**
+	 * Test if a file exist on the filesystem of the module.
+	 *
+	 * @param filename : the file name to test.
+	 *
+	 * @return a true if the file existe, false ortherwise.
+	 *
+	 * On failure, throws an exception.
+	 */
+	virtual bool fileExist(string filename);
 
-    /**
-     * Downloads the requested file and returns a binary buffer with its content.
-     *
-     * @param pathname : path and name of the file to download
-     *
-     * @return a binary buffer with the file content
-     *
-     * On failure, throws an exception or returns an empty content.
-     */
-    virtual string      download(string pathname);
+	/**
+	 * Downloads the requested file and returns a binary buffer with its content.
+	 *
+	 * @param pathname : path and name of the file to download
+	 *
+	 * @return a binary buffer with the file content
+	 *
+	 * On failure, throws an exception or returns an empty content.
+	 */
+	virtual string download(string pathname);
 
-    /**
-     * Uploads a file to the filesystem, to the specified full path name.
-     * If a file already exists with the same path name, its content is overwritten.
-     *
-     * @param pathname : path and name of the new file to create
-     * @param content : binary buffer with the content to set
-     *
-     * @return YAPI_SUCCESS if the call succeeds.
-     *
-     * On failure, throws an exception or returns a negative error code.
-     */
-    virtual int         upload(string pathname,string content);
+	/**
+	 * Uploads a file to the filesystem, to the specified full path name.
+	 * If a file already exists with the same path name, its content is overwritten.
+	 *
+	 * @param pathname : path and name of the new file to create
+	 * @param content : binary buffer with the content to set
+	 *
+	 * @return YAPI_SUCCESS if the call succeeds.
+	 *
+	 * On failure, throws an exception or returns a negative error code.
+	 */
+	virtual int upload(string pathname, string content);
 
-    /**
-     * Deletes a file, given by its full path name, from the filesystem.
-     * Because of filesystem fragmentation, deleting a file may not always
-     * free up the whole space used by the file. However, rewriting a file
-     * with the same path name will always reuse any space not freed previously.
-     * If you need to ensure that no space is taken by previously deleted files,
-     * you can use format_fs to fully reinitialize the filesystem.
-     *
-     * @param pathname : path and name of the file to remove.
-     *
-     * @return YAPI_SUCCESS if the call succeeds.
-     *
-     * On failure, throws an exception or returns a negative error code.
-     */
-    virtual int         remove(string pathname);
+	/**
+	 * Deletes a file, given by its full path name, from the filesystem.
+	 * Because of filesystem fragmentation, deleting a file may not always
+	 * free up the whole space used by the file. However, rewriting a file
+	 * with the same path name will always reuse any space not freed previously.
+	 * If you need to ensure that no space is taken by previously deleted files,
+	 * you can use format_fs to fully reinitialize the filesystem.
+	 *
+	 * @param pathname : path and name of the file to remove.
+	 *
+	 * @return YAPI_SUCCESS if the call succeeds.
+	 *
+	 * On failure, throws an exception or returns a negative error code.
+	 */
+	virtual int remove(string pathname);
 
 
-    inline static YFiles* Find(string func)
-    { return YFiles::FindFiles(func); }
+	inline static YFiles* Find(string func)
+	{
+		return YFiles::FindFiles(func);
+	}
 
-    /**
-     * Continues the enumeration of filesystems started using yFirstFiles().
-     *
-     * @return a pointer to a YFiles object, corresponding to
-     *         a filesystem currently online, or a NULL pointer
-     *         if there are no more filesystems to enumerate.
-     */
-           YFiles          *nextFiles(void);
-    inline YFiles          *next(void)
-    { return this->nextFiles();}
+	/**
+	 * Continues the enumeration of filesystems started using yFirstFiles().
+	 *
+	 * @return a pointer to a YFiles object, corresponding to
+	 *         a filesystem currently online, or a NULL pointer
+	 *         if there are no more filesystems to enumerate.
+	 */
+	YFiles* nextFiles(void);
 
-    /**
-     * Starts the enumeration of filesystems currently accessible.
-     * Use the method YFiles.nextFiles() to iterate on
-     * next filesystems.
-     *
-     * @return a pointer to a YFiles object, corresponding to
-     *         the first filesystem currently online, or a NULL pointer
-     *         if there are none.
-     */
-           static YFiles* FirstFiles(void);
-    inline static YFiles* First(void)
-    { return YFiles::FirstFiles();}
+	inline YFiles* next(void)
+	{
+		return this->nextFiles();
+	}
+
+	/**
+	 * Starts the enumeration of filesystems currently accessible.
+	 * Use the method YFiles.nextFiles() to iterate on
+	 * next filesystems.
+	 *
+	 * @return a pointer to a YFiles object, corresponding to
+	 *         the first filesystem currently online, or a NULL pointer
+	 *         if there are none.
+	 */
+	static YFiles* FirstFiles(void);
+
+	inline static YFiles* First(void)
+	{
+		return YFiles::FirstFiles();
+	}
 #ifdef __BORLANDC__
 #pragma option pop
 #endif
-    //--- (end of generated code: YFiles accessors declaration)
+	//--- (end of generated code: YFiles accessors declaration)
 };
 
 //--- (generated code: Files functions declaration)
@@ -345,7 +357,10 @@ public:
  * @return a YFiles object allowing you to drive the filesystem.
  */
 inline YFiles* yFindFiles(const string& func)
-{ return YFiles::FindFiles(func);}
+{
+	return YFiles::FindFiles(func);
+}
+
 /**
  * Starts the enumeration of filesystems currently accessible.
  * Use the method YFiles.nextFiles() to iterate on
@@ -356,7 +371,9 @@ inline YFiles* yFindFiles(const string& func)
  *         if there are none.
  */
 inline YFiles* yFirstFiles(void)
-{ return YFiles::FirstFiles();}
+{
+	return YFiles::FirstFiles();
+}
 
 //--- (end of generated code: Files functions declaration)
 
